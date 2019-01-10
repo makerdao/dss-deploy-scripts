@@ -4,18 +4,36 @@ set -ex
 export ETH_GAS=${ETH_GAS:-"7000000"}
 unset SOLC_FLAGS
 
-# Deploy Gov token and Chief (no solc optimization)
-cd contracts/ds-chief
+# Deploy Guard for Gov and IOU tokens
+cd contracts/ds-guard
 dapp --use solc:0.5.0 build
-MCD_GOV=$(dapp create DSToken $(seth --to-bytes32 $(seth --from-ascii "MKR")))
+MCD_GOV_GUARD=$(dapp create DSGuard)
+
+# Deploy Gov token and Chief (no solc optimization)
+cd ../ds-chief
+dapp --use solc:0.5.0 build
+export MCD_GOV=$(dapp create DSToken $(seth --to-bytes32 $(seth --from-ascii "MKR")))
 IOU=$(dapp create DSToken $(seth --to-bytes32 $(seth --from-ascii "IOU")))
-MCD_ADM=$(dapp create DSChief $MCD_GOV $IOU 5)
+seth send $MCD_GOV 'setAuthority(address)' $MCD_GOV_GUARD
+seth send $IOU 'setAuthority(address)' $MCD_GOV_GUARD
+export MCD_ADM=$(dapp create DSChief $MCD_GOV $IOU 5)
+seth send $MCD_GOV_GUARD 'permit(address,address,bytes32)' $MCD_ADM $IOU $(seth --to-bytes32  $(seth sig 'mint(address,uint256)'))
+seth send $MCD_GOV_GUARD 'permit(address,address,bytes32)' $MCD_ADM $IOU $(seth --to-bytes32  $(seth sig 'burn(address,uint256)'))
+seth send $MCD_GOV 'mint(uint256)' $(seth --to-uint256 $(seth --to-wei 1000000 ETH))
+seth send $MCD_GOV 'approve(address,uint256)' $MCD_ADM 1
+seth send $MCD_ADM 'lock(uint256)' 1
+seth send $MCD_ADM 'vote(address[])' [${ETH_FROM:2:42}]
+seth send $MCD_ADM 'lift(address)' $ETH_FROM
 
 # Deploy OSM (no solc optimization)
+cd ../ds-value
+dapp --use solc:0.5.0 build
+VAL_ETH=$(dapp create DSValue)
+VAL_REP=$(dapp create DSValue)
 cd ../osm
 dapp --use solc:0.5.0 build
-PIP_REP=$(dapp create osm 0x0000000000000000000000000000000000000000)
-PIP_ETH=$(dapp create osm 0x0000000000000000000000000000000000000000)
+export PIP_ETH=$(dapp create osm $VAL_ETH)
+export PIP_REP=$(dapp create osm $VAL_REP)
 
 # Deploy ProxyRegistry (no solc optimization)
 cd ../proxy-registry
@@ -55,12 +73,22 @@ export SKIP_BUILD=true
 . load-ilk-rep-unknown
 rm load-ilk-rep-unknown
 
+# Deploy MomLib (no solc optimization)
+MCD_MOM_LIB=$(dapp create MomLib)
+
+# Allow Flop to mint Gov token
+seth send $MCD_GOV_GUARD 'permit(address,address,bytes32)' $MCD_FLOP $MCD_GOV $(seth --to-bytes32  $(seth sig 'mint(address,uint256)'))
+
+# Mint initial supply REP
+seth send $REP 'mint(address,uint256)' $ETH_FROM $(seth --to-uint256 $(seth --to-wei 1000000 ETH))
+
 mkdir -p ../../out
 
 cat > ../../out/addresses.json << EOF
 {
     "MCD_DEPLOY": "$MCD_DEPLOY",
     "MCD_GOV": "$MCD_GOV",
+    "MCD_GOV_GUARD": "$MCD_GOV_GUARD",
     "MCD_ADM": "$MCD_ADM",
     "MCD_VAT": "$MCD_VAT",
     "MCD_PIT": "$MCD_PIT",
@@ -73,6 +101,7 @@ cat > ../../out/addresses.json << EOF
     "MCD_FLAP": "$MCD_FLAP",
     "MCD_FLOP": "$MCD_FLOP",
     "MCD_MOM": "$MCD_MOM",
+    "MCD_MOM_LIB": "$MCD_MOM_LIB",
     "MCD_DAI": "$MCD_DAI",
     "MCD_DAI_GUARD": "$MCD_DAI_GUARD",
     "PROXY_ACTIONS": "$PROXY_ACTIONS",
