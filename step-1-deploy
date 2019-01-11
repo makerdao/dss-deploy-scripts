@@ -14,16 +14,25 @@ cd ../ds-chief
 dapp --use solc:0.5.0 build
 export MCD_GOV=$(dapp create DSToken $(seth --to-bytes32 $(seth --from-ascii "MKR")))
 IOU=$(dapp create DSToken $(seth --to-bytes32 $(seth --from-ascii "IOU")))
-seth send $MCD_GOV 'setAuthority(address)' $MCD_GOV_GUARD
-seth send $IOU 'setAuthority(address)' $MCD_GOV_GUARD
+TX=$(seth send $MCD_GOV 'setAuthority(address)' $MCD_GOV_GUARD --async)
+test $(seth --field <<<"$(seth receipt $TX)" status) = 1
+TX=$(seth send $IOU 'setAuthority(address)' $MCD_GOV_GUARD --async)
+test $(seth --field <<<"$(seth receipt $TX)" status) = 1
 export MCD_ADM=$(dapp create DSChief $MCD_GOV $IOU 5)
-seth send $MCD_GOV_GUARD 'permit(address,address,bytes32)' $MCD_ADM $IOU $(seth --to-bytes32  $(seth sig 'mint(address,uint256)'))
-seth send $MCD_GOV_GUARD 'permit(address,address,bytes32)' $MCD_ADM $IOU $(seth --to-bytes32  $(seth sig 'burn(address,uint256)'))
-seth send $MCD_GOV 'mint(uint256)' $(seth --to-uint256 $(seth --to-wei 1000000 ETH))
-seth send $MCD_GOV 'approve(address,uint256)' $MCD_ADM 1
-seth send $MCD_ADM 'lock(uint256)' 1
-seth send $MCD_ADM 'vote(address[])' [${ETH_FROM:2:42}]
-seth send $MCD_ADM 'lift(address)' $ETH_FROM
+TX=$(seth send $MCD_GOV_GUARD 'permit(address,address,bytes32)' $MCD_ADM $IOU $(seth --to-bytes32  $(seth sig 'mint(address,uint256)')) --async)
+test $(seth --field <<<"$(seth receipt $TX)" status) = 1
+TX=$(seth send $MCD_GOV_GUARD 'permit(address,address,bytes32)' $MCD_ADM $IOU $(seth --to-bytes32  $(seth sig 'burn(address,uint256)')) --async)
+test $(seth --field <<<"$(seth receipt $TX)" status) = 1
+TX=$(seth send $MCD_GOV 'mint(uint256)' $(seth --to-uint256 $(seth --to-wei 1000000 ETH)) --async)
+test $(seth --field <<<"$(seth receipt $TX)" status) = 1
+TX=$(seth send $MCD_GOV 'approve(address,uint256)' $MCD_ADM 1 --async)
+test $(seth --field <<<"$(seth receipt $TX)" status) = 1
+TX=$(seth send $MCD_ADM 'lock(uint256)' 1 --async)
+test $(seth --field <<<"$(seth receipt $TX)" status) = 1
+TX=$(seth send $MCD_ADM 'vote(address[])' [${ETH_FROM:2:42}] --async)
+test $(seth --field <<<"$(seth receipt $TX)" status) = 1
+TX=$(seth send $MCD_ADM 'lift(address)' $ETH_FROM --async)
+test $(seth --field <<<"$(seth receipt $TX)" status) = 1
 
 # Deploy OSM (no solc optimization)
 cd ../ds-value
@@ -77,10 +86,12 @@ rm load-ilk-rep-unknown
 MCD_MOM_LIB=$(dapp create MomLib)
 
 # Allow Flop to mint Gov token
-seth send $MCD_GOV_GUARD 'permit(address,address,bytes32)' $MCD_FLOP $MCD_GOV $(seth --to-bytes32  $(seth sig 'mint(address,uint256)'))
+TX=$(seth send $MCD_GOV_GUARD 'permit(address,address,bytes32)' $MCD_FLOP $MCD_GOV $(seth --to-bytes32  $(seth sig 'mint(address,uint256)')) --async)
+test $(seth --field <<<"$(seth receipt $TX)" status) = 1
 
 # Mint initial supply REP
-seth send $REP 'mint(address,uint256)' $ETH_FROM $(seth --to-uint256 $(seth --to-wei 1000000 ETH))
+TX=$(seth send $REP 'mint(address,uint256)' $ETH_FROM $(seth --to-uint256 $(seth --to-wei 1000000 ETH)) --async)
+test $(seth --field <<<"$(seth receipt $TX)" status) = 1
 
 mkdir -p ../../out
 
@@ -121,3 +132,5 @@ cat > ../../out/addresses.json << EOF
     "MCD_SPOT_REP": "$MCD_SPOT_REP"
 }
 EOF
+
+echo "STEP 1 COMPLETED SUCCESSFULLY"
