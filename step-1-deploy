@@ -4,6 +4,9 @@ set -ex
 export ETH_GAS=${ETH_GAS:-"7000000"}
 unset SOLC_FLAGS
 
+# Remove ./out folder
+rm -rf ./out
+
 # Deploy Guard for Gov and IOU tokens
 cd contracts/ds-guard
 dapp --use solc:0.5.0 build
@@ -93,9 +96,36 @@ test $(seth --field <<<"$(seth receipt $TX)" status) = 1
 TX=$(seth send $REP 'mint(address,uint256)' $ETH_FROM $(seth --to-uint256 $(seth --to-wei 1000000 ETH)) --async)
 test $(seth --field <<<"$(seth receipt $TX)" status) = 1
 
-mkdir -p ../../out
+# Copy abi files
+cd ../../
+mkdir -p ./out/abi
+cp ./contracts/ds-guard/out/DSGuard.abi ./out/abi
+cp ./contracts/ds-chief/out/DSToken.abi ./out/abi
+cp ./contracts/ds-chief/out/DSChief.abi ./out/abi
+cp ./contracts/osm/out/osm.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/DssProxyActions.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/DssCdpManager.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/DssDeploy.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/Vat.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/Pit.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/Drip.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/Cat.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/Vow.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/Flipper.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/Flopper.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/Flapper.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/DaiJoin.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/ETHJoin.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/GemJoin.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/DaiMove.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/GemMove.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/Spotter.abi ./out/abi
+cp ./contracts/proxy-registry/out/DSProxy.abi ./out/abi
+cp ./contracts/proxy-registry/out/DSProxyFactory.abi ./out/abi
+cp ./contracts/proxy-registry/out/ProxyRegistry.abi ./out/abi
 
-cat > ../../out/addresses.json << EOF
+# Generate addresses.json file
+cat > ./out/addresses.json << EOF
 {
     "MCD_DEPLOY": "$MCD_DEPLOY",
     "MCD_GOV": "$MCD_GOV",
@@ -106,7 +136,6 @@ cat > ../../out/addresses.json << EOF
     "MCD_DRIP": "$MCD_DRIP",
     "MCD_CAT": "$MCD_CAT",
     "MCD_VOW": "$MCD_VOW",
-    "MCD_MCD": "$MCD_MCD",
     "MCD_JOIN_DAI": "$MCD_JOIN_DAI",
     "MCD_MOVE_DAI": "$MCD_MOVE_DAI",
     "MCD_FLAP": "$MCD_FLAP",
