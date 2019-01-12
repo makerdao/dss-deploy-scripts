@@ -1,0 +1,9 @@
+{
+	"description": "Step 7 - MS 3 - Crash & Bite", 
+    "defaults": { "osmDelay": "1" },
+    "roles": ["CREATOR", "CDP_OWNER"], 
+    "oracles": [
+        {"symbol": "ETH", "contract": "MEDIANIZER_ETH" },
+        {"symbol": "REP", "contract": "MEDIANIZER_REP" }
+    ]
+}
