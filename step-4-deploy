@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -ex
 
+export CONFIG_STEP=${CONFIG_STEP:-"4"}
 . step-1-deploy
 
 # Debt Ceiling = 10000 DAI
