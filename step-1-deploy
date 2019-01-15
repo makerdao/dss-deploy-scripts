@@ -38,7 +38,9 @@ seth send "$MCD_ADM" 'lift(address)' "$ETH_FROM"
 cd ../ds-value
 dapp --use solc:0.5.0 build
 VAL_ETH=$(dapp create DSValue)
+export VAL_ETH
 VAL_REP=$(dapp create DSValue)
+export VAL_REP
 cd ../osm
 dapp --use solc:0.5.0 build
 PIP_ETH=$(dapp create osm "$VAL_ETH")
