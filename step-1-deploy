@@ -45,8 +45,8 @@ PIP_ETH=$(dapp create osm "$VAL_ETH")
 export PIP_ETH
 PIP_REP=$(dapp create osm "$VAL_REP")
 export PIP_REP
-seth send "$PIP_ETH" 'step(uint16)' "$OSM_DELAY"
-seth send "$PIP_REP" 'step(uint16)' "$OSM_DELAY"
+test "$OSM_DELAY" -gt 0 && seth send "$PIP_ETH" 'step(uint16)' "$OSM_DELAY"
+test "$OSM_DELAY" -gt 0 && seth send "$PIP_REP" 'step(uint16)' "$OSM_DELAY"
 
 # Deploy ProxyRegistry (no solc optimization)
 cd ../proxy-registry
