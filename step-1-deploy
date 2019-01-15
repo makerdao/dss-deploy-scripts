@@ -9,7 +9,7 @@ rm -rf ./out
 
 # Get config variables
 CONFIG_STEP=${CONFIG_STEP:-"1"}
-OSM_DELAY+=( "$(jq <"./step-"$CONFIG_STEP".json" -r ".defaults.osmDelay")" )
+OSM_DELAY+="$(jq <"./step-$CONFIG_STEP.json" -r ".defaults.osmDelay")"
 
 # Deploy Guard for Gov and IOU tokens
 cd contracts/ds-guard
@@ -19,18 +19,20 @@ MCD_GOV_GUARD=$(dapp create DSGuard)
 # Deploy Gov token and Chief (no solc optimization)
 cd ../ds-chief
 dapp --use solc:0.5.0 build
-export MCD_GOV=$(dapp create DSToken $(seth --to-bytes32 $(seth --from-ascii "MKR")))
-IOU=$(dapp create DSToken $(seth --to-bytes32 $(seth --from-ascii "IOU")))
-seth send $MCD_GOV 'setAuthority(address)' $MCD_GOV_GUARD
-seth send $IOU 'setAuthority(address)' $MCD_GOV_GUARD
-export MCD_ADM=$(dapp create DSChief $MCD_GOV $IOU 5)
-seth send $MCD_GOV_GUARD 'permit(address,address,bytes32)' $MCD_ADM $IOU $(seth --to-bytes32  $(seth sig 'mint(address,uint256)'))
-seth send $MCD_GOV_GUARD 'permit(address,address,bytes32)' $MCD_ADM $IOU $(seth --to-bytes32  $(seth sig 'burn(address,uint256)'))
-seth send $MCD_GOV 'mint(uint256)' $(seth --to-uint256 $(seth --to-wei 1000000 ETH))
-seth send $MCD_GOV 'approve(address,uint256)' $MCD_ADM 1
-seth send $MCD_ADM 'lock(uint256)' 1
-seth send $MCD_ADM 'vote(address[])' [${ETH_FROM:2:42}]
-seth send $MCD_ADM 'lift(address)' $ETH_FROM
+MCD_GOV=$(dapp create DSToken "$(seth --to-bytes32 "$(seth --from-ascii "MKR")")")
+export MCD_GOV
+IOU=$(dapp create DSToken "$(seth --to-bytes32 "$(seth --from-ascii "IOU")")")
+seth send "$MCD_GOV" 'setAuthority(address)' "$MCD_GOV_GUARD"
+seth send "$IOU" 'setAuthority(address)' "$MCD_GOV_GUARD"
+MCD_ADM=$(dapp create DSChief "$MCD_GOV" "$IOU" 5)
+export MCD_ADM
+seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_ADM" "$IOU" "$(seth --to-bytes32  "$(seth sig 'mint(address,uint256)')")"
+seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_ADM" "$IOU" "$(seth --to-bytes32  "$(seth sig 'burn(address,uint256)')")"
+seth send "$MCD_GOV" 'mint(uint256)' "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
+seth send "$MCD_GOV" 'approve(address,uint256)' "$MCD_ADM" 1
+seth send "$MCD_ADM" 'lock(uint256)' 1
+seth send "$MCD_ADM" 'vote(address[])' ["${ETH_FROM:2:42}"]
+seth send "$MCD_ADM" 'lift(address)' "$ETH_FROM"
 
 # Deploy OSM (no solc optimization)
 cd ../ds-value
@@ -39,16 +41,18 @@ VAL_ETH=$(dapp create DSValue)
 VAL_REP=$(dapp create DSValue)
 cd ../osm
 dapp --use solc:0.5.0 build
-export PIP_ETH=$(dapp create osm $VAL_ETH)
-export PIP_REP=$(dapp create osm $VAL_REP)
-seth send $PIP_ETH 'step(uint16)' $OSM_DELAY
-seth send $PIP_REP 'step(uint16)' $OSM_DELAY
+PIP_ETH=$(dapp create osm "$VAL_ETH")
+export PIP_ETH
+PIP_REP=$(dapp create osm "$VAL_REP")
+export PIP_REP
+seth send "$PIP_ETH" 'step(uint16)' "$OSM_DELAY"
+seth send "$PIP_REP" 'step(uint16)' "$OSM_DELAY"
 
 # Deploy ProxyRegistry (no solc optimization)
 cd ../proxy-registry
 dapp --use solc:0.5.0 build
 PROXY_FACTORY=$(dapp create DSProxyFactory)
-PROXY_REGISTRY=$(dapp create ProxyRegistry $PROXY_FACTORY)
+PROXY_REGISTRY=$(dapp create ProxyRegistry "$PROXY_FACTORY")
 
 cd ../dss-proxy-actions
 
@@ -56,6 +60,7 @@ SCRIPT_DIR=lib/dss-cdp-manager/lib/dss-deploy/bin/
 
 # Deploy Fabs (no solc optimization)
 "$SCRIPT_DIR/deploy-fab"
+# shellcheck source=/dev/null
 . load-fab-unknown
 rm load-fab-unknown
 
@@ -67,11 +72,13 @@ CDP_MANAGER=$(dapp create DssCdpManager)
 
 # Deploy MCD Core Contratcs (solc optimized)
 "$SCRIPT_DIR/deploy"
+# shellcheck source=/dev/null
 . load-mcd-unknown
 rm load-mcd-unknown
 
 # Deploy ETH Collateral (no solc optimization)
 "$SCRIPT_DIR/deploy-eth"
+# shellcheck source=/dev/null
 . load-ilk-eth-unknown
 rm load-ilk-eth-unknown
 
@@ -79,6 +86,7 @@ export SKIP_BUILD=true
 
 # Deploy REP Collateral (no solc optimization)
 "$SCRIPT_DIR/deploy-rep"
+# shellcheck source=/dev/null
 . load-ilk-rep-unknown
 rm load-ilk-rep-unknown
 
@@ -86,10 +94,10 @@ rm load-ilk-rep-unknown
 MCD_MOM_LIB=$(dapp create MomLib)
 
 # Allow Flop to mint Gov token
-seth send $MCD_GOV_GUARD 'permit(address,address,bytes32)' $MCD_FLOP $MCD_GOV $(seth --to-bytes32  $(seth sig 'mint(address,uint256)'))
+seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_FLOP" "$MCD_GOV" "$(seth --to-bytes32 "$(seth sig 'mint(address,uint256)')")"
 
 # Mint initial supply REP
-seth send $REP 'mint(address,uint256)' $ETH_FROM $(seth --to-uint256 $(seth --to-wei 1000000 ETH))
+seth send "$REP" 'mint(address,uint256)' "$ETH_FROM" "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
 
 # Copy abi files
 cd ../../

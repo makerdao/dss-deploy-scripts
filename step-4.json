@@ -1,5 +1,5 @@
 {
-  "description": "Step 4 - Draw DAI",
+  "description": "Step 4 - CDP Management",
   "defaults": { "osmDelay": "0" },
   "roles": ["CREATOR"],
   "oracles": [
