@@ -20,8 +20,8 @@ seth send "$MCD_MOM" 'execute(address,bytes)' "$MCD_MOM_LIB" "$(seth calldata 'f
 # Set ETH price (150 DAI = 1 ETH)
 seth send "$VAL_ETH" 'poke(bytes32)' "$(seth --to-uint256 "$(seth --to-wei 150 ETH)")"
 
-# Set ETH price (150 DAI = 1 ETH)
-seth send "$VAL_REP" 'poke(bytes32)' "$(seth --to-uint256 "$(seth --to-wei 9.45 ETH)")"
+# Set REP price (15 DAI = 1 REP)
+seth send "$VAL_REP" 'poke(bytes32)' "$(seth --to-uint256 "$(seth --to-wei 15 ETH)")"
 
 # Set ETH mat (150%)
 seth send "$MCD_MOM" 'execute(address,bytes)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,uint256)' "$MCD_SPOT_ETH" "$(seth --to-uint256 "$(seth --to-wei 1500000000 ETH)")")"
