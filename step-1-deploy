@@ -125,6 +125,7 @@ cp ./contracts/dss-proxy-actions/out/GemJoin.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/DaiMove.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/GemMove.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/Spotter.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/Pot.abi ./out/abi
 cp ./contracts/proxy-registry/out/DSProxy.abi ./out/abi
 cp ./contracts/proxy-registry/out/DSProxyFactory.abi ./out/abi
 cp ./contracts/proxy-registry/out/ProxyRegistry.abi ./out/abi
@@ -149,6 +150,8 @@ cat > ./out/addresses.json << EOF
     "MCD_MOM_LIB": "$MCD_MOM_LIB",
     "MCD_DAI": "$MCD_DAI",
     "MCD_DAI_GUARD": "$MCD_DAI_GUARD",
+    "MCD_SPOT": "$MCD_SPOT",
+    "MCD_POT": "$MCD_POT",
     "PROXY_ACTIONS": "$PROXY_ACTIONS",
     "CDP_MANAGER": "$CDP_MANAGER",
     "PROXY_FACTORY": "$PROXY_FACTORY",
@@ -157,13 +160,11 @@ cat > ./out/addresses.json << EOF
     "MCD_JOIN_ETH": "$MCD_JOIN_ETH",
     "MCD_MOVE_ETH": "$MCD_MOVE_ETH",
     "MCD_FLIP_ETH": "$MCD_FLIP_ETH",
-    "MCD_SPOT_ETH": "$MCD_SPOT_ETH",
     "PIP_REP": "$PIP_REP",
     "REP": "$REP",
     "MCD_JOIN_REP": "$MCD_JOIN_REP",
     "MCD_MOVE_REP": "$MCD_MOVE_REP",
     "MCD_FLIP_REP": "$MCD_FLIP_REP",
-    "MCD_SPOT_REP": "$MCD_SPOT_REP"
 }
 EOF
 

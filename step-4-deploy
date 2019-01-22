@@ -24,15 +24,15 @@ seth send "$VAL_ETH" 'poke(bytes32)' "$(seth --to-uint256 "$(seth --to-wei 150 E
 seth send "$VAL_REP" 'poke(bytes32)' "$(seth --to-uint256 "$(seth --to-wei 9.45 ETH)")"
 
 # Set ETH mat (150%)
-seth send "$MCD_MOM" 'execute(address,bytes)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,uint256)' "$MCD_SPOT_ETH" "$(seth --to-uint256 "$(seth --to-wei 1500000000 ETH)")")"
+seth send "$MCD_MOM" 'execute(address,bytes)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,bytes32,uint256)' "$MCD_SPOT" "$(seth --to-bytes32 "$(seth --from-ascii "ETH")")" "$(seth --to-bytes32 "$(seth --from-ascii "mat")")" "$(seth --to-uint256 "$(seth --to-wei 1500000000 ETH)")")"
 
 # Set REP mat (180%)
-seth send "$MCD_MOM" 'execute(address,bytes)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,uint256)' "$MCD_SPOT_REP" "$(seth --to-uint256 "$(seth --to-wei 1800000000 ETH)")")"
+seth send "$MCD_MOM" 'execute(address,bytes)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,bytes32,uint256)' "$MCD_SPOT" "$(seth --to-bytes32 "$(seth --from-ascii "REP")")" "$(seth --to-bytes32 "$(seth --from-ascii "mat")")" "$(seth --to-uint256 "$(seth --to-wei 1800000000 ETH)")")"
 
 # Poke ETH Spotter
-seth send "$MCD_SPOT_ETH" 'poke()'
+seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "ETH")")"
 
 # Poke REP Spotter
-seth send "$MCD_SPOT_REP" 'poke()'
+seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "REP")")"
 
 echo "STEP 4 COMPLETED SUCCESSFULLY"
