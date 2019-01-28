@@ -1,0 +1,9 @@
+{
+  "description": "Step 4 - Market Crash & CDP Bite",
+  "defaults": { "osmDelay": "0" },
+  "roles": ["CREATOR"],
+  "oracles": [
+    {"symbol": "ETH", "contract": "MEDIANIZER_ETH" },
+    {"symbol": "REP", "contract": "MEDIANIZER_REP" }
+  ]
+}

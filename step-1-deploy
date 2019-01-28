@@ -31,7 +31,7 @@ seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_ADM" "$IOU" "
 seth send "$MCD_GOV" 'mint(uint256)' "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
 seth send "$MCD_GOV" 'approve(address,uint256)' "$MCD_ADM" 1
 seth send "$MCD_ADM" 'lock(uint256)' 1
-seth send "$MCD_ADM" 'vote(address[])' ["${ETH_FROM#0x}"]
+seth send "$MCD_ADM" 'vote(address[] memory)' ["${ETH_FROM#0x}"]
 seth send "$MCD_ADM" 'lift(address)' "$ETH_FROM"
 
 # Deploy OSM (no solc optimization)
@@ -43,12 +43,19 @@ VAL_REP=$(dapp create DSValue)
 export VAL_REP
 cd ../osm
 dapp --use solc:0.5.0 build
-PIP_ETH=$(dapp create osm "$VAL_ETH")
+
+if [ "$OSM_DELAY" -gt 0 ]; then
+    PIP_ETH=$(dapp create osm "$VAL_ETH")
+    PIP_REP=$(dapp create osm "$VAL_REP")
+    seth send "$PIP_ETH" 'step(uint16)' "$OSM_DELAY"
+    seth send "$PIP_REP" 'step(uint16)' "$OSM_DELAY"
+else
+    PIP_ETH=$VAL_ETH
+    PIP_REP=$VAL_REP
+fi
+
 export PIP_ETH
-PIP_REP=$(dapp create osm "$VAL_REP")
 export PIP_REP
-test "$OSM_DELAY" -gt 0 && seth send "$PIP_ETH" 'step(uint16)' "$OSM_DELAY"
-test "$OSM_DELAY" -gt 0 && seth send "$PIP_REP" 'step(uint16)' "$OSM_DELAY"
 
 # Deploy ProxyRegistry (no solc optimization)
 cd ../proxy-registry
@@ -125,6 +132,7 @@ cp ./contracts/dss-proxy-actions/out/GemJoin.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/DaiMove.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/GemMove.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/Spotter.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/Pot.abi ./out/abi
 cp ./contracts/proxy-registry/out/DSProxy.abi ./out/abi
 cp ./contracts/proxy-registry/out/DSProxyFactory.abi ./out/abi
 cp ./contracts/proxy-registry/out/ProxyRegistry.abi ./out/abi
@@ -149,22 +157,63 @@ cat > ./out/addresses.json << EOF
     "MCD_MOM_LIB": "$MCD_MOM_LIB",
     "MCD_DAI": "$MCD_DAI",
     "MCD_DAI_GUARD": "$MCD_DAI_GUARD",
+    "MCD_SPOT": "$MCD_SPOT",
+    "MCD_POT": "$MCD_POT",
     "PROXY_ACTIONS": "$PROXY_ACTIONS",
     "CDP_MANAGER": "$CDP_MANAGER",
     "PROXY_FACTORY": "$PROXY_FACTORY",
     "PROXY_REGISTRY": "$PROXY_REGISTRY",
     "PIP_ETH": "$PIP_ETH",
+    "VAL_ETH:" "$VAL_ETH",
     "MCD_JOIN_ETH": "$MCD_JOIN_ETH",
     "MCD_MOVE_ETH": "$MCD_MOVE_ETH",
     "MCD_FLIP_ETH": "$MCD_FLIP_ETH",
-    "MCD_SPOT_ETH": "$MCD_SPOT_ETH",
-    "PIP_REP": "$PIP_REP",
     "REP": "$REP",
+    "VAL_REP:" "$VAL_REP",
+    "PIP_REP": "$PIP_REP",
     "MCD_JOIN_REP": "$MCD_JOIN_REP",
     "MCD_MOVE_REP": "$MCD_MOVE_REP",
     "MCD_FLIP_REP": "$MCD_FLIP_REP",
-    "MCD_SPOT_REP": "$MCD_SPOT_REP"
 }
+EOF
+
+cat > ./out/load-addresses << EOF
+#!/bin/bash
+
+export MCD_DEPLOY=$MCD_DEPLOY
+export MCD_GOV=$MCD_GOV
+export MCD_GOV_GUARD=$MCD_GOV_GUARD
+export MCD_ADM=$MCD_ADM
+export MCD_VAT=$MCD_VAT
+export MCD_PIT=$MCD_PIT
+export MCD_DRIP=$MCD_DRIP
+export MCD_CAT=$MCD_CAT
+export MCD_VOW=$MCD_VOW
+export MCD_JOIN_DAI=$MCD_JOIN_DAI
+export MCD_MOVE_DAI=$MCD_MOVE_DAI
+export MCD_FLAP=$MCD_FLAP
+export MCD_FLOP=$MCD_FLOP
+export MCD_MOM=$MCD_MOM
+export MCD_MOM_LIB=$MCD_MOM_LIB
+export MCD_DAI=$MCD_DAI
+export MCD_DAI_GUARD=$MCD_DAI_GUARD
+export MCD_SPOT=$MCD_SPOT
+export MCD_POT=$MCD_POT
+export PROXY_ACTIONS=$PROXY_ACTIONS
+export CDP_MANAGER=$CDP_MANAGER
+export PROXY_FACTORY=$PROXY_FACTORY
+export PROXY_REGISTRY=$PROXY_REGISTRY
+export VAL_ETH=$VAL_ETH
+export PIP_ETH=$PIP_ETH
+export MCD_JOIN_ETH=$MCD_JOIN_ETH
+export MCD_MOVE_ETH=$MCD_MOVE_ETH
+export MCD_FLIP_ETH=$MCD_FLIP_ETH
+export REP=$REP
+export VAL_REP=$VAL_REP
+export PIP_REP=$PIP_REP
+export MCD_JOIN_REP=$MCD_JOIN_REP
+export MCD_MOVE_REP=$MCD_MOVE_REP
+export MCD_FLIP_REP=$MCD_FLIP_REP
 EOF
 
 echo "STEP 1 COMPLETED SUCCESSFULLY"
