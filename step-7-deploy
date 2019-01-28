@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -ex
+
+export CONFIG_STEP=${CONFIG_STEP:-"7"}
+# shellcheck source=/dev/null
+. step-4-deploy
+
+seth send "$CDP_MANAGER" 'open()'
+ID="$(seth call "$CDP_MANAGER" 'cdpi()(uint256)')"
+ID=0x"${ID:40:64}"
+URN=$(seth call "$CDP_MANAGER" 'getUrn(bytes12)(bytes32)' "$ID")
+
+seth send "$MCD_JOIN_ETH" 'join(bytes32)' "$URN" --value "$(seth --to-wei 0.5 eth)"
+
+DINK=$(seth --to-uint256 "$(mcd --to-hex "$(seth --to-wei 0.5 eth)")")
+DART=$(seth --to-uint256 "$(mcd --to-hex "$(seth --to-wei 25 eth)")")
+
+seth send "$CDP_MANAGER" 'frob(address,bytes12,bytes32,int256,int256)' "$MCD_PIT" "$ID" "$(seth --to-bytes32 "$(seth --from-ascii "ETH")")" "$DINK" "$DART"
+
+# Set ETH price (50 DAI = 1 ETH)
+seth send "$VAL_ETH" 'poke(bytes32)' "$(seth --to-uint256 "$(seth --to-wei 50 ETH)")"
+
+# if [ "$OSM_DELAY" -gt 0 ]; then
+#     seth send "$PIP_ETH" 'poke()'
+# fi
+
+seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "ETH")")"
+
+# seth send "$MCD_CAT" 'bite(bytes32,bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "ETH")")" "$URN"
+
+echo "STEP 7 COMPLETED SUCCESSFULLY"
