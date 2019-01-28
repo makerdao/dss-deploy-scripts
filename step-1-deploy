@@ -34,15 +34,13 @@ seth send "$MCD_ADM" 'lock(uint256)' 1
 seth send "$MCD_ADM" 'vote(address[] memory)' ["${ETH_FROM#0x}"]
 seth send "$MCD_ADM" 'lift(address)' "$ETH_FROM"
 
-# Deploy OSM (no solc optimization)
-cd ../ds-value
+# Deploy Values OSMs (if delay > 0) (no solc optimization)
+cd ../osm
 dapp --use solc:0.5.0 build
 VAL_ETH=$(dapp create DSValue)
 export VAL_ETH
 VAL_REP=$(dapp create DSValue)
 export VAL_REP
-cd ../osm
-dapp --use solc:0.5.0 build
 
 if [ "$OSM_DELAY" -gt 0 ]; then
     PIP_ETH=$(dapp create osm "$VAL_ETH")
@@ -114,6 +112,7 @@ mkdir -p ./out/abi
 cp ./contracts/ds-guard/out/DSGuard.abi ./out/abi
 cp ./contracts/ds-chief/out/DSToken.abi ./out/abi
 cp ./contracts/ds-chief/out/DSChief.abi ./out/abi
+cp ./contracts/osm/out/DSValue.abi ./out/abi
 cp ./contracts/osm/out/osm.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/DssProxyActions.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/DssCdpManager.abi ./out/abi

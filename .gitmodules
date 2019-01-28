@@ -10,9 +10,6 @@
 [submodule "contracts/ds-chief"]
 	path = contracts/ds-chief
 	url = https://github.com/dapphub/ds-chief
-[submodule "contracts/ds-value"]
-	path = contracts/ds-value
-	url = https://github.com/dapphub/ds-value
 [submodule "contracts/ds-guard"]
 	path = contracts/ds-guard
 	url = https://github.com/dapphub/ds-guard
