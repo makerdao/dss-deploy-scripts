@@ -1,18 +1,17 @@
 #!/usr/bin/env bash
 set -ex
 
-TOKEN="$(jq <"./update-price.json" -r ".token")"
-PRICE="$(jq <"./update-price.json" -r ".price")"
-OSM="$(jq <"./out/addresses.json" -r ".PIP_${TOKEN}")"
-SPOTTER="$(jq <"./out/addresses.json" -r ".MCD_SPOT_${TOKEN}")"
-
-DSVALUE=$(seth call "$OSM" 'src()(address)')
+OSM="$(jq <"./out/addresses.json" -r ".PIP_${1}")"
+VALUE="$(jq <"./out/addresses.json" -r ".VAL_${1}")"
+SPOTTER="$(jq <"./out/addresses.json" -r ".MCD_SPOT")"
 
 # Set DSValue price
-seth send "$DSVALUE" 'poke(bytes32)' "$(seth --to-uint256 "$(seth --to-wei "$PRICE" ETH)")"
+seth send "$VALUE" 'poke(bytes32)' "$(seth --to-uint256 "$(seth --to-wei "$2" ETH)")"
 
-# Poke OSM
-seth send "$OSM" 'poke()'
+if [ "$OSM" != "$VALUE" ]; then
+    # Poke OSM
+    seth send "$OSM" 'poke()'
+fi
 
 # Poke Spotter
-seth send "$SPOTTER" 'poke()'
+seth send "$SPOTTER" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "$1")")"

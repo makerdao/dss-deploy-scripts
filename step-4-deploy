@@ -17,27 +17,16 @@ seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth call
 # Set REP debt ceiling
 seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,bytes32,uint256)' "$MCD_PIT" "$(seth --to-bytes32 "$(seth --from-ascii "REP")")" "$(seth --to-bytes32 "$(seth --from-ascii "line")")" "$CEILING")"
 
-# Set ETH price (150 DAI = 1 ETH)
-seth send "$VAL_ETH" 'poke(bytes32)' "$(seth --to-uint256 "$(seth --to-wei 150 ETH)")"
-
-# Set REP price (15 DAI = 1 REP)
-seth send "$VAL_REP" 'poke(bytes32)' "$(seth --to-uint256 "$(seth --to-wei 15 ETH)")"
-
-if [ "$OSM_DELAY" -gt 0 ]; then
-    seth send "$PIP_ETH" 'poke()'
-    seth send "$PIP_REP" 'poke()'
-fi
-
 # Set ETH mat (150%)
 seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,bytes32,uint256)' "$MCD_SPOT" "$(seth --to-bytes32 "$(seth --from-ascii "ETH")")" "$(seth --to-bytes32 "$(seth --from-ascii "mat")")" "$(seth --to-uint256 "$(seth --to-wei 1500000000 ETH)")")"
 
 # Set REP mat (180%)
 seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,bytes32,uint256)' "$MCD_SPOT" "$(seth --to-bytes32 "$(seth --from-ascii "REP")")" "$(seth --to-bytes32 "$(seth --from-ascii "mat")")" "$(seth --to-uint256 "$(seth --to-wei 1800000000 ETH)")")"
 
-# Poke ETH Spotter
-seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "ETH")")"
+# Set ETH price, poke OSM (if exists) and poke Spotter
+./update-price "ETH" "150"
 
-# Poke REP Spotter
-seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "REP")")"
+# Set REP price, poke OSM (if exists) and poke Spotter
+./update-price "REP" "15"
 
 echo "STEP 4 COMPLETED SUCCESSFULLY"

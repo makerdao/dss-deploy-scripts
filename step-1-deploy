@@ -164,16 +164,16 @@ cat > ./out/addresses.json << EOF
     "PROXY_FACTORY": "$PROXY_FACTORY",
     "PROXY_REGISTRY": "$PROXY_REGISTRY",
     "PIP_ETH": "$PIP_ETH",
-    "VAL_ETH:" "$VAL_ETH",
+    "VAL_ETH": "$VAL_ETH",
     "MCD_JOIN_ETH": "$MCD_JOIN_ETH",
     "MCD_MOVE_ETH": "$MCD_MOVE_ETH",
     "MCD_FLIP_ETH": "$MCD_FLIP_ETH",
     "REP": "$REP",
-    "VAL_REP:" "$VAL_REP",
+    "VAL_REP": "$VAL_REP",
     "PIP_REP": "$PIP_REP",
     "MCD_JOIN_REP": "$MCD_JOIN_REP",
     "MCD_MOVE_REP": "$MCD_MOVE_REP",
-    "MCD_FLIP_REP": "$MCD_FLIP_REP",
+    "MCD_FLIP_REP": "$MCD_FLIP_REP"
 }
 EOF
 
