@@ -31,7 +31,7 @@ seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_ADM" "$IOU" "
 seth send "$MCD_GOV" 'mint(uint256)' "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
 seth send "$MCD_GOV" 'approve(address,uint256)' "$MCD_ADM" 1
 seth send "$MCD_ADM" 'lock(uint256)' 1
-seth send "$MCD_ADM" 'vote(address[] memory)' ["${ETH_FROM:2:42}"]
+seth send "$MCD_ADM" 'vote(address[] memory)' ["${ETH_FROM#0x}"]
 seth send "$MCD_ADM" 'lift(address)' "$ETH_FROM"
 
 # Deploy OSM (no solc optimization)
