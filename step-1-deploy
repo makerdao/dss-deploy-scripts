@@ -113,7 +113,7 @@ cp ./contracts/ds-guard/out/DSGuard.abi ./out/abi
 cp ./contracts/ds-chief/out/DSToken.abi ./out/abi
 cp ./contracts/ds-chief/out/DSChief.abi ./out/abi
 cp ./contracts/osm/out/DSValue.abi ./out/abi
-cp ./contracts/osm/out/osm.abi ./out/abi
+cp ./contracts/osm/out/OSM.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/DssProxyActions.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/DssCdpManager.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/DssDeploy.abi ./out/abi
