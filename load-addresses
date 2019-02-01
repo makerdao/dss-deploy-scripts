@@ -1,11 +1,10 @@
 #!/bin/bash
 
-KEYS=$(jq 'keys_unsorted[]' "./out/addresses.json")
-VALUES=($(jq '.[]' "./out/addresses.json"))
+KEYS=$(jq "keys_unsorted[]" "./out/addresses.json")
 
 i=0
 for KEY in $KEYS; do
-    eval export "\$$KEY=${VALUES[$i]}"
-
+    VALUE=$(jq ".${KEY}" "./out/addresses.json")
+    eval export "\$$KEY=${VALUE}"
     i=$((i + 1))
 done
