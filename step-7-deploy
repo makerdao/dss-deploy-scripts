@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 set -ex
 
+export ETH_GAS=${ETH_GAS:-"1000000"}
+
 export CONFIG_STEP=${CONFIG_STEP:-"7"}
+CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/step-$CONFIG_STEP.json"
 
 # shellcheck source=/dev/null
 ./step-4-deploy
@@ -14,16 +17,32 @@ ID="$(seth call "$CDP_MANAGER" 'cdpi()(uint256)')"
 ID=0x"${ID:40:64}"
 URN=$(seth call "$CDP_MANAGER" 'getUrn(bytes12)(bytes32)' "$ID")
 
-seth send "$MCD_JOIN_ETH" 'join(bytes32)' "$URN" --value "$(seth --to-wei 0.5 eth)"
 
-DINK=$(seth --to-uint256 "$(mcd --to-hex "$(seth --to-wei 0.5 eth)")")
-DART=$(seth --to-uint256 "$(mcd --to-hex "$(seth --to-wei 25 eth)")")
+ilks=$(jq ".ilks | keys_unsorted[]" "$CONFIG_FILE" | sed 's/"//g' )
+for ilk in $ilks; do
+    type=$(jq ".ilks.${ilk} | .pip | .type" "$CONFIG_FILE" | sed 's/"//g' )
+    if [ "${type}" = "value" ]; then # Takes the first ilk which is a value (not a median, so can be manipulated easily)
+        break
+    fi
+done
 
-seth send "$CDP_MANAGER" 'frob(address,bytes12,bytes32,int256,int256)' "$MCD_PIT" "$ID" "$(seth --to-bytes32 "$(seth --from-ascii "ETH")")" "$DINK" "$DART"
+if [ "${ilk}" = "ETH" ]; then
+    seth send "$MCD_JOIN_ETH" 'join(bytes32)' "$URN" --value "$(seth --to-wei 5 eth)"
+else
+    eval seth send "\$MCD_JOIN_${ilk} 'join(bytes32,uint256)' $URN $(seth --to-uint256 "$(seth --to-wei 5 ETH)")"
+fi
+
+dink=$(seth --to-uint256 "$(mcd --to-hex "$(seth --to-wei 5 eth)")")
+mat=$(jq ".ilks.${ilk} | .mat" "$CONFIG_FILE" | sed 's/"//g' )
+price=$(jq ".ilks.${ilk} | .pip | .price" "$CONFIG_FILE" | sed 's/"//g' )
+dart=$(seth --to-uint256 "$(mcd --to-hex "$(seth --to-wei $((5 * price * 100 / mat)) eth)")") # Max debt amount
+
+./update-price "ETH" "$price"
+
+seth send "$CDP_MANAGER" 'frob(address,bytes12,bytes32,int256,int256)' "$MCD_PIT" "$ID" "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")" "$dink" "$dart"
 
 # Set ETH price, poke OSM (if exists) and poke Spotter
-./update-price "ETH" "50"
-
-# seth send "$MCD_CAT" 'bite(bytes32,bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "ETH")")" "$URN"
+./update-price "ETH" $((price - 1))
+seth send "$MCD_CAT" 'bite(bytes32,bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")" "$URN"
 
 echo "STEP 7 COMPLETED SUCCESSFULLY"

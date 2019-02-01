@@ -8,14 +8,16 @@
         "osmDelay": "0",
         "type": "value",
         "price": "150"
-      }
+      },
+      "mat": "150"
     },
     "REP": {
       "pip": {
         "osmDelay": "0",
         "type": "value",
         "price": "15"
-      }
+      },
+      "mat": "180"
     }
   }
 }
