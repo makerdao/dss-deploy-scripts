@@ -8,8 +8,7 @@ unset SOLC_FLAGS
 rm -rf ./out
 
 # Get config variables
-CONFIG_STEP=${CONFIG_STEP:-"1"}
-CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/step-$CONFIG_STEP.json"
+CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/step-${CONFIG_STEP:-"1"}.json"
 
 # Deploy Guard for Gov and IOU tokens
 cd contracts/ds-guard

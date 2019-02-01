@@ -3,8 +3,9 @@ set -ex
 
 export CONFIG_STEP=${CONFIG_STEP:-"4"}
 CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/step-$CONFIG_STEP.json"
+
 # shellcheck source=/dev/null
-# ./step-1-deploy
+./step-1-deploy
 
 # shellcheck source=/dev/null
 . load-addresses
