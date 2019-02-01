@@ -3,7 +3,10 @@ set -ex
 
 export CONFIG_STEP=${CONFIG_STEP:-"7"}
 # shellcheck source=/dev/null
-. step-4-deploy
+.step-4-deploy
+
+# shellcheck source=/dev/null
+. load-addresses
 
 seth send "$CDP_MANAGER" 'open()'
 ID="$(seth call "$CDP_MANAGER" 'cdpi()(uint256)')"

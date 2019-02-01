@@ -2,8 +2,22 @@
   "description": "Step 4 - CDP Management",
   "defaults": { "osmDelay": "0" },
   "roles": ["CREATOR"],
-  "oracles": [
-    {"symbol": "ETH", "contract": "MEDIANIZER_ETH" },
-    {"symbol": "REP", "contract": "MEDIANIZER_REP" }
-  ]
+  "ilks": {
+    "ETH": {
+      "pip": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "150"
+      },
+      "mat": "1500000000"
+    },
+    "REP": {
+      "pip": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "15"
+      },
+      "mat": "1800000000"
+    }
+  }
 }

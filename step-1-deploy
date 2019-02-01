@@ -9,23 +9,21 @@ rm -rf ./out
 
 # Get config variables
 CONFIG_STEP=${CONFIG_STEP:-"1"}
-OSM_DELAY+="$(jq <"./step-$CONFIG_STEP.json" -r ".defaults.osmDelay")"
+CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/step-$CONFIG_STEP.json"
 
 # Deploy Guard for Gov and IOU tokens
 cd contracts/ds-guard
-dapp --use solc:0.5.0 build
+dapp build
 MCD_GOV_GUARD=$(dapp create DSGuard)
 
 # Deploy Gov token and Chief (no solc optimization)
 cd ../ds-chief
-dapp --use solc:0.5.0 build
+dapp build
 MCD_GOV=$(dapp create DSToken "$(seth --to-bytes32 "$(seth --from-ascii "MKR")")")
-export MCD_GOV
 IOU=$(dapp create DSToken "$(seth --to-bytes32 "$(seth --from-ascii "IOU")")")
 seth send "$MCD_GOV" 'setAuthority(address)' "$MCD_GOV_GUARD"
 seth send "$IOU" 'setAuthority(address)' "$MCD_GOV_GUARD"
 MCD_ADM=$(dapp create DSChief "$MCD_GOV" "$IOU" 5)
-export MCD_ADM
 seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_ADM" "$IOU" "$(seth --to-bytes32  "$(seth sig 'mint(address,uint256)')")"
 seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_ADM" "$IOU" "$(seth --to-bytes32  "$(seth sig 'burn(address,uint256)')")"
 seth send "$MCD_GOV" 'mint(uint256)' "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
@@ -34,30 +32,41 @@ seth send "$MCD_ADM" 'lock(uint256)' 1
 seth send "$MCD_ADM" 'vote(address[] memory)' ["${ETH_FROM#0x}"]
 seth send "$MCD_ADM" 'lift(address)' "$ETH_FROM"
 
-# Deploy Values OSMs (if delay > 0) (no solc optimization)
+# Deploy Values or Medians + OSMs (if delay > 0) (no solc optimization)
 cd ../osm
-dapp --use solc:0.5.0 build
-VAL_ETH=$(dapp create DSValue)
-export VAL_ETH
-VAL_REP=$(dapp create DSValue)
-export VAL_REP
+dapp build
+cd ../median
+dapp build
 
-if [ "$OSM_DELAY" -gt 0 ]; then
-    PIP_ETH=$(dapp create osm "$VAL_ETH")
-    PIP_REP=$(dapp create osm "$VAL_REP")
-    seth send "$PIP_ETH" 'step(uint16)' "$OSM_DELAY"
-    seth send "$PIP_REP" 'step(uint16)' "$OSM_DELAY"
-else
-    PIP_ETH=$VAL_ETH
-    PIP_REP=$VAL_REP
-fi
+ilks=$(jq ".ilks | keys_unsorted[]" "$CONFIG_FILE" | sed 's/"//g' )
+for ilk in $ilks; do
+    type=$(jq ".ilks.${ilk} | .pip | .type" "$CONFIG_FILE" | sed 's/"//g' )
+    if [ "${type}" = "median" ]; then
+        cd ../median
+        eval export "\VAL_${ilk}=$(dapp create Median "$(seth --to-bytes32 "$(seth --from-ascii "$(echo "$ilk" | tr '[:upper:]' '[:lower:]')usd")")")"
+        signers=$(jq ".ilks.${ilk} | .pip | .signers | .[]" "$CONFIG_FILE" | sed 's/"//g' )
+        for signer in $signers; do
+            eval seth send "\$VAL_${ilk} 'lift(address)' $signer"
+        done
+    fi
+    if [ "${type}" = "value" ]; then
+        cd ../osm
+        eval export "\VAL_${ilk}=$(dapp create DSValue)"
+    fi
 
-export PIP_ETH
-export PIP_REP
+    osm_delay=$(jq ".ilks.${ilk} | .pip | .osmDelay" "$CONFIG_FILE" | sed 's/"//g' )
+    if [ "$osm_delay" -gt 0 ]; then
+        cd ../osm
+        eval export "\PIP_${ilk}=$(dapp create osm "$(eval echo "\$VAL_${ilk}")")"
+        eval seth send "\$PIP_${ilk} 'step(uint16)' $osm_delay"
+    else
+        eval export "PIP_${ilk}=\$VAL_${ilk}"
+    fi
+done
 
 # Deploy ProxyRegistry (no solc optimization)
 cd ../proxy-registry
-dapp --use solc:0.5.0 build
+dapp build
 PROXY_FACTORY=$(dapp create DSProxyFactory)
 PROXY_REGISTRY=$(dapp create ProxyRegistry "$PROXY_FACTORY")
 
@@ -83,28 +92,24 @@ CDP_MANAGER=$(dapp create DssCdpManager)
 . load-mcd-unknown
 rm load-mcd-unknown
 
-# Deploy ETH Collateral (no solc optimization)
-"$SCRIPT_DIR/deploy-eth"
-# shellcheck source=/dev/null
-. load-ilk-eth-unknown
-rm load-ilk-eth-unknown
-
-export SKIP_BUILD=true
-
-# Deploy REP Collateral (no solc optimization)
-"$SCRIPT_DIR/deploy-rep"
-# shellcheck source=/dev/null
-. load-ilk-rep-unknown
-rm load-ilk-rep-unknown
+# Deploy Collaterals (no solc optimization)
+for ilk in $ilks; do
+    "$SCRIPT_DIR/deploy-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')"
+    # shellcheck source=/dev/null
+    . "load-ilk-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')-$(seth chain)"
+    rm "load-ilk-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')-$(seth chain)"
+    if [ "${ilk}" != "ETH" ]; then
+        # Mint initial supply
+        eval seth send "\$$ilk 'mint(address,uint256)' $ETH_FROM $(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
+    fi
+    export SKIP_BUILD=true
+done
 
 # Deploy MomLib (no solc optimization)
 MCD_MOM_LIB=$(dapp create MomLib)
 
 # Allow Flop to mint Gov token
 seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_FLOP" "$MCD_GOV" "$(seth --to-bytes32 "$(seth sig 'mint(address,uint256)')")"
-
-# Mint initial supply REP
-seth send "$REP" 'mint(address,uint256)' "$ETH_FROM" "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
 
 # Copy abi files
 cd ../../
@@ -136,6 +141,23 @@ cp ./contracts/proxy-registry/out/DSProxy.abi ./out/abi
 cp ./contracts/proxy-registry/out/DSProxyFactory.abi ./out/abi
 cp ./contracts/proxy-registry/out/ProxyRegistry.abi ./out/abi
 
+for ilk in $ilks; do
+    if [ "${ilk}" != "ETH" ]; then
+    ILKS_VARS+=",
+    \"${ilk}\": \"$(eval echo "\$${ilk}")\""
+    fi
+    ILKS_VARS+=",
+    \"VAL_${ilk}\": \"$(eval echo "\$VAL_${ilk}")\""
+    ILKS_VARS+=",
+    \"PIP_${ilk}\": \"$(eval echo "\$PIP_${ilk}")\""
+    ILKS_VARS+=",
+    \"MCD_JOIN_${ilk}\": \"$(eval echo "\$MCD_JOIN_${ilk}")\""
+    ILKS_VARS+=",
+    \"MCD_MOVE_${ilk}\": \"$(eval echo "\$MCD_MOVE_${ilk}")\""
+    ILKS_VARS+=",
+    \"MCD_FLIP_${ilk}\": \"$(eval echo "\$MCD_FLIP_${ilk}")\""
+done
+
 # Generate addresses.json file
 cat > ./out/addresses.json << EOF
 {
@@ -161,18 +183,7 @@ cat > ./out/addresses.json << EOF
     "PROXY_ACTIONS": "$PROXY_ACTIONS",
     "CDP_MANAGER": "$CDP_MANAGER",
     "PROXY_FACTORY": "$PROXY_FACTORY",
-    "PROXY_REGISTRY": "$PROXY_REGISTRY",
-    "PIP_ETH": "$PIP_ETH",
-    "VAL_ETH": "$VAL_ETH",
-    "MCD_JOIN_ETH": "$MCD_JOIN_ETH",
-    "MCD_MOVE_ETH": "$MCD_MOVE_ETH",
-    "MCD_FLIP_ETH": "$MCD_FLIP_ETH",
-    "REP": "$REP",
-    "VAL_REP": "$VAL_REP",
-    "PIP_REP": "$PIP_REP",
-    "MCD_JOIN_REP": "$MCD_JOIN_REP",
-    "MCD_MOVE_REP": "$MCD_MOVE_REP",
-    "MCD_FLIP_REP": "$MCD_FLIP_REP"
+    "PROXY_REGISTRY": "$PROXY_REGISTRY"$ILKS_VARS
 }
 EOF
 
