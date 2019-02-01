@@ -76,8 +76,8 @@ SCRIPT_DIR=lib/dss-cdp-manager/lib/dss-deploy/bin/
 # Deploy Fabs (no solc optimization)
 "$SCRIPT_DIR/deploy-fab"
 # shellcheck source=/dev/null
-. load-fab-unknown
-rm load-fab-unknown
+. "load-fab-$(seth chain)"
+rm "load-fab-$(seth chain)"
 
 # Deploy Proxy Actions (no solc optimization)
 PROXY_ACTIONS=$(dapp create DssProxyActions)
@@ -88,8 +88,8 @@ CDP_MANAGER=$(dapp create DssCdpManager)
 # Deploy MCD Core Contratcs (solc optimized)
 "$SCRIPT_DIR/deploy"
 # shellcheck source=/dev/null
-. load-mcd-unknown
-rm load-mcd-unknown
+. "load-mcd-$(seth chain)"
+rm "load-mcd-$(seth chain)"
 
 # Deploy Collaterals (no solc optimization)
 for ilk in $ilks; do
