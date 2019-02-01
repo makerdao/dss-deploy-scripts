@@ -13,3 +13,6 @@
 [submodule "contracts/ds-guard"]
 	path = contracts/ds-guard
 	url = https://github.com/dapphub/ds-guard
+[submodule "contracts/median"]
+	path = contracts/median
+	url = https://github.com/makerdao/median
