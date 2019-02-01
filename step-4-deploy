@@ -24,8 +24,8 @@ for ilk in $ilks; do
     seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,bytes32,uint256)' "$MCD_PIT" "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")" "$(seth --to-bytes32 "$(seth --from-ascii "line")")" "$CEILING")"
     # Set Collateral mat
     mat=$(jq ".ilks.${ilk} | .mat" "$CONFIG_FILE" | sed 's/"//g' )
-    mat=$((mat * 10 ** 7))
-    seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,bytes32,uint256)' "$MCD_SPOT" "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")" "$(seth --to-bytes32 "$(seth --from-ascii "mat")")" "$(seth --to-uint256 "$(seth --to-wei $mat ETH)")")"
+    mat=$(echo "$mat * 10 ^ 7" | bc -l)
+    seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,bytes32,uint256)' "$MCD_SPOT" "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")" "$(seth --to-bytes32 "$(seth --from-ascii "mat")")" "$(seth --to-uint256 "$(seth --to-wei "$mat" ETH)")")"
     # If it is a value set the price
     type=$(jq ".ilks.${ilk} | .pip | .type" "$CONFIG_FILE" | sed 's/"//g' )
     if [ "${type}" = "value" ]; then

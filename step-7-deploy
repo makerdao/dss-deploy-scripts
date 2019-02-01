@@ -35,14 +35,14 @@ fi
 dink=$(seth --to-uint256 "$(mcd --to-hex "$(seth --to-wei 5 eth)")")
 mat=$(jq ".ilks.${ilk} | .mat" "$CONFIG_FILE" | sed 's/"//g' )
 price=$(jq ".ilks.${ilk} | .pip | .price" "$CONFIG_FILE" | sed 's/"//g' )
-dart=$(seth --to-uint256 "$(mcd --to-hex "$(seth --to-wei $((5 * price * 100 / mat)) eth)")") # Max debt amount
+dart=$(seth --to-uint256 "$(mcd --to-hex "$(seth --to-wei "$(echo "5 * $price * 100 / $mat" | bc -l)" eth)")") # Max debt amount
 
 ./update-price "ETH" "$price"
 
 seth send "$CDP_MANAGER" 'frob(address,bytes12,bytes32,int256,int256)' "$MCD_PIT" "$ID" "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")" "$dink" "$dart"
 
 # Set ETH price, poke OSM (if exists) and poke Spotter
-./update-price "ETH" $((price - 1))
+./update-price "ETH" "$(echo "$price - 1" | bc -l)"
 seth send "$MCD_CAT" 'bite(bytes32,bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")" "$URN"
 
 echo "STEP 7 COMPLETED SUCCESSFULLY"
