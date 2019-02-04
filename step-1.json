@@ -2,6 +2,7 @@
   "description": "Step 1 - General deployment",
   "defaults": {},
   "roles": ["CREATOR"],
+  "omniaFromAddr": "0xdc9A20F5a46AFE0802b361076BeFC51f787B2e58",
   "ilks": {
     "ETH": {
       "pip": {

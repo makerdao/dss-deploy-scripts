@@ -10,6 +10,9 @@ rm -rf ./out
 # Get config variables
 CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/step-${CONFIG_STEP:-"1"}.json"
 
+# Send ETH to Omnia From Address
+seth send "$(jq ".omniaFromAddr" "$CONFIG_FILE" | sed 's/"//g' )" --value "$(seth --to-wei 10000 eth)"
+
 # Deploy Guard for Gov and IOU tokens
 cd contracts/ds-guard
 dapp build
