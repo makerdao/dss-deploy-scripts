@@ -56,7 +56,7 @@ for ilk in $ilks; do
     osm_delay=$(jq ".ilks.${ilk} | .pip | .osmDelay" "$CONFIG_FILE" | sed 's/"//g' )
     if [ "$osm_delay" -gt 0 ]; then
         cd ../osm
-        eval export "\PIP_${ilk}=$(dapp create osm "$(eval echo "\$VAL_${ilk}")")"
+        eval export "\PIP_${ilk}=$(dapp create OSM "$(eval echo "\$VAL_${ilk}")")"
         eval seth send "\$PIP_${ilk} 'step(uint16)' $osm_delay"
     else
         eval export "PIP_${ilk}=\$VAL_${ilk}"
