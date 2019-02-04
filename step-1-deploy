@@ -42,7 +42,7 @@ for ilk in $ilks; do
     type=$(jq ".ilks.${ilk} | .pip | .type" "$CONFIG_FILE" | sed 's/"//g' )
     if [ "${type}" = "median" ]; then
         cd ../median
-        eval export "\VAL_${ilk}=$(dapp create Median "$(seth --to-bytes32 "$(seth --from-ascii "$(echo "$ilk" | tr '[:upper:]' '[:lower:]')usd")")")"
+        eval export "\VAL_${ilk}=$(dapp create Median "$(seth --to-bytes32 "$(seth --from-ascii "${ilk}USD")")")"
         signers=$(jq ".ilks.${ilk} | .pip | .signers | .[]" "$CONFIG_FILE" | sed 's/"//g' )
         for signer in $signers; do
             eval seth send "\$VAL_${ilk} 'lift(address)' $signer"
@@ -139,6 +139,8 @@ cp ./contracts/dss-proxy-actions/out/Pot.abi ./out/abi
 cp ./contracts/proxy-registry/out/DSProxy.abi ./out/abi
 cp ./contracts/proxy-registry/out/DSProxyFactory.abi ./out/abi
 cp ./contracts/proxy-registry/out/ProxyRegistry.abi ./out/abi
+
+cp "$CONFIG_FILE" ./out/config.json
 
 for ilk in $ilks; do
     if [ "${ilk}" != "ETH" ]; then
