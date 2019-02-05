@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+set -ex
+
+export ETH_GAS=${ETH_GAS:-"7000000"}
+unset SOLC_FLAGS
+
+export CONFIG_STEP=${CONFIG_STEP:-"2"}
+
+# shellcheck source=/dev/null
+./step-1-deploy
+
+# Deploy Gov Polling Generator (no solc optimization)
+cd contracts/gov-polling-generator
+dapp build
+GOV_POLL_GEN=$(dapp create GovPollingGenerator)
+
+tx=$(seth send --async "$GOV_POLL_GEN" 'createPoll()')
+
+test "$(seth receipt "$tx" status)" -eq 0 && exit 1
+number=$(seth --to-hex "$(seth receipt "$tx" blockNumber)")
+logs=$(seth logs -B "$number" "$GOV_POLL_GEN")
+
+echo "AAAAAA"
+echo "$logs"
+
+# echo "$data"
+
+# # Add new addresses to json file
+# cat > ./out/addresses.json << EOF
+#     "GOV_POLL_GEN": "$GOV_POLL_GEN",
+#     "POLL_ID": "$POLL_ID",
+#     "VOTE_YES": "$VOTE_YES",
+#     "VOTE_NO": "$VOTE_YES",
+# }
+# EOF
+
+echo "STEP 2 COMPLETED SUCCESSFULLY"
