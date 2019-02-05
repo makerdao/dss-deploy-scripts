@@ -18,20 +18,27 @@ tx=$(seth send --async "$GOV_POLL_GEN" 'createPoll()')
 
 test "$(seth receipt "$tx" status)" -eq 0 && exit 1
 number=$(seth --to-hex "$(seth receipt "$tx" blockNumber)")
-logs=$(seth logs -B "$number" "$GOV_POLL_GEN")
+set +e
+data=$(seth logs -B "$number" "$GOV_POLL_GEN" | jq -r '.data')
 
-echo "AAAAAA"
-echo "$logs"
+POLL_ID="$((16#${data:2:64}))"
+VOTE_YES="0x${data:90:40}"
+VOTE_NO="0x${data:154:40}"
 
-# echo "$data"
+# Add new addresses to json file
+cat >> ../../out/addresses.tmp.json << EOF
+{
+    "GOV_POLL_GEN": "$GOV_POLL_GEN",
+    "POLL_ID": "$POLL_ID",
+    "VOTE_YES": "$VOTE_YES",
+    "VOTE_NO": "$VOTE_NO"
+}
+EOF
+result=$(jq -s add "../../out/addresses.json" "../../out/addresses.tmp.json")
+cat > ../../out/addresses.json << EOF
+$result 
+EOF
 
-# # Add new addresses to json file
-# cat > ./out/addresses.json << EOF
-#     "GOV_POLL_GEN": "$GOV_POLL_GEN",
-#     "POLL_ID": "$POLL_ID",
-#     "VOTE_YES": "$VOTE_YES",
-#     "VOTE_NO": "$VOTE_YES",
-# }
-# EOF
+rm ../../out/addresses.tmp.json
 
 echo "STEP 2 COMPLETED SUCCESSFULLY"
