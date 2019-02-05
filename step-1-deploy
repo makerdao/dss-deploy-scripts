@@ -13,7 +13,7 @@ CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/step-$
 # Send ETH to Omnia From Address
 seth send "$(jq ".omniaFromAddr" "$CONFIG_FILE" | sed 's/"//g' )" --value "$(seth --to-wei 10000 eth)"
 
-# Deploy Guard for Gov and IOU tokens
+# Deploy Guard for Gov and IOU tokens (no solc optimization)
 cd contracts/ds-guard
 dapp build
 MCD_GOV_GUARD=$(dapp create DSGuard)
@@ -40,13 +40,13 @@ dapp build
 cd ../median
 dapp build
 
-ilks=$(jq ".ilks | keys_unsorted[]" "$CONFIG_FILE" | sed 's/"//g' )
+ilks=$(jq ".ilks | keys_unsorted[]" "$CONFIG_FILE" | sed 's/"//g')
 for ilk in $ilks; do
-    type=$(jq ".ilks.${ilk} | .pip | .type" "$CONFIG_FILE" | sed 's/"//g' )
+    type=$(jq ".ilks.${ilk} | .pip | .type" "$CONFIG_FILE" | sed 's/"//g')
     if [ "${type}" = "median" ]; then
         cd ../median
         eval export "\VAL_${ilk}=$(dapp create Median "$(seth --to-bytes32 "$(seth --from-ascii "${ilk}USD")")")"
-        signers=$(jq ".ilks.${ilk} | .pip | .signers | .[]" "$CONFIG_FILE" | sed 's/"//g' )
+        signers=$(jq ".ilks.${ilk} | .pip | .signers | .[]" "$CONFIG_FILE" | sed 's/"//g')
         for signer in $signers; do
             eval seth send "\$VAL_${ilk} 'lift(address)' $signer"
         done
@@ -56,7 +56,7 @@ for ilk in $ilks; do
         eval export "\VAL_${ilk}=$(dapp create DSValue)"
     fi
 
-    osm_delay=$(jq ".ilks.${ilk} | .pip | .osmDelay" "$CONFIG_FILE" | sed 's/"//g' )
+    osm_delay=$(jq ".ilks.${ilk} | .pip | .osmDelay" "$CONFIG_FILE" | sed 's/"//g')
     if [ "$osm_delay" -gt 0 ]; then
         cd ../osm
         eval export "\PIP_${ilk}=$(dapp create OSM "$(eval echo "\$VAL_${ilk}")")"

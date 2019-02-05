@@ -16,3 +16,6 @@
 [submodule "contracts/median"]
 	path = contracts/median
 	url = https://github.com/makerdao/median
+[submodule "contracts/gov-polling-generator"]
+	path = contracts/gov-polling-generator
+	url = https://github.com/makerdao/gov-polling-generator
