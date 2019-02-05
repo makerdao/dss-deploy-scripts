@@ -18,7 +18,6 @@ tx=$(seth send --async "$GOV_POLL_GEN" 'createPoll()')
 
 test "$(seth receipt "$tx" status)" -eq 0 && exit 1
 number=$(seth --to-hex "$(seth receipt "$tx" blockNumber)")
-set +e
 data=$(seth logs -B "$number" "$GOV_POLL_GEN" | jq -r '.data')
 
 POLL_ID="$((16#${data:2:64}))"
