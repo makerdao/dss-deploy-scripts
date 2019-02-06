@@ -19,3 +19,6 @@
 [submodule "contracts/gov-polling-generator"]
 	path = contracts/gov-polling-generator
 	url = https://github.com/makerdao/gov-polling-generator
+[submodule "contracts/vote-proxy"]
+	path = contracts/vote-proxy
+	url = https://github.com/makerdao/vote-proxy

@@ -34,6 +34,11 @@ seth send "$MCD_ADM" 'lock(uint256)' 1
 seth send "$MCD_ADM" 'vote(address[] memory)' ["${ETH_FROM#0x}"]
 seth send "$MCD_ADM" 'lift(address)' "$ETH_FROM"
 
+# Deploy Vote Proxy Factory (no solc optimization)
+cd ../vote-proxy
+dapp --use solc:0.4.25 build
+VOTE_PROXY_FACTORY=$(dapp create VoteProxyFactory "$MCD_ADM")
+
 # Deploy Values or Medians + OSMs (if delay > 0) (no solc optimization)
 cd ../osm
 dapp build
@@ -119,6 +124,8 @@ mkdir -p ./out/abi
 cp ./contracts/ds-guard/out/DSGuard.abi ./out/abi
 cp ./contracts/ds-chief/out/DSToken.abi ./out/abi
 cp ./contracts/ds-chief/out/DSChief.abi ./out/abi
+cp ./contracts/vote-proxy/out/VoteProxy.abi ./out/abi
+cp ./contracts/vote-proxy/out/VoteProxyFactory.abi ./out/abi
 cp ./contracts/osm/out/DSValue.abi ./out/abi
 cp ./contracts/osm/out/OSM.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/DssProxyActions.abi ./out/abi
@@ -169,6 +176,7 @@ cat > ./out/addresses.json << EOF
     "MCD_GOV": "$MCD_GOV",
     "MCD_GOV_GUARD": "$MCD_GOV_GUARD",
     "MCD_ADM": "$MCD_ADM",
+    "VOTE_PROXY_FACTORY": "$VOTE_PROXY_FACTORY",
     "MCD_VAT": "$MCD_VAT",
     "MCD_PIT": "$MCD_PIT",
     "MCD_DRIP": "$MCD_DRIP",

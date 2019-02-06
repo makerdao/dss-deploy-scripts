@@ -24,8 +24,10 @@ POLL_ID="$((16#${data:2:64}))"
 VOTE_YES="0x${data:90:40}"
 VOTE_NO="0x${data:154:40}"
 
+cd ../../
+
 # Add new addresses to json file
-cat >> ../../out/addresses.tmp.json << EOF
+cat >> ./out/addresses.tmp.json << EOF
 {
     "GOV_POLL_GEN": "$GOV_POLL_GEN",
     "POLL_ID": "$POLL_ID",
@@ -33,11 +35,13 @@ cat >> ../../out/addresses.tmp.json << EOF
     "VOTE_NO": "$VOTE_NO"
 }
 EOF
-result=$(jq -s add "../../out/addresses.json" "../../out/addresses.tmp.json")
-cat > ../../out/addresses.json << EOF
+result=$(jq -s add "./out/addresses.json" "./out/addresses.tmp.json")
+cat > ./out/addresses.json << EOF
 $result 
 EOF
 
-rm ../../out/addresses.tmp.json
+rm ./out/addresses.tmp.json
+
+cp ./contracts/gov-polling-generator/out/GovPollingGenerator.abi ./out/abi
 
 echo "STEP 2 COMPLETED SUCCESSFULLY"
