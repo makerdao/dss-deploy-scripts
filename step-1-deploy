@@ -55,6 +55,7 @@ for ilk in $ilks; do
         for signer in $signers; do
             eval seth send "\$VAL_${ilk} 'lift(address)' $signer"
         done
+	eval seth send "\$VAL_${ilk} 'setMin(uint256)' $(seth --to-uint256 3)"
     fi
     if [ "${type}" = "value" ]; then
         cd ../osm
