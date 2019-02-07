@@ -53,9 +53,9 @@ for ilk in $ilks; do
         eval export "\VAL_${ilk}=$(dapp create Median "$(seth --to-bytes32 "$(seth --from-ascii "${ilk}USD")")")"
         signers=$(jq ".ilks.${ilk} | .pip | .signers | .[]" "$CONFIG_FILE" | sed 's/"//g')
         for signer in $signers; do
-            eval seth send "\$VAL_${ilk} 'lift(address)' $signer"
+            seth send "$(eval echo "\$VAL_${ilk}")" 'lift(address)' "$signer"
         done
-	eval seth send "\$VAL_${ilk} 'setMin(uint256)' $(seth --to-uint256 3)"
+	    seth send "$(eval echo "\$VAL_${ilk}")" 'setMin(uint256)' "$(seth --to-uint256 3)"
     fi
     if [ "${type}" = "value" ]; then
         cd ../osm
@@ -66,7 +66,7 @@ for ilk in $ilks; do
     if [ "$osm_delay" -gt 0 ]; then
         cd ../osm
         eval export "\PIP_${ilk}=$(dapp create OSM "$(eval echo "\$VAL_${ilk}")")"
-        eval seth send "\$PIP_${ilk} 'step(uint16)' $osm_delay"
+        seth send "$(eval echo "\$PIP_${ilk}")" 'step(uint16)' "$osm_delay"
     else
         eval export "PIP_${ilk}=\$VAL_${ilk}"
     fi
@@ -108,7 +108,7 @@ for ilk in $ilks; do
     rm "load-ilk-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')-$(seth chain)"
     if [ "${ilk}" != "ETH" ]; then
         # Mint initial supply
-        eval seth send "\$$ilk 'mint(address,uint256)' $ETH_FROM $(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
+        seth send "$(eval echo "\$$ilk")" 'mint(address,uint256)' "$ETH_FROM" "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
     fi
     export SKIP_BUILD=true
 done
