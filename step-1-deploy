@@ -13,8 +13,13 @@ CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/step-$
 # Send ETH to Omnia From Address
 seth send "$(jq ".omniaFromAddr" "$CONFIG_FILE" | sed 's/"//g' )" --value "$(seth --to-wei 10000 eth)"
 
+# Deploy Multicall (no solc optimization)
+cd contracts/multicall
+dapp --use solc:0.4.25 build
+MULTICALL=$(dapp create Multicall)
+
 # Deploy Guard for Gov and IOU tokens (no solc optimization)
-cd contracts/ds-guard
+cd ../ds-guard
 dapp build
 MCD_GOV_GUARD=$(dapp create DSGuard)
 
@@ -173,6 +178,7 @@ done
 # Generate addresses.json file
 cat > ./out/addresses.json << EOF
 {
+    "MULTICALL": "$MULTICALL",
     "MCD_DEPLOY": "$MCD_DEPLOY",
     "MCD_GOV": "$MCD_GOV",
     "MCD_GOV_GUARD": "$MCD_GOV_GUARD",
