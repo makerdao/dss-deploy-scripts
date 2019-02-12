@@ -18,9 +18,9 @@ ID=0x"${ID:40:64}"
 URN=$(seth call "$CDP_MANAGER" 'getUrn(bytes12)(bytes32)' "$ID")
 
 
-ilks=$(jq ".ilks | keys_unsorted[]" "$CONFIG_FILE" | sed 's/"//g' )
+ilks=$(jq -r ".ilks | keys_unsorted[]" "$CONFIG_FILE")
 for ilk in $ilks; do
-    type=$(jq ".ilks.${ilk} | .pip | .type" "$CONFIG_FILE" | sed 's/"//g' )
+    type=$(jq -r ".ilks.${ilk} | .pip | .type" "$CONFIG_FILE")
     if [ "${type}" = "value" ]; then # Takes the first ilk which is a value (not a median, so can be manipulated easily)
         break
     fi
@@ -33,8 +33,8 @@ else
 fi
 
 dink=$(seth --to-uint256 "$(mcd --to-hex "$(seth --to-wei 5 eth)")")
-mat=$(jq ".ilks.${ilk} | .mat" "$CONFIG_FILE" | sed 's/"//g' )
-price=$(jq ".ilks.${ilk} | .pip | .price" "$CONFIG_FILE" | sed 's/"//g' )
+mat=$(jq -r ".ilks.${ilk} | .mat" "$CONFIG_FILE")
+price=$(jq -r ".ilks.${ilk} | .pip | .price" "$CONFIG_FILE")
 dart=$(seth --to-uint256 "$(mcd --to-hex "$(seth --to-wei "$(echo "5 * $price * 100 / $mat" | bc -l)" eth)")") # Max debt amount
 
 ./update-price "ETH" "$price"
