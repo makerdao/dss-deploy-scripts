@@ -127,6 +127,7 @@ seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_FLOP" "$MCD_G
 # Copy abi files
 cd ../../
 mkdir -p ./out/abi
+cp ./contracts/multicall/out/MultiCall.abi ./out/abi
 cp ./contracts/ds-guard/out/DSGuard.abi ./out/abi
 cp ./contracts/ds-chief/out/DSToken.abi ./out/abi
 cp ./contracts/ds-chief/out/DSChief.abi ./out/abi
