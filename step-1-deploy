@@ -16,7 +16,7 @@ seth send "$(jq ".omniaFromAddr" "$CONFIG_FILE" | sed 's/"//g' )" --value "$(set
 # Deploy Multicall (no solc optimization)
 cd contracts/multicall
 dapp --use solc:0.4.25 build
-MULTICALL=$(dapp create Multicall)
+MULTICALL=$(dapp create MultiCall)
 
 # Deploy Guard for Gov and IOU tokens (no solc optimization)
 cd ../ds-guard
