@@ -24,4 +24,4 @@
 	url = https://github.com/makerdao/vote-proxy
 [submodule "contracts/multicall"]
 	path = contracts/multicall
-	url = https://github.com/makerdao/multicall/
+	url = https://github.com/makerdao/multicall
