@@ -16,6 +16,7 @@ A set of scripts that use [DSS deploy](https://github.com/makerdao/dss-deploy) t
 ### Prerequisites:
 
 - seth/dapp/jq (https://dapp.tools/)
+- bc
 
 ### Config File:
 For each step there is a default config file in place `step-<STEP>.json`.
