@@ -27,10 +27,12 @@ MCD_GOV_GUARD=$(dapp create DSGuard)
 cd ../ds-chief
 dapp build
 MCD_GOV=$(dapp create DSToken "$(seth --to-bytes32 "$(seth --from-ascii "MKR")")")
+export MCD_GOV
 IOU=$(dapp create DSToken "$(seth --to-bytes32 "$(seth --from-ascii "IOU")")")
 seth send "$MCD_GOV" 'setAuthority(address)' "$MCD_GOV_GUARD"
 seth send "$IOU" 'setAuthority(address)' "$MCD_GOV_GUARD"
 MCD_ADM=$(dapp create DSChief "$MCD_GOV" "$IOU" 5)
+export MCD_ADM
 seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_ADM" "$IOU" "$(seth --to-bytes32  "$(seth sig 'mint(address,uint256)')")"
 seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_ADM" "$IOU" "$(seth --to-bytes32  "$(seth sig 'burn(address,uint256)')")"
 seth send "$MCD_GOV" 'mint(uint256)' "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
