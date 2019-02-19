@@ -1,0 +1,35 @@
+{
+  "description": "Step 3 - Set Debt Ceilings",
+  "ilks": {
+    "ETH1": {
+      "line": "1000"
+    },
+    "ETH2": {
+      "line": "1000"
+    },
+    "ETH3": {
+      "line": "1000"
+    },
+    "COL1": {
+      "line": "800"
+    },
+    "COL2": {
+      "line": "800"
+    },
+    "COL3": {
+      "line": "800"
+    },
+    "COL4": {
+      "line": "800"
+    },
+    "COL5": {
+      "line": "800"
+    },
+    "COL6": {
+      "line": "800"
+    },
+    "SAI": {
+      "line": "800"
+    }
+  }
+}

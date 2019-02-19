@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -ex
+
+export ETH_GAS=${ETH_GAS:-"7000000"}
+
+export CONFIG_STEP=${CONFIG_STEP:-"3"}
+CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/step-$CONFIG_STEP.json"
+
+# shellcheck source=/dev/null
+CONFIG_STEP=1 ./step-1-deploy
+
+# shellcheck source=/dev/null
+. load-addresses
+
+ilks=$(jq -r ".ilks | keys_unsorted[]" "$CONFIG_FILE")
+what=$(seth --from-ascii "line" | seth --to-bytes32)
+line=$(seth --to-uint256 0)
+
+for ilk in $ilks; do
+  ilk=$(seth --from-ascii "$ilk" | seth --to-bytes32)
+  calldata=$(seth calldata 'file(address,bytes32,bytes32,uint)' "$MCD_PIT" "$ilk" "$what" "$line")
+  seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$calldata"
+done
+
+echo "STEP 3 COMPLETED SUCCESSFULLY"
