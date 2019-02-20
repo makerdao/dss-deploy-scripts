@@ -15,7 +15,7 @@ A set of scripts that use [DSS deploy](https://github.com/makerdao/dss-deploy) t
 
 ### Prerequisites:
 
-- seth/dapp/jq (https://dapp.tools/)
+- seth/dapp/jq/mcd (https://dapp.tools/)
 - an Ethereum node (e.g. `dapp testnet`)
 - bc
 
