@@ -162,10 +162,8 @@ cp ./contracts/proxy-registry/out/ProxyRegistry.abi ./out/abi
 cp "$CONFIG_FILE" ./out/config.json
 
 for ilk in $ilks; do
-    if [ "${ilk}" != "ETH" ]; then
     ILKS_VARS+=",
     \"${ilk}\": \"$(eval echo "\$${ilk}")\""
-    fi
     ILKS_VARS+=",
     \"VAL_${ilk}\": \"$(eval echo "\$VAL_${ilk}")\""
     ILKS_VARS+=",

@@ -27,10 +27,12 @@ for ilk in $ilks; do
 done
 
 if [ "${ilk}" = "ETH" ]; then
-    seth send "$MCD_JOIN_ETH" 'join(bytes32)' "$URN" --value "$(seth --to-wei 5 eth)"
-else
-    eval seth send "\$MCD_JOIN_${ilk} 'join(bytes32,uint256)' $URN $(seth --to-uint256 "$(seth --to-wei 5 ETH)")"
+    seth send "$ETH" 'deposit()' --value "$(seth --to-wei 5 ETH)"
 fi
+
+seth send "$(eval echo "\$$ilk")" "approve(address,uint256)" "$(eval echo "\$MCD_JOIN_${ilk}")" "$(seth --to-uint256 "$(seth --to-wei 5 ETH)")"
+
+seth send "$(eval echo "\$MCD_JOIN_${ilk}")" 'join(bytes32,uint256)' "$URN" "$(seth --to-uint256 "$(seth --to-wei 5 ETH)")"
 
 dink=$(seth --to-uint256 "$(mcd --to-hex "$(seth --to-wei 5 eth)")")
 mat=$(jq -r ".ilks.${ilk} | .mat" "$CONFIG_FILE")
