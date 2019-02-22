@@ -1,5 +1,4 @@
-{ pkgs ? import <nixpkgs> {}
-, dapptools ? import (fetchGit {
+{ pkgs ? import (fetchGit {
     url = https://github.com/dapphub/dapptools.git;
     ref = dapptoolsRev;
   }) {}
@@ -10,7 +9,7 @@
 }:
 
 pkgs.mkShell {
-  buildInputs = with pkgs; with dapptools; [ bc dapp ethsign seth ];
+  buildInputs = with pkgs; [ bc dapp ethsign seth ];
 
   ETH_FROM="${eth_from}";
   ETH_KEYSTORE="${eth_keystore}";
