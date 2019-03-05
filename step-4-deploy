@@ -13,15 +13,15 @@ CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/step-$
 . load-addresses
 
 # Debt Ceiling = 10000 DAI
-CEILING=$(seth --to-uint256 "$(seth --to-wei 10000 ETH)")
+CEILING=$(seth --to-uint256 "$(echo 10000*10^45 | bc)")
 
 # Set general debt ceiling
-seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,uint256)' "$MCD_PIT" "$(seth --to-bytes32 "$(seth --from-ascii "Line")")" "$CEILING")"
+seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,uint256)' "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "Line")")" "$CEILING")"
 
 ilks=$(jq -r ".ilks | keys_unsorted[]" "$CONFIG_FILE")
 for ilk in $ilks; do
     # Set Collateral debt ceiling
-    seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,bytes32,uint256)' "$MCD_PIT" "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")" "$(seth --to-bytes32 "$(seth --from-ascii "line")")" "$CEILING")"
+    seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,bytes32,uint256)' "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")" "$(seth --to-bytes32 "$(seth --from-ascii "line")")" "$CEILING")"
     # Set Collateral mat
     mat=$(jq -r ".ilks.${ilk} | .mat" "$CONFIG_FILE")
     mat=$(echo "$mat * 10 ^ 7" | bc -l)

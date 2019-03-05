@@ -141,7 +141,6 @@ cp ./contracts/dss-proxy-actions/out/DssProxyActions.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/DssCdpManager.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/DssDeploy.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/Vat.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/Pit.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/Jug.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/Cat.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/Vow.abi ./out/abi
@@ -186,7 +185,6 @@ cat > ./out/addresses.json << EOF
     "MCD_ADM": "$MCD_ADM",
     "VOTE_PROXY_FACTORY": "$VOTE_PROXY_FACTORY",
     "MCD_VAT": "$MCD_VAT",
-    "MCD_PIT": "$MCD_PIT",
     "MCD_JUG": "$MCD_JUG",
     "MCD_CAT": "$MCD_CAT",
     "MCD_VOW": "$MCD_VOW",
