@@ -66,6 +66,7 @@ PROXY_ACTIONS=$(dapp create DssProxyActions)
 
 # Deploy CdpManager (no solc optimization)
 CDP_MANAGER=$(dapp create DssCdpManager)
+GET_CDPS=$(dapp create GetCdps)
 
 # Deploy MCD Core Contratcs (solc optimized)
 "$SCRIPT_DIR/deploy"
@@ -169,6 +170,7 @@ cat > ./out/addresses.json << EOF
     "MCD_POT": "$MCD_POT",
     "PROXY_ACTIONS": "$PROXY_ACTIONS",
     "CDP_MANAGER": "$CDP_MANAGER",
+    "GET_CDPS": "$GET_CDPS",
     "PROXY_FACTORY": "$PROXY_FACTORY",
     "PROXY_REGISTRY": "$PROXY_REGISTRY"$ILKS_VARS
 }
