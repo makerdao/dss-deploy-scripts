@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -ex
+
+test "$(seth chain)" = "kovan" || exit 1
+
+# Get config variables
+export CONFIG_STEP=kovan
+
+# shellcheck source=/dev/null
+./base-deploy
+
+# shellcheck source=/dev/null
+./poll-deploy
+
+echo "KOVAN DEPLOYMENT COMPLETED SUCCESSFULLY"

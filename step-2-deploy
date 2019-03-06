@@ -1,47 +1,12 @@
 #!/usr/bin/env bash
 set -ex
 
-export ETH_GAS=${ETH_GAS:-"7000000"}
-unset SOLC_FLAGS
-
-export CONFIG_STEP=${CONFIG_STEP:-"2"}
+export CONFIG_STEP=${CONFIG_STEP:-"step-2"}
 
 # shellcheck source=/dev/null
 ./step-1-deploy
 
-# Deploy Gov Polling Generator (no solc optimization)
-cd contracts/gov-polling-generator
-dapp build
-GOV_POLL_GEN=$(dapp create GovPollingGenerator)
-
-tx=$(seth send --async "$GOV_POLL_GEN" 'createPoll()')
-
-test "$(seth receipt "$tx" status)" -eq 0 && exit 1
-number=$(seth --to-hex "$(seth receipt "$tx" blockNumber)")
-data=$(seth logs -B "$number" "$GOV_POLL_GEN" | jq -r '.data')
-
-POLL_ID="$((16#${data:2:64}))"
-VOTE_YES="0x${data:90:40}"
-VOTE_NO="0x${data:154:40}"
-
-cd ../../
-
-# Add new addresses to json file
-cat >> ./out/addresses.tmp.json << EOF
-{
-    "GOV_POLL_GEN": "$GOV_POLL_GEN",
-    "POLL_ID": "$POLL_ID",
-    "VOTE_YES": "$VOTE_YES",
-    "VOTE_NO": "$VOTE_NO"
-}
-EOF
-result=$(jq -s add "./out/addresses.json" "./out/addresses.tmp.json")
-cat > ./out/addresses.json << EOF
-$result 
-EOF
-
-rm ./out/addresses.tmp.json
-
-cp ./contracts/gov-polling-generator/out/GovPollingGenerator.abi ./out/abi
+# shellcheck source=/dev/null
+./poll-deploy
 
 echo "STEP 2 COMPLETED SUCCESSFULLY"

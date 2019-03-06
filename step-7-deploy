@@ -3,8 +3,8 @@ set -ex
 
 export ETH_GAS=${ETH_GAS:-"7000000"}
 
-export CONFIG_STEP=${CONFIG_STEP:-"7"}
-CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/step-$CONFIG_STEP.json"
+export CONFIG_STEP=${CONFIG_STEP:-"step-7"}
+CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/$CONFIG_STEP.json"
 
 # shellcheck source=/dev/null
 ./step-4-deploy

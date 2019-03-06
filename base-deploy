@@ -1,0 +1,210 @@
+#!/usr/bin/env bash
+set -ex
+
+export ETH_GAS=${ETH_GAS:-"7000000"}
+unset SOLC_FLAGS
+
+# Remove ./out folder
+rm -rf ./out
+
+# Get config variables
+test -z "$CONFIG_STEP" && exit 1
+CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/${CONFIG_STEP}.json"
+
+# Deploy Multicall (no solc optimization)
+cd contracts/multicall
+dapp --use solc:0.4.25 build
+MULTICALL=$(dapp create MultiCall)
+
+# Deploy Guard for Gov and IOU tokens (no solc optimization)
+cd ../ds-guard
+dapp build
+MCD_GOV_GUARD=$(dapp create DSGuard)
+
+# Deploy Gov token and Chief (no solc optimization)
+cd ../ds-chief
+dapp build
+
+if [ -z "$MCD_GOV" ]; then
+    MCD_GOV=$(dapp create DSToken "$(seth --to-bytes32 "$(seth --from-ascii "MKR")")")
+    export MCD_GOV
+    seth send "$MCD_GOV" 'mint(uint256)' "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
+fi
+
+IOU=$(dapp create DSToken "$(seth --to-bytes32 "$(seth --from-ascii "IOU")")")
+seth send "$MCD_GOV" 'setAuthority(address)' "$MCD_GOV_GUARD"
+seth send "$IOU" 'setAuthority(address)' "$MCD_GOV_GUARD"
+MCD_ADM=$(dapp create DSChief "$MCD_GOV" "$IOU" 5)
+export MCD_ADM
+seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_ADM" "$IOU" "$(seth --to-bytes32  "$(seth sig 'mint(address,uint256)')")"
+seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_ADM" "$IOU" "$(seth --to-bytes32  "$(seth sig 'burn(address,uint256)')")"
+seth send "$MCD_GOV" 'approve(address,uint256)' "$MCD_ADM" 1
+seth send "$MCD_ADM" 'lock(uint256)' 1
+seth send "$MCD_ADM" 'vote(address[] memory)' ["${ETH_FROM#0x}"]
+seth send "$MCD_ADM" 'lift(address)' "$ETH_FROM"
+
+# Deploy Vote Proxy Factory (no solc optimization)
+cd ../vote-proxy
+dapp --use solc:0.4.25 build
+VOTE_PROXY_FACTORY=$(dapp create VoteProxyFactory "$MCD_ADM")
+
+# Deploy Values or Medians + OSMs (if delay > 0) (no solc optimization)
+cd ../osm
+dapp build
+cd ../median
+dapp build
+
+ilks=$(jq -r ".ilks | keys_unsorted[]" "$CONFIG_FILE")
+for ilk in $ilks; do
+    type=$(jq -r ".ilks.${ilk} | .pip | .type" "$CONFIG_FILE")
+    if [ "${type}" = "median" ]; then
+        cd ../median
+        eval export "\VAL_${ilk}=$(dapp create Median "$(seth --to-bytes32 "$(seth --from-ascii "${ilk}USD")")")"
+        signers=$(jq -r ".ilks.${ilk} | .pip | .signers | .[]" "$CONFIG_FILE")
+        for signer in $signers; do
+            seth send "$(eval echo "\$VAL_${ilk}")" 'lift(address)' "$signer"
+        done
+	    seth send "$(eval echo "\$VAL_${ilk}")" 'setMin(uint256)' "$(seth --to-uint256 3)"
+    fi
+    if [ "${type}" = "value" ]; then
+        cd ../osm
+        eval export "\VAL_${ilk}=$(dapp create DSValue)"
+    fi
+
+    osm_delay=$(jq -r ".ilks.${ilk} | .pip | .osmDelay" "$CONFIG_FILE")
+    if [ "$osm_delay" -gt 0 ]; then
+        cd ../osm
+        eval export "\PIP_${ilk}=$(dapp create OSM "$(eval echo "\$VAL_${ilk}")")"
+        seth send "$(eval echo "\$PIP_${ilk}")" 'step(uint16)' "$osm_delay"
+    else
+        eval export "PIP_${ilk}=\$VAL_${ilk}"
+    fi
+done
+
+# Deploy ProxyRegistry (no solc optimization)
+cd ../proxy-registry
+dapp build
+PROXY_FACTORY=$(dapp create DSProxyFactory)
+PROXY_REGISTRY=$(dapp create ProxyRegistry "$PROXY_FACTORY")
+
+cd ../dss-proxy-actions
+
+SCRIPT_DIR=lib/dss-cdp-manager/lib/dss-deploy/bin/
+
+# Deploy Fabs (no solc optimization)
+"$SCRIPT_DIR/deploy-fab"
+# shellcheck source=/dev/null
+. "load-fab-$(seth chain)"
+rm "load-fab-$(seth chain)"
+
+# Deploy Proxy Actions (no solc optimization)
+PROXY_ACTIONS=$(dapp create DssProxyActions)
+
+# Deploy CdpManager (no solc optimization)
+CDP_MANAGER=$(dapp create DssCdpManager)
+
+# Deploy MCD Core Contratcs (solc optimized)
+"$SCRIPT_DIR/deploy"
+# shellcheck source=/dev/null
+. "load-mcd-$(seth chain)"
+rm "load-mcd-$(seth chain)"
+
+# Deploy Collaterals (no solc optimization)
+for ilk in $ilks; do
+    "$SCRIPT_DIR/deploy-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')"
+    # shellcheck source=/dev/null
+    . "load-ilk-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')-$(seth chain)"
+    rm "load-ilk-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')-$(seth chain)"
+    if [ "${ilk}" != "ETH" ]; then
+        # Mint initial supply
+        seth send "$(eval echo "\$$ilk")" 'mint(address,uint256)' "$ETH_FROM" "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
+    fi
+    export SKIP_BUILD=true
+done
+
+# Deploy MomLib (no solc optimization)
+MCD_MOM_LIB=$(dapp create MomLib)
+
+# Allow Flop to mint Gov token
+seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_FLOP" "$MCD_GOV" "$(seth --to-bytes32 "$(seth sig 'mint(address,uint256)')")"
+
+# Copy abi files
+cd ../../
+mkdir -p ./out/abi
+cp ./contracts/multicall/out/MultiCall.abi ./out/abi
+cp ./contracts/ds-guard/out/DSGuard.abi ./out/abi
+cp ./contracts/ds-chief/out/DSToken.abi ./out/abi
+cp ./contracts/ds-chief/out/DSChief.abi ./out/abi
+cp ./contracts/vote-proxy/out/VoteProxy.abi ./out/abi
+cp ./contracts/vote-proxy/out/VoteProxyFactory.abi ./out/abi
+cp ./contracts/osm/out/DSValue.abi ./out/abi
+cp ./contracts/osm/out/OSM.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/DssProxyActions.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/DssCdpManager.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/DssDeploy.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/Vat.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/Jug.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/Cat.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/Vow.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/Flipper.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/Flopper.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/Flapper.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/DaiJoin.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/ETHJoin.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/GemJoin.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/DaiMove.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/GemMove.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/Spotter.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/Pot.abi ./out/abi
+cp ./contracts/proxy-registry/out/DSProxy.abi ./out/abi
+cp ./contracts/proxy-registry/out/DSProxyFactory.abi ./out/abi
+cp ./contracts/proxy-registry/out/ProxyRegistry.abi ./out/abi
+
+cp "$CONFIG_FILE" ./out/config.json
+
+for ilk in $ilks; do
+    ILKS_VARS+=",
+    \"${ilk}\": \"$(eval echo "\$${ilk}")\""
+    ILKS_VARS+=",
+    \"VAL_${ilk}\": \"$(eval echo "\$VAL_${ilk}")\""
+    ILKS_VARS+=",
+    \"PIP_${ilk}\": \"$(eval echo "\$PIP_${ilk}")\""
+    ILKS_VARS+=",
+    \"MCD_JOIN_${ilk}\": \"$(eval echo "\$MCD_JOIN_${ilk}")\""
+    ILKS_VARS+=",
+    \"MCD_MOVE_${ilk}\": \"$(eval echo "\$MCD_MOVE_${ilk}")\""
+    ILKS_VARS+=",
+    \"MCD_FLIP_${ilk}\": \"$(eval echo "\$MCD_FLIP_${ilk}")\""
+done
+
+# Generate addresses.json file
+cat > ./out/addresses.json << EOF
+{
+    "MULTICALL": "$MULTICALL",
+    "MCD_DEPLOY": "$MCD_DEPLOY",
+    "MCD_GOV": "$MCD_GOV",
+    "MCD_GOV_GUARD": "$MCD_GOV_GUARD",
+    "MCD_ADM": "$MCD_ADM",
+    "VOTE_PROXY_FACTORY": "$VOTE_PROXY_FACTORY",
+    "MCD_VAT": "$MCD_VAT",
+    "MCD_JUG": "$MCD_JUG",
+    "MCD_CAT": "$MCD_CAT",
+    "MCD_VOW": "$MCD_VOW",
+    "MCD_JOIN_DAI": "$MCD_JOIN_DAI",
+    "MCD_MOVE_DAI": "$MCD_MOVE_DAI",
+    "MCD_FLAP": "$MCD_FLAP",
+    "MCD_FLOP": "$MCD_FLOP",
+    "MCD_MOM": "$MCD_MOM",
+    "MCD_MOM_LIB": "$MCD_MOM_LIB",
+    "MCD_DAI": "$MCD_DAI",
+    "MCD_DAI_GUARD": "$MCD_DAI_GUARD",
+    "MCD_SPOT": "$MCD_SPOT",
+    "MCD_POT": "$MCD_POT",
+    "PROXY_ACTIONS": "$PROXY_ACTIONS",
+    "CDP_MANAGER": "$CDP_MANAGER",
+    "PROXY_FACTORY": "$PROXY_FACTORY",
+    "PROXY_REGISTRY": "$PROXY_REGISTRY"$ILKS_VARS
+}
+EOF
+
+echo "BASE DEPLOY COMPLETED SUCCESSFULLY"
