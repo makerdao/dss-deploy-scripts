@@ -21,7 +21,7 @@ for ilk in $ilks; do
 done
 
 seth send "$CDP_MANAGER" 'open(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")"
-ID="$(seth call "$CDP_MANAGER" 'cdpi()(uint256)')"
+ID=$(seth call "$CDP_MANAGER" 'cdpi()(uint256)')
 URN=$(seth call "$CDP_MANAGER" 'getUrn(uint256)(bytes32)' "$ID")
 
 if [ "${ilk}" = "ETH" ]; then
