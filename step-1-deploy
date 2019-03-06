@@ -2,6 +2,7 @@
 set -ex
 
 export ETH_GAS=${ETH_GAS:-"7000000"}
+unset SOLC_FLAGS
 
 # Get config variables
 export CONFIG_STEP=${CONFIG_STEP:-"step-1"}
@@ -9,6 +10,41 @@ CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/$CONFI
 
 # Send ETH to Omnia From Address
 seth send "$(jq -r ".omniaFromAddr" "$CONFIG_FILE")" --value "$(seth --to-wei 10000 eth)"
+
+# Deploy Values or Medians + OSMs (if delay > 0) (no solc optimization)
+cd contracts/osm
+dapp build
+cd ../median
+dapp build
+
+ilks=$(jq -r ".ilks | keys_unsorted[]" "$CONFIG_FILE")
+for ilk in $ilks; do
+    type=$(jq -r ".ilks.${ilk} | .pip | .type" "$CONFIG_FILE")
+    if [ "${type}" = "median" ]; then
+        cd ../median
+        eval export "\VAL_${ilk}=$(dapp create Median "$(seth --to-bytes32 "$(seth --from-ascii "${ilk}USD")")")"
+        signers=$(jq -r ".ilks.${ilk} | .pip | .signers | .[]" "$CONFIG_FILE")
+        for signer in $signers; do
+            seth send "$(eval echo "\$VAL_${ilk}")" 'lift(address)' "$signer"
+        done
+	    seth send "$(eval echo "\$VAL_${ilk}")" 'setMin(uint256)' "$(seth --to-uint256 3)"
+    fi
+    if [ "${type}" = "value" ]; then
+        cd ../osm
+        eval export "\VAL_${ilk}=$(dapp create DSValue)"
+    fi
+
+    osm_delay=$(jq -r ".ilks.${ilk} | .pip | .osmDelay" "$CONFIG_FILE")
+    if [ "$osm_delay" -gt 0 ]; then
+        cd ../osm
+        eval export "\PIP_${ilk}=$(dapp create OSM "$(eval echo "\$VAL_${ilk}")")"
+        seth send "$(eval echo "\$PIP_${ilk}")" 'step(uint16)' "$osm_delay"
+    else
+        eval export "PIP_${ilk}=\$VAL_${ilk}"
+    fi
+done
+
+cd ../../
 
 # shellcheck source=/dev/null
 ./base-deploy

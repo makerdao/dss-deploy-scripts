@@ -48,39 +48,6 @@ cd ../vote-proxy
 dapp --use solc:0.4.25 build
 VOTE_PROXY_FACTORY=$(dapp create VoteProxyFactory "$MCD_ADM")
 
-# Deploy Values or Medians + OSMs (if delay > 0) (no solc optimization)
-cd ../osm
-dapp build
-cd ../median
-dapp build
-
-ilks=$(jq -r ".ilks | keys_unsorted[]" "$CONFIG_FILE")
-for ilk in $ilks; do
-    type=$(jq -r ".ilks.${ilk} | .pip | .type" "$CONFIG_FILE")
-    if [ "${type}" = "median" ]; then
-        cd ../median
-        eval export "\VAL_${ilk}=$(dapp create Median "$(seth --to-bytes32 "$(seth --from-ascii "${ilk}USD")")")"
-        signers=$(jq -r ".ilks.${ilk} | .pip | .signers | .[]" "$CONFIG_FILE")
-        for signer in $signers; do
-            seth send "$(eval echo "\$VAL_${ilk}")" 'lift(address)' "$signer"
-        done
-	    seth send "$(eval echo "\$VAL_${ilk}")" 'setMin(uint256)' "$(seth --to-uint256 3)"
-    fi
-    if [ "${type}" = "value" ]; then
-        cd ../osm
-        eval export "\VAL_${ilk}=$(dapp create DSValue)"
-    fi
-
-    osm_delay=$(jq -r ".ilks.${ilk} | .pip | .osmDelay" "$CONFIG_FILE")
-    if [ "$osm_delay" -gt 0 ]; then
-        cd ../osm
-        eval export "\PIP_${ilk}=$(dapp create OSM "$(eval echo "\$VAL_${ilk}")")"
-        seth send "$(eval echo "\$PIP_${ilk}")" 'step(uint16)' "$osm_delay"
-    else
-        eval export "PIP_${ilk}=\$VAL_${ilk}"
-    fi
-done
-
 # Deploy ProxyRegistry (no solc optimization)
 cd ../proxy-registry
 dapp build
@@ -110,6 +77,7 @@ CDP_MANAGER=$(dapp create DssCdpManager)
 rm "load-mcd-$(seth chain)"
 
 # Deploy Collaterals (no solc optimization)
+ilks=$(jq -r ".ilks | keys_unsorted[]" "$CONFIG_FILE")
 for ilk in $ilks; do
     "$SCRIPT_DIR/deploy-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')"
     # shellcheck source=/dev/null
@@ -165,8 +133,10 @@ cp "$CONFIG_FILE" ./out/config.json
 for ilk in $ilks; do
     ILKS_VARS+=",
     \"${ilk}\": \"$(eval echo "\$${ilk}")\""
+    if [ "$(eval echo "\$VAL_${ilk}")" != "" ]; then
     ILKS_VARS+=",
     \"VAL_${ilk}\": \"$(eval echo "\$VAL_${ilk}")\""
+    fi
     ILKS_VARS+=",
     \"PIP_${ilk}\": \"$(eval echo "\$PIP_${ilk}")\""
     ILKS_VARS+=",
