@@ -12,12 +12,6 @@ CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/$CONFI
 # shellcheck source=/dev/null
 . load-addresses
 
-seth send "$CDP_MANAGER" 'open()'
-ID="$(seth call "$CDP_MANAGER" 'cdpi()(uint256)')"
-ID=0x"${ID:40:64}"
-URN=$(seth call "$CDP_MANAGER" 'getUrn(bytes12)(bytes32)' "$ID")
-
-
 ilks=$(jq -r ".ilks | keys_unsorted[]" "$CONFIG_FILE")
 for ilk in $ilks; do
     type=$(jq -r ".ilks.${ilk} | .pip | .type" "$CONFIG_FILE")
@@ -25,6 +19,10 @@ for ilk in $ilks; do
         break
     fi
 done
+
+seth send "$CDP_MANAGER" 'open(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")"
+ID="$(seth call "$CDP_MANAGER" 'cdpi()(uint256)')"
+URN=$(seth call "$CDP_MANAGER" 'getUrn(uint256)(bytes32)' "$ID")
 
 if [ "${ilk}" = "ETH" ]; then
     seth send "$ETH" 'deposit()' --value "$(seth --to-wei 5 ETH)"
@@ -41,7 +39,7 @@ dart=$(seth --to-uint256 "$(mcd --to-hex "$(seth --to-wei "$(echo "5 * $price * 
 
 ./update-price "ETH" "$price"
 
-seth send "$CDP_MANAGER" 'frob(address,bytes12,bytes32,int256,int256)' "$MCD_VAT" "$ID" "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")" "$dink" "$dart"
+seth send "$CDP_MANAGER" 'frob(address,uint256,int256,int256)' "$MCD_VAT" "$ID" "$dink" "$dart"
 
 # Set ETH price, poke OSM (if exists) and poke Spotter
 ./update-price "ETH" "$(echo "$price - 1" | bc -l)"
