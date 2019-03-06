@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -ex
 
+# Remove ./out folder
+rm -rf ./out
+
 export ETH_GAS=${ETH_GAS:-"7000000"}
 unset SOLC_FLAGS
 
