@@ -107,6 +107,7 @@ cp ./contracts/osm/out/DSValue.abi ./out/abi
 cp ./contracts/osm/out/OSM.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/DssProxyActions.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/DssCdpManager.abi ./out/abi
+cp ./contracts/dss-proxy-actions/out/GetCdps.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/DssDeploy.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/Vat.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/Jug.abi ./out/abi
