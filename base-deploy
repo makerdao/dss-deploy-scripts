@@ -105,6 +105,7 @@ cp ./contracts/vote-proxy/out/VoteProxy.abi ./out/abi
 cp ./contracts/vote-proxy/out/VoteProxyFactory.abi ./out/abi
 cp ./contracts/osm/out/DSValue.abi ./out/abi
 cp ./contracts/osm/out/OSM.abi ./out/abi
+cp ./contracts/median/out/Median.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/DssProxyActions.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/DssCdpManager.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/GetCdps.abi ./out/abi

@@ -17,6 +17,14 @@ for ilk in $ilks; do
     eval export "\PIP_${ilk}=$(jq -r ".ilks.${ilk} | .pip" "$CONFIG_FILE")"
 done
 
+# Build OSM and Median contracts to get the necessary .abi files for base-deploy script
+cd contracts/osm
+dapp build
+cd ../median
+dapp build
+
+cd ../../
+
 # shellcheck source=/dev/null
 ./base-deploy
 
