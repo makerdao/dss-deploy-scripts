@@ -2,29 +2,11 @@
   "description": "Kovan deployment",
   "ilks": {
     "ETH": {
-      "pip": {
-        "osmDelay": "0",
-        "type": "median",
-        "signers": [
-          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
-          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
-          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
-          "0xe709290634dE56a55d9826d35A9e677Fea5422EC"
-        ]
-      },
+      "pip": "0xF0c26dBB0Fb1f19793307d4E6182697a4b0F1e8F",
       "mat": "150"
     },
     "REP": {
-      "pip": {
-        "osmDelay": "0",
-        "type": "median",
-        "signers": [
-          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
-          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
-          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
-          "0xe709290634dE56a55d9826d35A9e677Fea5422EC"
-        ]
-      },
+      "pip": "0xEfA5F53c62531Cb29b8A8E298687A422b8793D72",
       "mat": "180"
     }
   }
