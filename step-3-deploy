@@ -28,6 +28,4 @@ lines="[${lines%,}]"
 
 seth send --create out/MultiLineSpell.bin 'MultiLineSpell(address,address,address,bytes32[] memory,uint256[] memory)' "$MCD_MOM" "$MCD_MOM_LIB" "$MCD_VAT" "$ilks" "$lines"
 
-{ set +x; } 2>/dev/null
 echo "STEP 3 COMPLETED SUCCESSFULLY"
-set -x
