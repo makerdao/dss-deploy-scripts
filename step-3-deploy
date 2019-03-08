@@ -7,7 +7,7 @@ export CONFIG_STEP=${CONFIG_STEP:-"3"}
 CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/step-$CONFIG_STEP.json"
 
 # shellcheck source=/dev/null
-CONFIG_STEP=1 ./step-1-deploy
+./step-1-deploy
 
 # shellcheck source=/dev/null
 . load-addresses
@@ -22,10 +22,25 @@ done < <(jq -r '.ilks | keys_unsorted[]' "$CONFIG_FILE" | xargs -n1 seth --from-
 ilks="[${ilks%,}]"
 
 while read -r line; do
-  lines+="${line},"
+  lines+="$(seth --to-uint256 "$(echo "${line}"*10^45 | bc)"),"
 done < <(jq -r '.ilks[] | .line' "$CONFIG_FILE")
 lines="[${lines%,}]"
 
-seth send --create out/MultiLineSpell.bin 'MultiLineSpell(address,address,address,bytes32[] memory,uint256[] memory)' "$MCD_MOM" "$MCD_MOM_LIB" "$MCD_VAT" "$ilks" "$lines"
+EXEC_PROPOSAL=$(seth send --create out/MultiLineSpell.bin 'MultiLineSpell(address,address,address,bytes32[] memory,uint256[] memory)' "$MCD_MOM" "$MCD_MOM_LIB" "$MCD_VAT" "$ilks" "$lines")
+
+cd ../../
+
+# Add new addresses to json file
+cat >> ./out/addresses.tmp.json << EOF
+{
+    "EXEC_PROPOSAL": "$EXEC_PROPOSAL"
+}
+EOF
+result=$(jq -s add "./out/addresses.json" "./out/addresses.tmp.json")
+cat > ./out/addresses.json << EOF
+$result
+EOF
+
+rm ./out/addresses.tmp.json
 
 echo "STEP 3 COMPLETED SUCCESSFULLY"
