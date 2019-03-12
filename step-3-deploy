@@ -22,7 +22,7 @@ done < <(jq -r '.ilks | keys_unsorted[]' "$CONFIG_FILE" | xargs -n1 seth --from-
 ilks="[${ilks%,}]"
 
 while read -r line; do
-  lines+="$(seth --to-uint256 "$(echo "${line}"*10^45 | bc)"),"
+  lines+="$(seth --to-uint256 "$(bc <<< "${line}*10^45")"),"
 done < <(jq -r '.ilks[] | .line' "$CONFIG_FILE")
 lines="[${lines%,}]"
 
