@@ -13,6 +13,11 @@ cd contracts/multicall
 dapp --use solc:0.4.25 build
 MULTICALL=$(dapp create MultiCall)
 
+# Deploy Token Faucet (no solc optimization)
+cd ../token-faucet
+dapp build
+FAUCET=$(dapp create TokenFaucet "$(seth --to-uint256 "$(seth --to-wei 50 ETH)")")
+
 # Deploy Guard for Gov and IOU tokens (no solc optimization)
 cd ../ds-guard
 dapp build
@@ -25,7 +30,8 @@ dapp build
 if [ -z "$MCD_GOV" ]; then
     MCD_GOV=$(dapp create DSToken "$(seth --to-bytes32 "$(seth --from-ascii "MKR")")")
     export MCD_GOV
-    seth send "$MCD_GOV" 'mint(uint256)' "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
+    seth send "$MCD_GOV" 'mint(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
+    seth send "$FAUCET" 'gulp(address)' "$MCD_GOV"
 fi
 
 IOU=$(dapp create DSToken "$(seth --to-bytes32 "$(seth --from-ascii "IOU")")")
@@ -78,12 +84,22 @@ rm "load-mcd-$(seth chain)"
 ilks=$(jq -r ".ilks | keys_unsorted[]" "$CONFIG_FILE")
 for ilk in $ilks; do
     "$SCRIPT_DIR/deploy-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')"
+
+    if [ -z "$(eval echo "\$$ilk")" ]; then
+        # It means the ilk token will be created in the deployment script and can be minted
+        newIlk=true
+    else
+        newIlk=false
+    fi
+
     # shellcheck source=/dev/null
     . "load-ilk-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')-$(seth chain)"
     rm "load-ilk-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')-$(seth chain)"
-    if [ "${ilk}" != "ETH" ]; then
-        # Mint initial supply
-        seth send "$(eval echo "\$$ilk")" 'mint(address,uint256)' "$ETH_FROM" "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
+
+    if [ "${ilk}" != "ETH" ] && [ $newIlk ]; then
+        # Mint initial supply, send to the Faucet and redeem some amount
+        seth send "$(eval echo "\$$ilk")" 'mint(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
+        seth send "$FAUCET" 'gulp(address)' "$(eval echo "\$$ilk")"
     fi
     export SKIP_BUILD=true
 done
@@ -151,6 +167,7 @@ done
 cat > ./out/addresses.json << EOF
 {
     "MULTICALL": "$MULTICALL",
+    "FAUCET": "$FAUCET",
     "MCD_DEPLOY": "$MCD_DEPLOY",
     "MCD_GOV": "$MCD_GOV",
     "MCD_GOV_GUARD": "$MCD_GOV_GUARD",
