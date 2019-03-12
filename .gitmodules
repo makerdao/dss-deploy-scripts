@@ -25,3 +25,6 @@
 [submodule "contracts/multicall"]
 	path = contracts/multicall
 	url = https://github.com/makerdao/multicall
+[submodule "contracts/line-spell"]
+	path = contracts/line-spell
+	url = https://github.com/makerdao/line-spell
