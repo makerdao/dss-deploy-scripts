@@ -2,14 +2,14 @@
     url = https://github.com/dapphub/dapptools.git;
     ref = dapptoolsRev;
   }) {}
-, dapptoolsRev ? "14138b7a2d29120beaca6e7754238d2640c25d45"
+, dapptoolsRev ? "d8e78aedaaeda323fb583ea52bef250634399e6a"
 , eth_from
 , eth_keystore ? ~/.dapp/testnet/8545/keystore
 , eth_password ? "/dev/null"
 }:
 
 pkgs.mkShell {
-  buildInputs = with pkgs; [ bc dapp ethsign seth ];
+  buildInputs = with pkgs; [ bc dapp jq ethsign seth ];
 
   ETH_FROM="${eth_from}";
   ETH_KEYSTORE="${eth_keystore}";
