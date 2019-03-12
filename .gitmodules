@@ -30,4 +30,4 @@
 	url = https://github.com/makerdao/line-spell
 [submodule "contracts/token-faucet"]
 	path = contracts/token-faucet
-	url = https://github.com/makerdao/token-faucet/
+	url = https://github.com/makerdao/token-faucet
