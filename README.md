@@ -34,7 +34,7 @@ For each step there is a default config file in place `step-<STEP>.json`.
   "defaults": {},
   "roles": ["CREATOR"],
   "omniaFromAddr": "<Address being used by Omnia Service>",
-  "ilks": {
+  "tokens": {
     "<ETH/REP>": {
       "pip": {
         "osmDelay": "<Time in seconds for the OSM delay>",
@@ -44,7 +44,11 @@ For each step there is a default config file in place `step-<STEP>.json`.
         ],
         "price": "<Initial oracle price (only if type == "value")>"
       },
-      "mat": "<liquidation ratio value>"
+      "ilks": {
+        "A": {
+          "mat": "<liquidation ratio value>"
+        }
+      }
     }
   }
 }
@@ -60,6 +64,7 @@ For each step there is a default config file in place `step-<STEP>.json`.
 
 - Step 1: `./step-1-deploy`
 - Step 2: `./step-2-deploy`
+- Step 3: `./step-3-deploy`
 - Step 4: `./step-4-deploy`
 - Step 7: `./step-7-deploy`
 
