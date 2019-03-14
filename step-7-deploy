@@ -12,37 +12,43 @@ CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/$CONFI
 # shellcheck source=/dev/null
 . load-addresses
 
-ilks=$(jq -r ".ilks | keys_unsorted[]" "$CONFIG_FILE")
-for ilk in $ilks; do
-    type=$(jq -r ".ilks.${ilk} | .pip | .type" "$CONFIG_FILE")
-    if [ "${type}" = "value" ]; then # Takes the first ilk which is a value (not a median, so can be manipulated easily)
+tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
+for token in $tokens; do
+    type=$(jq -r ".tokens.${token} | .pip | .type" "$CONFIG_FILE")
+    if [ "${type}" = "value" ]; then # Takes the first token which its pip is a value (not a median, so can be manipulated easily)
         break
     fi
 done
 
-seth send "$CDP_MANAGER" 'open(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")"
+ilk=$(jq -r ".tokens.${token}.ilks | keys_unsorted[0]" "$CONFIG_FILE")
+
+seth send "$CDP_MANAGER" 'open(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
 ID=$(seth call "$CDP_MANAGER" 'cdpi()(uint256)')
 URN=$(seth call "$CDP_MANAGER" 'getUrn(uint256)(bytes32)' "$ID")
 
-if [ "${ilk}" = "ETH" ]; then
+if [ "${token}" = "ETH" ]; then
     seth send "$ETH" 'deposit()' --value "$(seth --to-wei 5 ETH)"
 fi
 
-seth send "$(eval echo "\$$ilk")" "approve(address,uint256)" "$(eval echo "\$MCD_JOIN_${ilk}")" "$(seth --to-uint256 "$(seth --to-wei 5 ETH)")"
+seth send "$(eval echo "\$$token")" "approve(address,uint256)" "$(eval echo "\$MCD_JOIN_${token}_${ilk}")" "$(seth --to-uint256 "$(seth --to-wei 5 ETH)")"
 
-seth send "$(eval echo "\$MCD_JOIN_${ilk}")" 'join(bytes32,uint256)' "$URN" "$(seth --to-uint256 "$(seth --to-wei 5 ETH)")"
+seth send "$(eval echo "\$MCD_JOIN_${token}_${ilk}")" 'join(bytes32,uint256)' "$URN" "$(seth --to-uint256 "$(seth --to-wei 5 ETH)")"
 
 dink=$(seth --to-uint256 "$(mcd --to-hex "$(seth --to-wei 5 eth)")")
-mat=$(jq -r ".ilks.${ilk} | .mat" "$CONFIG_FILE")
-price=$(jq -r ".ilks.${ilk} | .pip | .price" "$CONFIG_FILE")
+mat=$(jq -r ".tokens.${token}.ilks.${ilk} | .mat" "$CONFIG_FILE")
+price=$(jq -r ".tokens.${token} | .pip | .price" "$CONFIG_FILE")
 dart=$(seth --to-uint256 "$(mcd --to-hex "$(seth --to-wei "$(echo "5 * $price * 100 / $mat" | bc -l)" eth)")") # Max debt amount
 
-./update-price "ETH" "$price"
+./update-price "$token" "$price"
+
+seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
 
 seth send "$CDP_MANAGER" 'frob(address,uint256,int256,int256)' "$MCD_VAT" "$ID" "$dink" "$dart"
 
-# Set ETH price, poke OSM (if exists) and poke Spotter
-./update-price "ETH" "$(echo "$price - 1" | bc -l)"
-seth send "$MCD_CAT" 'bite(bytes32,bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")" "$URN"
+./update-price "$token" "$(echo "$price - 1" | bc -l)"
+seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
+
+# Bite CDP
+seth send "$MCD_CAT" 'bite(bytes32,bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$URN"
 
 echo "STEP 7 COMPLETED SUCCESSFULLY"

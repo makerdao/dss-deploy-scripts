@@ -1,13 +1,21 @@
 {
   "description": "Kovan deployment",
-  "ilks": {
+  "tokens": {
     "ETH": {
       "pip": "0xF0c26dBB0Fb1f19793307d4E6182697a4b0F1e8F",
-      "mat": "150"
+      "ilks":{
+        "A": {
+          "mat": "150"
+        }
+      }
     },
-    "REP": {
+    "COL1": {
       "pip": "0xEfA5F53c62531Cb29b8A8E298687A422b8793D72",
-      "mat": "180"
+      "ilks":{
+        "A": {
+          "mat": "180"
+        }
+      }
     }
   }
 }

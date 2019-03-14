@@ -20,30 +20,30 @@ dapp build
 cd ../median
 dapp build
 
-ilks=$(jq -r ".ilks | keys_unsorted[]" "$CONFIG_FILE")
-for ilk in $ilks; do
-    type=$(jq -r ".ilks.${ilk} | .pip | .type" "$CONFIG_FILE")
+tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
+for token in $tokens; do
+    type=$(jq -r ".tokens.${token} | .pip | .type" "$CONFIG_FILE")
     if [ "${type}" = "median" ]; then
         cd ../median
-        eval export "\VAL_${ilk}=$(dapp create Median "$(seth --to-bytes32 "$(seth --from-ascii "${ilk}USD")")")"
-        signers=$(jq -r ".ilks.${ilk} | .pip | .signers | .[]" "$CONFIG_FILE")
+        eval export "\VAL_${token}=$(dapp create Median "$(seth --to-bytes32 "$(seth --from-ascii "${token}USD")")")"
+        signers=$(jq -r ".tokens.${token} | .pip | .signers | .[]" "$CONFIG_FILE")
         for signer in $signers; do
-            seth send "$(eval echo "\$VAL_${ilk}")" 'lift(address)' "$signer"
+            seth send "$(eval echo "\$VAL_${token}")" 'lift(address)' "$signer"
         done
-	    seth send "$(eval echo "\$VAL_${ilk}")" 'setMin(uint256)' "$(seth --to-uint256 3)"
+	    seth send "$(eval echo "\$VAL_${token}")" 'setMin(uint256)' "$(seth --to-uint256 3)"
     fi
     if [ "${type}" = "value" ]; then
         cd ../osm
-        eval export "\VAL_${ilk}=$(dapp create DSValue)"
+        eval export "\VAL_${token}=$(dapp create DSValue)"
     fi
 
-    osm_delay=$(jq -r ".ilks.${ilk} | .pip | .osmDelay" "$CONFIG_FILE")
+    osm_delay=$(jq -r ".tokens.${token} | .pip | .osmDelay" "$CONFIG_FILE")
     if [ "$osm_delay" -gt 0 ]; then
         cd ../osm
-        eval export "\PIP_${ilk}=$(dapp create OSM "$(eval echo "\$VAL_${ilk}")")"
-        seth send "$(eval echo "\$PIP_${ilk}")" 'step(uint16)' "$osm_delay"
+        eval export "\PIP_${token}=$(dapp create OSM "$(eval echo "\$VAL_${token}")")"
+        seth send "$(eval echo "\$PIP_${token}")" 'step(uint16)' "$osm_delay"
     else
-        eval export "PIP_${ilk}=\$VAL_${ilk}"
+        eval export "PIP_${token}=\$VAL_${token}"
     fi
 done
 

@@ -3,7 +3,7 @@
   "defaults": {},
   "roles": ["CREATOR"],
   "omniaFromAddr": "0xdc9A20F5a46AFE0802b361076BeFC51f787B2e58",
-  "ilks": {
+  "tokens": {
     "ETH": {
       "pip": {
         "osmDelay": "0",
@@ -15,9 +15,16 @@
           "0xe709290634dE56a55d9826d35A9e677Fea5422EC"
         ]
       },
-      "mat": "150"
+      "ilks": {
+        "A": {
+          "mat": "150"
+        },
+        "B": {
+          "mat": "180"
+        }
+      }
     },
-    "REP": {
+    "COL1": {
       "pip": {
         "osmDelay": "0",
         "type": "median",
@@ -28,7 +35,11 @@
           "0xe709290634dE56a55d9826d35A9e677Fea5422EC"
         ]
       },
-      "mat": "180"
+      "ilks": {
+        "A": {
+          "mat": "180"
+        }
+      }
     }
   }
 }

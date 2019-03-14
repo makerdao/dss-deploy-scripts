@@ -12,9 +12,9 @@ test "$(seth chain)" = "kovan" || exit 1
 export CONFIG_STEP=kovan
 CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/${CONFIG_STEP}.json"
 
-ilks=$(jq -r ".ilks | keys_unsorted[]" "$CONFIG_FILE")
-for ilk in $ilks; do
-    eval export "\PIP_${ilk}=$(jq -r ".ilks.${ilk} | .pip" "$CONFIG_FILE")"
+tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
+for token in $tokens; do
+    eval export "\PIP_${token}=$(jq -r ".tokens.${token} | .pip" "$CONFIG_FILE")"
 done
 
 # Build OSM and Median contracts to get the necessary .abi files for base-deploy script
@@ -34,13 +34,16 @@ cd ../../
 # shellcheck source=/dev/null
 . load-addresses
 
-for ilk in $ilks; do
-    # Set Collateral mat
-    mat=$(jq -r ".ilks.${ilk} | .mat" "$CONFIG_FILE")
-    mat=$(echo "$mat * 10 ^ 7" | bc -l)
-    seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,bytes32,uint256)' "$MCD_SPOT" "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")" "$(seth --to-bytes32 "$(seth --from-ascii "mat")")" "$(seth --to-uint256 "$(seth --to-wei "$mat" ETH)")")"
+for token in $tokens; do
+    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+    for ilk in $ilks; do
+        # Set Collateral mat
+        mat=$(jq -r ".tokens.${token}.ilks.${ilk} | .mat" "$CONFIG_FILE")
+        mat=$(echo "$mat * 10 ^ 7" | bc -l)
+        seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,bytes32,uint256)' "$MCD_SPOT" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "mat")")" "$(seth --to-uint256 "$(seth --to-wei "$mat" ETH)")")"
 
-    seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")"
+        seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
+    done
 done
 
 echo "KOVAN DEPLOYMENT COMPLETED SUCCESSFULLY"

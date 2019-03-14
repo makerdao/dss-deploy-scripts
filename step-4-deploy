@@ -18,20 +18,26 @@ CEILING=$(seth --to-uint256 "$(echo 10000*10^45 | bc)")
 # Set general debt ceiling
 seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,uint256)' "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "Line")")" "$CEILING")"
 
-ilks=$(jq -r ".ilks | keys_unsorted[]" "$CONFIG_FILE")
-for ilk in $ilks; do
-    # Set Collateral debt ceiling
-    seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,bytes32,uint256)' "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")" "$(seth --to-bytes32 "$(seth --from-ascii "line")")" "$CEILING")"
-    # Set Collateral mat
-    mat=$(jq -r ".ilks.${ilk} | .mat" "$CONFIG_FILE")
-    mat=$(echo "$mat * 10 ^ 7" | bc -l)
-    seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,bytes32,uint256)' "$MCD_SPOT" "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")" "$(seth --to-bytes32 "$(seth --from-ascii "mat")")" "$(seth --to-uint256 "$(seth --to-wei "$mat" ETH)")")"
+tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
+for token in $tokens; do
     # If it is a value set the price
-    type=$(jq -r ".ilks.${ilk} | .pip | .type" "$CONFIG_FILE")
+    type=$(jq -r ".tokens.${token} | .pip | .type" "$CONFIG_FILE")
     if [ "${type}" = "value" ]; then
-        price=$(jq -r ".ilks.${ilk} | .pip | .price" "$CONFIG_FILE")
-        ./update-price "$ilk" "$price"
+        price=$(jq -r ".tokens.${token} | .pip | .price" "$CONFIG_FILE")
+        ./update-price "$token" "$price"
     fi
+
+    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+    for ilk in $ilks; do
+        # Set Collateral debt ceiling
+        seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,bytes32,uint256)' "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "line")")" "$CEILING")"
+        # Set Collateral mat
+        mat=$(jq -r ".tokens.${token}.ilks.${ilk} | .mat" "$CONFIG_FILE")
+        mat=$(echo "$mat * 10 ^ 7" | bc -l)
+        seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,bytes32,uint256)' "$MCD_SPOT" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "mat")")" "$(seth --to-uint256 "$(seth --to-wei "$mat" ETH)")")"
+        # Poke Spotter
+        seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
+    done
 done
 
 echo "STEP 4 COMPLETED SUCCESSFULLY"

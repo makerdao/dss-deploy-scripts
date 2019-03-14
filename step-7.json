@@ -1,24 +1,35 @@
 {
-  "description": "Step 4 - Market Crash & CDP Bite",
-  "defaults": { "osmDelay": "0" },
+  "description": "Step 7 - Market Crash & CDP Bite",
+  "defaults": {},
   "roles": ["CREATOR"],
   "omniaFromAddr": "0xdc9A20F5a46AFE0802b361076BeFC51f787B2e58",
-  "ilks": {
+  "tokens": {
     "ETH": {
       "pip": {
         "osmDelay": "0",
         "type": "value",
         "price": "150"
       },
-      "mat": "150"
+      "ilks": {
+        "A": {
+          "mat": "150"
+        },
+        "B": {
+          "mat": "180"
+        }
+      }
     },
-    "REP": {
+    "COL1": {
       "pip": {
         "osmDelay": "0",
         "type": "value",
         "price": "15"
       },
-      "mat": "180"
+      "ilks": {
+        "A": {
+          "mat": "180"
+        }
+      }
     }
   }
 }

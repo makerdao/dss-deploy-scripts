@@ -16,17 +16,20 @@ SOLC_VERSION=0.5.4
 cd contracts/line-spell
 dapp --use solc:$SOLC_VERSION build
 
-while read -r ilk; do
-  ilks+="${ilk},"
-done < <(jq -r '.ilks | keys_unsorted[]' "$CONFIG_FILE" | xargs -n1 seth --from-ascii | xargs -n1 seth --to-bytes32)
-ilks="[${ilks%,}]"
+tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
+for token in $tokens; do
+    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+    for ilk in $ilks; do
+        ilksT+="$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")"),"
+        lines+="$(seth --to-uint256 "$(bc <<< "$(jq -r ".tokens.${token}.ilks.${ilk} | .line" "$CONFIG_FILE")*10^45")"),"
+    done
 
-while read -r line; do
-  lines+="$(seth --to-uint256 "$(bc <<< "${line}*10^45")"),"
-done < <(jq -r '.ilks[] | .line' "$CONFIG_FILE")
+done
+
+ilksT="[${ilksT%,}]"
 lines="[${lines%,}]"
 
-EXEC_PROPOSAL=$(seth send --create out/MultiLineSpell.bin 'MultiLineSpell(address,address,address,bytes32[] memory,uint256[] memory)' "$MCD_MOM" "$MCD_MOM_LIB" "$MCD_VAT" "$ilks" "$lines")
+EXEC_PROPOSAL=$(seth send --create out/MultiLineSpell.bin 'MultiLineSpell(address,address,address,bytes32[] memory,uint256[] memory)' "$MCD_MOM" "$MCD_MOM_LIB" "$MCD_VAT" "$ilksT" "$lines")
 
 cd ../../
 

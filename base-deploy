@@ -58,14 +58,7 @@ PROXY_FACTORY=$(dapp create DSProxyFactory)
 PROXY_REGISTRY=$(dapp create ProxyRegistry "$PROXY_FACTORY")
 
 cd ../dss-proxy-actions
-
-SCRIPT_DIR=lib/dss-cdp-manager/lib/dss-deploy/bin/
-
-# Deploy Fabs (no solc optimization)
-"$SCRIPT_DIR/deploy-fab"
-# shellcheck source=/dev/null
-. "load-fab-$(seth chain)"
-rm "load-fab-$(seth chain)"
+dapp build
 
 # Deploy Proxy Actions (no solc optimization)
 PROXY_ACTIONS=$(dapp create DssProxyActions)
@@ -74,34 +67,43 @@ PROXY_ACTIONS=$(dapp create DssProxyActions)
 CDP_MANAGER=$(dapp create DssCdpManager)
 GET_CDPS=$(dapp create GetCdps)
 
+cd lib/dss-cdp-manager/lib/dss-deploy
+
+# Deploy Fabs (no solc optimization)
+./bin/deploy-fab
+# shellcheck source=/dev/null
+. "load-fab-$(seth chain)"
+rm "load-fab-$(seth chain)"
+
 # Deploy MCD Core Contratcs (solc optimized)
-"$SCRIPT_DIR/deploy"
+./bin/deploy
 # shellcheck source=/dev/null
 . "load-mcd-$(seth chain)"
 rm "load-mcd-$(seth chain)"
 
 # Deploy Collaterals (no solc optimization)
-ilks=$(jq -r ".ilks | keys_unsorted[]" "$CONFIG_FILE")
-for ilk in $ilks; do
-    "$SCRIPT_DIR/deploy-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')"
+tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
+for token in $tokens; do
+    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+    for ilk in $ilks; do
+        ./bin/deploy-ilk-"$(echo "$token" | tr '[:upper:]' '[:lower:]')" "$ilk"
 
-    if [ -z "$(eval echo "\$$ilk")" ]; then
-        # It means the ilk token will be created in the deployment script and can be minted
-        newIlk=true
-    else
-        newIlk=false
-    fi
+        if [ -z "$(eval echo "\$$token")" ]; then
+            # It means the ilk token will be created now in the next deployment script call, then we can send funds to the Faucet
+            newToken=true
+        else
+            newToken=false
+        fi
 
-    # shellcheck source=/dev/null
-    . "load-ilk-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')-$(seth chain)"
-    rm "load-ilk-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')-$(seth chain)"
+        # shellcheck source=/dev/null
+        . "load-ilk-$(echo "$token" | tr '[:upper:]' '[:lower:]')-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')-$(seth chain)"
+        rm "load-ilk-$(echo "$token" | tr '[:upper:]' '[:lower:]')-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')-$(seth chain)"
 
-    if [ "${ilk}" != "ETH" ] && [ $newIlk ]; then
-        # Mint initial supply, send to the Faucet and redeem some amount
-        seth send "$(eval echo "\$$ilk")" 'mint(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
-        seth send "$FAUCET" 'gulp(address)' "$(eval echo "\$$ilk")"
-    fi
-    export SKIP_BUILD=true
+        if [ "${token}" != "ETH" ] && [ $newToken ]; then
+            seth send "$(eval echo "\$$token")" 'transfer(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 999000 ETH)")"
+        fi
+        export SKIP_BUILD=true
+    done
 done
 
 # Deploy MomLib (no solc optimization)
@@ -111,7 +113,7 @@ MCD_MOM_LIB=$(dapp create MomLib)
 seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_FLOP" "$MCD_GOV" "$(seth --to-bytes32 "$(seth sig 'mint(address,uint256)')")"
 
 # Copy abi files
-cd ../../
+cd ../../../../../../
 mkdir -p ./out/abi
 cp ./contracts/multicall/out/MultiCall.abi ./out/abi
 cp ./contracts/ds-guard/out/DSGuard.abi ./out/abi
@@ -146,21 +148,24 @@ cp ./contracts/proxy-registry/out/ProxyRegistry.abi ./out/abi
 
 cp "$CONFIG_FILE" ./out/config.json
 
-for ilk in $ilks; do
+for token in $tokens; do
     ILKS_VARS+=",
-    \"${ilk}\": \"$(eval echo "\$${ilk}")\""
-    if [ "$(eval echo "\$VAL_${ilk}")" != "" ]; then
+    \"${token}\": \"$(eval echo "\$${token}")\""
+    if [ "$(eval echo "\$VAL_${token}")" != "" ]; then
     ILKS_VARS+=",
-    \"VAL_${ilk}\": \"$(eval echo "\$VAL_${ilk}")\""
+    \"VAL_${token}\": \"$(eval echo "\$VAL_${token}")\""
     fi
     ILKS_VARS+=",
-    \"PIP_${ilk}\": \"$(eval echo "\$PIP_${ilk}")\""
+    \"PIP_${token}\": \"$(eval echo "\$PIP_${token}")\""
+    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+    for ilk in $ilks; do
     ILKS_VARS+=",
-    \"MCD_JOIN_${ilk}\": \"$(eval echo "\$MCD_JOIN_${ilk}")\""
+    \"MCD_JOIN_${token}_${ilk}\": \"$(eval echo "\$MCD_JOIN_${token}_${ilk}")\""
     ILKS_VARS+=",
-    \"MCD_MOVE_${ilk}\": \"$(eval echo "\$MCD_MOVE_${ilk}")\""
+    \"MCD_MOVE_${token}_${ilk}\": \"$(eval echo "\$MCD_MOVE_${token}_${ilk}")\""
     ILKS_VARS+=",
-    \"MCD_FLIP_${ilk}\": \"$(eval echo "\$MCD_FLIP_${ilk}")\""
+    \"MCD_FLIP_${token}_${ilk}\": \"$(eval echo "\$MCD_FLIP_${token}_${ilk}")\""
+    done
 done
 
 # Generate addresses.json file
