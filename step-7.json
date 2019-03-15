@@ -3,6 +3,7 @@
   "defaults": {},
   "roles": ["CREATOR"],
   "omniaFromAddr": "0xdc9A20F5a46AFE0802b361076BeFC51f787B2e58",
+  "line": "1500",
   "tokens": {
     "ETH": {
       "pip": {
@@ -12,10 +13,14 @@
       },
       "ilks": {
         "A": {
-          "mat": "150"
+          "mat": "150",
+          "line": "1000",
+          "tax": "2.5"
         },
         "B": {
-          "mat": "180"
+          "mat": "180",
+          "line": "500",
+          "tax": "1.5"
         }
       }
     },
@@ -27,7 +32,9 @@
       },
       "ilks": {
         "A": {
-          "mat": "180"
+          "mat": "180",
+          "line": "800",
+          "tax": "2"
         }
       }
     }

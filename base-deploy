@@ -112,6 +112,13 @@ MCD_MOM_LIB=$(dapp create MomLib)
 # Allow Flop to mint Gov token
 seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_FLOP" "$MCD_GOV" "$(seth --to-bytes32 "$(seth sig 'mint(address,uint256)')")"
 
+# Set general debt ceiling (if defined)
+Line=$(jq -r ".line" "$CONFIG_FILE")
+if [ "$Line" != "" ]; then
+    Line=$(seth --to-uint256 "$(echo "$Line"*10^45 | bc)")
+    seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,uint256)' "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "Line")")" "$Line")"
+fi
+
 # Copy abi files
 cd ../../../../../../
 mkdir -p ./out/abi
