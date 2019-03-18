@@ -1,5 +1,6 @@
 {
   "description": "Kovan deployment",
+  "etherscanApiKey": "4PDDUF52BTUD32C3RJ7RJXRY7KIJFJ38RY",
   "tokens": {
     "ETH": {
       "pip": "0xF0c26dBB0Fb1f19793307d4E6182697a4b0F1e8F",

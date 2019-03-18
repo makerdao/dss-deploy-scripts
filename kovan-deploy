@@ -12,6 +12,13 @@ test "$(seth chain)" = "kovan" || exit 1
 export CONFIG_STEP=kovan
 CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/${CONFIG_STEP}.json"
 
+# Set verify contract option in Etherscan if the API key is in the config file
+etherscanApiKey=$(jq -r ".etherscanApiKey" "$CONFIG_FILE")
+if [ "$etherscanApiKey" != "" ]; then
+    export DAPP_VERIFY_CONTRACT="yes"
+    export ETHERSCAN_API_KEY=$etherscanApiKey
+fi
+
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     eval export "\PIP_${token}=$(jq -r ".tokens.${token} | .pip" "$CONFIG_FILE")"
