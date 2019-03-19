@@ -39,6 +39,9 @@ cd ../../
 ./poll-deploy
 
 # shellcheck source=/dev/null
+./ev-ceiling-deploy
+
+# shellcheck source=/dev/null
 . load-addresses
 
 for token in $tokens; do
@@ -49,7 +52,8 @@ for token in $tokens; do
         mat=$(echo "$mat * 10 ^ 7" | bc -l)
         seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,bytes32,uint256)' "$MCD_SPOT" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "mat")")" "$(seth --to-uint256 "$(seth --to-wei "$mat" ETH)")")"
 
-        seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
+        # Poke the spotter -> this can't be done until the spotter is whitelisted in the different oracles
+        # seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
     done
 done
 

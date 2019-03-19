@@ -46,4 +46,4 @@ rm ./out/addresses.tmp.json
 
 cp ./contracts/gov-polling-generator/out/GovPollingGenerator.abi ./out/abi
 
-echo "POLL DEPLOYMENT SUCCESSFULLY"
+echo "POLL DEPLOYMENT COMPLETED SUCCESSFULLY"

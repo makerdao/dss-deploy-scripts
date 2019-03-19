@@ -1,12 +1,14 @@
 {
   "description": "Kovan deployment",
   "etherscanApiKey": "4PDDUF52BTUD32C3RJ7RJXRY7KIJFJ38RY",
+  "line": "1000000",
   "tokens": {
     "ETH": {
       "pip": "0xF0c26dBB0Fb1f19793307d4E6182697a4b0F1e8F",
       "ilks":{
         "A": {
-          "mat": "150"
+          "mat": "150",
+          "line": "500000"
         }
       }
     },
@@ -14,7 +16,8 @@
       "pip": "0xEfA5F53c62531Cb29b8A8E298687A422b8793D72",
       "ilks":{
         "A": {
-          "mat": "180"
+          "mat": "180",
+          "line": "500000"
         }
       }
     }

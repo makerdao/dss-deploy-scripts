@@ -4,46 +4,11 @@ set -ex
 export ETH_GAS=${ETH_GAS:-"7000000"}
 
 export CONFIG_STEP=${CONFIG_STEP:-"step-3"}
-CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/$CONFIG_STEP.json"
 
 # shellcheck source=/dev/null
 ./step-1-deploy
 
 # shellcheck source=/dev/null
-. load-addresses
-
-SOLC_VERSION=0.5.4
-cd contracts/line-spell
-dapp --use solc:$SOLC_VERSION build
-
-tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
-for token in $tokens; do
-    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
-    for ilk in $ilks; do
-        ilksT+="$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")"),"
-        lines+="$(seth --to-uint256 "$(bc <<< "$(jq -r ".tokens.${token}.ilks.${ilk} | .line" "$CONFIG_FILE")*10^45")"),"
-    done
-
-done
-
-ilksT="[${ilksT%,}]"
-lines="[${lines%,}]"
-
-EXEC_PROPOSAL=$(seth send --create out/MultiLineSpell.bin 'MultiLineSpell(address,address,address,bytes32[] memory,uint256[] memory)' "$MCD_MOM" "$MCD_MOM_LIB" "$MCD_VAT" "$ilksT" "$lines")
-
-cd ../../
-
-# Add new addresses to json file
-cat >> ./out/addresses.tmp.json << EOF
-{
-    "EXEC_PROPOSAL": "$EXEC_PROPOSAL"
-}
-EOF
-result=$(jq -s add "./out/addresses.json" "./out/addresses.tmp.json")
-cat > ./out/addresses.json << EOF
-$result
-EOF
-
-rm ./out/addresses.tmp.json
+./ev-ceiling-deploy
 
 echo "STEP 3 COMPLETED SUCCESSFULLY"
