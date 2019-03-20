@@ -2,7 +2,7 @@
     url = https://github.com/dapphub/dapptools.git;
     ref = dapptoolsRev;
   }) {}
-, dapptoolsRev ? "d8e78aedaaeda323fb583ea52bef250634399e6a"
+, dapptoolsRev ? "6943c76bfb8e0b1fce54c3d9bba6f0f7e50d2f5c"
 , eth_from
 , eth_keystore ? ~/.dapp/testnet/8545/keystore
 , eth_password ? "/dev/null"
