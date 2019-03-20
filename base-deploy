@@ -145,8 +145,6 @@ cp ./contracts/dss-proxy-actions/out/Flapper.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/DaiJoin.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/ETHJoin.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/GemJoin.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/DaiMove.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/GemMove.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/Spotter.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/Pot.abi ./out/abi
 cp ./contracts/proxy-registry/out/DSProxy.abi ./out/abi
@@ -169,8 +167,6 @@ for token in $tokens; do
     ILKS_VARS+=",
     \"MCD_JOIN_${token}_${ilk}\": \"$(eval echo "\$MCD_JOIN_${token}_${ilk}")\""
     ILKS_VARS+=",
-    \"MCD_MOVE_${token}_${ilk}\": \"$(eval echo "\$MCD_MOVE_${token}_${ilk}")\""
-    ILKS_VARS+=",
     \"MCD_FLIP_${token}_${ilk}\": \"$(eval echo "\$MCD_FLIP_${token}_${ilk}")\""
     done
 done
@@ -190,7 +186,6 @@ cat > ./out/addresses.json << EOF
     "MCD_CAT": "$MCD_CAT",
     "MCD_VOW": "$MCD_VOW",
     "MCD_JOIN_DAI": "$MCD_JOIN_DAI",
-    "MCD_MOVE_DAI": "$MCD_MOVE_DAI",
     "MCD_FLAP": "$MCD_FLAP",
     "MCD_FLOP": "$MCD_FLOP",
     "MCD_MOM": "$MCD_MOM",
