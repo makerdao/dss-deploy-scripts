@@ -32,10 +32,10 @@ for token in $tokens; do
         mat="$(seth --to-uint256 "$(echo "$mat * 10^25" | bc -l)" ETH)"
         seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,bytes32,uint256)' "$MCD_SPOT" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "mat")")" "$mat")"
         # Set Collateral stability fee
-        tax=$(jq -r ".tokens.${token}.ilks.${ilk} | .tax" "$CONFIG_FILE")
-        tax=$(bc -l <<< "scale=27; e( l(${tax} / 100 + 1)/(60 * 60 * 24 * 365)) * 10^27")
-        tax=$(seth --to-uint256 "${tax%.*}")
-        seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,bytes32,uint256)' "$MCD_JUG" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "tax")")" "$tax")"
+        duty=$(jq -r ".tokens.${token}.ilks.${ilk} | .duty" "$CONFIG_FILE")
+        duty=$(bc -l <<< "scale=27; e( l(${duty} / 100 + 1)/(60 * 60 * 24 * 365)) * 10^27")
+        duty=$(seth --to-uint256 "${duty%.*}")
+        seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,bytes32,uint256)' "$MCD_JUG" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "duty")")" "$duty")"
         # Poke Spotter
         seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
     done
