@@ -4,7 +4,6 @@ set -ex
 export ETH_GAS=${ETH_GAS:-"7000000"}
 
 export CONFIG_STEP=${CONFIG_STEP:-"step-4"}
-CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/$CONFIG_STEP.json"
 
 # shellcheck source=/dev/null
 ./step-1-deploy
@@ -21,20 +20,10 @@ CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/$CONFI
 # shellcheck source=/dev/null
 ./set-ilks-duty
 
-tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
-for token in $tokens; do
-    # If it is a value set the price
-    type=$(jq -r ".tokens.${token} | .pip | .type" "$CONFIG_FILE")
-    if [ "${type}" = "value" ]; then
-        price=$(jq -r ".tokens.${token} | .pip | .price" "$CONFIG_FILE")
-        ./update-price "$token" "$price"
-    fi
+# shellcheck source=/dev/null
+./set-ilks-price
 
-    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
-    for ilk in $ilks; do
-        # Poke Spotter
-        seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
-    done
-done
+# shellcheck source=/dev/null
+./set-ilks-spotter-poke
 
 echo "STEP 4 COMPLETED SUCCESSFULLY"

@@ -76,7 +76,7 @@ For each step there is a default config file in place `step-<STEP>.json`.
 
 ### Update Price:
 
-`./update-price <ilk> <price>` (load variables from `out/addresses.json`)
+`./set-price <ilk> <price>` (load variables from `out/addresses.json`)
 
 ### Load addresses:
 

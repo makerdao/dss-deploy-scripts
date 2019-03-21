@@ -3,8 +3,8 @@ set -ex
 
 export ETH_GAS=${ETH_GAS:-"7000000"}
 
-test -z "$CONFIG_STEP" && exit 1
-CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/$CONFIG_STEP.json"
+# Get config variables
+CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/out/config.json"
 
 # shellcheck source=/dev/null
 . load-addresses
@@ -19,4 +19,4 @@ for token in $tokens; do
     done
 done
 
-echo "SET MAT COMPLETED SUCCESSFULLY"
+echo "SET ILKS MAT COMPLETED SUCCESSFULLY"

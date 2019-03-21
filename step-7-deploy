@@ -39,13 +39,13 @@ mat=$(jq -r ".tokens.${token}.ilks.${ilk} | .mat" "$CONFIG_FILE")
 price=$(jq -r ".tokens.${token} | .pip | .price" "$CONFIG_FILE")
 dart=$(seth --to-uint256 "$(mcd --to-hex "$(seth --to-wei "$(echo "5 * $price * 100 / $mat" | bc -l)" eth)")") # Max debt amount
 
-./update-price "$token" "$price"
+./set-price "$token" "$price"
 
 seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
 
 seth send "$CDP_MANAGER" 'frob(address,uint256,int256,int256)' "$MCD_VAT" "$ID" "$dink" "$dart"
 
-./update-price "$token" "$(echo "$price - 1" | bc -l)"
+./set-price "$token" "$(echo "$price - 1" | bc -l)"
 seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
 
 # Bite CDP

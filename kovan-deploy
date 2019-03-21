@@ -42,9 +42,15 @@ cd ../../
 ./set-ilks-mat
 
 # shellcheck source=/dev/null
-./set-spell-ilks-line
+./set-ilks-spell-line
 
 # shellcheck source=/dev/null
 ./set-ilks-duty
+
+# shellcheck source=/dev/null
+./set-ilks-pip-whitelist
+
+# shellcheck source=/dev/null
+./set-ilks-spotter-poke
 
 echo "KOVAN DEPLOYMENT COMPLETED SUCCESSFULLY"
