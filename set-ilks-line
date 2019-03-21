@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -ex
+
+export ETH_GAS=${ETH_GAS:-"7000000"}
+
+test -z "$CONFIG_STEP" && exit 1
+CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/$CONFIG_STEP.json"
+
+# shellcheck source=/dev/null
+. load-addresses
+
+tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
+for token in $tokens; do
+    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+    for ilk in $ilks; do
+        line=$(jq -r ".tokens.${token}.ilks.${ilk} | .line" "$CONFIG_FILE")
+        line=$(seth --to-uint256 "$(echo "$line"*10^45 | bc)")
+        seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,bytes32,uint256)' "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "line")")" "$line")"
+    done
+done
+
+echo "SET LINE COMPLETED SUCCESSFULLY"

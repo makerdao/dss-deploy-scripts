@@ -12,6 +12,15 @@ CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/$CONFI
 # shellcheck source=/dev/null
 . load-addresses
 
+# shellcheck source=/dev/null
+./set-ilks-mat
+
+# shellcheck source=/dev/null
+./set-ilks-line
+
+# shellcheck source=/dev/null
+./set-ilks-duty
+
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     # If it is a value set the price
@@ -23,19 +32,6 @@ for token in $tokens; do
 
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     for ilk in $ilks; do
-        # Set Collateral debt ceiling
-        line=$(jq -r ".tokens.${token}.ilks.${ilk} | .line" "$CONFIG_FILE")
-        line=$(seth --to-uint256 "$(echo "$line"*10^45 | bc)")
-        seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,bytes32,uint256)' "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "line")")" "$line")"
-        # Set Collateral liquidation ratio
-        mat=$(jq -r ".tokens.${token}.ilks.${ilk} | .mat" "$CONFIG_FILE")
-        mat="$(seth --to-uint256 "$(echo "$mat * 10^25" | bc -l)" ETH)"
-        seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,bytes32,uint256)' "$MCD_SPOT" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "mat")")" "$mat")"
-        # Set Collateral stability fee
-        duty=$(jq -r ".tokens.${token}.ilks.${ilk} | .duty" "$CONFIG_FILE")
-        duty=$(bc -l <<< "scale=27; e( l(${duty} / 100 + 1)/(60 * 60 * 24 * 365)) * 10^27")
-        duty=$(seth --to-uint256 "${duty%.*}")
-        seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,bytes32,uint256)' "$MCD_JUG" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "duty")")" "$duty")"
         # Poke Spotter
         seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
     done

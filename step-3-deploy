@@ -9,6 +9,6 @@ export CONFIG_STEP=${CONFIG_STEP:-"step-3"}
 ./step-1-deploy
 
 # shellcheck source=/dev/null
-./ev-ceiling-deploy
+./set-spell-ilks-line
 
 echo "STEP 3 COMPLETED SUCCESSFULLY"

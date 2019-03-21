@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -ex
+
+export ETH_GAS=${ETH_GAS:-"7000000"}
+
+test -z "$CONFIG_STEP" && exit 1
+CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/$CONFIG_STEP.json"
+
+# shellcheck source=/dev/null
+. load-addresses
+
+tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
+for token in $tokens; do
+    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+    for ilk in $ilks; do
+        duty=$(jq -r ".tokens.${token}.ilks.${ilk} | .duty" "$CONFIG_FILE")
+        duty=$(bc -l <<< "scale=27; e( l(${duty} / 100 + 1)/(60 * 60 * 24 * 365)) * 10^27")
+        duty=$(seth --to-uint256 "${duty%.*}")
+        seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,bytes32,uint256)' "$MCD_JUG" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "duty")")" "$duty")"
+    done
+done
+
+echo "SET DUTY COMPLETED SUCCESSFULLY"
