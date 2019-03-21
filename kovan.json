@@ -4,7 +4,7 @@
   "line": "1000000",
   "tokens": {
     "ETH": {
-      "pip": "0xF0c26dBB0Fb1f19793307d4E6182697a4b0F1e8F",
+      "pip": "0x8C73Ec0fBCdEC6b8C060BC224D94740FD41f3774",
       "ilks":{
         "A": {
           "mat": "150",
@@ -13,11 +13,47 @@
       }
     },
     "COL1": {
-      "pip": "0xEfA5F53c62531Cb29b8A8E298687A422b8793D72",
+      "pip": "0xF2643546d27c8a5388D9Be48170d74b9c9Be39a6",
       "ilks":{
         "A": {
           "mat": "180",
-          "line": "500000"
+          "line": "200000"
+        }
+      }
+    },
+    "COL2": {
+      "pip": "0x8Df8f06DC2dE0434db40dcBb32a82A104218754c",
+      "ilks":{
+        "A": {
+          "mat": "170",
+          "line": "200000"
+        }
+      }
+    },
+    "COL3": {
+      "pip": "0xaa32EB42CBf3Bdb746b659c8DAF443f710497d80",
+      "ilks":{
+        "A": {
+          "mat": "160",
+          "line": "300000"
+        }
+      }
+    },
+    "COL4": {
+      "pip": "0xc9eb67DA2d05702459C521CE3BFED097cB490F8b",
+      "ilks":{
+        "A": {
+          "mat": "200",
+          "line": "100000"
+        }
+      }
+    },
+    "COL5": {
+      "pip": "0xA53e6EFB4cBeD841Eace02220498860905E94998",
+      "ilks":{
+        "A": {
+          "mat": "190",
+          "line": "200000"
         }
       }
     }
