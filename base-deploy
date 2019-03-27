@@ -66,7 +66,7 @@ cd ../dss-deploy
 rm "load-fab-$(seth chain)"
 
 # Deploy MCD Core Contratcs (solc optimized)
-./bin/deploy
+./bin/deploy-core
 # shellcheck source=/dev/null
 . "load-mcd-$(seth chain)"
 rm "load-mcd-$(seth chain)"
