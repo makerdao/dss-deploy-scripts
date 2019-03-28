@@ -57,17 +57,7 @@ dapp build
 PROXY_FACTORY=$(dapp create DSProxyFactory)
 PROXY_REGISTRY=$(dapp create ProxyRegistry "$PROXY_FACTORY")
 
-cd ../dss-proxy-actions
-dapp build
-
-# Deploy Proxy Actions (no solc optimization)
-PROXY_ACTIONS=$(dapp create DssProxyActions)
-
-# Deploy CdpManager (no solc optimization)
-CDP_MANAGER=$(dapp create DssCdpManager)
-GET_CDPS=$(dapp create GetCdps)
-
-cd lib/dss-cdp-manager/lib/dss-deploy
+cd ../dss-proxy-actions/lib/dss-cdp-manager/lib/dss-deploy
 
 # Deploy Fabs (no solc optimization)
 ./bin/deploy-fab
@@ -109,6 +99,16 @@ done
 # Deploy MomLib (no solc optimization)
 MCD_MOM_LIB=$(dapp create MomLib)
 
+cd ../../../../
+dapp build
+
+# Deploy Proxy Actions (no solc optimization)
+PROXY_ACTIONS=$(dapp create DssProxyActions)
+
+# Deploy CdpManager (no solc optimization)
+CDP_MANAGER=$(dapp create DssCdpManager "$MCD_VAT")
+GET_CDPS=$(dapp create GetCdps)
+
 # Allow Flop to mint Gov token
 seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_FLOP" "$MCD_GOV" "$(seth --to-bytes32 "$(seth sig 'mint(address,uint256)')")"
 
@@ -120,7 +120,7 @@ if [ "$Line" != "" ]; then
 fi
 
 # Copy abi files
-cd ../../../../../../
+cd ../../
 mkdir -p ./out/abi
 cp ./contracts/multicall/out/MultiCall.abi ./out/abi
 cp ./contracts/ds-guard/out/DSGuard.abi ./out/abi

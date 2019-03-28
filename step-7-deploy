@@ -24,7 +24,7 @@ ilk=$(jq -r ".tokens.${token}.ilks | keys_unsorted[0]" "$CONFIG_FILE")
 
 seth send "$CDP_MANAGER" 'open(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
 ID=$(seth call "$CDP_MANAGER" 'cdpi()(uint256)')
-URN=$(seth call "$CDP_MANAGER" 'getUrn(uint256)(bytes32)' "$ID")
+URN=$(seth call "$CDP_MANAGER" 'urns(uint256)(address)' "$ID")
 
 if [ "${token}" = "ETH" ]; then
     seth send "$ETH" 'deposit()' --value "$(seth --to-wei 5 ETH)"
@@ -32,7 +32,7 @@ fi
 
 seth send "$(eval echo "\$$token")" "approve(address,uint256)" "$(eval echo "\$MCD_JOIN_${token}_${ilk}")" "$(seth --to-uint256 "$(seth --to-wei 5 ETH)")"
 
-seth send "$(eval echo "\$MCD_JOIN_${token}_${ilk}")" 'join(bytes32,uint256)' "$URN" "$(seth --to-uint256 "$(seth --to-wei 5 ETH)")"
+seth send "$(eval echo "\$MCD_JOIN_${token}_${ilk}")" 'join(address,uint256)' "$URN" "$(seth --to-uint256 "$(seth --to-wei 5 ETH)")"
 
 dink=$(seth --to-uint256 "$(mcd --to-hex "$(seth --to-wei 5 eth)")")
 mat=$(jq -r ".tokens.${token}.ilks.${ilk} | .mat" "$CONFIG_FILE")
@@ -43,12 +43,12 @@ dart=$(seth --to-uint256 "$(mcd --to-hex "$(seth --to-wei "$(echo "5 * $price * 
 
 seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
 
-seth send "$CDP_MANAGER" 'frob(address,uint256,int256,int256)' "$MCD_VAT" "$ID" "$dink" "$dart"
+seth send "$CDP_MANAGER" 'frob(uint256,int256,int256)' "$ID" "$dink" "$dart"
 
 ./set-price "$token" "$(echo "$price - 1" | bc -l)"
 seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
 
 # Bite CDP
-seth send "$MCD_CAT" 'bite(bytes32,bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$URN"
+seth send "$MCD_CAT" 'bite(bytes32,address)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$URN"
 
 echo "STEP 7 COMPLETED SUCCESSFULLY"
