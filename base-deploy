@@ -57,7 +57,7 @@ dapp build
 PROXY_FACTORY=$(dapp create DSProxyFactory)
 PROXY_REGISTRY=$(dapp create ProxyRegistry "$PROXY_FACTORY")
 
-cd ../dss-proxy-actions/lib/dss-cdp-manager/lib/dss-deploy
+cd ../dss-deploy
 
 # Deploy Fabs (no solc optimization)
 ./bin/deploy-fab
