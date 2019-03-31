@@ -13,9 +13,6 @@
 [submodule "contracts/ds-guard"]
 	path = contracts/ds-guard
 	url = https://github.com/dapphub/ds-guard
-[submodule "contracts/median"]
-	path = contracts/median
-	url = https://github.com/makerdao/median
 [submodule "contracts/gov-polling-generator"]
 	path = contracts/gov-polling-generator
 	url = https://github.com/makerdao/gov-polling-generator
@@ -31,3 +28,6 @@
 [submodule "contracts/token-faucet"]
 	path = contracts/token-faucet
 	url = https://github.com/makerdao/token-faucet
+[submodule "contracts/medians"]
+	path = contracts/medians
+	url = https://github.com/makerdao/medianizer-testchain.git
