@@ -89,7 +89,7 @@ for token in $tokens; do
         . "load-ilk-$(echo "$token" | tr '[:upper:]' '[:lower:]')-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')-$(seth chain)"
         rm "load-ilk-$(echo "$token" | tr '[:upper:]' '[:lower:]')-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')-$(seth chain)"
 
-        if [ "${token}" != "ETH" ] && [ $newToken ]; then
+        if [ "${token}" != "ETHUSD" ] && [ $newToken ]; then
             seth send "$(eval echo "\$$token")" 'transfer(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 999000 ETH)")"
         fi
         export SKIP_BUILD=true
@@ -112,6 +112,19 @@ GET_CDPS=$(dapp create GetCdps)
 # Allow Flop to mint Gov token
 seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_FLOP" "$MCD_GOV" "$(seth --to-bytes32 "$(seth sig 'mint(address,uint256)')")"
 
+#Whitelist Spotter
+for token in $tokens; do
+    osm_delay=$(jq -r ".tokens.${token} | .pip | .osmDelay" "$CONFIG_FILE")
+    type=$(jq -r ".tokens.${token} | .pip | .type" "$CONFIG_FILE")
+    if [ "$osm_delay" -gt 0 ]; then
+        #whitelist Spotter in OSM
+        seth send "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$(eval echo "\$MCD_SPOT")"
+    elif [ "${type}" = "median" ]; then
+        #whitelist Spotter in Medianizer
+        seth send "$(eval echo "\$VAL_${token}")" 'kiss(address)' "$(eval echo "\$MCD_SPOT")"
+    fi
+done
+
 # Set general debt ceiling (if defined)
 Line=$(jq -r ".line" "$CONFIG_FILE")
 if [ "$Line" != "" ]; then
@@ -130,7 +143,7 @@ cp ./contracts/vote-proxy/out/VoteProxy.abi ./out/abi
 cp ./contracts/vote-proxy/out/VoteProxyFactory.abi ./out/abi
 cp ./contracts/osm/out/DSValue.abi ./out/abi
 cp ./contracts/osm/out/OSM.abi ./out/abi
-cp ./contracts/median/out/Median.abi ./out/abi
+cp ./contracts/medians/out/Median.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/DssProxyActions.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/DssCdpManager.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/GetCdps.abi ./out/abi
