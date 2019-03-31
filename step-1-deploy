@@ -11,37 +11,48 @@ unset SOLC_FLAGS
 export CONFIG_STEP=${CONFIG_STEP:-"step-1"}
 CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/$CONFIG_STEP.json"
 
-# Send ETH to Omnia From Address
-seth send "$(jq -r ".omniaFromAddr" "$CONFIG_FILE")" --value "$(seth --to-wei 10000 eth)"
+# Send ETH to Omnia Relayer
+OMNIA_RELAYER=$(jq -r ".omniaFromAddr" "$CONFIG_FILE")
+seth send "$OMNIA_RELAYER" --value "$(seth --to-wei 10000 eth)"
 
 # Deploy Values or Medians + OSMs (if delay > 0) (no solc optimization)
 cd contracts/osm
 dapp build
-cd ../median
+cd ../medians
 dapp build
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     type=$(jq -r ".tokens.${token} | .pip | .type" "$CONFIG_FILE")
+    #Deploy Medianizer as Feed
     if [ "${type}" = "median" ]; then
-        cd ../median
-        eval export "\VAL_${token}=$(dapp create Median "$(seth --to-bytes32 "$(seth --from-ascii "${token}USD")")")"
+        cd ../medians
+        eval export "\VAL_${token}=$(dapp create "Median${token}")"
         signers=$(jq -r ".tokens.${token} | .pip | .signers | .[]" "$CONFIG_FILE")
+        #approve oracle price feed providers
         for signer in $signers; do
             seth send "$(eval echo "\$VAL_${token}")" 'lift(address)' "$signer"
         done
-	    seth send "$(eval echo "\$VAL_${token}")" 'setMin(uint256)' "$(seth --to-uint256 3)"
+        #set quorum for Medianizer
+	    seth send "$(eval echo "\$VAL_${token}")" 'setBar(uint256)' "$(seth --to-uint256 3)"
+        #whitelist Omnia relayer to read price from Medianizer
+        seth send "$(eval echo "\$VAL_${token}")" 'kiss(address)' "$OMNIA_RELAYER"
     fi
+    #Deploy DSValue as Feed
     if [ "${type}" = "value" ]; then
         cd ../osm
         eval export "\VAL_${token}=$(dapp create DSValue)"
     fi
-
+    #Deploy OSM if delay > 0 
     osm_delay=$(jq -r ".tokens.${token} | .pip | .osmDelay" "$CONFIG_FILE")
     if [ "$osm_delay" -gt 0 ]; then
         cd ../osm
+        #deploy OSM
         eval export "\PIP_${token}=$(dapp create OSM "$(eval echo "\$VAL_${token}")")"
+        #set OSM delay
         seth send "$(eval echo "\$PIP_${token}")" 'step(uint16)' "$osm_delay"
+        #whitelist OSM in Medianizer (skip is source is DSValue)
+        [[ "${type}" = "median" ]] && seth send "$(eval echo "\$VAL_${token}")" 'kiss(address)' "$(eval echo "\$PIP_${token}")"
     else
         eval export "PIP_${token}=\$VAL_${token}"
     fi
@@ -53,3 +64,8 @@ cd ../../
 ./base-deploy
 
 echo "STEP 1 COMPLETED SUCCESSFULLY"
+
+#TODO: OSM Poker Bot
+# - Add OSMPokerAddr field to step-1.json and fund it with ETH.
+# - Create docker image of OSM Poker bot
+# - Create oracle service manager for deploying OSM_POKER container - service only called if OSM exists (osm_delay > 0)
