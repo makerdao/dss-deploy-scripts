@@ -31,3 +31,6 @@
 [submodule "contracts/token-faucet"]
 	path = contracts/token-faucet
 	url = https://github.com/makerdao/token-faucet
+[submodule "contracts/dss-deploy"]
+	path = contracts/dss-deploy
+	url = https://github.com/makerdao/dss-deploy
