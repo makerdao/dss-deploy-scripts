@@ -16,7 +16,7 @@ TESTNET_PORT=${TESTNET_PORT:-8545}
 TESTNET_HOST=${TESTNET_HOST:-localhost}
 TESTNET_URL="http://$TESTNET_HOST:$TESTNET_PORT"
 
-echo >&2 "Using RPC URL $TESTNET_URL. Change by setting TESTNET_PORT and TESTNET_HOST"
+echo "Using RPC URL $TESTNET_URL. Change by setting TESTNET_PORT and TESTNET_HOST"
 
 # See if dapp testnet or parity dev chain is running
 
@@ -24,10 +24,10 @@ if [ "$KEYSTORE_PATH" ]; then
   true # If KEYSTORE_PATH is set don't look for running ethereum clients
 elif { pgrep -a geth && test -d "$HOME/.dapp/testnet/$TESTNET_PORT"; }; then
   KEYSTORE_PATH="$HOME/.dapp/testnet/$TESTNET_PORT/keystore"
-  echo >&2 Found geth process
+  echo Found geth process
 elif { pgrep -a parity && test -d "$HOME/.local/share/io.parity.ethereum/keys/DevelopmentChain"; }; then
   KEYSTORE_PATH="$HOME/.local/share/io.parity.ethereum/keys/DevelopmentChain"
-  echo >&2 Found parity process
+  echo Found parity process
 fi
 
 if [ "$KEYSTORE_PATH" ]; then
@@ -43,8 +43,8 @@ if [ "$KEYSTORE_PATH" ]; then
   export PRIVATE_KEY="$(sethret "$(find_keyfile "$ETH_KEYSTORE" "$ETH_FROM")" "$(cat "$ETH_PASSWORD")")"
   export JSON_RPC="$ETH_RPC_URL"
 
-  echo >&2 "=== DAPPTOOLS VARIABLES ==="
+  echo "=== DAPPTOOLS VARIABLES ==="
   env | grep ETH_
 else
-  echo >&2 No ethereum client found, set KEYSTORE_PATH and run script again
+  echo No ethereum client found, set KEYSTORE_PATH and run script again
 fi
