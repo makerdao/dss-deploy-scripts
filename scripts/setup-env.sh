@@ -12,8 +12,8 @@ find_keyfile() {
   done < <(find "$1" -type f -print0)
 }
 
-TESTNET_PORT=${TESTNET_PORT-8545}
-TESTNET_HOST=${TESTNET_HOST-localhost}
+TESTNET_PORT=${TESTNET_PORT:-8545}
+TESTNET_HOST=${TESTNET_HOST:-localhost}
 TESTNET_URL="http://$TESTNET_HOST:$TESTNET_PORT"
 
 echo >&2 "Using RPC URL $TESTNET_URL. Change by setting TESTNET_PORT and TESTNET_HOST"
@@ -32,12 +32,12 @@ fi
 
 if [ "$KEYSTORE_PATH" ]; then
   # Set dapptools environment variables
-  export ETH_PASSWORD="${ETH_PASSWORD-/dev/null}"
-  export ETH_KEYSTORE="${ETH_KEYSTORE-$KEYSTORE_PATH}"
-  export ETH_RPC_URL="${ETH_RPC_URL-$TESTNET_URL}"
-  export ETH_GAS="${ETH_GAS-7000000}"
+  export ETH_PASSWORD="${ETH_PASSWORD:-/dev/null}"
+  export ETH_KEYSTORE="${ETH_KEYSTORE:-$KEYSTORE_PATH}"
+  export ETH_RPC_URL="${ETH_RPC_URL:-$TESTNET_URL}"
+  export ETH_GAS="${ETH_GAS:-7000000}"
 
-  export ETH_FROM="${ETH_FROM-$(seth ls | head -n1 | awk '{print $1}')}"
+  export ETH_FROM="${ETH_FROM:-$(seth ls | head -n1 | awk '{print $1}')}"
 
   # For dai.js tests
   export PRIVATE_KEY="$(sethret "$(find_keyfile "$ETH_KEYSTORE" "$ETH_FROM")" "$(cat "$ETH_PASSWORD")")"
