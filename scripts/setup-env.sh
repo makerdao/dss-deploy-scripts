@@ -28,23 +28,22 @@ elif { pgrep -a geth && test -d "$HOME/.dapp/testnet/$TESTNET_PORT"; }; then
 elif { pgrep -a parity && test -d "$HOME/.local/share/io.parity.ethereum/keys/DevelopmentChain"; }; then
   KEYSTORE_PATH="$HOME/.local/share/io.parity.ethereum/keys/DevelopmentChain"
   echo Found parity process
-fi
-
-if [ "$KEYSTORE_PATH" ]; then
-  # Set dapptools environment variables
-  export ETH_PASSWORD="${ETH_PASSWORD:-/dev/null}"
-  export ETH_KEYSTORE="${ETH_KEYSTORE:-$KEYSTORE_PATH}"
-  export ETH_RPC_URL="${ETH_RPC_URL:-$TESTNET_URL}"
-  export ETH_GAS="${ETH_GAS:-7000000}"
-
-  export ETH_FROM="${ETH_FROM:-$(seth ls | head -n1 | awk '{print $1}')}"
-
-  # For dai.js tests
-  export PRIVATE_KEY="$(sethret "$(find_keyfile "$ETH_KEYSTORE" "$ETH_FROM")" "$(cat "$ETH_PASSWORD")")"
-  export JSON_RPC="$ETH_RPC_URL"
-
-  echo "=== DAPPTOOLS VARIABLES ==="
-  env | grep ETH_
 else
   echo No ethereum client found, set KEYSTORE_PATH and run script again
+  return
 fi
+
+# Set dapptools environment variables
+export ETH_PASSWORD="${ETH_PASSWORD:-/dev/null}"
+export ETH_KEYSTORE="${ETH_KEYSTORE:-$KEYSTORE_PATH}"
+export ETH_RPC_URL="${ETH_RPC_URL:-$TESTNET_URL}"
+export ETH_GAS="${ETH_GAS:-7000000}"
+
+export ETH_FROM="${ETH_FROM:-$(seth ls | head -n1 | awk '{print $1}')}"
+
+# For dai.js tests
+export PRIVATE_KEY="$(sethret "$(find_keyfile "$ETH_KEYSTORE" "$ETH_FROM")" "$(cat "$ETH_PASSWORD")")"
+export JSON_RPC="$ETH_RPC_URL"
+
+echo "=== DAPPTOOLS VARIABLES ==="
+env | grep ETH_
