@@ -99,7 +99,7 @@ done
 # Deploy MomLib (no solc optimization)
 MCD_MOM_LIB=$(dapp create MomLib)
 
-cd ../../../../
+cd ../dss-proxy-actions
 dapp build
 
 # Deploy Proxy Actions (no solc optimization)
