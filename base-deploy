@@ -99,7 +99,7 @@ done
 # Deploy MomLib (no solc optimization)
 MCD_MOM_LIB=$(dapp create MomLib)
 
-cd ../../../../
+cd ../dss-proxy-actions
 dapp build
 
 # Deploy Proxy Actions (no solc optimization)
@@ -128,9 +128,6 @@ cp ./contracts/ds-chief/out/DSToken.abi ./out/abi
 cp ./contracts/ds-chief/out/DSChief.abi ./out/abi
 cp ./contracts/vote-proxy/out/VoteProxy.abi ./out/abi
 cp ./contracts/vote-proxy/out/VoteProxyFactory.abi ./out/abi
-cp ./contracts/osm/out/DSValue.abi ./out/abi
-cp ./contracts/osm/out/OSM.abi ./out/abi
-cp ./contracts/median/out/Median.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/DssProxyActions.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/DssCdpManager.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/GetCdps.abi ./out/abi
