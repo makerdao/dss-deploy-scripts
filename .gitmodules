@@ -31,6 +31,3 @@
 [submodule "contracts/dss-deploy"]
 	path = contracts/dss-deploy
 	url = https://github.com/makerdao/dss-deploy
-[submodule "contracts/medians"]
-	path = contracts/medians
-	url = https://github.com/makerdao/medianizer-testchain.git
