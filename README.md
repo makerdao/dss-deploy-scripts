@@ -15,7 +15,7 @@ A set of scripts that use [DSS deploy](https://github.com/makerdao/dss-deploy) t
 
 ### Prerequisites:
 
-If you use nix, run `nix-shell --argstr eth_from $ETH_FROM` to drop in a shell with all dependencies
+If you use nix, run `nix-shell` to drop in a shell with all dependencies
 installed.
 
 Otherwise:
@@ -23,7 +23,8 @@ Otherwise:
 - seth/dapp/jq/mcd (https://dapp.tools/)
 - bc
 
-Either way, you'll need to have an Ethereum node running, e.g. `dapp testnet`.
+Either way, you'll need to have an Ethereum node running, e.g. `dapp testnet` or
+`parity --chain=dev --tracing=on --fat-db=on --pruning=archive`.
 
 ### Config File:
 For each step there is a default config file in place `step-<STEP>.json`.
@@ -55,10 +56,16 @@ For each step there is a default config file in place `step-<STEP>.json`.
 ```
 
 ### Pre-deploy:
+
 - `export ETH_FROM=DEPLOYMENT_ACCOUNT`
 - `export ETH_PASSWORD=ACCOUNT_PASSWORD_FILE_PATH`
 - `export ETH_KEYSTORE=KEYSTORE_PATH`
 - `export ETH_RPC_URL=TESTNET_RPC_NODE_URL`
+
+You can use `. scripts/setup-env.sh` to help you set up these variables.
+
+If you are using `nix-shell`, `setup-env.sh` will be run automatically when you
+drop into the shell.
 
 ### Deploy:
 
