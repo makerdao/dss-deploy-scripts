@@ -29,8 +29,8 @@ elif { pgrep -a parity && test -d "$HOME/.local/share/io.parity.ethereum/keys/De
   KEYSTORE_PATH="$HOME/.local/share/io.parity.ethereum/keys/DevelopmentChain"
   echo Found parity process
 else
-  echo No ethereum client found, set KEYSTORE_PATH and run script again
-  return
+  echo No ethereum client found, run \'dapp testnet\' and re-run setup script again or set KEYSTORE_PATH.
+  return 1
 fi
 
 # Set dapptools environment variables

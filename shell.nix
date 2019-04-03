@@ -19,6 +19,10 @@ pkgs.mkShell {
   ];
 
   shellHook = ''
-    . ${./scripts/setup-env.sh}
+    setup-env() {
+      . ${./scripts/setup-env.sh}
+    }
+    export -f setup-env
+    setup-env || echo Re-run setup script with \'setup-env\'
   '';
 }
