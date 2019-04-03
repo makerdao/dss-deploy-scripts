@@ -55,6 +55,7 @@ For each step there is a default config file in place `step-<STEP>.json`.
 ```
 
 ### Pre-deploy:
+- `git submodule update --init --recursive`
 - `export ETH_FROM=DEPLOYMENT_ACCOUNT`
 - `export ETH_PASSWORD=ACCOUNT_PASSWORD_FILE_PATH`
 - `export ETH_KEYSTORE=KEYSTORE_PATH`
