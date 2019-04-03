@@ -65,6 +65,9 @@ cd ../dss-deploy
 . "load-fab-$(seth chain)"
 rm "load-fab-$(seth chain)"
 
+# Set the pause delay to 0 in order to make the needed initial configurations
+export MCD_PAUSE_DELAY=0
+
 # Deploy MCD Core Contratcs (solc optimized)
 ./bin/deploy-core
 # shellcheck source=/dev/null
@@ -96,8 +99,8 @@ for token in $tokens; do
     done
 done
 
-# Deploy MomLib (no solc optimization)
-MCD_MOM_LIB=$(dapp create MomLib)
+# Deploy Pause Plan - Library functions for the Pause (no solc optimization)
+MCD_PAUSE_PLAN=$(dapp create Plan)
 
 cd ../dss-proxy-actions
 dapp build
@@ -112,11 +115,26 @@ GET_CDPS=$(dapp create GetCdps)
 # Allow Flop to mint Gov token
 seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_FLOP" "$MCD_GOV" "$(seth --to-bytes32 "$(seth sig 'mint(address,uint256)')")"
 
+# Deploy Pause Proxy Actions (support contract for executing initial set up of the dss system)
+cd ../testchain-pause-proxy-actions
+dapp build
+
+PROXY_PAUSE_ACTIONS=$(dapp create TestchainPauseProxyActions)
+seth send "$PROXY_REGISTRY" 'build()'
+
+# Get a proxy for the deployer address
+PROXY_DEPLOYER="$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$ETH_FROM")"
+
+# Elect the proxy address as the new chief hat
+seth send "$MCD_ADM" 'vote(address[] memory)' ["${PROXY_DEPLOYER#0x}"]
+seth send "$MCD_ADM" 'lift(address)' "$PROXY_DEPLOYER"
+
 # Set general debt ceiling (if defined)
 Line=$(jq -r ".line" "$CONFIG_FILE")
 if [ "$Line" != "" ]; then
     Line=$(seth --to-uint256 "$(echo "$Line"*10^45 | bc)")
-    seth send "$MCD_MOM" 'execute(address,bytes memory)' "$MCD_MOM_LIB" "$(seth calldata 'file(address,bytes32,uint256)' "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "Line")")" "$Line")"
+    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_PAUSE_PLAN" "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "Line")")" "$Line")"
+    seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi
 
 # Copy abi files
@@ -186,8 +204,8 @@ cat > ./out/addresses.json << EOF
     "MCD_JOIN_DAI": "$MCD_JOIN_DAI",
     "MCD_FLAP": "$MCD_FLAP",
     "MCD_FLOP": "$MCD_FLOP",
-    "MCD_MOM": "$MCD_MOM",
-    "MCD_MOM_LIB": "$MCD_MOM_LIB",
+    "MCD_PAUSE": "$MCD_PAUSE",
+    "MCD_PAUSE_PLAN": "$MCD_PAUSE_PLAN",
     "MCD_DAI": "$MCD_DAI",
     "MCD_DAI_GUARD": "$MCD_DAI_GUARD",
     "MCD_SPOT": "$MCD_SPOT",
@@ -196,7 +214,9 @@ cat > ./out/addresses.json << EOF
     "CDP_MANAGER": "$CDP_MANAGER",
     "GET_CDPS": "$GET_CDPS",
     "PROXY_FACTORY": "$PROXY_FACTORY",
-    "PROXY_REGISTRY": "$PROXY_REGISTRY"$ILKS_VARS
+    "PROXY_REGISTRY": "$PROXY_REGISTRY"$ILKS_VARS,
+    "PROXY_PAUSE_ACTIONS": "$PROXY_PAUSE_ACTIONS",
+    "PROXY_DEPLOYER": "$PROXY_DEPLOYER"
 }
 EOF
 

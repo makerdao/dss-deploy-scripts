@@ -34,3 +34,6 @@
 [submodule "contracts/testchain-medians"]
 	path = contracts/testchain-medians
 	url = https://github.com/makerdao/testchain-medians
+[submodule "contracts/testchain-pause-proxy-actions"]
+	path = contracts/testchain-pause-proxy-actions
+	url = https://github.com/makerdao/testchain-pause-proxy-actions
