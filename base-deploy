@@ -99,6 +99,9 @@ for token in $tokens; do
     done
 done
 
+# As all initial collaterals were deployed, we can remove authority of the deployment contract from the core contracts
+seth send "$MCD_DEPLOY" 'releaseAuth()'
+
 # Deploy Pause Plan - Library functions for the Pause (no solc optimization)
 MCD_PAUSE_PLAN=$(dapp create Plan)
 
