@@ -83,7 +83,7 @@ drop into the shell.
 
 ### Update Price:
 
-`./set-price <ilk> <price>` (load variables from `out/addresses.json`)
+`./set-price <token> <price>` (load variables from `out/addresses.json`)
 
 ### Load addresses:
 
