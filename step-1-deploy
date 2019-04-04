@@ -79,6 +79,11 @@ for token in $tokens; do
     fi
 done
 
+if [ "$CONFIG_STEP" = "step-1" ]; then
+    # shellcheck source=/dev/null
+    ./set-pause-delay
+fi
+
 # Copy abi files
 cp ./contracts/testchain-medians/out/Median.abi ./out/abi
 cp ./contracts/osm/out/DSValue.abi ./out/abi

@@ -45,4 +45,7 @@ done
 # shellcheck source=/dev/null
 ./set-ilks-spotter-poke
 
+# shellcheck source=/dev/null
+./set-pause-delay
+
 echo "KOVAN DEPLOYMENT COMPLETED SUCCESSFULLY"

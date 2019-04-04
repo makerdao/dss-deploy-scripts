@@ -51,4 +51,10 @@ seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii 
 # Bite CDP
 seth send "$MCD_CAT" 'bite(bytes32,address)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$URN"
 
+# Set Pause Delay
+if [ "$CONFIG_STEP" = "step-7" ]; then
+    # shellcheck source=/dev/null
+    ./set-pause-delay
+fi
+
 echo "STEP 7 COMPLETED SUCCESSFULLY"

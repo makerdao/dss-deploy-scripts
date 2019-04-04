@@ -9,4 +9,9 @@ export CONFIG_STEP=${CONFIG_STEP:-"step-2"}
 # shellcheck source=/dev/null
 ./poll-deploy
 
+if [ "$CONFIG_STEP" = "step-2" ]; then
+    # shellcheck source=/dev/null
+    ./set-pause-delay
+fi
+
 echo "STEP 2 COMPLETED SUCCESSFULLY"

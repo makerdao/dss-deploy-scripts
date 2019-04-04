@@ -126,7 +126,7 @@ PROXY_PAUSE_ACTIONS=$(dapp create TestchainPauseProxyActions)
 seth send "$PROXY_REGISTRY" 'build()'
 
 # Get a proxy for the deployer address
-PROXY_DEPLOYER="$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$ETH_FROM")"
+PROXY_DEPLOYER=0x"$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$ETH_FROM")"
 
 # Elect the proxy address as the new chief hat
 seth send "$MCD_ADM" 'vote(address[] memory)' ["${PROXY_DEPLOYER#0x}"]

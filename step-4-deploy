@@ -26,4 +26,9 @@ export CONFIG_STEP=${CONFIG_STEP:-"step-4"}
 # shellcheck source=/dev/null
 ./set-ilks-spotter-poke
 
+if [ "$CONFIG_STEP" = "step-4" ]; then
+    # shellcheck source=/dev/null
+    ./set-pause-delay
+fi
+
 echo "STEP 4 COMPLETED SUCCESSFULLY"
