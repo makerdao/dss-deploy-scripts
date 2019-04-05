@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-CHECK="test \"$_\" != \"$0\""
-$CHECK || { echo >&2 "Use this script by sourcing it \`. $0\` instead"; exit 1; }
+[[ "$_" != "$0" ]] || { echo >&2 "Use this script by sourcing it \`. $0\` instead"; exit 1; }
 
 find_keyfile() {
-  local address="$(tr '[:upper:]' '[:lower:]' <<<"${2#0x}")"
+  local address
+  address="$(tr '[:upper:]' '[:lower:]' <<<"${2#0x}")"
   while IFS= read -r -d '' file; do
     if [ "$(jq -r .address "$file")" == "$address" ]; then
       echo "$file"
@@ -42,7 +42,8 @@ export ETH_GAS="${ETH_GAS:-7000000}"
 export ETH_FROM="${ETH_FROM:-$(seth ls | head -n1 | awk '{print $1}')}"
 
 # For dai.js tests
-export PRIVATE_KEY="$(sethret "$(find_keyfile "$ETH_KEYSTORE" "$ETH_FROM")" "$(cat "$ETH_PASSWORD")")"
+PRIVATE_KEY="$(sethret "$(find_keyfile "$ETH_KEYSTORE" "$ETH_FROM")" "$(cat "$ETH_PASSWORD")")"
+export PRIVATE_KEY
 export JSON_RPC="$ETH_RPC_URL"
 
 echo "=== DAPPTOOLS VARIABLES ==="
