@@ -1,6 +1,6 @@
 { pkgs ? import (fetchGit {
     url = https://github.com/dapphub/dapptools.git;
-    rev = "6943c76bfb8e0b1fce54c3d9bba6f0f7e50d2f5c";
+    ref = "dapp/0.16.0";
   }) {}
 , mcd-cli ? pkgs.callPackage (import (fetchGit {
     url = https://github.com/makerdao/mcd-cli.git;
