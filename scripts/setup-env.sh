@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-CHECK="test \"$_\" != \"$0\""
-$CHECK || { echo >&2 "Use this script by sourcing it \`. $0\` instead"; exit 1; }
+[[ "$_" != "$0" ]] || { echo >&2 "Use this script by sourcing it \`. $0\` instead"; exit 1; }
 
 find_keyfile() {
   local address="$(tr '[:upper:]' '[:lower:]' <<<"${2#0x}")"
