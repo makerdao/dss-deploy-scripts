@@ -1,0 +1,8 @@
+os:
+  - linux
+language: nix
+git:
+  depth: 1
+  submodules: false
+script:
+  - nix run nixpkgs.shellcheck -c shellcheck scripts/* set-* *-deploy load-addresses
