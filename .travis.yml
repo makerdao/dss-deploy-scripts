@@ -4,5 +4,9 @@ language: nix
 git:
   depth: 1
   submodules: false
+sudo: required
+services:
+  - docker
 script:
   - nix run nixpkgs.shellcheck -c shellcheck scripts/* set-* *-deploy load-addresses
+  - sudo ./test.sh
