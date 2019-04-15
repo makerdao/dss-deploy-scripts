@@ -9,4 +9,4 @@ services:
   - docker
 script:
   - nix run nixpkgs.shellcheck -c shellcheck scripts/* set-* *-deploy load-addresses
-  - sudo ./test.sh
+  - tests/test.sh
