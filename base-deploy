@@ -153,7 +153,6 @@ cp ./contracts/dss-proxy-actions/out/Flipper.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/Flopper.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/Flapper.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/DaiJoin.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/ETHJoin.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/GemJoin.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/Spotter.abi ./out/abi
 cp ./contracts/dss-proxy-actions/out/Pot.abi ./out/abi
