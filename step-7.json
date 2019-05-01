@@ -4,6 +4,10 @@
   "roles": ["CREATOR"],
   "omniaFromAddr": "0xdc9A20F5a46AFE0802b361076BeFC51f787B2e58",
   "pauseDelay": "0",
+  "wait": "0",
+  "bump": "0.1",
+  "sump": "0.1",
+  "hump": "0",
   "line": "1500",
   "tokens": {
     "ETH": {

@@ -11,12 +11,12 @@ CONFIG_FILE="$DIR/../out/config.json"
 . "$DIR/load-addresses"
 
 # Set general debt ceiling (if defined)
-Line=$(jq -r ".line" "$CONFIG_FILE")
-if [ "$Line" != "" ]; then
-    Line=$(echo "$Line"*10^45 | bc)
-    Line=$(seth --to-uint256 "${Line%.*}")
-    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_PAUSE_PLAN" "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "Line")")" "$Line")"
+hump=$(jq -r ".hump" "$CONFIG_FILE")
+if [ "$hump" != "" ]; then
+    hump=$(echo "$hump"*10^45 | bc)
+    hump=$(seth --to-uint256 "${hump%.*}")
+    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_PAUSE_PLAN" "$MCD_VOW" "$(seth --to-bytes32 "$(seth --from-ascii "hump")")" "$hump")"
     seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi
 
-echo "SET LINE COMPLETED SUCCESSFULLY"
+echo "SET HUMP COMPLETED SUCCESSFULLY"

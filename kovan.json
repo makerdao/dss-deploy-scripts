@@ -2,6 +2,10 @@
   "description": "Kovan deployment",
   "etherscanApiKey": "4PDDUF52BTUD32C3RJ7RJXRY7KIJFJ38RY",
   "pauseDelay": "300",
+  "wait": "0",
+  "bump": "0.1",
+  "sump": "0.1",
+  "hump": "0",
   "line": "1000000",
   "tokens": {
     "ETH": {

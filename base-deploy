@@ -219,4 +219,16 @@ EOF
 # shellcheck source=/dev/null
 ./scripts/set-line
 
+# shellcheck source=/dev/null
+./scripts/set-wait
+
+# shellcheck source=/dev/null
+./scripts/set-bump
+
+# shellcheck source=/dev/null
+./scripts/set-sump
+
+# shellcheck source=/dev/null
+./scripts/set-hump
+
 echo "BASE DEPLOY COMPLETED SUCCESSFULLY"
