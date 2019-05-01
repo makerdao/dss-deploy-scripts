@@ -83,8 +83,8 @@ drop into the shell.
 
 ### Update Price:
 
-`./set-price <token> <price>` (load variables from `out/addresses.json`)
+`./scripts/set-price <token> <price>` (load variables from `out/addresses.json`)
 
 ### Load addresses:
 
-`./load-addresses` (from `out/addresses.json` to ENV variables)
+`./scripts/load-addresses` (from `out/addresses.json` to ENV variables)

@@ -132,14 +132,6 @@ PROXY_DEPLOYER=0x"$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$ET
 seth send "$MCD_ADM" 'vote(address[] memory)' ["${PROXY_DEPLOYER#0x}"]
 seth send "$MCD_ADM" 'lift(address)' "$PROXY_DEPLOYER"
 
-# Set general debt ceiling (if defined)
-Line=$(jq -r ".line" "$CONFIG_FILE")
-if [ "$Line" != "" ]; then
-    Line=$(seth --to-uint256 "$(echo "$Line"*10^45 | bc)")
-    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_PAUSE_PLAN" "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "Line")")" "$Line")"
-    seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
-fi
-
 # Copy abi files
 cd ../../
 mkdir -p ./out/abi
@@ -223,5 +215,8 @@ cat > ./out/addresses.json << EOF
     "PROXY_DEPLOYER": "$PROXY_DEPLOYER"
 }
 EOF
+
+# shellcheck source=/dev/null
+./scripts/set-line
 
 echo "BASE DEPLOY COMPLETED SUCCESSFULLY"

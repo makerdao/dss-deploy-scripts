@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 set -ex
 
+# Get config variables
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+
 # shellcheck source=/dev/null
-. load-addresses
+. "$DIR/load-addresses"
 
 type=$(jq -r ".tokens.${1} | .pip | .type" "./out/config.json")
 if [ "${type}" = "value" ]; then

@@ -11,7 +11,7 @@ export CONFIG_STEP=${CONFIG_STEP:-"step-2"}
 
 if [ "$CONFIG_STEP" = "step-2" ]; then
     # shellcheck source=/dev/null
-    ./set-pause-delay
+    ./scripts/set-pause-delay
 fi
 
 echo "STEP 2 COMPLETED SUCCESSFULLY"

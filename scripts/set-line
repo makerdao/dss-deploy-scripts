@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -ex
+
+export ETH_GAS=${ETH_GAS:-"7000000"}
+
+# Get config variables
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+CONFIG_FILE="$DIR/../out/config.json"
+
+# shellcheck source=/dev/null
+. "$DIR/load-addresses"
+
+# Set general debt ceiling (if defined)
+Line=$(jq -r ".line" "$CONFIG_FILE")
+if [ "$Line" != "" ]; then
+    Line=$(seth --to-uint256 "$(echo "$Line"*10^45 | bc)")
+    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_PAUSE_PLAN" "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "Line")")" "$Line")"
+    seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+fi
+
+echo "SET LINE COMPLETED SUCCESSFULLY"

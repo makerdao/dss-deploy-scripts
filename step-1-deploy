@@ -64,7 +64,7 @@ cd ../../
 ./base-deploy
 
 # shellcheck source=/dev/null
-. load-addresses
+. scripts/load-addresses
 
 # Whitelist Spotter
 for token in $tokens; do
@@ -81,7 +81,7 @@ done
 
 if [ "$CONFIG_STEP" = "step-1" ]; then
     # shellcheck source=/dev/null
-    ./set-pause-delay
+    ./scripts/set-pause-delay
 fi
 
 # Copy abi files

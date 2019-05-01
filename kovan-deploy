@@ -31,21 +31,21 @@ done
 ./poll-deploy
 
 # shellcheck source=/dev/null
-./set-ilks-mat
+./scripts/set-ilks-mat
 
 # shellcheck source=/dev/null
-./set-ilks-spell-line
+./scripts/set-ilks-spell-line
 
 # shellcheck source=/dev/null
-./set-ilks-duty
+./scripts/set-ilks-duty
 
 # shellcheck source=/dev/null
-./set-ilks-pip-whitelist
+./scripts/set-ilks-pip-whitelist
 
 # shellcheck source=/dev/null
-./set-ilks-spotter-poke
+./scripts/set-ilks-spotter-poke
 
 # shellcheck source=/dev/null
-./set-pause-delay
+./scripts/set-pause-delay
 
 echo "KOVAN DEPLOYMENT COMPLETED SUCCESSFULLY"

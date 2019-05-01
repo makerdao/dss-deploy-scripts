@@ -4,10 +4,11 @@ set -ex
 export ETH_GAS=${ETH_GAS:-"7000000"}
 
 # Get config variables
-CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/out/config.json"
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+CONFIG_FILE="$DIR/../out/config.json"
 
 # shellcheck source=/dev/null
-. load-addresses
+. "$DIR/load-addresses"
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
@@ -15,7 +16,7 @@ for token in $tokens; do
     type=$(jq -r ".tokens.${token} | .pip | .type" "$CONFIG_FILE")
     if [ "${type}" = "value" ]; then
         price=$(jq -r ".tokens.${token} | .pip | .price" "$CONFIG_FILE")
-        ./set-price "$token" "$price"
+        "$DIR/set-price" "$token" "$price"
     fi
 done
 

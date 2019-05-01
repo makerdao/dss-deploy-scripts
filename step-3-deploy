@@ -9,11 +9,11 @@ export CONFIG_STEP=${CONFIG_STEP:-"step-3"}
 ./step-1-deploy
 
 # shellcheck source=/dev/null
-./set-ilks-spell-line
+./scripts/set-ilks-spell-line
 
 if [ "$CONFIG_STEP" = "step-3" ]; then
     # shellcheck source=/dev/null
-    ./set-pause-delay
+    ./scripts/set-pause-delay
 fi
 
 echo "STEP 3 COMPLETED SUCCESSFULLY"

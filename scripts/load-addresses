@@ -1,0 +1,10 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+
+KEYS=$(jq "keys_unsorted[]" "$DIR/../out/addresses.json")
+
+for KEY in $KEYS; do
+    VALUE=$(jq ".${KEY}" "./out/addresses.json")
+    eval export "\$$KEY=${VALUE}"
+done
