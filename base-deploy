@@ -79,8 +79,6 @@ tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     for ilk in $ilks; do
-        ./bin/deploy-ilk-"$(echo "$token" | tr '[:upper:]' '[:lower:]')" "$ilk"
-
         if [ -z "$(eval echo "\$$token")" ]; then
             # It means the ilk token will be created now in the next deployment script call, then we can send funds to the Faucet
             newToken=true
@@ -88,11 +86,13 @@ for token in $tokens; do
             newToken=false
         fi
 
+        ./bin/deploy-ilk-"$(echo "$token" | tr '[:upper:]' '[:lower:]')" "$ilk"
+
         # shellcheck source=/dev/null
         . "load-ilk-$(echo "$token" | tr '[:upper:]' '[:lower:]')-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')-$(seth chain)"
         rm "load-ilk-$(echo "$token" | tr '[:upper:]' '[:lower:]')-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')-$(seth chain)"
 
-        if [ "${token}" != "ETH" ] && [ $newToken ]; then
+        if [ "${token}" != "ETH" ] && [ $newToken = "true" ]; then
             seth send "$(eval echo "\$$token")" 'transfer(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 999000 ETH)")"
         fi
         export SKIP_BUILD=true
