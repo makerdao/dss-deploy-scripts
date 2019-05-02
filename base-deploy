@@ -16,7 +16,7 @@ MULTICALL=$(dapp create MultiCall)
 # Deploy Token Faucet (no solc optimization)
 cd ../token-faucet
 dapp build
-FAUCET=$(dapp create TokenFaucet "$(seth --to-uint256 "$(seth --to-wei 50 ETH)")")
+test -z "$FAUCET" && FAUCET=$(dapp create TokenFaucet "$(seth --to-uint256 "$(seth --to-wei 50 ETH)")")
 
 # Deploy Guard for Gov and IOU tokens (no solc optimization)
 cd ../ds-guard
