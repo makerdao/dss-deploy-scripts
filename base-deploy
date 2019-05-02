@@ -202,7 +202,6 @@ cat > ./out/addresses.json << EOF
     "MCD_PAUSE": "$MCD_PAUSE",
     "MCD_PAUSE_PLAN": "$MCD_PAUSE_PLAN",
     "MCD_DAI": "$MCD_DAI",
-    "MCD_DAI_GUARD": "$MCD_DAI_GUARD",
     "MCD_SPOT": "$MCD_SPOT",
     "MCD_POT": "$MCD_POT",
     "PROXY_ACTIONS": "$PROXY_ACTIONS",
