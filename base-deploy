@@ -10,8 +10,8 @@ CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/${CONF
 
 # Deploy Multicall (no solc optimization)
 cd contracts/multicall
-dapp --use solc:0.4.25 build
-MULTICALL=$(dapp create MultiCall)
+dapp build
+MULTICALL=$(dapp create Multicall)
 
 # Deploy Token Faucet (no solc optimization)
 cd ../token-faucet
@@ -135,7 +135,7 @@ seth send "$MCD_ADM" 'lift(address)' "$PROXY_DEPLOYER"
 # Copy abi files
 cd ../../
 mkdir -p ./out/abi
-cp ./contracts/multicall/out/MultiCall.abi ./out/abi
+cp ./contracts/multicall/out/Multicall.abi ./out/abi
 cp ./contracts/ds-guard/out/DSGuard.abi ./out/abi
 cp ./contracts/ds-chief/out/DSToken.abi ./out/abi
 cp ./contracts/ds-chief/out/DSChief.abi ./out/abi
