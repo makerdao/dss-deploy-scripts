@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -ex
+
+export ETH_GAS=${ETH_GAS:-"7000000"}
+
+# Get config variables
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+CONFIG_FILE="$DIR/../out/config.json"
+
+# shellcheck source=/dev/null
+. "$DIR/load-addresses"
+
+tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
+for token in $tokens; do
+    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+    for ilk in $ilks; do
+        tau=$(jq -r ".tokens.${token}.ilks.${ilk} | .tau" "$CONFIG_FILE")
+        calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_PAUSE_PLAN" "$(eval echo "\$MCD_FLIP_${token}_${ilk}")" "$(seth --to-bytes32 "$(seth --from-ascii "tau")")" "$tau")"
+        seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+    done
+done
+
+echo "SET ILKS TAU COMPLETED SUCCESSFULLY"

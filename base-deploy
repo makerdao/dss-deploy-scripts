@@ -101,6 +101,12 @@ done
 
 # As all initial collaterals were deployed, we can remove authority of the deployment contract from the core contracts
 seth send "$MCD_DEPLOY" 'releaseAuth()'
+for token in $tokens; do
+    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+    for ilk in $ilks; do
+        seth send "$MCD_DEPLOY" 'releaseAuthFlip(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
+    done
+done
 
 # Deploy Pause Plan - Library functions for the Pause (no solc optimization)
 MCD_PAUSE_PLAN=$(dapp create Plan)
@@ -228,5 +234,23 @@ EOF
 
 # shellcheck source=/dev/null
 ./scripts/set-hump
+
+# shellcheck source=/dev/null
+./scripts/set-beg "flap"
+
+# shellcheck source=/dev/null
+./scripts/set-ttl "flap"
+
+# shellcheck source=/dev/null
+./scripts/set-tau "flap"
+
+# shellcheck source=/dev/null
+./scripts/set-beg "flop"
+
+# shellcheck source=/dev/null
+./scripts/set-ttl "flop"
+
+# shellcheck source=/dev/null
+./scripts/set-tau "flop"
 
 echo "BASE DEPLOY COMPLETED SUCCESSFULLY"

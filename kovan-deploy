@@ -34,7 +34,7 @@ done
 ./scripts/set-ilks-mat
 
 # shellcheck source=/dev/null
-./scripts/set-ilks-spell-line
+./scripts/set-ilks-line
 
 # shellcheck source=/dev/null
 ./scripts/set-ilks-duty
@@ -44,6 +44,15 @@ done
 
 # shellcheck source=/dev/null
 ./scripts/set-ilks-spotter-poke
+
+# shellcheck source=/dev/null
+./scripts/set-ilks-beg
+
+# shellcheck source=/dev/null
+./scripts/set-ilks-ttl
+
+# shellcheck source=/dev/null
+./scripts/set-ilks-tau
 
 # shellcheck source=/dev/null
 ./scripts/set-pause-delay
