@@ -1,12 +1,8 @@
 #!/usr/bin/env bash
-set -ex
-
-export ETH_GAS=${ETH_GAS:-"7000000"}
-unset SOLC_FLAGS
+set -x
 
 # Get config variables
-test -z "$CONFIG_STEP" && exit 1
-CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/${CONFIG_STEP}.json"
+. lib/common.sh
 
 # Deploy Multicall (no solc optimization)
 cd contracts/multicall

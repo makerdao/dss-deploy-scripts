@@ -1,15 +1,12 @@
 #!/usr/bin/env bash
-set -ex
+set -x
 
 # Remove ./out folder
 rm -rf ./out
 
-export ETH_GAS=${ETH_GAS:-"7000000"}
-unset SOLC_FLAGS
-
 # Get config variables
-export CONFIG_STEP=${CONFIG_STEP:-"step-1"}
-CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/$CONFIG_STEP.json"
+CONFIG_STEP=${CONFIG_STEP:-"step-1"}
+. lib/common.sh
 
 # Send ETH to Omnia Relayer
 OMNIA_RELAYER=$(jq -r ".omniaFromAddr" "$CONFIG_FILE")
@@ -34,7 +31,7 @@ for token in $tokens; do
             seth send "$(eval echo "\$VAL_${token}")" 'lift(address)' "$signer"
         done
         # Set quorum for Medianizer
-	    seth send "$(eval echo "\$VAL_${token}")" 'setBar(uint256)' "$(seth --to-uint256 3)"
+        seth send "$(eval echo "\$VAL_${token}")" 'setBar(uint256)' "$(seth --to-uint256 3)"
         # Whitelist Omnia relayer to read price from Medianizer
         seth send "$(eval echo "\$VAL_${token}")" 'kiss(address)' "$OMNIA_RELAYER"
     fi
@@ -61,10 +58,10 @@ done
 cd ../../
 
 # shellcheck source=/dev/null
-./base-deploy
+$SOURCE_PATH/base-deploy
 
 # shellcheck source=/dev/null
-. scripts/load-addresses
+. $SOURCE_PATH/scripts/load-addresses
 
 # Whitelist Spotter
 for token in $tokens; do
@@ -81,12 +78,12 @@ done
 
 if [ "$CONFIG_STEP" = "step-1" ]; then
     # shellcheck source=/dev/null
-    ./scripts/set-pause-delay
+    $SOURCE_PATH/scripts/set-pause-delay
 fi
 
 # Copy abi files
-cp ./contracts/testchain-medians/out/Median.abi ./out/abi
-cp ./contracts/osm/out/DSValue.abi ./out/abi
-cp ./contracts/osm/out/OSM.abi ./out/abi
+cp $DAPP_LIB/testchain-medians/out/Median.abi ./out/abi
+cp $DAPP_LIB/osm/out/DSValue.abi ./out/abi
+cp $DAPP_LIB/osm/out/OSM.abi ./out/abi
 
 echo "STEP 1 COMPLETED SUCCESSFULLY"
