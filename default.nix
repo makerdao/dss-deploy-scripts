@@ -1,13 +1,15 @@
 # Default import pinned pkgs
 { pkgsSrc ? (import ./nix/pkgs.nix {}).pkgsSrc
-, pkgs ? (import ./nix/pkgs.nix { inherit pkgsSrc; }).pkgs
+, pkgsPin ? (import ./nix/pkgs.nix { inherit pkgsSrc; })
+, pkgs ? pkgsPin.pkgs
 , doCheck ? true
 }: with pkgs;
 
 let
   # Get contract dependencies from lock file
   inherit (callPackage ./nix/dapp.nix {
-  #  inherit (pkgs.dappPkgs-0_16_0) dapp2;
+    # Use HEVM from dapp/0.16.0 instead of latest for testing
+    inherit (pkgsPin.pkgsVersions.dapp-0_16_0) dapp2;
   }) specs packageSpecs;
 
   baseBins = [
@@ -18,7 +20,7 @@ let
   ];
 
   tdds = let
-    deps' = builtins.mapAttrs (_: v: v // { inherit doCheck; }) specs.this.deps;
+    deps' = lib.mapAttrs (_: v: v // { inherit doCheck; }) specs.this.deps;
     # Create derivations from lock file data
     deps = builtins.attrValues (packageSpecs (deps' // {
       # Set specific solc versions for some contract derivations

@@ -5,7 +5,6 @@
 let
   deploy = import ./. {
     inherit pkgs;
-    doCheck = false;
   };
 in mkShell {
   buildInputs = deploy.baseBins ++ [
