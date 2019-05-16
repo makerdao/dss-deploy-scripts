@@ -14,12 +14,12 @@ tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     for ilk in $ilks; do
-        beg=$(jq -r ".tokens.${token}.ilks.${ilk} | .beg" "$CONFIG_FILE")
-        beg=$(echo "($beg+100)"*10^25 | bc -l)
-        beg=$(seth --to-uint256 "${beg%.*}")
-        calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_PAUSE_PLAN" "$(eval echo "\$MCD_FLIP_${token}_${ilk}")" "$(seth --to-bytes32 "$(seth --from-ascii "beg")")" "$beg")"
+        lump=$(jq -r ".tokens.${token}.ilks.${ilk} | .lump" "$CONFIG_FILE")
+        lump=$(echo "$lump"*10^18 | bc)
+        lump=$(seth --to-uint256 "${lump%.*}")
+        calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_PAUSE_PLAN" "$MCD_CAT" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "lump")")" "$lump")"
         seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
     done
 done
 
-echo "SET ILKS BEG COMPLETED SUCCESSFULLY"
+echo "SET ILKS LUMP COMPLETED SUCCESSFULLY"

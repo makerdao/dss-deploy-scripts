@@ -27,6 +27,12 @@ export CONFIG_STEP=${CONFIG_STEP:-"step-4"}
 ./scripts/set-ilks-spotter-poke
 
 # shellcheck source=/dev/null
+./scripts/set-ilks-chop
+
+# shellcheck source=/dev/null
+./scripts/set-ilks-lump
+
+# shellcheck source=/dev/null
 ./scripts/set-ilks-beg
 
 # shellcheck source=/dev/null
