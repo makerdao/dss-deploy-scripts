@@ -1,34 +1,24 @@
 # Default import pinned pkgs
-{ pkgs ? import ./nix/pkgs.nix }:
-
-# Add mcd-cli and sethret to local scope
-with (pkgs // {
-  mcd-cli = pkgs.callPackage (import (fetchGit {
-    url = https://github.com/makerdao/mcd-cli.git;
-    rev = "86842b49defa53301ac0019f7d5994859bb3e1e9";
-  })) {};
-
-  sethret = (import (fetchGit {
-    url = https://github.com/icetan/sethret.git;
-    rev = "ef77915e2881011603491275f36b44bf2478b408";
-  }) {}).sethret;
-});
+{ pkgsSrc ? (import ./nix/pkgs.nix {}).pkgsSrc
+, pkgs ? (import ./nix/pkgs.nix { inherit pkgsSrc; }).pkgs
+, doCheck ? true
+}: with pkgs;
 
 let
   # Get contract dependencies from lock file
   inherit (callPackage ./nix/dapp.nix {
-    inherit (pkgs.dapp-pkgs-0_16_0) dapp2;
+  #  inherit (pkgs.dappPkgs-0_16_0) dapp2;
   }) specs packageSpecs;
 
   baseBins = [
     coreutils gnugrep gnused findutils
+    bc jq
     solc
-    dapp ethsign seth mcd-cli sethret
-    bc jq procps
+    dapp ethsign seth mcd-cli
   ];
 
   tdds = let
-    deps' = specs.this.deps;
+    deps' = builtins.mapAttrs (_: v: v // { inherit doCheck; }) specs.this.deps;
     # Create derivations from lock file data
     deps = builtins.attrValues (packageSpecs (deps' // {
       # Set specific solc versions for some contract derivations

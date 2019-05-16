@@ -1,9 +1,15 @@
-{ pkgs ? import ./nix/pkgs.nix }: with pkgs;
+{ pkgsSrc ? (import ./nix/pkgs.nix {}).pkgsSrc
+, pkgs ? (import ./nix/pkgs.nix { inherit pkgsSrc; }).pkgs
+}: with pkgs;
 
 let
-  deploy = import ./. { inherit pkgs; };
-in pkgs.mkShell {
+  deploy = import ./. {
+    inherit pkgs;
+    doCheck = false;
+  };
+in mkShell {
   buildInputs = deploy.baseBins ++ [
+    pkgs.sethret
     deploy.tdds
   ];
 
