@@ -1,8 +1,16 @@
 os:
   - linux
 language: nix
+sudo: required
 git:
   depth: 1
   submodules: false
+before_script:
+  - sudo mkdir -p /etc/nix
+  - echo "trusted-users = root $USER" | sudo tee -a /etc/nix/nix.conf
 script:
   - nix run nixpkgs.shellcheck -c shellcheck scripts/* *-deploy
+  - nix-env -iA cachix -f https://cachix.org/api/v1/install
+  - cachix use tdds
+  - cachix push tdds --watch-store &
+  - nix-build -j2 | cachix push tdds
