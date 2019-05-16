@@ -2,7 +2,13 @@
 { solidityPackage, solc, dapp2 }:
 
 let
-  inherit (builtins) mapAttrs attrValues;
+  inherit (builtins) map listToAttrs attrNames attrValues;
+  mapAttrs = if (builtins ? mapAttrs)
+    then builtins.mapAttrs
+    else f: attrs:
+      listToAttrs (map
+        (name: { inherit name; value = f name attrs."${name}"; })
+        (attrNames attrs));
 
   defaults = {
     inherit solc;
