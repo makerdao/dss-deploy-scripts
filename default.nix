@@ -34,11 +34,11 @@ let
     };
   in stdenv.mkDerivation {
     name = "testchain-dss-deploy-scripts";
-    src = lib.cleanSource (lib.sourceByRegex ./. [ "^[^/]*$" ]);
+    src = lib.cleanSource (lib.sourceByRegex ./. [ "[^/]*" "(scripts|lib)/.*" ]);
     buildInputs = [ makeWrapper perl ];
     buildPhase = "true";
     installPhase = ''
-      find . -maxdepth 2 -type f -executable ! -name "*.sh" | while read -r script; do
+      find . -maxdepth 2 -type f -perm /111 ! -name "*.sh" | while read -r script; do
         dest=$out/bin/''${script#./}
         mkdir -p ''${dest%/*}
 
