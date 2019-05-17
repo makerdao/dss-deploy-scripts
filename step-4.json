@@ -19,7 +19,7 @@
     "ETH": {
       "pip": {
         "osmDelay": "0",
-        "type": "median",
+        "type": "value",
         "price": "150",
         "signers": [
           "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
@@ -56,7 +56,7 @@
     "COL1": {
       "pip": {
         "osmDelay": "0",
-        "type": "median",
+        "type": "value",
         "price": "15",
         "signers": [
           "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
