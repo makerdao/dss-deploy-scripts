@@ -20,6 +20,7 @@
       "pip": {
         "osmDelay": "0",
         "type": "median",
+        "price": "150",
         "signers": [
           "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
           "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
@@ -56,6 +57,7 @@
       "pip": {
         "osmDelay": "0",
         "type": "median",
+        "price": "15",
         "signers": [
           "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
           "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
