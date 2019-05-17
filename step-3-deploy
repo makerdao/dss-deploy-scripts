@@ -9,6 +9,9 @@ export CONFIG_STEP=${CONFIG_STEP:-"step-3"}
 ./step-1-deploy
 
 # shellcheck source=/dev/null
+./poll-deploy
+
+# shellcheck source=/dev/null
 ./scripts/set-ilks-spell-line
 
 if [ "$CONFIG_STEP" = "step-3" ]; then
