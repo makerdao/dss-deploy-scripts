@@ -15,7 +15,7 @@ A set of scripts that use [DSS deploy](https://github.com/makerdao/dss-deploy) t
 
 ### Prerequisites:
 
-If you use nix, run `nix-shell` to drop in a shell with all dependencies
+If you use nix, run `nix-shell` to drop into a shell with all dependencies
 installed.
 
 Otherwise:
@@ -62,7 +62,7 @@ For each step there is a default config file in place `step-<STEP>.json`.
 - `export ETH_KEYSTORE=KEYSTORE_PATH`
 - `export ETH_RPC_URL=TESTNET_RPC_NODE_URL`
 
-You can use `. scripts/setup-env.sh` to help you set up these variables.
+You can use `. lib/setup-env.sh` to help you set up these variables.
 
 If you are using `nix-shell`, `setup-env.sh` will be run automatically when you
 drop into the shell.
@@ -88,3 +88,22 @@ drop into the shell.
 ### Load addresses:
 
 `./scripts/load-addresses` (from `out/addresses.json` to ENV variables)
+
+## Nix
+
+To be able to easily share scripts with other repos and make sure that the
+exact dependencies needed to run the scripts are met we can use Nix.
+
+After changing submodules the lock file (`nix/dapp.nix`) needs to be updated
+using:
+
+```sh
+nix run -f https://github.com/icetan/dapp2nix/tarball/master -c dapp2nix > nix/dapp.nix
+```
+
+This is to avoid downloading all submodules when installing the deploy
+scripts from another repository.
+
+Dependencies are managed through a central repository referenced in
+`nix/pkgs.nix` and the main Nix expression to build this repo is in
+`default.nix`.
