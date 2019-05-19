@@ -1,14 +1,8 @@
 #!/usr/bin/env bash
-set -ex
+. ${LIB_DIR:-$(cd "${0%/*}/../lib"&&pwd)}/common.sh
 
-export ETH_GAS=${ETH_GAS:-"7000000"}
-
-# Get config variables
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-CONFIG_FILE="$DIR/../out/config.json"
-
-# shellcheck source=/dev/null
-. "$DIR/load-addresses"
+CONFIG_FILE="$OUT_DIR/config.json"
+loadAddresses
 
 cd contracts/line-spell
 dapp build
@@ -30,16 +24,10 @@ EXEC_PROPOSAL=$(seth send --create out/MultiLineSpell.bin 'MultiLineSpell(addres
 cd ../../
 
 # Add new addresses to json file
-cat >> ./out/addresses.tmp.json << EOF
+addAddresses <<EOF
 {
     "EXEC_PROPOSAL": "$EXEC_PROPOSAL"
 }
 EOF
-result=$(jq -s add "./out/addresses.json" "./out/addresses.tmp.json")
-cat > ./out/addresses.json << EOF
-$result
-EOF
-
-rm ./out/addresses.tmp.json
 
 echo "EXECUTIVE SPELL DEBT CEILINGS COMPLETED SUCCESSFULLY"

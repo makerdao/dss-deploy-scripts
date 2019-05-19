@@ -1,17 +1,15 @@
 #!/usr/bin/env bash
-set -ex
 
-export ETH_GAS=${ETH_GAS:-"7000000"}
+. ${LIB_DIR:-$(cd "${0%/*}/../lib"&&pwd)}/common.sh
 
 # Get config variables
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-CONFIG_FILE="$DIR/../out/config.json"
+CONFIG_FILE="$OUT_DIR/config.json"
 
 delay=$(jq -r ".pauseDelay" "$CONFIG_FILE")
 
 if [ "$delay" -gt 0 ]; then
-    # shellcheck source=/dev/null
-    . "$DIR/load-addresses"
+    loadAddresses
 
     cd contracts/testchain-pause-proxy-actions
     dapp build

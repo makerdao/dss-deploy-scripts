@@ -1,17 +1,11 @@
 #!/usr/bin/env bash
-set -ex
+. ${LIB_DIR:-$(cd "${0%/*}/../lib"&&pwd)}/common.sh
 
-export ETH_GAS=${ETH_GAS:-"7000000"}
-
-# Get config variables
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-CONFIG_FILE="$DIR/../out/config.json"
-
-# shellcheck source=/dev/null
-. "$DIR/load-addresses"
+CONFIG_FILE="$OUT_DIR/config.json"
+loadAddresses
 
 # Set general debt ceiling (if defined)
-wait=$(jq -r ".wait" "$CONFIG_FILE")
+wait=$(jq -r ".wait | values" "$CONFIG_FILE")
 if [ "$wait" != "" ]; then
     calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_PAUSE_PLAN" "$MCD_VOW" "$(seth --to-bytes32 "$(seth --from-ascii "wait")")" "$wait")"
     seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"

@@ -21,51 +21,30 @@ let
 
   tdds = let
     deps' = lib.mapAttrs (_: v: v // { inherit doCheck; }) specs.this.deps;
+    dss-deploy = import deps'.dss-deploy.src' {};
+
     # Create derivations from lock file data
     deps = builtins.attrValues (packageSpecs (deps' // {
       # Set specific solc versions for some contract derivations
       multicall = deps'.multicall // { solc = solc-versions.solc_0_4_25; };
       vote-proxy = deps'.vote-proxy // { solc = solc-versions.solc_0_4_25; };
+      dss-deploy = dss-deploy.spec;
     }));
-    # Symlink all contract deps into one directory
-    depsMerged = symlinkJoin {
-      name = "deploy-script-deps";
-      paths = deps;
-    };
-  in stdenv.mkDerivation {
+  in makerScriptPackage {
     name = "testchain-dss-deploy-scripts";
     src = lib.cleanSource (lib.sourceByRegex ./. [ "[^/]*" "(scripts|lib)/.*" ]);
-    buildInputs = [ makeWrapper perl ];
-    buildPhase = "true";
-    installPhase = ''
-      find . -maxdepth 2 -type f -perm /111 ! -name "*.sh" | while read -r script; do
-        dest=$out/bin/''${script#./}
-        mkdir -p ''${dest%/*}
+    inherit deps;
+    extraBins = [
+      dss-deploy
+    ];
 
-        perl -pe '\
-          s|^(cd (?:.*/)*([^/\n\r]+))$|\1;export DAPP_OUT=\$DAPP_LIB/\2/out;|;
-          s|^dapp .*build||;
-        ' < $script > $dest
-        chmod +x $dest
-
-        wrapProgram $dest \
-          --set PATH "${lib.makeBinPath baseBins}" \
-          --set DAPP_SKIP_BUILD yes \
-          --set DAPP_LIB ${depsMerged}/dapp
-      done
-      patchShebangs $out/bin
-
-      find . -maxdepth 2 -type f -name "*.json" | while read -r config; do
-        dest=$out/bin/''${config#./}
-        mkdir -p ''${dest%/*}
-        cp -v $config $dest
-      done
-
-      cp -rv lib $out/lib
-    '';
-
-    checkPhase = ''
-      ${shellcheck}/bin/shellcheck $out/bin/*
+    patchBin = writeScript "remove-cd" ''
+      #!${stdenv.shell}
+      exec ${perl}/bin/perl -pe '
+        s|^(\s*)cd\s+(?:.*/)*([^/\n\r\s;&\|\.]+)|\1export DAPP_OUT=\$DAPP_LIB/\2/out;|;
+        s|^(\s*)cd\s+[^\n\r;&\|]+|\1|;
+        s|^(\s*)\./bin/||;
+      '
     '';
   };
 in {

@@ -1,10 +1,5 @@
 #!/bin/bash
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+. ${LIB_DIR:-$(cd "${0%/*}/../lib"&&pwd)}/common.sh
+loadAddresses
 
-KEYS=$(jq "keys_unsorted[]" "$DIR/../out/addresses.json")
-
-for KEY in $KEYS; do
-    VALUE=$(jq ".${KEY}" "./out/addresses.json")
-    eval export "\$$KEY=${VALUE}"
-done

@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
-set -x
-
-# Remove ./out folder
-rm -rf ./out
 
 # Get config variables
 CONFIG_STEP=${CONFIG_STEP:-"step-1"}
-. lib/common.sh
+. ${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh
+
+# Remove ./out folder
+rm -rf $OUT_DIR
 
 # Send ETH to Omnia Relayer
 OMNIA_RELAYER=$(jq -r ".omniaFromAddr" "$CONFIG_FILE")
@@ -58,10 +57,9 @@ done
 cd ../../
 
 # shellcheck source=/dev/null
-$SOURCE_PATH/base-deploy
+$BIN_DIR/base-deploy
 
-# shellcheck source=/dev/null
-. $SOURCE_PATH/scripts/load-addresses
+loadAddresses
 
 # Whitelist Spotter
 for token in $tokens; do
@@ -78,12 +76,12 @@ done
 
 if [ "$CONFIG_STEP" = "step-1" ]; then
     # shellcheck source=/dev/null
-    $SOURCE_PATH/scripts/set-pause-delay
+    $LIBEXEC_DIR/set-pause-delay
 fi
 
 # Copy abi files
-cp $DAPP_LIB/testchain-medians/out/Median.abi ./out/abi
-cp $DAPP_LIB/osm/out/DSValue.abi ./out/abi
-cp $DAPP_LIB/osm/out/OSM.abi ./out/abi
+cp $DAPP_LIB/testchain-medians/out/Median.abi $OUT_DIR/abi
+cp $DAPP_LIB/osm/out/DSValue.abi $OUT_DIR/abi
+cp $DAPP_LIB/osm/out/OSM.abi $OUT_DIR/abi
 
 echo "STEP 1 COMPLETED SUCCESSFULLY"

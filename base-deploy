@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
-set -x
 
-# Get config variables
-. lib/common.sh
+. ${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh
 
 # Deploy Multicall (no solc optimization)
 cd contracts/multicall
@@ -136,34 +134,34 @@ seth send "$MCD_ADM" 'lift(address)' "$PROXY_DEPLOYER"
 
 # Copy abi files
 cd ../../
-mkdir -p ./out/abi
-cp ./contracts/multicall/out/Multicall.abi ./out/abi
-cp ./contracts/ds-guard/out/DSGuard.abi ./out/abi
-cp ./contracts/ds-chief/out/DSToken.abi ./out/abi
-cp ./contracts/ds-chief/out/DSChief.abi ./out/abi
-cp ./contracts/vote-proxy/out/VoteProxy.abi ./out/abi
-cp ./contracts/vote-proxy/out/VoteProxyFactory.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/DssProxyActions.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/DssCdpManager.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/GetCdps.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/DssDeploy.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/Vat.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/Jug.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/Cat.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/Vow.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/Flipper.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/Flopper.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/Flapper.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/DaiJoin.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/GemJoin.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/Spotter.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/Pot.abi ./out/abi
-cp ./contracts/proxy-registry/out/DSProxy.abi ./out/abi
-cp ./contracts/proxy-registry/out/DSProxyFactory.abi ./out/abi
-cp ./contracts/proxy-registry/out/ProxyRegistry.abi ./out/abi
-cp ./contracts/token-faucet/out/TokenFaucet.abi ./out/abi
+mkdir -p $OUT_DIR/abi
+cp $DAPP_LIB/multicall/out/MultiCall.abi $OUT_DIR/abi
+cp $DAPP_LIB/ds-guard/out/DSGuard.abi $OUT_DIR/abi
+cp $DAPP_LIB/ds-chief/out/DSToken.abi $OUT_DIR/abi
+cp $DAPP_LIB/ds-chief/out/DSChief.abi $OUT_DIR/abi
+cp $DAPP_LIB/vote-proxy/out/VoteProxy.abi $OUT_DIR/abi
+cp $DAPP_LIB/vote-proxy/out/VoteProxyFactory.abi $OUT_DIR/abi
+cp $DAPP_LIB/dss-proxy-actions/out/DssProxyActions.abi $OUT_DIR/abi
+cp $DAPP_LIB/dss-proxy-actions/out/DssCdpManager.abi $OUT_DIR/abi
+cp $DAPP_LIB/dss-proxy-actions/out/GetCdps.abi $OUT_DIR/abi
+cp $DAPP_LIB/dss-proxy-actions/out/DssDeploy.abi $OUT_DIR/abi
+cp $DAPP_LIB/dss-proxy-actions/out/Vat.abi $OUT_DIR/abi
+cp $DAPP_LIB/dss-proxy-actions/out/Jug.abi $OUT_DIR/abi
+cp $DAPP_LIB/dss-proxy-actions/out/Cat.abi $OUT_DIR/abi
+cp $DAPP_LIB/dss-proxy-actions/out/Vow.abi $OUT_DIR/abi
+cp $DAPP_LIB/dss-proxy-actions/out/Flipper.abi $OUT_DIR/abi
+cp $DAPP_LIB/dss-proxy-actions/out/Flopper.abi $OUT_DIR/abi
+cp $DAPP_LIB/dss-proxy-actions/out/Flapper.abi $OUT_DIR/abi
+cp $DAPP_LIB/dss-proxy-actions/out/DaiJoin.abi $OUT_DIR/abi
+cp $DAPP_LIB/dss-proxy-actions/out/GemJoin.abi $OUT_DIR/abi
+cp $DAPP_LIB/dss-proxy-actions/out/Spotter.abi $OUT_DIR/abi
+cp $DAPP_LIB/dss-proxy-actions/out/Pot.abi $OUT_DIR/abi
+cp $DAPP_LIB/proxy-registry/out/DSProxy.abi $OUT_DIR/abi
+cp $DAPP_LIB/proxy-registry/out/DSProxyFactory.abi $OUT_DIR/abi
+cp $DAPP_LIB/proxy-registry/out/ProxyRegistry.abi $OUT_DIR/abi
+cp $DAPP_LIB/token-faucet/out/TokenFaucet.abi $OUT_DIR/abi
 
-cp "$CONFIG_FILE" ./out/config.json
+cp "$CONFIG_FILE" $OUT_DIR/config.json
 
 for token in $tokens; do
     ILKS_VARS+=",
@@ -184,7 +182,7 @@ for token in $tokens; do
 done
 
 # Generate addresses.json file
-cat > ./out/addresses.json << EOF
+cat > $OUT_DIR/addresses.json << EOF
 {
     "MULTICALL": "$MULTICALL",
     "FAUCET": "$FAUCET",
@@ -217,19 +215,19 @@ cat > ./out/addresses.json << EOF
 EOF
 
 # shellcheck source=/dev/null
-./scripts/set-line
+$LIBEXEC_DIR/set-line
 
 # shellcheck source=/dev/null
-./scripts/set-wait
+$LIBEXEC_DIR/set-wait
 
 # shellcheck source=/dev/null
-./scripts/set-bump
+$LIBEXEC_DIR/set-bump
 
 # shellcheck source=/dev/null
-./scripts/set-sump
+$LIBEXEC_DIR/set-sump
 
 # shellcheck source=/dev/null
-./scripts/set-hump
+$LIBEXEC_DIR/set-hump
 
 # shellcheck source=/dev/null
 ./scripts/set-beg "flap"
