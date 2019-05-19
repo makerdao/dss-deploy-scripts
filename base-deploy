@@ -182,7 +182,7 @@ for token in $tokens; do
 done
 
 # Generate addresses.json file
-cat > $OUT_DIR/addresses.json << EOF
+cat > $OUT_DIR/addresses.json <<EOF
 {
     "MULTICALL": "$MULTICALL",
     "FAUCET": "$FAUCET",

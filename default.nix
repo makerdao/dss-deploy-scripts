@@ -1,7 +1,6 @@
 # Default import pinned pkgs
 { pkgsSrc ? (import ./nix/pkgs.nix {}).pkgsSrc
-, pkgsPin ? (import ./nix/pkgs.nix { inherit pkgsSrc; })
-, pkgs ? pkgsPin.pkgs
+, pkgs ? (import ./nix/pkgs.nix { inherit pkgsSrc; }).pkgs
 , doCheck ? true
 }: with pkgs;
 
