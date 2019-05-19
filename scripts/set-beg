@@ -1,19 +1,14 @@
 #!/usr/bin/env bash
-set -ex
-
-export ETH_GAS=${ETH_GAS:-"7000000"}
+. ${LIB_DIR:-$(cd "${0%/*}/../lib"&&pwd)}/common.sh
 
 # Get config variables
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-CONFIG_FILE="$DIR/../out/config.json"
-
-# shellcheck source=/dev/null
-. "$DIR/load-addresses"
+CONFIG_FILE="$OUT_DIR/config.json"
+loadAddresses
 
 { test "$1" != "flap" && test "$1" != "flop"; } && exit 1
 
 # Set tau
-beg=$(jq -r ".$1_beg" "$CONFIG_FILE")
+beg=$(jq -r ".$1_beg | values" "$CONFIG_FILE")
 if [ "$beg" != "" ]; then
     beg=$(echo "($beg+100)"*10^25 | bc -l)
     beg=$(seth --to-uint256 "${beg%.*}")
