@@ -7,10 +7,7 @@
 
 let
   # Get contract dependencies from lock file
-  inherit (callPackage ./nix/dapp.nix {
-    # Use HEVM from dapp/0.16.0 instead of latest for testing
-    inherit (pkgsPin.pkgsVersions.dapp-0_16_0) dapp2;
-  }) specs packageSpecs;
+  inherit (callPackage ./nix/dapp.nix {}) specs packageSpecs;
 
   baseBins = [
     coreutils gnugrep gnused findutils
