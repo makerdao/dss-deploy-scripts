@@ -7,42 +7,43 @@
 let
   # Get contract dependencies from lock file
   inherit (callPackage ./nix/dapp.nix {}) specs packageSpecs;
+  inherit (specs.this) deps;
 
-  baseBins = [
-    coreutils gnugrep gnused findutils
-    bc jq
-    solc
-    dapp ethsign seth mcd-cli
+  # Import deploy scripts from dss-deploy
+  dss-deploy = import deps.dss-deploy.src' {};
+
+  # Create derivations from lock file data
+  packages = packageSpecs (deps // {
+    # Set specific solc versions for some contract derivations
+    multicall = deps.multicall // { solc = solc-versions.solc_0_4_25; };
+    vote-proxy = deps.vote-proxy // { solc = solc-versions.solc_0_4_25; };
+  });
+in makerScriptPackage {
+  name = "testchain-dss-deploy-scripts";
+
+  # Specify files to add to build environment
+  src = lib.sourceByRegex ./. [
+    ".*deploy"
+    ".*\.json"
+    ".*scripts.*"
+    ".*lib.*"
   ];
 
-  tdds = let
-    deps' = lib.mapAttrs (_: v: v // { inherit doCheck; }) specs.this.deps;
-    dss-deploy = import deps'.dss-deploy.src' {};
+  solidityPackages = builtins.attrValues packages;
 
-    # Create derivations from lock file data
-    deps = builtins.attrValues (packageSpecs (deps' // {
-      # Set specific solc versions for some contract derivations
-      multicall = deps'.multicall // { solc = solc-versions.solc_0_4_25; };
-      vote-proxy = deps'.vote-proxy // { solc = solc-versions.solc_0_4_25; };
-      dss-deploy = dss-deploy.spec;
-    }));
-  in makerScriptPackage {
-    name = "testchain-dss-deploy-scripts";
-    src = lib.cleanSource (lib.sourceByRegex ./. [ "[^/]*" "(scripts|lib)/.*" ]);
-    inherit deps;
-    extraBins = [
-      dss-deploy
-    ];
+  extraBins = [
+    dss-deploy
+  ];
 
-    patchBin = writeScript "remove-cd" ''
-      #!${stdenv.shell}
-      exec ${perl}/bin/perl -pe '
-        s|^(\s*)cd\s+(?:.*/)*([^/\n\r\s;&\|\.]+)|\1export DAPP_OUT=\$DAPP_LIB/\2/out;|;
-        s|^(\s*)cd\s+[^\n\r;&\|]+|\1|;
-        s|^(\s*)\./bin/||;
-      '
-    '';
-  };
-in {
-  inherit tdds baseBins;
+  # Patch scripts by removing `cd` commands and adding DAPP_OUT env so that
+  # `dapp create` can find the right binaries even though no submodules have
+  # been downloaded inside the Nix build environment.
+  patchBin = writeScript "remove-cd" ''
+    #!${stdenv.shell}
+    exec ${perl}/bin/perl -pe '
+      s|^(\s*)cd\s+(?:.*/)*([^/\n\r\s;&\|\.]+)|\1export DAPP_OUT=\$DAPP_LIB/\2/out;|;
+      s|^(\s*)cd\s+[^\n\r;&\|]+|\1|;
+      s|^(\s*)\./bin/||;
+    '
+  '';
 }

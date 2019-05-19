@@ -3,18 +3,16 @@
 }: with pkgs;
 
 let
-  deploy = import ./. {
-    inherit pkgs;
-  };
+  tdds = import ./. { inherit pkgs; };
 in mkShell {
-  buildInputs = deploy.baseBins ++ [
+  buildInputs = tdds.bins ++ [
+    tdds
     pkgs.sethret
-    deploy.tdds
   ];
 
   shellHook = ''
     setup-env() {
-      . ${./scripts/setup-env.sh}
+      . ${tdds}/lib/setup-env.sh
     }
     export -f setup-env
     setup-env || echo Re-run setup script with \'setup-env\'
