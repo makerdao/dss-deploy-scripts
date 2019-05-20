@@ -11,7 +11,7 @@ delay=$(jq -r ".pauseDelay" "$CONFIG_FILE")
 if [ "$delay" -gt 0 ]; then
     loadAddresses
 
-    cd contracts/testchain-pause-proxy-actions
+    cd "$DAPP_LIB/testchain-pause-proxy-actions"
     dapp build
     action=$(dapp create ActionChangeDelay)
     calldata="$(seth calldata 'changeDelay(address,address,uint256)' "$MCD_PAUSE" "$action" "$(seth --to-uint256 "$delay")")"

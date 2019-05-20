@@ -4,7 +4,7 @@
 . "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
 
 # Deploy Gov Polling Generator (no solc optimization)
-cd contracts/gov-polling-generator
+cd "$DAPP_LIB/gov-polling-generator"
 dapp build
 GOV_POLL_GEN=$(dapp create GovPollingGenerator)
 
@@ -24,8 +24,6 @@ while IFS=$'\n' read -r line; do ADDRS+=("$line"); done < <(seth call "$GOV_POLL
 POLL_ID=$((16#$POLL_ID))
 VOTE_YES="0x${ADDRS[0]}"
 VOTE_NO="0x${ADDRS[1]}"
-
-cd ../../
 
 # Add new addresses to json file
 addAddresses <<EOF

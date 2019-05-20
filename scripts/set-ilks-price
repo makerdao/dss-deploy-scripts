@@ -13,7 +13,7 @@ for token in $tokens; do
     type=$(jq -r ".tokens.${token} | .pip | .type" "$CONFIG_FILE")
     if [ "${type}" = "value" ]; then
         price=$(jq -r ".tokens.${token} | .pip | .price" "$CONFIG_FILE")
-        "$DIR/set-price" "$token" "$price"
+        "$LIBEXEC_DIR/set-price" "$token" "$price"
     fi
 done
 

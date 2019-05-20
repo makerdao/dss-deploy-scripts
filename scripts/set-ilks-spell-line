@@ -6,7 +6,7 @@
 CONFIG_FILE="$OUT_DIR/config.json"
 loadAddresses
 
-cd contracts/line-spell
+cd "$DAPP_LIB/line-spell"
 dapp build
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
@@ -22,8 +22,6 @@ ilksT="[${ilksT%,}]"
 lines="[${lines%,}]"
 
 EXEC_PROPOSAL=$(seth send --create out/MultiLineSpell.bin 'MultiLineSpell(address,address,address,bytes32[] memory,uint256[] memory)' "$MCD_PAUSE" "$MCD_PAUSE_PLAN" "$MCD_VAT" "$ilksT" "$lines")
-
-cd ../../
 
 # Add new addresses to json file
 addAddresses <<EOF
