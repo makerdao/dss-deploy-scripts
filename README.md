@@ -101,15 +101,13 @@ nix run -f https://github.com/makerdao/testchain-dss-deployment-scripts/tarball/
 ```
 
 After changing submodules the lock file [`nix/dapp.nix`](nix/dapp.nix)
-needs to be updated using:
+needs to be updated using `dapp2nix`. This is to avoid downloading all
+submodules when installing the deploy scripts without cloning `tdds`.
 
 ```sh
 nix-shell
 dapp2nix > nix/dapp.nix
 ```
-
-This is to avoid downloading all submodules when installing the deploy
-scripts from another repository.
 
 Dependencies are managed through a central repository referenced in
 [`nix/pkgs.nix`](nix/pkgs.nix) and the main Nix expression to build this
