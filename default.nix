@@ -41,7 +41,7 @@ in makerScriptPackage {
   patchBin = writeScript "remove-cd" ''
     #!${stdenv.shell}
     exec ${perl}/bin/perl -pe '
-      s|^(\s*)cd\s+(?:.*/)*([^/\n\r\s;&\|\.]+)|\1export DAPP_OUT=\$DAPP_LIB/\2/out;|;
+      s|^(\s*)cd\s+(?:.*/)*([^\s/\n\r\s;&\|\.]+)|\1export DAPP_OUT=\$DAPP_LIB/\2/out|;
       s|^(\s*)cd\s+[^\n\r;&\|]+|\1|;
       s|^(\s*)\./bin/||;
     '
