@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
-set -ex
 
-export ETH_GAS=${ETH_GAS:-"7000000"}
-unset SOLC_FLAGS
+# shellcheck source=lib/common.sh
+. "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
 
 # Deploy Gov Polling Generator (no solc optimization)
-cd contracts/gov-polling-generator
+cd "$DAPP_LIB/gov-polling-generator"
 dapp build
 GOV_POLL_GEN=$(dapp create GovPollingGenerator)
 
@@ -26,10 +25,8 @@ POLL_ID=$((16#$POLL_ID))
 VOTE_YES="0x${ADDRS[0]}"
 VOTE_NO="0x${ADDRS[1]}"
 
-cd ../../
-
 # Add new addresses to json file
-cat >> ./out/addresses.tmp.json << EOF
+addAddresses <<EOF
 {
     "GOV_POLL_GEN": "$GOV_POLL_GEN",
     "POLL_ID": "$POLL_ID",
@@ -37,13 +34,7 @@ cat >> ./out/addresses.tmp.json << EOF
     "VOTE_NO": "$VOTE_NO"
 }
 EOF
-result=$(jq -s add "./out/addresses.json" "./out/addresses.tmp.json")
-cat > ./out/addresses.json << EOF
-$result 
-EOF
 
-rm ./out/addresses.tmp.json
-
-cp ./contracts/gov-polling-generator/out/GovPollingGenerator.abi ./out/abi
+cp "$DAPP_LIB"/gov-polling-generator/out/GovPollingGenerator.abi "$OUT_DIR/abi"
 
 echo "POLL DEPLOYMENT COMPLETED SUCCESSFULLY"

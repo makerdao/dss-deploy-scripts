@@ -1,16 +1,12 @@
 #!/usr/bin/env bash
-set -ex
-
-export ETH_GAS=${ETH_GAS:-"7000000"}
 
 export CONFIG_STEP=${CONFIG_STEP:-"step-7"}
-CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/$CONFIG_STEP.json"
+# shellcheck source=lib/common.sh
+. "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
 
-# shellcheck source=/dev/null
-./step-4-deploy
+"$BIN_DIR"/step-4-deploy
 
-# shellcheck source=/dev/null
-. scripts/load-addresses
+loadAddresses
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
@@ -39,13 +35,13 @@ mat=$(jq -r ".tokens.${token}.ilks.${ilk} | .mat" "$CONFIG_FILE")
 price=$(jq -r ".tokens.${token} | .pip | .price" "$CONFIG_FILE")
 dart=$(seth --to-uint256 "$(mcd --to-hex "$(seth --to-wei "$(echo "5 * $price * 100 / $mat" | bc -l)" eth)")") # Max debt amount
 
-./scripts/set-price "$token" "$price"
+"$LIBEXEC_DIR"/set-price "$token" "$price"
 
 seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
 
 seth send "$CDP_MANAGER" 'frob(uint256,int256,int256)' "$ID" "$dink" "$dart"
 
-./scripts/set-price "$token" "$(echo "$price - 1" | bc -l)"
+"$LIBEXEC_DIR"/set-price "$token" "$(echo "$price - 1" | bc -l)"
 seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
 
 # Bite CDP
@@ -53,8 +49,7 @@ seth send "$MCD_CAT" 'bite(bytes32,address)' "$(seth --to-bytes32 "$(seth --from
 
 # Set Pause Delay
 if [ "$CONFIG_STEP" = "step-7" ]; then
-    # shellcheck source=/dev/null
-    ./scripts/set-pause-delay
+    "$LIBEXEC_DIR"/set-pause-delay
 fi
 
 echo "STEP 7 COMPLETED SUCCESSFULLY"

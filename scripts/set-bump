@@ -1,17 +1,13 @@
 #!/usr/bin/env bash
-set -ex
 
-export ETH_GAS=${ETH_GAS:-"7000000"}
+# shellcheck source=lib/common.sh
+. "${LIB_DIR:-$(cd "${0%/*}/../lib"&&pwd)}/common.sh"
 
-# Get config variables
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-CONFIG_FILE="$DIR/../out/config.json"
-
-# shellcheck source=/dev/null
-. "$DIR/load-addresses"
+CONFIG_FILE="$OUT_DIR/config.json"
+loadAddresses
 
 # Set general debt ceiling (if defined)
-bump=$(jq -r ".bump" "$CONFIG_FILE")
+bump=$(jq -r ".bump | values" "$CONFIG_FILE")
 if [ "$bump" != "" ]; then
     bump=$(echo "$bump"*10^45 | bc)
     bump=$(seth --to-uint256 "${bump%.*}")

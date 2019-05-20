@@ -1,24 +1,21 @@
 #!/usr/bin/env bash
-set -ex
-
-# Remove ./out folder
-rm -rf ./out
-
-export ETH_GAS=${ETH_GAS:-"7000000"}
-unset SOLC_FLAGS
 
 # Get config variables
 export CONFIG_STEP=${CONFIG_STEP:-"step-1"}
-CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/$CONFIG_STEP.json"
+# shellcheck source=lib/common.sh
+. "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
+
+# Remove ./out folder
+rm -rf "$OUT_DIR"
 
 # Send ETH to Omnia Relayer
 OMNIA_RELAYER=$(jq -r ".omniaFromAddr" "$CONFIG_FILE")
 seth send "$OMNIA_RELAYER" --value "$(seth --to-wei 10000 eth)"
 
 # Deploy Values or Medians + OSMs (if delay > 0) (no solc optimization)
-cd contracts/osm
+cd "$DAPP_LIB/osm"
 dapp build
-cd ../testchain-medians
+cd "$DAPP_LIB/testchain-medians"
 dapp build
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
@@ -26,7 +23,7 @@ for token in $tokens; do
     type=$(jq -r ".tokens.${token} | .pip | .type" "$CONFIG_FILE")
     # Deploy Medianizer as Feed
     if [ "${type}" = "median" ]; then
-        cd ../testchain-medians
+        cd "$DAPP_LIB/testchain-medians"
         eval export "\VAL_${token}=$(dapp create "Median${token}USD")"
         signers=$(jq -r ".tokens.${token} | .pip | .signers | .[]" "$CONFIG_FILE")
         # Approve oracle price feed providers
@@ -34,19 +31,19 @@ for token in $tokens; do
             seth send "$(eval echo "\$VAL_${token}")" 'lift(address)' "$signer"
         done
         # Set quorum for Medianizer
-	    seth send "$(eval echo "\$VAL_${token}")" 'setBar(uint256)' "$(seth --to-uint256 3)"
+        seth send "$(eval echo "\$VAL_${token}")" 'setBar(uint256)' "$(seth --to-uint256 3)"
         # Whitelist Omnia relayer to read price from Medianizer
         seth send "$(eval echo "\$VAL_${token}")" 'kiss(address)' "$OMNIA_RELAYER"
     fi
     # Deploy DSValue as Feed
     if [ "${type}" = "value" ]; then
-        cd ../osm
+        cd "$DAPP_LIB/osm"
         eval export "\VAL_${token}=$(dapp create DSValue)"
     fi
     # Deploy OSM if delay > 0
     osm_delay=$(jq -r ".tokens.${token} | .pip | .osmDelay" "$CONFIG_FILE")
     if [ "$osm_delay" -gt 0 ]; then
-        cd ../osm
+        cd "$DAPP_LIB/osm"
         # Deploy OSM
         eval export "\PIP_${token}=$(dapp create OSM "$(eval echo "\$VAL_${token}")")"
         # Set OSM delay
@@ -58,13 +55,9 @@ for token in $tokens; do
     fi
 done
 
-cd ../../
+"$BIN_DIR"/base-deploy
 
-# shellcheck source=/dev/null
-./base-deploy
-
-# shellcheck source=/dev/null
-. scripts/load-addresses
+loadAddresses
 
 # Whitelist Spotter
 for token in $tokens; do
@@ -80,13 +73,12 @@ for token in $tokens; do
 done
 
 if [ "$CONFIG_STEP" = "step-1" ]; then
-    # shellcheck source=/dev/null
-    ./scripts/set-pause-delay
+    "$LIBEXEC_DIR"/set-pause-delay
 fi
 
 # Copy abi files
-cp ./contracts/testchain-medians/out/Median.abi ./out/abi
-cp ./contracts/osm/out/DSValue.abi ./out/abi
-cp ./contracts/osm/out/OSM.abi ./out/abi
+cp "$DAPP_LIB"/testchain-medians/out/Median.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/osm/out/DSValue.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/osm/out/OSM.abi "$OUT_DIR"/abi
 
 echo "STEP 1 COMPLETED SUCCESSFULLY"

@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
-set -ex
 
-# Get config variables
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+# shellcheck source=lib/common.sh
+. "${LIB_DIR:-$(cd "${0%/*}/../lib"&&pwd)}/common.sh"
 
-# shellcheck source=/dev/null
-. "$DIR/load-addresses"
+loadAddresses
 
-type=$(jq -r ".tokens.${1} | .pip | .type" "./out/config.json")
+type=$(jq -r ".tokens.${1} | .pip | .type" "$OUT_DIR/config.json")
 if [ "${type}" = "value" ]; then
     # Set DSValue price
     eval seth send "\$VAL_${1} 'poke(bytes32)' $(seth --to-uint256 "$(seth --to-wei "$2" ETH)")"

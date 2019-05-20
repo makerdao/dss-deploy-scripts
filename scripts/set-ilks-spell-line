@@ -1,16 +1,12 @@
 #!/usr/bin/env bash
-set -ex
 
-export ETH_GAS=${ETH_GAS:-"7000000"}
+# shellcheck source=lib/common.sh
+. "${LIB_DIR:-$(cd "${0%/*}/../lib"&&pwd)}/common.sh"
 
-# Get config variables
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-CONFIG_FILE="$DIR/../out/config.json"
+CONFIG_FILE="$OUT_DIR/config.json"
+loadAddresses
 
-# shellcheck source=/dev/null
-. "$DIR/load-addresses"
-
-cd contracts/line-spell
+cd "$DAPP_LIB/line-spell"
 dapp build
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
@@ -27,19 +23,11 @@ lines="[${lines%,}]"
 
 EXEC_PROPOSAL=$(seth send --create out/MultiLineSpell.bin 'MultiLineSpell(address,address,address,bytes32[] memory,uint256[] memory)' "$MCD_PAUSE" "$MCD_PAUSE_PLAN" "$MCD_VAT" "$ilksT" "$lines")
 
-cd ../../
-
 # Add new addresses to json file
-cat >> ./out/addresses.tmp.json << EOF
+addAddresses <<EOF
 {
     "EXEC_PROPOSAL": "$EXEC_PROPOSAL"
 }
 EOF
-result=$(jq -s add "./out/addresses.json" "./out/addresses.tmp.json")
-cat > ./out/addresses.json << EOF
-$result
-EOF
-
-rm ./out/addresses.tmp.json
 
 echo "EXECUTIVE SPELL DEBT CEILINGS COMPLETED SUCCESSFULLY"

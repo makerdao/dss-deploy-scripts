@@ -1,16 +1,13 @@
 #!/usr/bin/env bash
-set -ex
 
-# Remove ./out folder
-rm -rf ./out
-
-export ETH_GAS=${ETH_GAS:-"7000000"}
+export CONFIG_STEP=kovan
+# shellcheck source=lib/common.sh
+. "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
 
 test "$(seth chain)" = "kovan" || exit 1
 
-# Get config variables
-export CONFIG_STEP=kovan
-CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/${CONFIG_STEP}.json"
+# Remove ./out folder
+rm -rf "$OUT_DIR"
 
 # Set verify contract option in Etherscan if the API key is in the config file
 etherscanApiKey=$(jq -r ".etherscanApiKey" "$CONFIG_FILE")
@@ -21,52 +18,38 @@ fi
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
-    eval export "\PIP_${token}=$(jq -r ".tokens.${token} | .pip" "$CONFIG_FILE")"
+    eval "export PIP_${token}=$(jq -r ".tokens.${token} | .pip" "$CONFIG_FILE")"
 done
 
-# shellcheck source=/dev/null
-./base-deploy
+"$BIN_DIR"/base-deploy
 
-# shellcheck source=/dev/null
-./poll-deploy
+"$BIN_DIR"/poll-deploy
 
-# shellcheck source=/dev/null
-./scripts/set-ilks-mat
+"$LIBEXEC_DIR"/set-ilks-mat
 
 setLinesMode=$(jq -r ".setLinesMode" "$CONFIG_FILE")
 if [[ $setLinesMode = "direct" ]]; then
-    # shellcheck source=/dev/null
-    ./scripts/set-ilks-line
+    "$LIBEXEC_DIR"/set-ilks-line
 elif [[ $setLinesMode = "vote" ]]; then
-   # shellcheck source=/dev/null
-    ./scripts/set-ilks-spell-line
+    "$LIBEXEC_DIR"/set-ilks-spell-line
 fi
 
-# shellcheck source=/dev/null
-./scripts/set-ilks-duty
+"$LIBEXEC_DIR"/set-ilks-duty
 
-# shellcheck source=/dev/null
-./scripts/set-ilks-pip-whitelist
+"$LIBEXEC_DIR"/set-ilks-pip-whitelist
 
-# shellcheck source=/dev/null
-./scripts/set-ilks-spotter-poke
+"$LIBEXEC_DIR"/set-ilks-spotter-poke
 
-# shellcheck source=/dev/null
-./scripts/set-ilks-chop
+"$LIBEXEC_DIR"/set-ilks-chop
 
-# shellcheck source=/dev/null
-./scripts/set-ilks-lump
+"$LIBEXEC_DIR"/set-ilks-lump
 
-# shellcheck source=/dev/null
-./scripts/set-ilks-beg
+"$LIBEXEC_DIR"/set-ilks-beg
 
-# shellcheck source=/dev/null
-./scripts/set-ilks-ttl
+"$LIBEXEC_DIR"/set-ilks-ttl
 
-# shellcheck source=/dev/null
-./scripts/set-ilks-tau
+"$LIBEXEC_DIR"/set-ilks-tau
 
-# shellcheck source=/dev/null
-./scripts/set-pause-delay
+"$LIBEXEC_DIR"/set-pause-delay
 
 echo "KOVAN DEPLOYMENT COMPLETED SUCCESSFULLY"

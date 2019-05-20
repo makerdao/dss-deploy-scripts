@@ -1,17 +1,6 @@
 #!/usr/bin/env bash
 [[ "$_" != "$0" ]] || { echo >&2 "Use this script by sourcing it \`. $0\` instead"; exit 1; }
 
-find_keyfile() {
-  local address
-  address="$(tr '[:upper:]' '[:lower:]' <<<"${2#0x}")"
-  while IFS= read -r -d '' file; do
-    if [ "$(jq -r .address "$file")" == "$address" ]; then
-      echo "$file"
-      break
-    fi
-  done < <(find "$1" -type f -print0)
-}
-
 TESTNET_PORT=${TESTNET_PORT:-8545}
 TESTNET_HOST=${TESTNET_HOST:-localhost}
 TESTNET_URL="http://$TESTNET_HOST:$TESTNET_PORT"
@@ -42,8 +31,20 @@ export ETH_GAS="${ETH_GAS:-7000000}"
 export ETH_FROM="${ETH_FROM:-$(seth ls | head -n1 | awk '{print $1}')}"
 
 # For dai.js tests
-PRIVATE_KEY="$(sethret "$(find_keyfile "$ETH_KEYSTORE" "$ETH_FROM")" "$(cat "$ETH_PASSWORD")")"
-export PRIVATE_KEY
+if command -v sethret > /dev/null 2>&1; then
+  find_keyfile() {
+    local address
+    address="$(tr '[:upper:]' '[:lower:]' <<<"${2#0x}")"
+    while IFS= read -r -d '' file; do
+      if [ "$(jq -r .address "$file")" == "$address" ]; then
+        echo "$file"
+        break
+      fi
+    done < <(find "$1" -type f -print0)
+  }
+  PRIVATE_KEY="$(sethret "$(find_keyfile "$ETH_KEYSTORE" "$ETH_FROM")" "$(cat "$ETH_PASSWORD")")"
+  export PRIVATE_KEY
+fi
 export JSON_RPC="$ETH_RPC_URL"
 
 echo "=== DAPPTOOLS VARIABLES ==="

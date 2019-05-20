@@ -1,30 +1,25 @@
 #!/usr/bin/env bash
-set -ex
 
-export ETH_GAS=${ETH_GAS:-"7000000"}
-unset SOLC_FLAGS
-
-# Get config variables
-test -z "$CONFIG_STEP" && exit 1
-CONFIG_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/${CONFIG_STEP}.json"
+# shellcheck source=lib/common.sh
+. "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
 
 # Deploy Multicall (no solc optimization)
-cd contracts/multicall
+cd "$DAPP_LIB/multicall"
 dapp build
 MULTICALL=$(dapp create Multicall)
 
 # Deploy Token Faucet (no solc optimization)
-cd ../token-faucet
+cd "$DAPP_LIB/token-faucet"
 dapp build
 test -z "$FAUCET" && FAUCET=$(dapp create TokenFaucet "$(seth --to-uint256 "$(seth --to-wei 50 ETH)")")
 
 # Deploy Guard for Gov and IOU tokens (no solc optimization)
-cd ../ds-guard
+cd "$DAPP_LIB/ds-guard"
 dapp build
 MCD_GOV_GUARD=$(dapp create DSGuard)
 
 # Deploy Gov token and Chief (no solc optimization)
-cd ../ds-chief
+cd "$DAPP_LIB/ds-chief"
 dapp build
 
 if [ -z "$MCD_GOV" ]; then
@@ -47,17 +42,17 @@ seth send "$MCD_ADM" 'vote(address[] memory)' ["${ETH_FROM#0x}"]
 seth send "$MCD_ADM" 'lift(address)' "$ETH_FROM"
 
 # Deploy Vote Proxy Factory (no solc optimization)
-cd ../vote-proxy
+cd "$DAPP_LIB/vote-proxy"
 dapp --use solc:0.4.25 build
 VOTE_PROXY_FACTORY=$(dapp create VoteProxyFactory "$MCD_ADM")
 
 # Deploy ProxyRegistry (no solc optimization)
-cd ../proxy-registry
+cd "$DAPP_LIB/proxy-registry"
 dapp build
 PROXY_FACTORY=$(dapp create DSProxyFactory)
 PROXY_REGISTRY=$(dapp create ProxyRegistry "$PROXY_FACTORY")
 
-cd ../dss-deploy
+cd "$DAPP_LIB/dss-deploy"
 
 # Deploy Fabs (no solc optimization)
 ./bin/deploy-fab
@@ -111,7 +106,7 @@ done
 # Deploy Pause Plan - Library functions for the Pause (no solc optimization)
 MCD_PAUSE_PLAN=$(dapp create Plan)
 
-cd ../dss-proxy-actions
+cd "$DAPP_LIB/dss-proxy-actions"
 dapp build
 
 # Deploy Proxy Actions (no solc optimization)
@@ -125,7 +120,7 @@ GET_CDPS=$(dapp create GetCdps)
 seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_FLOP" "$MCD_GOV" "$(seth --to-bytes32 "$(seth sig 'mint(address,uint256)')")"
 
 # Deploy Pause Proxy Actions (support contract for executing initial set up of the dss system)
-cd ../testchain-pause-proxy-actions
+cd "$DAPP_LIB/testchain-pause-proxy-actions"
 dapp build
 
 PROXY_PAUSE_ACTIONS=$(dapp create TestchainPauseProxyActions)
@@ -139,35 +134,34 @@ seth send "$MCD_ADM" 'vote(address[] memory)' ["${PROXY_DEPLOYER#0x}"]
 seth send "$MCD_ADM" 'lift(address)' "$PROXY_DEPLOYER"
 
 # Copy abi files
-cd ../../
-mkdir -p ./out/abi
-cp ./contracts/multicall/out/Multicall.abi ./out/abi
-cp ./contracts/ds-guard/out/DSGuard.abi ./out/abi
-cp ./contracts/ds-chief/out/DSToken.abi ./out/abi
-cp ./contracts/ds-chief/out/DSChief.abi ./out/abi
-cp ./contracts/vote-proxy/out/VoteProxy.abi ./out/abi
-cp ./contracts/vote-proxy/out/VoteProxyFactory.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/DssProxyActions.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/DssCdpManager.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/GetCdps.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/DssDeploy.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/Vat.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/Jug.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/Cat.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/Vow.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/Flipper.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/Flopper.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/Flapper.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/DaiJoin.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/GemJoin.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/Spotter.abi ./out/abi
-cp ./contracts/dss-proxy-actions/out/Pot.abi ./out/abi
-cp ./contracts/proxy-registry/out/DSProxy.abi ./out/abi
-cp ./contracts/proxy-registry/out/DSProxyFactory.abi ./out/abi
-cp ./contracts/proxy-registry/out/ProxyRegistry.abi ./out/abi
-cp ./contracts/token-faucet/out/TokenFaucet.abi ./out/abi
+mkdir -p "$OUT_DIR"/abi
+cp "$DAPP_LIB"/multicall/out/Multicall.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/ds-guard/out/DSGuard.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/ds-chief/out/DSToken.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/ds-chief/out/DSChief.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/vote-proxy/out/VoteProxy.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/vote-proxy/out/VoteProxyFactory.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/DssProxyActions.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/DssCdpManager.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/GetCdps.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/DssDeploy.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/Vat.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/Jug.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/Cat.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/Vow.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/Flipper.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/Flopper.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/Flapper.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/DaiJoin.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/GemJoin.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/Spotter.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/Pot.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/proxy-registry/out/DSProxy.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/proxy-registry/out/DSProxyFactory.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/proxy-registry/out/ProxyRegistry.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/token-faucet/out/TokenFaucet.abi "$OUT_DIR"/abi
 
-cp "$CONFIG_FILE" ./out/config.json
+cp "$CONFIG_FILE" "$OUT_DIR"/config.json
 
 for token in $tokens; do
     ILKS_VARS+=",
@@ -188,7 +182,7 @@ for token in $tokens; do
 done
 
 # Generate addresses.json file
-cat > ./out/addresses.json << EOF
+cat > "$OUT_DIR"/addresses.json <<EOF
 {
     "MULTICALL": "$MULTICALL",
     "FAUCET": "$FAUCET",
@@ -221,36 +215,36 @@ cat > ./out/addresses.json << EOF
 EOF
 
 # shellcheck source=/dev/null
-./scripts/set-line
+"$LIBEXEC_DIR"/set-line
 
 # shellcheck source=/dev/null
-./scripts/set-wait
+"$LIBEXEC_DIR"/set-wait
 
 # shellcheck source=/dev/null
-./scripts/set-bump
+"$LIBEXEC_DIR"/set-bump
 
 # shellcheck source=/dev/null
-./scripts/set-sump
+"$LIBEXEC_DIR"/set-sump
 
 # shellcheck source=/dev/null
-./scripts/set-hump
+"$LIBEXEC_DIR"/set-hump
 
 # shellcheck source=/dev/null
-./scripts/set-beg "flap"
+"$LIBEXEC_DIR"/set-beg "flap"
 
 # shellcheck source=/dev/null
-./scripts/set-ttl "flap"
+"$LIBEXEC_DIR"/set-ttl "flap"
 
 # shellcheck source=/dev/null
-./scripts/set-tau "flap"
+"$LIBEXEC_DIR"/set-tau "flap"
 
 # shellcheck source=/dev/null
-./scripts/set-beg "flop"
+"$LIBEXEC_DIR"/set-beg "flop"
 
 # shellcheck source=/dev/null
-./scripts/set-ttl "flop"
+"$LIBEXEC_DIR"/set-ttl "flop"
 
 # shellcheck source=/dev/null
-./scripts/set-tau "flop"
+"$LIBEXEC_DIR"/set-tau "flop"
 
 echo "BASE DEPLOY COMPLETED SUCCESSFULLY"
