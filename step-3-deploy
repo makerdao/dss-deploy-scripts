@@ -1,22 +1,18 @@
 #!/usr/bin/env bash
-set -ex
 
-export ETH_GAS=${ETH_GAS:-"7000000"}
-
+# Get config variables
 export CONFIG_STEP=${CONFIG_STEP:-"step-3"}
+# shellcheck source=lib/common.sh
+. "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
 
-# shellcheck source=/dev/null
-./step-1-deploy
+"$BIN_DIR"/step-1-deploy
 
-# shellcheck source=/dev/null
-./poll-deploy
+"$BIN_DIR"/poll-deploy
 
-# shellcheck source=/dev/null
-./scripts/set-ilks-spell-line
+"$LIBEXEC_DIR"/set-ilks-spell-line
 
 if [ "$CONFIG_STEP" = "step-3" ]; then
-    # shellcheck source=/dev/null
-    ./scripts/set-pause-delay
+    "$LIBEXEC_DIR"/set-pause-delay
 fi
 
 echo "STEP 3 COMPLETED SUCCESSFULLY"
