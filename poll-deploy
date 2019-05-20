@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-. ${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh
+# shellcheck source=lib/common.sh
+. "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
 
 # Deploy Gov Polling Generator (no solc optimization)
 cd contracts/gov-polling-generator
@@ -36,6 +37,6 @@ addAddresses <<EOF
 }
 EOF
 
-cp $DAPP_LIB/gov-polling-generator/out/GovPollingGenerator.abi "$OUT_DIR/abi"
+cp "$DAPP_LIB"/gov-polling-generator/out/GovPollingGenerator.abi "$OUT_DIR/abi"
 
 echo "POLL DEPLOYMENT COMPLETED SUCCESSFULLY"

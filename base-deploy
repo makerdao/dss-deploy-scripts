@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-. ${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh
+# shellcheck source=lib/common.sh
+. "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
 
 # Deploy Multicall (no solc optimization)
 cd contracts/multicall
@@ -134,34 +135,34 @@ seth send "$MCD_ADM" 'lift(address)' "$PROXY_DEPLOYER"
 
 # Copy abi files
 cd ../../
-mkdir -p $OUT_DIR/abi
-cp $DAPP_LIB/multicall/out/Multicall.abi $OUT_DIR/abi
-cp $DAPP_LIB/ds-guard/out/DSGuard.abi $OUT_DIR/abi
-cp $DAPP_LIB/ds-chief/out/DSToken.abi $OUT_DIR/abi
-cp $DAPP_LIB/ds-chief/out/DSChief.abi $OUT_DIR/abi
-cp $DAPP_LIB/vote-proxy/out/VoteProxy.abi $OUT_DIR/abi
-cp $DAPP_LIB/vote-proxy/out/VoteProxyFactory.abi $OUT_DIR/abi
-cp $DAPP_LIB/dss-proxy-actions/out/DssProxyActions.abi $OUT_DIR/abi
-cp $DAPP_LIB/dss-proxy-actions/out/DssCdpManager.abi $OUT_DIR/abi
-cp $DAPP_LIB/dss-proxy-actions/out/GetCdps.abi $OUT_DIR/abi
-cp $DAPP_LIB/dss-proxy-actions/out/DssDeploy.abi $OUT_DIR/abi
-cp $DAPP_LIB/dss-proxy-actions/out/Vat.abi $OUT_DIR/abi
-cp $DAPP_LIB/dss-proxy-actions/out/Jug.abi $OUT_DIR/abi
-cp $DAPP_LIB/dss-proxy-actions/out/Cat.abi $OUT_DIR/abi
-cp $DAPP_LIB/dss-proxy-actions/out/Vow.abi $OUT_DIR/abi
-cp $DAPP_LIB/dss-proxy-actions/out/Flipper.abi $OUT_DIR/abi
-cp $DAPP_LIB/dss-proxy-actions/out/Flopper.abi $OUT_DIR/abi
-cp $DAPP_LIB/dss-proxy-actions/out/Flapper.abi $OUT_DIR/abi
-cp $DAPP_LIB/dss-proxy-actions/out/DaiJoin.abi $OUT_DIR/abi
-cp $DAPP_LIB/dss-proxy-actions/out/GemJoin.abi $OUT_DIR/abi
-cp $DAPP_LIB/dss-proxy-actions/out/Spotter.abi $OUT_DIR/abi
-cp $DAPP_LIB/dss-proxy-actions/out/Pot.abi $OUT_DIR/abi
-cp $DAPP_LIB/proxy-registry/out/DSProxy.abi $OUT_DIR/abi
-cp $DAPP_LIB/proxy-registry/out/DSProxyFactory.abi $OUT_DIR/abi
-cp $DAPP_LIB/proxy-registry/out/ProxyRegistry.abi $OUT_DIR/abi
-cp $DAPP_LIB/token-faucet/out/TokenFaucet.abi $OUT_DIR/abi
+mkdir -p "$OUT_DIR"/abi
+cp "$DAPP_LIB"/multicall/out/Multicall.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/ds-guard/out/DSGuard.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/ds-chief/out/DSToken.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/ds-chief/out/DSChief.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/vote-proxy/out/VoteProxy.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/vote-proxy/out/VoteProxyFactory.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/DssProxyActions.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/DssCdpManager.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/GetCdps.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/DssDeploy.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/Vat.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/Jug.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/Cat.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/Vow.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/Flipper.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/Flopper.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/Flapper.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/DaiJoin.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/GemJoin.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/Spotter.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-proxy-actions/out/Pot.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/proxy-registry/out/DSProxy.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/proxy-registry/out/DSProxyFactory.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/proxy-registry/out/ProxyRegistry.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/token-faucet/out/TokenFaucet.abi "$OUT_DIR"/abi
 
-cp "$CONFIG_FILE" $OUT_DIR/config.json
+cp "$CONFIG_FILE" "$OUT_DIR"/config.json
 
 for token in $tokens; do
     ILKS_VARS+=",
@@ -182,7 +183,7 @@ for token in $tokens; do
 done
 
 # Generate addresses.json file
-cat > $OUT_DIR/addresses.json <<EOF
+cat > "$OUT_DIR"/addresses.json <<EOF
 {
     "MULTICALL": "$MULTICALL",
     "FAUCET": "$FAUCET",
@@ -215,36 +216,36 @@ cat > $OUT_DIR/addresses.json <<EOF
 EOF
 
 # shellcheck source=/dev/null
-$LIBEXEC_DIR/set-line
+"$LIBEXEC_DIR"/set-line
 
 # shellcheck source=/dev/null
-$LIBEXEC_DIR/set-wait
+"$LIBEXEC_DIR"/set-wait
 
 # shellcheck source=/dev/null
-$LIBEXEC_DIR/set-bump
+"$LIBEXEC_DIR"/set-bump
 
 # shellcheck source=/dev/null
-$LIBEXEC_DIR/set-sump
+"$LIBEXEC_DIR"/set-sump
 
 # shellcheck source=/dev/null
-$LIBEXEC_DIR/set-hump
+"$LIBEXEC_DIR"/set-hump
 
 # shellcheck source=/dev/null
-$LIBEXEC_DIR/set-beg "flap"
+"$LIBEXEC_DIR"/set-beg "flap"
 
 # shellcheck source=/dev/null
-$LIBEXEC_DIR/set-ttl "flap"
+"$LIBEXEC_DIR"/set-ttl "flap"
 
 # shellcheck source=/dev/null
-$LIBEXEC_DIR/set-tau "flap"
+"$LIBEXEC_DIR"/set-tau "flap"
 
 # shellcheck source=/dev/null
-$LIBEXEC_DIR/set-beg "flop"
+"$LIBEXEC_DIR"/set-beg "flop"
 
 # shellcheck source=/dev/null
-$LIBEXEC_DIR/set-ttl "flop"
+"$LIBEXEC_DIR"/set-ttl "flop"
 
 # shellcheck source=/dev/null
-$LIBEXEC_DIR/set-tau "flop"
+"$LIBEXEC_DIR"/set-tau "flop"
 
 echo "BASE DEPLOY COMPLETED SUCCESSFULLY"

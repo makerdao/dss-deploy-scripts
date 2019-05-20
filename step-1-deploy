@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
 # Get config variables
-CONFIG_STEP=${CONFIG_STEP:-"step-1"}
-. ${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh
+export CONFIG_STEP=${CONFIG_STEP:-"step-1"}
+# shellcheck source=lib/common.sh
+. "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
 
 # Remove ./out folder
-rm -rf $OUT_DIR
+rm -rf "$OUT_DIR"
 
 # Send ETH to Omnia Relayer
 OMNIA_RELAYER=$(jq -r ".omniaFromAddr" "$CONFIG_FILE")
@@ -56,8 +57,7 @@ done
 
 cd ../../
 
-# shellcheck source=/dev/null
-$BIN_DIR/base-deploy
+"$BIN_DIR"/base-deploy
 
 loadAddresses
 
@@ -75,13 +75,12 @@ for token in $tokens; do
 done
 
 if [ "$CONFIG_STEP" = "step-1" ]; then
-    # shellcheck source=/dev/null
-    $LIBEXEC_DIR/set-pause-delay
+    "$LIBEXEC_DIR"/set-pause-delay
 fi
 
 # Copy abi files
-cp $DAPP_LIB/testchain-medians/out/Median.abi $OUT_DIR/abi
-cp $DAPP_LIB/osm/out/DSValue.abi $OUT_DIR/abi
-cp $DAPP_LIB/osm/out/OSM.abi $OUT_DIR/abi
+cp "$DAPP_LIB"/testchain-medians/out/Median.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/osm/out/DSValue.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/osm/out/OSM.abi "$OUT_DIR"/abi
 
 echo "STEP 1 COMPLETED SUCCESSFULLY"

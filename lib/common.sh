@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Set fail flags
 set -eo pipefail
 shopt -s lastpipe
@@ -10,7 +12,6 @@ DAPP_LIB=${DAPP_LIB:-$BIN_DIR/contracts}
 
 OUT_DIR=${OUT_DIR:-$PWD/out}
 
-export CONFIG_STEP=${CONFIG_STEP?}
 CONFIG_FILE="$CONFIG_DIR/$CONFIG_STEP.json"
 test -f "$CONFIG_FILE"
 
@@ -18,8 +19,9 @@ export ETH_GAS=${ETH_GAS:-"7000000"}
 unset SOLC_FLAGS
 
 loadAddresses() {
-  local keys=$(jq -r "keys_unsorted[]" "$OUT_DIR/addresses.json")
+  local keys
 
+  keys=$(jq -r "keys_unsorted[]" "$OUT_DIR/addresses.json")
   for KEY in $keys; do
       VALUE=$(jq -r ".$KEY" "$OUT_DIR/addresses.json")
       eval "export $KEY=$VALUE"
