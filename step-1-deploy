@@ -19,7 +19,7 @@ tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     type=$(jq -r ".tokens.${token} | .pip | .type" "$CONFIG_FILE")
     # Deploy Medianizer as Feed
-    if [ "${type}" = "median" ]; then
+    if [ "$type" == "median" ]; then
         cd "$DAPP_LIB/testchain-medians"
         eval export "\VAL_${token}=$(dapp create "Median${token}USD")"
         signers=$(jq -r ".tokens.${token} | .pip | .signers | .[]" "$CONFIG_FILE")
@@ -33,7 +33,7 @@ for token in $tokens; do
         seth send "$(eval echo "\$VAL_${token}")" 'kiss(address)' "$OMNIA_RELAYER"
     fi
     # Deploy DSValue as Feed
-    if [ "${type}" = "value" ]; then
+    if [ "${type}" == "value" ]; then
         cd "$DAPP_LIB/osm"
         eval export "\VAL_${token}=$(dapp create DSValue)"
     fi
@@ -46,7 +46,7 @@ for token in $tokens; do
         # Set OSM delay
         seth send "$(eval echo "\$PIP_${token}")" 'step(uint16)' "$osm_delay"
         # Whitelist OSM in Medianizer (skip if source is DSValue)
-        [[ "${type}" = "median" ]] && seth send "$(eval echo "\$VAL_${token}")" 'kiss(address)' "$(eval echo "\$PIP_${token}")"
+        [ "$type" == "median" ] && seth send "$(eval echo "\$VAL_${token}")" 'kiss(address)' "$(eval echo "\$PIP_${token}")"
     else
         eval export "PIP_${token}=\$VAL_${token}"
     fi
@@ -63,13 +63,13 @@ for token in $tokens; do
     if [ "$osm_delay" -gt 0 ]; then
         # Whitelist Spotter in OSM
         seth send "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$(eval echo "\$MCD_SPOT")"
-    elif [ "${type}" = "median" ]; then
+    elif [ "$type" == "median" ]; then
         # Whitelist Spotter in Medianizer
         seth send "$(eval echo "\$VAL_${token}")" 'kiss(address)' "$(eval echo "\$MCD_SPOT")"
     fi
 done
 
-if [ "$CONFIG_STEP" = "step-1" ]; then
+if [ "$CONFIG_STEP" == "step-1" ]; then
     "$LIBEXEC_DIR"/set-pause-delay
 fi
 

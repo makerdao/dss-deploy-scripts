@@ -8,7 +8,7 @@ export CONFIG_STEP=${CONFIG_STEP:-"step-2"}
 
 "$BIN_DIR"/poll-deploy
 
-if [ "$CONFIG_STEP" = "step-2" ]; then
+if [ "$CONFIG_STEP" == "step-2" ]; then
     "$LIBEXEC_DIR"/set-pause-delay
 fi
 

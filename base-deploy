@@ -87,7 +87,7 @@ for token in $tokens; do
         . "load-ilk-$(echo "$token" | tr '[:upper:]' '[:lower:]')-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')-$(seth chain)"
         rm "load-ilk-$(echo "$token" | tr '[:upper:]' '[:lower:]')-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')-$(seth chain)"
 
-        if [ "${token}" != "ETH" ] && [ $newToken = "true" ]; then
+        if [ "$token" != "ETH" ] && [ $newToken == "true" ]; then
             seth send "$(eval echo "\$$token")" 'transfer(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 999000 ETH)")"
         fi
         export SKIP_BUILD=true
