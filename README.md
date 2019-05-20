@@ -104,12 +104,6 @@ After changing submodules the lock file [`nix/dapp.nix`](nix/dapp.nix)
 needs to be updated using:
 
 ```sh
-nix run -f https://github.com/icetan/dapp2nix/tarball/master -c dapp2nix > nix/dapp.nix
-```
-
-Or run it inside `nix-shell`:
-
-```sh
 nix-shell
 dapp2nix > nix/dapp.nix
 ```
