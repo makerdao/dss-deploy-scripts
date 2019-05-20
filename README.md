@@ -94,16 +94,23 @@ drop into the shell.
 To be able to easily share scripts with other repos and make sure that the
 exact dependencies needed to run the scripts are met we can use Nix.
 
-After changing submodules the lock file (`nix/dapp.nix`) needs to be updated
-using:
+After changing submodules the lock file [`nix/dapp.nix`](nix/dapp.nix)
+needs to be updated using:
 
 ```sh
 nix run -f https://github.com/icetan/dapp2nix/tarball/master -c dapp2nix > nix/dapp.nix
+```
+
+Or run it inside `nix-shell`:
+
+```sh
+nix-shell
+dapp2nix > nix/dapp.nix
 ```
 
 This is to avoid downloading all submodules when installing the deploy
 scripts from another repository.
 
 Dependencies are managed through a central repository referenced in
-[`nix/pkgs.nix`](nix/pkgs.nix) and the main Nix expression to build this repo is in
-[`default.nix`](default.nix).
+[`nix/pkgs.nix`](nix/pkgs.nix) and the main Nix expression to build this
+repo is in [`default.nix`](default.nix).

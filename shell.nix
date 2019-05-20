@@ -7,7 +7,8 @@ let
 in mkShell {
   buildInputs = tdds.bins ++ [
     tdds
-    pkgs.sethret
+    sethret
+    dapp2nix
   ];
 
   shellHook = ''
