@@ -2,7 +2,6 @@
 
 # Set fail flags
 set -eo pipefail
-shopt -s lastpipe
 
 BIN_DIR=${BIN_DIR:-$(cd "${BASH_SOURCE[0]%/*}/.."&&pwd)}
 LIB_DIR=${LIB_DIR:-$BIN_DIR/lib}
