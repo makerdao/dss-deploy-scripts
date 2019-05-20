@@ -94,6 +94,12 @@ drop into the shell.
 To be able to easily share scripts with other repos and make sure that the
 exact dependencies needed to run the scripts are met we can use Nix.
 
+You can now run deploy scripts without having to clone this repo:
+
+```
+nix run -f https://github.com/makerdao/testchain-dss-deployment-scripts/tarball/nixify-poc -c step-1-deploy
+```
+
 After changing submodules the lock file [`nix/dapp.nix`](nix/dapp.nix)
 needs to be updated using:
 
