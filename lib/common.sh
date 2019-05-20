@@ -11,7 +11,20 @@ DAPP_LIB=${DAPP_LIB:-$BIN_DIR/contracts}
 
 export OUT_DIR=${OUT_DIR:-$PWD/out}
 
-CONFIG_FILE="$CONFIG_DIR/$CONFIG_STEP.json"
+CONFIG_FILE="${OUT_DIR}/config.json"
+# Only executes if called from the initial script
+if [[ "$CONFIG_STEP" = "$1" ]]; then
+    # Clean out directory
+    rm -rf "$OUT_DIR"
+    mkdir "$OUT_DIR"
+    # If environment variable exists bring the values from there, otherwise use the config file
+    if [[ -z $TDDS_CONFIG_VALUES ]]; then
+        cp "$CONFIG_DIR/$CONFIG_STEP.json" "$CONFIG_FILE"
+    else
+        echo "$TDDS_CONFIG_VALUES" > "${CONFIG_FILE}"
+    fi
+fi
+
 test -f "$CONFIG_FILE"
 
 export ETH_GAS=${ETH_GAS:-"7000000"}

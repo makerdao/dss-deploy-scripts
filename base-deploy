@@ -161,8 +161,6 @@ cp "$DAPP_LIB"/proxy-registry/out/DSProxyFactory.abi "$OUT_DIR"/abi
 cp "$DAPP_LIB"/proxy-registry/out/ProxyRegistry.abi "$OUT_DIR"/abi
 cp "$DAPP_LIB"/token-faucet/out/TokenFaucet.abi "$OUT_DIR"/abi
 
-cp "$CONFIG_FILE" "$OUT_DIR"/config.json
-
 for token in $tokens; do
     ILKS_VARS+=",
     \"${token}\": \"$(eval echo "\$${token}")\""

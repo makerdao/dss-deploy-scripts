@@ -3,10 +3,7 @@
 # Get config variables
 export CONFIG_STEP=${CONFIG_STEP:-"step-1"}
 # shellcheck source=lib/common.sh
-. "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
-
-# Remove ./out folder
-rm -rf "$OUT_DIR"
+. "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh" "step-1"
 
 # Send ETH to Omnia Relayer
 OMNIA_RELAYER=$(jq -r ".omniaFromAddr" "$CONFIG_FILE")
