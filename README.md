@@ -105,5 +105,5 @@ This is to avoid downloading all submodules when installing the deploy
 scripts from another repository.
 
 Dependencies are managed through a central repository referenced in
-`nix/pkgs.nix` and the main Nix expression to build this repo is in
+[`nix/pkgs.nix`](nix/pkgs.nix) and the main Nix expression to build this repo is in
 `default.nix`.
