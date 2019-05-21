@@ -11,6 +11,6 @@ export CONFIG_STEP
 
 if [[ "$CONFIG_STEP" == "step-2" ]]; then
     "$LIBEXEC_DIR"/set-pause-delay
+    echo "STEP 2 COMPLETED SUCCESSFULLY"
 fi
 
-echo "STEP 2 COMPLETED SUCCESSFULLY"

@@ -31,6 +31,5 @@ loadAddresses
 
 if [[ "$CONFIG_STEP" == "step-4" ]]; then
     "$LIBEXEC_DIR"/set-pause-delay
+    echo "STEP 4 COMPLETED SUCCESSFULLY"
 fi
-
-echo "STEP 4 COMPLETED SUCCESSFULLY"

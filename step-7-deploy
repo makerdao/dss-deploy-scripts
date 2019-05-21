@@ -51,6 +51,5 @@ seth send "$MCD_CAT" 'bite(bytes32,address)' "$(seth --to-bytes32 "$(seth --from
 # Set Pause Delay
 if [[ "$CONFIG_STEP" == "step-7" ]]; then
     "$LIBEXEC_DIR"/set-pause-delay
+    echo "STEP 7 COMPLETED SUCCESSFULLY"
 fi
-
-echo "STEP 7 COMPLETED SUCCESSFULLY"

@@ -69,13 +69,12 @@ for token in $tokens; do
     fi
 done
 
-if [[ "$CONFIG_STEP" == "step-1" ]]; then
-    "$LIBEXEC_DIR"/set-pause-delay
-fi
-
 # Copy abi files
 cp "$DAPP_LIB"/testchain-medians/out/Median.abi "$OUT_DIR"/abi
 cp "$DAPP_LIB"/osm/out/DSValue.abi "$OUT_DIR"/abi
 cp "$DAPP_LIB"/osm/out/OSM.abi "$OUT_DIR"/abi
 
-echo "STEP 1 COMPLETED SUCCESSFULLY"
+if [[ "$CONFIG_STEP" == "step-1" ]]; then
+    "$LIBEXEC_DIR"/set-pause-delay
+    echo "STEP 1 COMPLETED SUCCESSFULLY"
+fi

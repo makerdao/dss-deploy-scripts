@@ -5,14 +5,11 @@
 CONFIG_STEP=$(setConfigStep "step-3")
 export CONFIG_STEP
 
-"$BIN_DIR"/step-1-deploy
-
-"$BIN_DIR"/poll-deploy
+"$BIN_DIR"/step-2-deploy
 
 "$LIBEXEC_DIR"/set-ilks-spell-line
 
 if [[ "$CONFIG_STEP" == "step-3" ]]; then
     "$LIBEXEC_DIR"/set-pause-delay
+    echo "STEP 3 COMPLETED SUCCESSFULLY"
 fi
-
-echo "STEP 3 COMPLETED SUCCESSFULLY"
