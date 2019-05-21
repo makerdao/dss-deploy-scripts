@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-# Get config variables
-export CONFIG_STEP=${CONFIG_STEP:-"step-3"}
 # shellcheck source=lib/common.sh
-. "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh" "step-3"
+. "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
+CONFIG_STEP=$(setConfigStep "step-3")
+export CONFIG_STEP
 
 "$BIN_DIR"/step-1-deploy
 

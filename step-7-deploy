@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
-export CONFIG_STEP=${CONFIG_STEP:-"step-7"}
 # shellcheck source=lib/common.sh
-. "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh" "step-7"
+. "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
+CONFIG_STEP=$(setConfigStep "step-7")
+export CONFIG_STEP
 
 "$BIN_DIR"/step-4-deploy
 
