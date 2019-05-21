@@ -11,7 +11,7 @@ DAPP_LIB=${DAPP_LIB:-$BIN_DIR/contracts}
 
 export OUT_DIR=${OUT_DIR:-$PWD/out}
 
-export ETH_GAS=${ETH_GAS:-"7000000"}
+export ETH_GAS=7000000
 unset SOLC_FLAGS
 
 export CONFIG_FILE="${OUT_DIR}/config.json"

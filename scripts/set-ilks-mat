@@ -3,7 +3,9 @@
 # shellcheck source=lib/common.sh
 . "${LIB_DIR:-$(cd "${0%/*}/../lib"&&pwd)}/common.sh"
 
+# Get config variables
 CONFIG_FILE="$OUT_DIR/config.json"
+# Get addresses
 loadAddresses
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
