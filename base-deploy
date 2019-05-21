@@ -22,7 +22,7 @@ MCD_GOV_GUARD=$(dapp create DSGuard)
 cd "$DAPP_LIB/ds-chief"
 dapp build
 
-if [ -z "$MCD_GOV" ]; then
+if [[ -z "$MCD_GOV" ]]; then
     MCD_GOV=$(dapp create DSToken "$(seth --to-bytes32 "$(seth --from-ascii "MKR")")")
     export MCD_GOV
     seth send "$MCD_GOV" 'mint(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
@@ -74,7 +74,7 @@ tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     for ilk in $ilks; do
-        if [ -z "$(eval echo "\$$token")" ]; then
+        if [[ -z "$(eval echo "\$$token")" ]]; then
             # It means the ilk token will be created now in the next deployment script call, then we can send funds to the Faucet
             newToken=true
         else
@@ -87,7 +87,7 @@ for token in $tokens; do
         . "load-ilk-$(echo "$token" | tr '[:upper:]' '[:lower:]')-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')-$(seth chain)"
         rm "load-ilk-$(echo "$token" | tr '[:upper:]' '[:lower:]')-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')-$(seth chain)"
 
-        if [ "${token}" != "ETH" ] && [ $newToken = "true" ]; then
+        if [[ "$token" != "ETH" && "$newToken" == true ]]; then
             seth send "$(eval echo "\$$token")" 'transfer(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 999000 ETH)")"
         fi
         export SKIP_BUILD=true
@@ -161,12 +161,10 @@ cp "$DAPP_LIB"/proxy-registry/out/DSProxyFactory.abi "$OUT_DIR"/abi
 cp "$DAPP_LIB"/proxy-registry/out/ProxyRegistry.abi "$OUT_DIR"/abi
 cp "$DAPP_LIB"/token-faucet/out/TokenFaucet.abi "$OUT_DIR"/abi
 
-cp "$CONFIG_FILE" "$OUT_DIR"/config.json
-
 for token in $tokens; do
     ILKS_VARS+=",
     \"${token}\": \"$(eval echo "\$${token}")\""
-    if [ "$(eval echo "\$VAL_${token}")" != "" ]; then
+    if [[ "$(eval echo "\$VAL_${token}")" != "" ]]; then
     ILKS_VARS+=",
     \"VAL_${token}\": \"$(eval echo "\$VAL_${token}")\""
     fi

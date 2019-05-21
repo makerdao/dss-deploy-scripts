@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
-export CONFIG_STEP=${CONFIG_STEP:-"step-4"}
 # shellcheck source=lib/common.sh
 . "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
+CONFIG_STEP=$(setConfigStep "step-4")
+export CONFIG_STEP
 
 "$BIN_DIR"/step-1-deploy
 
@@ -28,7 +29,7 @@ loadAddresses
 
 "$LIBEXEC_DIR"/set-ilks-tau
 
-if [ "$CONFIG_STEP" = "step-4" ]; then
+if [[ "$CONFIG_STEP" == "step-4" ]]; then
     "$LIBEXEC_DIR"/set-pause-delay
 fi
 
