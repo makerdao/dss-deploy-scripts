@@ -46,10 +46,10 @@ dappBuild proxy-registry
 PROXY_FACTORY=$(dappCreate proxy-registry DSProxyFactory)
 PROXY_REGISTRY=$(dappCreate proxy-registry ProxyRegistry "$PROXY_FACTORY")
 
-cd "$DAPP_LIB/dss-deploy"
+PATH="$DAPP_LIB/dss-deploy/bin:$PATH"
 
 # Deploy Fabs (no solc optimization)
-./bin/deploy-fab
+deploy-fab
 # shellcheck source=/dev/null
 . "load-fab-$(seth chain)"
 rm "load-fab-$(seth chain)"
@@ -58,7 +58,7 @@ rm "load-fab-$(seth chain)"
 export MCD_PAUSE_DELAY=0
 
 # Deploy MCD Core Contratcs (solc optimized)
-./bin/deploy-core
+deploy-core
 # shellcheck source=/dev/null
 . "load-mcd-$(seth chain)"
 rm "load-mcd-$(seth chain)"
@@ -75,7 +75,7 @@ for token in $tokens; do
             newToken=false
         fi
 
-        ./bin/deploy-ilk-"$(echo "$token" | tr '[:upper:]' '[:lower:]')" "$ilk"
+        deploy-ilk-"$(echo "$token" | tr '[:upper:]' '[:lower:]')" "$ilk"
 
         # shellcheck source=/dev/null
         . "load-ilk-$(echo "$token" | tr '[:upper:]' '[:lower:]')-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')-$(seth chain)"
