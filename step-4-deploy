@@ -28,7 +28,7 @@ loadAddresses
 
 "$LIBEXEC_DIR"/set-ilks-tau
 
-if [ "$CONFIG_STEP" == "step-4" ]; then
+if [[ "$CONFIG_STEP" == "step-4" ]]; then
     "$LIBEXEC_DIR"/set-pause-delay
 fi
 

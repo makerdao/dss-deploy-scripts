@@ -11,7 +11,7 @@ export CONFIG_STEP=${CONFIG_STEP:-"step-3"}
 
 "$LIBEXEC_DIR"/set-ilks-spell-line
 
-if [ "$CONFIG_STEP" == "step-3" ]; then
+if [[ "$CONFIG_STEP" == "step-3" ]]; then
     "$LIBEXEC_DIR"/set-pause-delay
 fi
 
