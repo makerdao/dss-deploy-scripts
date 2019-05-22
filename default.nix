@@ -10,7 +10,7 @@ let
   inherit (specs.this) deps;
 
   # Import deploy scripts from dss-deploy
-  dss-deploy = import deps.dss-deploy.src' {};
+  dss-deploy = import deps.dss-deploy.src' { inherit pkgs; };
 
   # Create derivations from lock file data
   packages = packageSpecs (deps // {
