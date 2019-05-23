@@ -1,6 +1,7 @@
 # Default import pinned pkgs
 { pkgsSrc ? (import ./nix/pkgs.nix {}).pkgsSrc
 , pkgs ? (import ./nix/pkgs.nix { inherit pkgsSrc; }).pkgs
+, dss-deploy ? null
 , doCheck ? true
 }: with pkgs;
 
@@ -10,7 +11,9 @@ let
   inherit (specs.this) deps;
 
   # Import deploy scripts from dss-deploy
-  dss-deploy = import deps.dss-deploy.src' { inherit pkgs; };
+  dss-deploy' = if (dss-deploy != null)
+    then dss-deploy
+    else import deps.dss-deploy.src' {};
 
   # Create derivations from lock file data
   packages = packageSpecs (deps // {
@@ -32,7 +35,7 @@ in makerScriptPackage {
   solidityPackages = builtins.attrValues packages;
 
   extraBins = [
-    dss-deploy
+    dss-deploy'
   ];
 
   # Patch scripts by removing `cd` commands and adding DAPP_OUT env so that
