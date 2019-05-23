@@ -182,6 +182,7 @@ done
 # Generate addresses.json file
 cat > "$OUT_DIR"/addresses.json <<EOF
 {
+    "ETH_FROM": "$ETH_FROM",
     "MULTICALL": "$MULTICALL",
     "FAUCET": "$FAUCET",
     "MCD_DEPLOY": "$MCD_DEPLOY",
