@@ -160,6 +160,19 @@ cp "$DAPP_LIB"/proxy-registry/out/DSProxy.abi "$OUT_DIR"/abi
 cp "$DAPP_LIB"/proxy-registry/out/DSProxyFactory.abi "$OUT_DIR"/abi
 cp "$DAPP_LIB"/proxy-registry/out/ProxyRegistry.abi "$OUT_DIR"/abi
 cp "$DAPP_LIB"/token-faucet/out/TokenFaucet.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/VatFab.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/JugFab.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/VowFab.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/CatFab.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/DaiFab.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/DaiJoinFab.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/FlapFab.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/FlopFab.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/FlipFab.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/SpotFab.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/PotFab.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/PauseFab.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/DSPause.abi "$OUT_DIR"/abi
 
 for token in $tokens; do
     ILKS_VARS+=",
