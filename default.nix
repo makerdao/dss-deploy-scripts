@@ -12,7 +12,7 @@ let
 
   # Import deploy scripts from dss-deploy
   dss-deploy' = if isNull dss-deploy
-    then import deps.dss-deploy.src' { inherit pkgs; }
+    then import deps.dss-deploy.src' {}
     else dss-deploy;
 
   # Create derivations from lock file data
