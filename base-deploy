@@ -173,6 +173,7 @@ cp "$DAPP_LIB"/dss-deploy/out/SpotFab.abi "$OUT_DIR"/abi
 cp "$DAPP_LIB"/dss-deploy/out/PotFab.abi "$OUT_DIR"/abi
 cp "$DAPP_LIB"/dss-deploy/out/PauseFab.abi "$OUT_DIR"/abi
 cp "$DAPP_LIB"/dss-deploy/out/DSPause.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/Plan.abi "$OUT_DIR"/abi
 
 for token in $tokens; do
     ILKS_VARS+=",
