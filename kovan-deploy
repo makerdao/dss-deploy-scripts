@@ -1,17 +1,15 @@
 #!/usr/bin/env bash
 
-export CONFIG_STEP=kovan
 # shellcheck source=lib/common.sh
 . "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
+CONFIG_STEP=$(setConfigStep "kovan")
+export CONFIG_STEP
 
-test "$(seth chain)" = "kovan" || exit 1
-
-# Remove ./out folder
-rm -rf "$OUT_DIR"
+test "$(seth chain)" == "kovan" || exit 1
 
 # Set verify contract option in Etherscan if the API key is in the config file
 etherscanApiKey=$(jq -r ".etherscanApiKey" "$CONFIG_FILE")
-if [ "$etherscanApiKey" != "" ]; then
+if [[ "$etherscanApiKey" != "" ]]; then
     export DAPP_VERIFY_CONTRACT="yes"
     export ETHERSCAN_API_KEY=$etherscanApiKey
 fi

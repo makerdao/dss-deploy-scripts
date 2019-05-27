@@ -2,16 +2,14 @@
 
 # shellcheck source=lib/common.sh
 . "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
-CONFIG_STEP=$(setConfigStep "step-4")
+CONFIG_STEP=$(setConfigStep "step-5")
 export CONFIG_STEP
 
-"$BIN_DIR"/step-1-deploy
+"$BIN_DIR"/step-3-deploy
 
 loadAddresses
 
 "$LIBEXEC_DIR"/set-ilks-mat
-
-"$LIBEXEC_DIR"/set-ilks-line
 
 "$LIBEXEC_DIR"/set-ilks-duty
 
@@ -29,7 +27,7 @@ loadAddresses
 
 "$LIBEXEC_DIR"/set-ilks-tau
 
-if [[ "$CONFIG_STEP" == "step-4" ]]; then
+if [[ "$CONFIG_STEP" == "step-5" ]]; then
     "$LIBEXEC_DIR"/set-pause-delay
-    echo "STEP 4 COMPLETED SUCCESSFULLY"
+    echo "STEP 5 COMPLETED SUCCESSFULLY"
 fi

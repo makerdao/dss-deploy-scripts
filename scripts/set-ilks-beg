@@ -5,6 +5,7 @@
 
 # Get config variables
 CONFIG_FILE="$OUT_DIR/config.json"
+# Get addresses
 loadAddresses
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")

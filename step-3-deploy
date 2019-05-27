@@ -1,18 +1,15 @@
 #!/usr/bin/env bash
 
-# Get config variables
-export CONFIG_STEP=${CONFIG_STEP:-"step-3"}
 # shellcheck source=lib/common.sh
 . "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
+CONFIG_STEP=$(setConfigStep "step-3")
+export CONFIG_STEP
 
-"$BIN_DIR"/step-1-deploy
-
-"$BIN_DIR"/poll-deploy
+"$BIN_DIR"/step-2-deploy
 
 "$LIBEXEC_DIR"/set-ilks-spell-line
 
-if [ "$CONFIG_STEP" = "step-3" ]; then
+if [[ "$CONFIG_STEP" == "step-3" ]]; then
     "$LIBEXEC_DIR"/set-pause-delay
+    echo "STEP 3 COMPLETED SUCCESSFULLY"
 fi
-
-echo "STEP 3 COMPLETED SUCCESSFULLY"

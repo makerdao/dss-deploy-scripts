@@ -9,7 +9,7 @@ echo "Using RPC URL $TESTNET_URL. Change by setting TESTNET_PORT and TESTNET_HOS
 
 # See if dapp testnet or parity dev chain is running
 
-if [ "$KEYSTORE_PATH" ]; then
+if [[ "$KEYSTORE_PATH" ]]; then
   true # If KEYSTORE_PATH is set don't look for running ethereum clients
 elif { pgrep -a geth && test -d "$HOME/.dapp/testnet/$TESTNET_PORT"; }; then
   KEYSTORE_PATH="$HOME/.dapp/testnet/$TESTNET_PORT/keystore"
@@ -26,7 +26,7 @@ fi
 export ETH_PASSWORD="${ETH_PASSWORD:-/dev/null}"
 export ETH_KEYSTORE="${ETH_KEYSTORE:-$KEYSTORE_PATH}"
 export ETH_RPC_URL="${ETH_RPC_URL:-$TESTNET_URL}"
-export ETH_GAS="${ETH_GAS:-7000000}"
+export ETH_GAS=7000000
 
 export ETH_FROM="${ETH_FROM:-$(seth ls | head -n1 | awk '{print $1}')}"
 
@@ -36,7 +36,7 @@ if command -v sethret > /dev/null 2>&1; then
     local address
     address="$(tr '[:upper:]' '[:lower:]' <<<"${2#0x}")"
     while IFS= read -r -d '' file; do
-      if [ "$(jq -r .address "$file")" == "$address" ]; then
+      if [[ "$(jq -r .address "$file")" == "$address" ]]; then
         echo "$file"
         break
       fi

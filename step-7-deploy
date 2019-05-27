@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
-export CONFIG_STEP=${CONFIG_STEP:-"step-7"}
 # shellcheck source=lib/common.sh
 . "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
+CONFIG_STEP=$(setConfigStep "step-7")
+export CONFIG_STEP
 
 "$BIN_DIR"/step-4-deploy
 
@@ -11,7 +12,7 @@ loadAddresses
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     type=$(jq -r ".tokens.${token} | .pip | .type" "$CONFIG_FILE")
-    if [ "${type}" = "value" ]; then # Takes the first token which its pip is a value (not a median, so can be manipulated easily)
+    if [[ "$type" == "value" ]]; then # Takes the first token which its pip is a value (not a median, so can be manipulated easily)
         break
     fi
 done
@@ -22,7 +23,7 @@ seth send "$CDP_MANAGER" 'open(bytes32)' "$(seth --to-bytes32 "$(seth --from-asc
 ID=$(seth call "$CDP_MANAGER" 'cdpi()(uint256)')
 URN=$(seth call "$CDP_MANAGER" 'urns(uint256)(address)' "$ID")
 
-if [ "${token}" = "ETH" ]; then
+if [[ "${token}" == "ETH" ]]; then
     seth send "$ETH" 'deposit()' --value "$(seth --to-wei 5 ETH)"
 fi
 
@@ -48,8 +49,7 @@ seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii 
 seth send "$MCD_CAT" 'bite(bytes32,address)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$URN"
 
 # Set Pause Delay
-if [ "$CONFIG_STEP" = "step-7" ]; then
+if [[ "$CONFIG_STEP" == "step-7" ]]; then
     "$LIBEXEC_DIR"/set-pause-delay
+    echo "STEP 7 COMPLETED SUCCESSFULLY"
 fi
-
-echo "STEP 7 COMPLETED SUCCESSFULLY"

@@ -8,7 +8,8 @@ CONFIG_FILE="$OUT_DIR/config.json"
 
 delay=$(jq -r ".pauseDelay" "$CONFIG_FILE")
 
-if [ "$delay" -gt 0 ]; then
+if [[ "$delay" -gt 0 ]]; then
+    # Get addresses
     loadAddresses
 
     cd "$DAPP_LIB/testchain-pause-proxy-actions"

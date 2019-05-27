@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 
-export CONFIG_STEP=${CONFIG_STEP:-"step-2"}
 # shellcheck source=lib/common.sh
 . "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
+CONFIG_STEP=$(setConfigStep "step-2")
+export CONFIG_STEP
 
 "$BIN_DIR"/step-1-deploy
 
 "$BIN_DIR"/poll-deploy
 
-if [ "$CONFIG_STEP" = "step-2" ]; then
+if [[ "$CONFIG_STEP" == "step-2" ]]; then
     "$LIBEXEC_DIR"/set-pause-delay
+    echo "STEP 2 COMPLETED SUCCESSFULLY"
 fi
 
-echo "STEP 2 COMPLETED SUCCESSFULLY"
