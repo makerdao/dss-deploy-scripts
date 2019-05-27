@@ -7,6 +7,7 @@ BIN_DIR=${BIN_DIR:-$(cd "${BASH_SOURCE[0]%/*}/.."&&pwd)}
 LIB_DIR=${LIB_DIR:-$BIN_DIR/lib}
 LIBEXEC_DIR=${LIBEXEC_DIR:-$BIN_DIR/scripts}
 CONFIG_DIR=${CONFIG_DIR:-$BIN_DIR}
+
 DAPP_LIB=${DAPP_LIB:-$BIN_DIR/contracts}
 
 export OUT_DIR=${OUT_DIR:-$PWD/out}
@@ -48,6 +49,22 @@ addAddresses() {
     printf %s "$result" > "$OUT_DIR/addresses.json"
 }
 
+dappBuild() {
+  test -n "$SKIP_BUILD" && return
+
+  local lib; lib=$1
+  (cd "$DAPP_LIB/$lib" || exit 1
+    dapp "${@:2}" build
+  )
+}
+
+dappCreate() {
+  local lib; lib=$1
+  local class; class=$2
+  DAPP_OUT="$DAPP_LIB/$lib/out" dapp create "$class" "${@:3}"
+  mkdir -p "$OUT_DIR/abi"
+  cp "$DAPP_LIB/$lib/out/$class.abi" "$OUT_DIR/abi"
+}
 
 # Start verbose output
 set -x
