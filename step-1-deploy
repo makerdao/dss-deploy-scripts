@@ -10,18 +10,15 @@ OMNIA_RELAYER=$(jq -r ".omniaFromAddr" "$CONFIG_FILE")
 seth send "$OMNIA_RELAYER" --value "$(seth --to-wei 10000 eth)"
 
 # Deploy Values or Medians + OSMs (if delay > 0) (no solc optimization)
-cd "$DAPP_LIB/osm"
-dapp build
-cd "$DAPP_LIB/testchain-medians"
-dapp build
+dappBuild osm
+dappBuild testchain-medians
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     type=$(jq -r ".tokens.${token} | .pip | .type" "$CONFIG_FILE")
     # Deploy Medianizer as Feed
     if [[ "$type" == "median" ]]; then
-        cd "$DAPP_LIB/testchain-medians"
-        eval export "\VAL_${token}=$(dapp create "Median${token}USD")"
+        eval "export VAL_$token=$(dappCreate testchain-medians "Median${token}USD")"
         signers=$(jq -r ".tokens.${token} | .pip | .signers | .[]" "$CONFIG_FILE")
         # Approve oracle price feed providers
         for signer in $signers; do
@@ -34,15 +31,13 @@ for token in $tokens; do
     fi
     # Deploy DSValue as Feed
     if [[ "${type}" == "value" ]]; then
-        cd "$DAPP_LIB/osm"
-        eval export "\VAL_${token}=$(dapp create DSValue)"
+        eval "export VAL_$token=$(dappCreate osm DSValue)"
     fi
     # Deploy OSM if delay > 0
     osm_delay=$(jq -r ".tokens.${token} | .pip | .osmDelay" "$CONFIG_FILE")
     if [[ "$osm_delay" -gt 0 ]]; then
-        cd "$DAPP_LIB/osm"
         # Deploy OSM
-        eval export "\PIP_${token}=$(dapp create OSM "$(eval echo "\$VAL_${token}")")"
+        eval "export PIP_$token=$(dappCreate osm OSM "$(eval echo "\$VAL_${token}")")"
         # Set OSM delay
         seth send "$(eval echo "\$PIP_${token}")" 'step(uint16)' "$osm_delay"
         # Whitelist OSM in Medianizer (skip if source is DSValue)

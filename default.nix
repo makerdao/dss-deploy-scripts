@@ -38,14 +38,12 @@ in makerScriptPackage {
     dss-deploy'
   ];
 
-  # Patch scripts by removing `cd` commands and adding DAPP_OUT env so that
-  # `dapp create` can find the right binaries even though no submodules have
-  # been downloaded inside the Nix build environment.
+  # Patch scripts by removing `cd` commands and `./bin/` from `dss-deploy`
+  # script path.
   patchBin = writeScript "remove-cd" ''
     #!${stdenv.shell}
     exec ${perl}/bin/perl -pe '
-      s|^(\s*)cd\s+(?:.*/)*([^\s/\n\r\s'"'"'";&\|\.]+)['"'"'"]?|\1export DAPP_OUT=\$DAPP_LIB/\2/out|;
-      s|^(\s*)cd\s+[^\n\r;&\|]+|\1|;
+      s|^(\s*)cd\s+[^\n\r;&\|]+|\1true|;
       s|^(\s*)\./bin/||;
     '
   '';
