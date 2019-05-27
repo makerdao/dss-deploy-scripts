@@ -127,6 +127,23 @@ PROXY_DEPLOYER=0x"$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$ET
 seth send "$MCD_ADM" 'vote(address[] memory)' ["${PROXY_DEPLOYER#0x}"]
 seth send "$MCD_ADM" 'lift(address)' "$PROXY_DEPLOYER"
 
+# Copy abi files
+mkdir -p "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/VatFab.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/JugFab.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/VowFab.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/CatFab.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/DaiFab.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/DaiJoinFab.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/FlapFab.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/FlopFab.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/FlipFab.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/SpotFab.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/PotFab.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/PauseFab.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/DSPause.abi "$OUT_DIR"/abi
+cp "$DAPP_LIB"/dss-deploy/out/Plan.abi "$OUT_DIR"/abi
+
 for token in $tokens; do
     ILKS_VARS+=",
     \"${token}\": \"$(eval echo "\$${token}")\""
