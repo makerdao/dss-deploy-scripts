@@ -23,7 +23,7 @@ done
 ilksT="[${ilksT%,}]"
 lines="[${lines%,}]"
 
-EXEC_PROPOSAL=$(seth send --create "$DAPP_LIB/line-spell/out/MultiLineSpell.bin" 'MultiLineSpell(address,address,address,bytes32[] memory,uint256[] memory)' "$MCD_PAUSE" "$MCD_PAUSE_PLAN" "$MCD_VAT" "$ilksT" "$lines")
+EXEC_PROPOSAL=$(seth send --create "$DAPP_LIB/line-spell/out/MultiLineSpell.bin" 'MultiLineSpell(address,address,address,bytes32[] memory,uint256[] memory)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VAT" "$ilksT" "$lines")
 
 # Add new addresses to json file
 addAddresses <<EOF

@@ -13,7 +13,7 @@ bump=$(jq -r ".bump | values" "$CONFIG_FILE")
 if [[ "$bump" != "" ]]; then
     bump=$(echo "$bump"*10^45 | bc)
     bump=$(seth --to-uint256 "${bump%.*}")
-    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_PAUSE_PLAN" "$MCD_VOW" "$(seth --to-bytes32 "$(seth --from-ascii "bump")")" "$bump")"
+    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VOW" "$(seth --to-bytes32 "$(seth --from-ascii "bump")")" "$bump")"
     seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi
 

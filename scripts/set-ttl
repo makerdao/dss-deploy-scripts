@@ -13,7 +13,7 @@ loadAddresses
 # Set ttl
 ttl=$(jq -r ".$1_ttl | values" "$CONFIG_FILE")
 if [[ "$ttl" != "" ]]; then
-    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_PAUSE_PLAN" "$(eval echo "\$MCD_$(echo "$1" | tr '[:lower:]' '[:upper:]')")" "$(seth --to-bytes32 "$(seth --from-ascii "ttl")")" "$ttl")"
+    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$(eval echo "\$MCD_$(echo "$1" | tr '[:lower:]' '[:upper:]')")" "$(seth --to-bytes32 "$(seth --from-ascii "ttl")")" "$ttl")"
     seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi
 

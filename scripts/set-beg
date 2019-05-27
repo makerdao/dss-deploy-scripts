@@ -15,7 +15,7 @@ beg=$(jq -r ".$1_beg | values" "$CONFIG_FILE")
 if [[ "$beg" != "" ]]; then
     beg=$(echo "($beg+100)"*10^25 | bc -l)
     beg=$(seth --to-uint256 "${beg%.*}")
-    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_PAUSE_PLAN" "$(eval echo "\$MCD_$(echo "$1" | tr '[:lower:]' '[:upper:]')")" "$(seth --to-bytes32 "$(seth --from-ascii "beg")")" "$beg")"
+    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$(eval echo "\$MCD_$(echo "$1" | tr '[:lower:]' '[:upper:]')")" "$(seth --to-bytes32 "$(seth --from-ascii "beg")")" "$beg")"
     seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi
 

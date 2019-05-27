@@ -15,7 +15,7 @@ for token in $tokens; do
         chop=$(jq -r ".tokens.${token}.ilks.${ilk} | .chop" "$CONFIG_FILE")
         chop=$(echo "($chop+100)"*10^25 | bc -l)
         chop=$(seth --to-uint256 "${chop%.*}")
-        calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_PAUSE_PLAN" "$MCD_CAT" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "chop")")" "$chop")"
+        calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_CAT" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "chop")")" "$chop")"
         seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
     done
 done

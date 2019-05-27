@@ -13,7 +13,7 @@ Line=$(jq -r ".line | values" "$CONFIG_FILE")
 if [[ "$Line" != "" ]]; then
     Line=$(echo "$Line"*10^45 | bc)
     Line=$(seth --to-uint256 "${Line%.*}")
-    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_PAUSE_PLAN" "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "Line")")" "$Line")"
+    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "Line")")" "$Line")"
     seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi
 

@@ -15,7 +15,7 @@ for token in $tokens; do
         mat=$(jq -r ".tokens.${token}.ilks.${ilk} | .mat" "$CONFIG_FILE")
         mat=$(echo "$mat"*10^25 | bc -l)
         mat=$(seth --to-uint256 "${mat%.*}")
-        calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_PAUSE_PLAN" "$MCD_SPOT" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "mat")")" "$mat")"
+        calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_SPOT" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "mat")")" "$mat")"
         seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
     done
 done

@@ -15,7 +15,7 @@ for token in $tokens; do
         beg=$(jq -r ".tokens.${token}.ilks.${ilk} | .beg" "$CONFIG_FILE")
         beg=$(echo "($beg+100)"*10^25 | bc -l)
         beg=$(seth --to-uint256 "${beg%.*}")
-        calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_PAUSE_PLAN" "$(eval echo "\$MCD_FLIP_${token}_${ilk}")" "$(seth --to-bytes32 "$(seth --from-ascii "beg")")" "$beg")"
+        calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$(eval echo "\$MCD_FLIP_${token}_${ilk}")" "$(seth --to-bytes32 "$(seth --from-ascii "beg")")" "$beg")"
         seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
     done
 done

@@ -12,9 +12,6 @@ if [[ "$delay" -gt 0 ]]; then
     # Get addresses
     loadAddresses
 
-    cd "$DAPP_LIB/testchain-pause-proxy-actions"
-    dapp build
-    action=$(dapp create ActionChangeDelay)
-    calldata="$(seth calldata 'changeDelay(address,address,uint256)' "$MCD_PAUSE" "$action" "$(seth --to-uint256 "$delay")")"
+    calldata="$(seth calldata 'setDelay(address,address,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$(seth --to-uint256 "$delay")")"
     seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi

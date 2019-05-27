@@ -98,7 +98,9 @@ for token in $tokens; do
 done
 
 # Deploy Pause Plan - Library functions for the Pause (no solc optimization)
-MCD_PAUSE_PLAN=$(dappCreate dss-deploy Plan)
+MCD_GOV_ACTIONS=$(dappCreate dss-deploy GovActions)
+
+unset SKIP_BUILD
 
 dappBuild dss-proxy-actions
 
@@ -163,10 +165,11 @@ cat > "$OUT_DIR"/addresses.json <<EOF
     "MCD_FLAP": "$MCD_FLAP",
     "MCD_FLOP": "$MCD_FLOP",
     "MCD_PAUSE": "$MCD_PAUSE",
-    "MCD_PAUSE_PLAN": "$MCD_PAUSE_PLAN",
+    "MCD_GOV_ACTIONS": "$MCD_GOV_ACTIONS",
     "MCD_DAI": "$MCD_DAI",
     "MCD_SPOT": "$MCD_SPOT",
     "MCD_POT": "$MCD_POT",
+    "MCD_END": "$MCD_END",
     "PROXY_ACTIONS": "$PROXY_ACTIONS",
     "CDP_MANAGER": "$CDP_MANAGER",
     "GET_CDPS": "$GET_CDPS",

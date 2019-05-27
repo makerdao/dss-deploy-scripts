@@ -13,7 +13,7 @@ for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     for ilk in $ilks; do
         ttl=$(jq -r ".tokens.${token}.ilks.${ilk} | .ttl" "$CONFIG_FILE")
-        calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_PAUSE_PLAN" "$(eval echo "\$MCD_FLIP_${token}_${ilk}")" "$(seth --to-bytes32 "$(seth --from-ascii "ttl")")" "$ttl")"
+        calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$(eval echo "\$MCD_FLIP_${token}_${ilk}")" "$(seth --to-bytes32 "$(seth --from-ascii "ttl")")" "$ttl")"
         seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
     done
 done

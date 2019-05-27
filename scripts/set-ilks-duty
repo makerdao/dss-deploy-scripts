@@ -15,7 +15,7 @@ for token in $tokens; do
         duty=$(jq -r ".tokens.${token}.ilks.${ilk} | .duty" "$CONFIG_FILE")
         duty=$(bc -l <<< "scale=27; e( l(${duty} / 100 + 1)/(60 * 60 * 24 * 365)) * 10^27")
         duty=$(seth --to-uint256 "${duty%.*}")
-        calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_PAUSE_PLAN" "$MCD_JUG" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "duty")")" "$duty")"
+        calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_JUG" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "duty")")" "$duty")"
         seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
     done
 done
