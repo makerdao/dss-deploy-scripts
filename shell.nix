@@ -1,9 +1,10 @@
 { pkgsSrc ? (import ./nix/pkgs.nix {}).pkgsSrc
 , pkgs ? (import ./nix/pkgs.nix { inherit pkgsSrc; }).pkgs
-}: with pkgs;
+, dss-deploy ? null
+}@args: with pkgs;
 
 let
-  tdds = import ./. { inherit pkgs; };
+  tdds = import ./. args;
 in mkShell {
   buildInputs = tdds.bins ++ [
     tdds
