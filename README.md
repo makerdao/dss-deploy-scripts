@@ -106,7 +106,7 @@ submodules when installing the deploy scripts without cloning `tdds`.
 
 ```sh
 nix-shell
-dapp2nix > nix/dapp.nix
+dapp2nix nix/dapp.nix
 ```
 
 Dependencies are managed through a central repository referenced in
