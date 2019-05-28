@@ -128,8 +128,7 @@ seth send "$MCD_ADM" 'vote(address[] memory)' ["${PROXY_DEPLOYER#0x}"]
 seth send "$MCD_ADM" 'lift(address)' "$PROXY_DEPLOYER"
 
 # Copy dss-deploy abi files
-mkdir -p "$OUT_DIR"/abi
-cp -f "$DAPP_LIB"/dss-deploy/out/*.abi "$OUT_DIR"/abi
+copyAbis dss-deploy
 
 for token in $tokens; do
     ILKS_VARS+=",

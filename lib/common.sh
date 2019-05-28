@@ -45,6 +45,13 @@ addAddresses() {
     printf %s "$result" > "$OUT_DIR/addresses.json"
 }
 
+copyAbis() {
+  local lib; lib=$1
+  mkdir -p "$OUT_DIR/abi"
+  find "$DAPP_LIB/$lib/out" -name "*.abi" ! -name "*Test.abi" \
+    -exec cp -f {} "$OUT_DIR/abi" \;
+}
+
 dappBuild() {
   [[ -n $DAPP_SKIP_BUILD ]] && return
 
@@ -58,9 +65,7 @@ dappCreate() {
   local lib; lib=$1
   local class; class=$2
   DAPP_OUT="$DAPP_LIB/$lib/out" dapp create "$class" "${@:3}"
-  mkdir -p "$OUT_DIR/abi"
-  find "$DAPP_LIB/$lib/out" -name "*.abi" ! -name "*Test.abi" \
-    -exec cp -f {} "$OUT_DIR/abi" \;
+  copyAbis "$lib"
 }
 
 # Start verbose output
