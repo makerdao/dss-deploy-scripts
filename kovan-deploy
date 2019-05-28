@@ -48,6 +48,6 @@ fi
 
 "$LIBEXEC_DIR"/set-ilks-tau
 
-"$LIBEXEC_DIR"/set-pause-delay
+"$LIBEXEC_DIR"/set-pause-auth-delay
 
 echo "KOVAN DEPLOYMENT COMPLETED SUCCESSFULLY"

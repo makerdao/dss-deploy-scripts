@@ -70,6 +70,6 @@ cp "$DAPP_LIB"/osm/out/DSValue.abi "$OUT_DIR"/abi
 cp "$DAPP_LIB"/osm/out/OSM.abi "$OUT_DIR"/abi
 
 if [[ "$CONFIG_STEP" == "step-1" ]]; then
-    "$LIBEXEC_DIR"/set-pause-delay
+    "$LIBEXEC_DIR"/set-pause-auth-delay
     echo "STEP 1 COMPLETED SUCCESSFULLY"
 fi

@@ -28,6 +28,6 @@ loadAddresses
 "$LIBEXEC_DIR"/set-ilks-tau
 
 if [[ "$CONFIG_STEP" == "step-5" ]]; then
-    "$LIBEXEC_DIR"/set-pause-delay
+    "$LIBEXEC_DIR"/set-pause-auth-delay
     echo "STEP 5 COMPLETED SUCCESSFULLY"
 fi
