@@ -4,7 +4,7 @@
 . "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
 
 # Deploy Gov Polling Generator (no solc optimization)
-dappBuild
+dappBuild gov-polling-generator
 GOV_POLL_GEN=$(dappCreate gov-polling-generator GovPollingGenerator)
 
 # tx=$(seth send --async "$GOV_POLL_GEN" 'createPoll()')

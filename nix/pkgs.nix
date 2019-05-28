@@ -1,5 +1,5 @@
 import (fetchGit {
   url = "https://github.com/makerdao/nixpkgs-pin";
-  rev = "a767bd7cbe5f2aea55a1857f2d3e6f8a09a3e1ec";
+  rev = "2927c50733fc557f8c5da17a2229ba851afe171c";
   ref = "master";
 })

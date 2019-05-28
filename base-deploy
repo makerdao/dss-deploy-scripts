@@ -127,47 +127,9 @@ PROXY_DEPLOYER=0x"$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$ET
 seth send "$MCD_ADM" 'vote(address[] memory)' ["${PROXY_DEPLOYER#0x}"]
 seth send "$MCD_ADM" 'lift(address)' "$PROXY_DEPLOYER"
 
-# Copy abi files
+# Copy dss-deploy abi files
 mkdir -p "$OUT_DIR"/abi
-cp "$DAPP_LIB"/multicall/out/Multicall.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/ds-guard/out/DSGuard.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/ds-chief/out/DSToken.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/ds-chief/out/DSChief.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/vote-proxy/out/VoteProxy.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/vote-proxy/out/VoteProxyFactory.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-proxy-actions/out/DssProxyActions.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-proxy-actions/out/DssCdpManager.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-proxy-actions/out/GetCdps.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-proxy-actions/out/DssDeploy.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-proxy-actions/out/Vat.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-proxy-actions/out/Jug.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-proxy-actions/out/Cat.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-proxy-actions/out/Vow.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-proxy-actions/out/Flipper.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-proxy-actions/out/Flopper.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-proxy-actions/out/Flapper.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-proxy-actions/out/DaiJoin.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-proxy-actions/out/GemJoin.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-proxy-actions/out/Spotter.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-proxy-actions/out/Pot.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/proxy-registry/out/DSProxy.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/proxy-registry/out/DSProxyFactory.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/proxy-registry/out/ProxyRegistry.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/token-faucet/out/TokenFaucet.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-deploy/out/VatFab.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-deploy/out/JugFab.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-deploy/out/VowFab.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-deploy/out/CatFab.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-deploy/out/DaiFab.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-deploy/out/DaiJoinFab.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-deploy/out/FlapFab.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-deploy/out/FlopFab.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-deploy/out/FlipFab.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-deploy/out/SpotFab.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-deploy/out/PotFab.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-deploy/out/PauseFab.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-deploy/out/DSPause.abi "$OUT_DIR"/abi
-cp "$DAPP_LIB"/dss-deploy/out/GovActions.abi "$OUT_DIR"/abi
+cp -f "$DAPP_LIB"/dss-deploy/out/*.abi "$OUT_DIR"/abi
 
 for token in $tokens; do
     ILKS_VARS+=",
