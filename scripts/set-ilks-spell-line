@@ -8,8 +8,7 @@ CONFIG_FILE="$OUT_DIR/config.json"
 # Get addresses
 loadAddresses
 
-cd "$DAPP_LIB/line-spell"
-dapp build
+dappBuild
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do

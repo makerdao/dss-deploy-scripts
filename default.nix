@@ -37,4 +37,8 @@ in makerScriptPackage {
   extraBins = [
     dss-deploy'
   ];
+
+  scriptEnv = {
+    SKIP_BUILD = true;
+  };
 }
