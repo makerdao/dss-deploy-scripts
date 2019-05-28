@@ -38,13 +38,7 @@ in makerScriptPackage {
     dss-deploy'
   ];
 
-  # Patch scripts by removing `cd` commands and `./bin/` from `dss-deploy`
-  # script path.
-  patchBin = writeScript "remove-cd" ''
-    #!${stdenv.shell}
-    exec ${perl}/bin/perl -pe '
-      s|^(\s*)cd\s+[^\n\r;&\|]+|\1true|;
-      s|^(\s*)\./bin/||;
-    '
-  '';
+  scriptEnv = {
+    SKIP_BUILD = true;
+  };
 }
