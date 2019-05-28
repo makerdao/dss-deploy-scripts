@@ -4,9 +4,8 @@
 . "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
 
 # Deploy Gov Polling Generator (no solc optimization)
-cd "$DAPP_LIB/gov-polling-generator"
-dapp build
-GOV_POLL_GEN=$(dapp create GovPollingGenerator)
+dappBuild gov-polling-generator
+GOV_POLL_GEN=$(dappCreate gov-polling-generator GovPollingGenerator)
 
 # tx=$(seth send --async "$GOV_POLL_GEN" 'createPoll()')
 
@@ -34,7 +33,5 @@ addAddresses <<EOF
     "VOTE_NO": "$VOTE_NO"
 }
 EOF
-
-cp "$DAPP_LIB"/gov-polling-generator/out/GovPollingGenerator.abi "$OUT_DIR/abi"
 
 echo "POLL DEPLOYMENT COMPLETED SUCCESSFULLY"
