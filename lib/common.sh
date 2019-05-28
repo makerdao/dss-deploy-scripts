@@ -62,8 +62,8 @@ dappCreate() {
   local lib; lib=$1
   local class; class=$2
   DAPP_OUT="$DAPP_LIB/$lib/out" dapp create "$class" "${@:3}"
-  mkdir -p "$OUT_DIR/abi"
-  cp "$DAPP_LIB/$lib/out/$class.abi" "$OUT_DIR/abi"
+#   mkdir -p "$OUT_DIR/abi"
+#   cp "$DAPP_LIB/$lib/out/$class.abi" "$OUT_DIR/abi"
 }
 
 # Start verbose output
