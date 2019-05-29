@@ -7,7 +7,7 @@ export CONFIG_STEP
 
 "$BIN_DIR"/step-1-deploy
 
-"$BIN_DIR"/poll-deploy
+"$LIBEXEC_DIR"/poll-deploy
 
 if [[ "$CONFIG_STEP" == "step-2" ]]; then
     "$LIBEXEC_DIR"/set-pause-auth-delay

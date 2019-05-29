@@ -19,9 +19,9 @@ for token in $tokens; do
     eval "export PIP_${token}=$(jq -r ".tokens.${token} | .pip" "$CONFIG_FILE")"
 done
 
-"$BIN_DIR"/base-deploy
+"$LIBEXEC_DIR"/base-deploy
 
-"$BIN_DIR"/poll-deploy
+"$LIBEXEC_DIR"/poll-deploy
 
 "$LIBEXEC_DIR"/set-ilks-mat
 

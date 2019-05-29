@@ -47,7 +47,7 @@ for token in $tokens; do
     fi
 done
 
-"$BIN_DIR"/base-deploy
+"$LIBEXEC_DIR"/base-deploy
 
 loadAddresses
 
