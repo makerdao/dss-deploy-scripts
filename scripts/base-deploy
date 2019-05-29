@@ -165,6 +165,7 @@ cat > "$OUT_DIR"/addresses.json <<EOF
     "MCD_FLAP": "$MCD_FLAP",
     "MCD_FLOP": "$MCD_FLOP",
     "MCD_PAUSE": "$MCD_PAUSE",
+    "MCD_PAUSE_PROXY": "$MCD_PAUSE_PROXY",
     "MCD_GOV_ACTIONS": "$MCD_GOV_ACTIONS",
     "MCD_DAI": "$MCD_DAI",
     "MCD_SPOT": "$MCD_SPOT",
