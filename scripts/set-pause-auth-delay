@@ -13,3 +13,9 @@ loadAddresses
 
 calldata="$(seth calldata 'setAuthorityAndDelay(address,address,address,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_ADM" "$(seth --to-uint256 "$delay")")"
 seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+
+# Revoke ETH_FROM's ownership
+seth send "$MCD_GOV" 'setOwner(address)' '0x0000000000000000000000000000000000000000'
+seth send "$MCD_IOU" 'setOwner(address)' '0x0000000000000000000000000000000000000000'
+seth send "$MCD_GOV_GUARD" 'setOwner(address)' '0x0000000000000000000000000000000000000000'
+seth send "$PROXY_DEPLOYER" 'setOwner(address)' '0x0000000000000000000000000000000000000000'
