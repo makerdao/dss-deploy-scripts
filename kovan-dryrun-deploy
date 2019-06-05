@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+# shellcheck source=lib/common.sh
+. "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
+CONFIG_STEP=$(setConfigStep "kovan-dryrun")
+export CONFIG_STEP
+
+# Setup steps
+
+# Send ETH to Omnia Relayer
+OMNIA_RELAYER=$(jq -r ".omniaFromAddr" "$CONFIG_FILE")
+seth send "$OMNIA_RELAYER" --value "$(seth --to-wei 10000 eth)"
+
+# Deploy Values or Medians + OSMs (if delay > 0) (no solc optimization)
+dappBuild osm
+dappBuild testchain-medians
+
+tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
+for token in $tokens; do
+    type=$(jq -r ".tokens.${token} | .pipConfig | .type" "$CONFIG_FILE")
+    # Deploy Medianizer as Feed
+    if [[ "$type" == "median" ]]; then
+        eval "export VAL_$token=$(dappCreate testchain-medians "Median${token}USD")"
+        signers=$(jq -r ".tokens.${token} | .pipConfig | .signers | .[]" "$CONFIG_FILE")
+        # Approve oracle price feed providers
+        for signer in $signers; do
+            seth send "$(eval echo "\$VAL_${token}")" 'lift(address)' "$signer"
+        done
+        # Set quorum for Medianizer
+        seth send "$(eval echo "\$VAL_${token}")" 'setBar(uint256)' "$(seth --to-uint256 3)"
+        # Whitelist Omnia relayer to read price from Medianizer
+        seth send "$(eval echo "\$VAL_${token}")" 'kiss(address)' "$OMNIA_RELAYER"
+    fi
+    # Deploy DSValue as Feed
+    if [[ "${type}" == "value" ]]; then
+        eval "export VAL_$token=$(dappCreate osm DSValue)"
+    fi
+    # Deploy OSM if delay > 0
+    osm_delay=$(jq -r ".tokens.${token} | .pipConfig | .osmDelay" "$CONFIG_FILE")
+    if [[ "$osm_delay" -gt 0 ]]; then
+        # Deploy OSM
+        eval "export PIP_$token=$(dappCreate osm OSM "$(eval echo "\$VAL_${token}")")"
+        # Set OSM delay
+        seth send "$(eval echo "\$PIP_${token}")" 'step(uint16)' "$osm_delay"
+        # Whitelist OSM in Medianizer (skip if source is DSValue)
+        [[ "$type" == "median" ]] && seth send "$(eval echo "\$VAL_${token}")" 'kiss(address)' "$(eval echo "\$PIP_${token}")"
+    else
+        eval export "PIP_${token}=\$VAL_${token}"
+    fi
+    jq_inplace ".tokens.${token}.pip = \""$(eval echo "\$PIP_${token}")"\"" $CONFIG_FILE
+done
+
+# Run Deployment
+"$BIN_DIR"/kovan-deploy
+
+echo "KOVAN DRYRUN PREP COMPLETED SUCCESSFULLY"
