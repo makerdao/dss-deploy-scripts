@@ -47,7 +47,7 @@ for token in $tokens; do
     else
         eval export "PIP_${token}=\$VAL_${token}"
     fi
-    jq_inplace ".tokens.${token}.pip = \"$(eval echo "\$PIP_${token}")\"" $CONFIG_FILE
+    jq_inplace ".tokens.${token}.pip = \"$(eval echo "\$PIP_${token}")\"" "$CONFIG_FILE"
 done
 
 # Run Deployment

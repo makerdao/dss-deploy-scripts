@@ -84,7 +84,7 @@ jq_inplace() {
   local tmp; tmp=$(mktemp)
   local query; query=$1
   local file; file=$2
-  jq "$query" "$file" > $tmp && mv $tmp "$file"
+  jq "$query" "$file" > "$tmp" && mv "$tmp" "$file"
 }
 
 # Start verbose output
