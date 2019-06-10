@@ -34,11 +34,27 @@ export MCD_PAUSE_DELAY=0
 # Make sure there is not $MCD_ADM set, so a temporary roles is created as authority (to handle variables set up easier)
 unset MCD_ADM
 
+if [[ -z "$MCD_GOV" ]]; then
+    # It means the GOV token will be created now in the next deployment script call, then we can send funds to the Faucet and set permissions to FLOP
+    newGovToken=true
+else
+    newGovToken=false
+fi
+
 # Deploy MCD Core Contratcs (solc optimized)
 deploy-core
 # shellcheck source=/dev/null
 . "load-mcd-$(seth chain)"
 rm "load-mcd-$(seth chain)"
+
+# Mint Gov Token, send to the Faucet and set permissions if a new token
+if [[ "$newGovToken" == true ]]; then
+    seth send "$MCD_GOV" 'mint(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
+    seth send "$MCD_GOV" 'setAuthority(address)' "$MCD_GOV_GUARD"
+    seth send "$FAUCET" 'gulp(address)' "$MCD_GOV"
+    # Allow Flop to mint Gov token
+    seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_FLOP" "$MCD_GOV" "$(seth --to-bytes32 "$(seth sig 'mint(address,uint256)')")"
+fi
 
 # Deploy Collaterals (no solc optimization)
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
@@ -88,19 +104,6 @@ PROXY_ACTIONS=$(dappCreate dss-proxy-actions DssProxyActions)
 CDP_MANAGER=$(dappCreate dss-proxy-actions DssCdpManager "$MCD_VAT")
 GET_CDPS=$(dappCreate dss-proxy-actions GetCdps)
 
-dappBuild ds-chief
-
-# Deploy Gov token if doesn't exist
-if [[ -z "$MCD_GOV" ]]; then
-    MCD_GOV=$(dappCreate ds-chief DSToken "$(seth --to-bytes32 "$(seth --from-ascii "MKR")")")
-    export MCD_GOV
-    seth send "$MCD_GOV" 'mint(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
-    seth send "$MCD_GOV" 'setAuthority(address)' "$MCD_GOV_GUARD"
-    seth send "$FAUCET" 'gulp(address)' "$MCD_GOV"
-    # Allow Flop to mint Gov token
-    seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_FLOP" "$MCD_GOV" "$(seth --to-bytes32 "$(seth sig 'mint(address,uint256)')")"
-fi
-
 # Deploy Pause Proxy Actions (support contract for executing initial set up of the dss system)
 dappBuild testchain-pause-proxy-actions
 
@@ -114,6 +117,7 @@ PROXY_DEPLOYER=0x"$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$ET
 seth send "$MCD_ADM" 'setRootUser(address,bool)' "$PROXY_DEPLOYER" true
 
 # Deploy chief as new $MCD_ADM (no solc optimization)
+dappBuild ds-chief
 MCD_IOU=$(dappCreate ds-chief DSToken "$(seth --to-bytes32 "$(seth --from-ascii "IOU")")")
 seth send "$MCD_IOU" 'setAuthority(address)' "$MCD_GOV_GUARD"
 MCD_ADM=$(dappCreate ds-chief DSChief "$MCD_GOV" "$MCD_IOU" 5)
