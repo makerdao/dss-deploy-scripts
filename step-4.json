@@ -8,7 +8,7 @@
   "bump": "0.1",
   "sump": "0.1",
   "hump": "0",
-  "line": "1500",
+  "line": "1000000",
   "flap_beg": "5",
   "flap_ttl": "10800",
   "flap_tau": "172800",
@@ -67,7 +67,7 @@
       "pip": {
         "osmDelay": "0",
         "type": "value",
-        "price": "15",
+        "price": "20",
         "signers": [
           "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
           "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
@@ -94,7 +94,7 @@
       "pip": {
         "osmDelay": "0",
         "type": "value",
-        "price": "15",
+        "price": "25",
         "signers": [
           "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
           "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
@@ -121,7 +121,7 @@
       "pip": {
         "osmDelay": "0",
         "type": "value",
-        "price": "15",
+        "price": "30",
         "signers": [
           "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
           "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
@@ -148,7 +148,7 @@
       "pip": {
         "osmDelay": "0",
         "type": "value",
-        "price": "15",
+        "price": "40",
         "signers": [
           "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
           "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
@@ -175,7 +175,7 @@
       "pip": {
         "osmDelay": "0",
         "type": "value",
-        "price": "15",
+        "price": "50",
         "signers": [
           "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
           "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
