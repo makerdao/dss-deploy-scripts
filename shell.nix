@@ -1,6 +1,7 @@
 { pkgsSrc ? (import ./nix/pkgs.nix {}).pkgsSrc
 , pkgs ? (import ./nix/pkgs.nix { inherit pkgsSrc; }).pkgs
 , dss-deploy ? null
+, doCheck ? false
 }@args: with pkgs;
 
 let
