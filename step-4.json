@@ -8,7 +8,7 @@
   "bump": "0.1",
   "sump": "0.1",
   "hump": "0",
-  "line": "1500",
+  "line": "1000000",
   "flap_beg": "5",
   "flap_ttl": "10800",
   "flap_tau": "172800",
@@ -50,6 +50,16 @@
           "beg": "5",
           "ttl": "10800",
           "tau": "172800"
+        },
+        "C": {
+          "mat": "250",
+          "line": "100000",
+          "duty": "0.5",
+          "chop": "5",
+          "lump": "50",
+          "beg": "5",
+          "ttl": "10800",
+          "tau": "172800"
         }
       }
     },
@@ -57,7 +67,7 @@
       "pip": {
         "osmDelay": "0",
         "type": "value",
-        "price": "15",
+        "price": "20",
         "signers": [
           "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
           "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
@@ -72,6 +82,114 @@
           "mat": "180",
           "line": "800",
           "duty": "2",
+          "chop": "5",
+          "lump": "10",
+          "beg": "5",
+          "ttl": "10800",
+          "tau": "172800"
+        }
+      }
+    },
+    "COL2": {
+      "pip": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "25",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0xce93de6B854E75987961533BC1FabCBA7d02BE5a",
+          "0xa072Eaf3f9EbeA5e6c3A982A37bdF275E5925bFC"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "170",
+          "line": "200000",
+          "duty": "3",
+          "chop": "5",
+          "lump": "10",
+          "beg": "5",
+          "ttl": "10800",
+          "tau": "172800"
+        }
+      }
+    },
+    "COL3": {
+      "pip": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "30",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0xce93de6B854E75987961533BC1FabCBA7d02BE5a",
+          "0xa072Eaf3f9EbeA5e6c3A982A37bdF275E5925bFC"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "160",
+          "line": "300000",
+          "duty": "4",
+          "chop": "5",
+          "lump": "10",
+          "beg": "5",
+          "ttl": "10800",
+          "tau": "172800"
+        }
+      }
+    },
+    "COL4": {
+      "pip": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "40",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0xce93de6B854E75987961533BC1FabCBA7d02BE5a",
+          "0xa072Eaf3f9EbeA5e6c3A982A37bdF275E5925bFC"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "200",
+          "line": "100000",
+          "duty": "1.5",
+          "chop": "5",
+          "lump": "10",
+          "beg": "5",
+          "ttl": "10800",
+          "tau": "172800"
+        }
+      }
+    },
+    "COL5": {
+      "pip": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "50",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0xce93de6B854E75987961533BC1FabCBA7d02BE5a",
+          "0xa072Eaf3f9EbeA5e6c3A982A37bdF275E5925bFC"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "190",
+          "line": "200000",
+          "duty": "1.8",
           "chop": "5",
           "lump": "10",
           "beg": "5",
