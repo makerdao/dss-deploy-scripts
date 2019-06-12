@@ -32,7 +32,7 @@ let
         ds-test = ds-test_5559e6c;
       };
       repo' = {
-        name = "ds-auth-b36fd91-source";
+        name = "ds-auth_b36fd91-source";
         url = "https://github.com/dapphub/ds-auth";
         rev = "b36fd917563483d10967b57af1c9c88d06204d67";
         ref = "HEAD";
@@ -46,7 +46,7 @@ let
         ds-test = ds-test_a4e4005;
       };
       repo' = {
-        name = "ds-auth-f783169-source";
+        name = "ds-auth_f783169-source";
         url = "https://github.com/dapphub/ds-auth";
         rev = "f783169408c278f85e26d77ba7b45823ed9503dd";
         ref = "HEAD";
@@ -63,7 +63,7 @@ let
         ds-token = ds-token_bf25ded;
       };
       repo' = {
-        name = "ds-chief-3277c98-source";
+        name = "ds-chief_3277c98-source";
         url = "https://github.com/dapphub/ds-chief";
         rev = "3277c9809c26c4e26615bad71794c420cc0f56c6";
         ref = "HEAD";
@@ -80,7 +80,7 @@ let
         ds-token = ds-token_cee36a1;
       };
       repo' = {
-        name = "ds-chief-58a02ff-source";
+        name = "ds-chief_58a02ff-source";
         url = "https://github.com/dapphub/ds-chief";
         rev = "58a02ff50bdbf5729252aab91bc468a3e77be6bb";
         ref = "HEAD";
@@ -94,7 +94,7 @@ let
         ds-test = ds-test_a4e4005;
       };
       repo' = {
-        name = "ds-exec-c53aab4-source";
+        name = "ds-exec_c53aab4-source";
         url = "https://github.com/dapphub/ds-exec";
         rev = "c53aab4ba91645b30b0644972ef016b5ee606ca8";
         ref = "HEAD";
@@ -109,7 +109,7 @@ let
         ds-test = ds-test_a4e4005;
       };
       repo' = {
-        name = "ds-guard-4678e1c-source";
+        name = "ds-guard_4678e1c-source";
         url = "https://github.com/dapphub/ds-guard";
         rev = "4678e1c74fce1542f1379f11325d7bfbbb897344";
         ref = "HEAD";
@@ -123,7 +123,7 @@ let
         ds-test = ds-test_5559e6c;
       };
       repo' = {
-        name = "ds-math-49b3893-source";
+        name = "ds-math_49b3893-source";
         url = "https://github.com/dapphub/ds-math";
         rev = "49b38937c0c0b8af73b05f767a0af9d5e85a1e6c";
         ref = "HEAD";
@@ -137,7 +137,7 @@ let
         ds-test = ds-test_a4e4005;
       };
       repo' = {
-        name = "ds-math-784079b-source";
+        name = "ds-math_784079b-source";
         url = "https://github.com/dapphub/ds-math";
         rev = "784079b72c4d782b022b3e893a7c5659aa35971a";
         ref = "HEAD";
@@ -151,7 +151,7 @@ let
         ds-test = ds-test_a4e4005;
       };
       repo' = {
-        name = "ds-note-beef816-source";
+        name = "ds-note_beef816-source";
         url = "https://github.com/dapphub/ds-note";
         rev = "beef8166f2184a4bac3d02abdb944647fd735060";
         ref = "HEAD";
@@ -165,7 +165,7 @@ let
         ds-test = ds-test_5559e6c;
       };
       repo' = {
-        name = "ds-note-dbc97b1-source";
+        name = "ds-note_dbc97b1-source";
         url = "https://github.com/dapphub/ds-note";
         rev = "dbc97b158c743d8a33634d26c543f59bc0be61c3";
         ref = "HEAD";
@@ -183,7 +183,7 @@ let
         ds-token = ds-token_cee36a1;
       };
       repo' = {
-        name = "ds-pause-36ec7d7-source";
+        name = "ds-pause_36ec7d7-source";
         url = "https://github.com/dapphub/ds-pause";
         rev = "36ec7d7c49e6a25298f2ce8eec7a7c8e6a23a8e9";
         ref = "HEAD";
@@ -199,7 +199,7 @@ let
         ds-test = ds-test_a4e4005;
       };
       repo' = {
-        name = "ds-proxy-379f5e2-source";
+        name = "ds-proxy_379f5e2-source";
         url = "https://github.com/dapphub/ds-proxy";
         rev = "379f5e2fc0a6ed5a7a96d3f211cc5ed8761baf00";
         ref = "HEAD";
@@ -214,7 +214,7 @@ let
         ds-test = ds-test_a4e4005;
       };
       repo' = {
-        name = "ds-roles-0138372-source";
+        name = "ds-roles_0138372-source";
         url = "https://github.com/dapphub/ds-roles";
         rev = "01383725a4240000c0e274e55bdcf251570fd486";
         ref = "HEAD";
@@ -229,86 +229,9 @@ let
         ds-test = ds-test_5559e6c;
       };
       repo' = {
-        name = "ds-roles-555a773-source";
+        name = "ds-roles_555a773-source";
         url = "https://github.com/dapphub/ds-roles";
         rev = "555a7733b6beb5a550beb1c91334a24960ccdb14";
-        ref = "HEAD";
-      };
-      src' = fetchGit repo';
-      src = "${src'}/src";
-    };
-    dss_9746105 = rec {
-      name = "dss";
-      deps = {
-        ds-test = ds-test_a4e4005;
-        ds-token = ds-token_cee36a1;
-        ds-value = ds-value_f307171;
-      };
-      repo' = {
-        name = "dss-9746105-source";
-        url = "https://github.com/makerdao/dss";
-        rev = "97461050d4cb185522459cad474e82cd7ecf9757";
-        ref = "HEAD";
-      };
-      src' = fetchGit repo';
-      src = "${src'}/src";
-    };
-    dss-cdp-manager_802bcfe = rec {
-      name = "dss-cdp-manager";
-      deps = {
-        ds-test = ds-test_a4e4005;
-        dss-deploy = dss-deploy_20e92b3;
-      };
-      repo' = {
-        name = "dss-cdp-manager-802bcfe-source";
-        url = "https://github.com/makerdao/dss-cdp-manager";
-        rev = "802bcfe2d68336d1077f5ea366629de04c7b1ee3";
-        ref = "HEAD";
-      };
-      src' = fetchGit repo';
-      src = "${src'}/src";
-    };
-    dss-deploy_20e92b3 = rec {
-      name = "dss-deploy";
-      deps = {
-        ds-auth = ds-auth_f783169;
-        ds-guard = ds-guard_4678e1c;
-        ds-note = ds-note_beef816;
-        ds-pause = ds-pause_36ec7d7;
-        ds-roles = ds-roles_0138372;
-        ds-test = ds-test_a4e4005;
-        ds-token = ds-token_cee36a1;
-        ds-weth = ds-weth_dfada5b;
-        dss = dss_9746105;
-        esm = esm_e0a85d6;
-      };
-      repo' = {
-        name = "dss-deploy-20e92b3-source";
-        url = "https://github.com/makerdao/dss-deploy";
-        rev = "20e92b322f9612e6968687e367043584f377001a";
-        ref = "HEAD";
-      };
-      src' = fetchGit repo';
-      src = "${src'}/src";
-    };
-    dss-deploy_df8e2fb = rec {
-      name = "dss-deploy";
-      deps = {
-        ds-auth = ds-auth_f783169;
-        ds-guard = ds-guard_4678e1c;
-        ds-note = ds-note_beef816;
-        ds-pause = ds-pause_36ec7d7;
-        ds-roles = ds-roles_0138372;
-        ds-test = ds-test_a4e4005;
-        ds-token = ds-token_cee36a1;
-        ds-weth = ds-weth_dfada5b;
-        dss = dss_9746105;
-        esm = esm_e0a85d6;
-      };
-      repo' = {
-        name = "dss-deploy-df8e2fb-source";
-        url = "https://github.com/makerdao/dss-deploy";
-        rev = "df8e2fb2901f696c0cd77363b92dc76d38317b49";
         ref = "HEAD";
       };
       src' = fetchGit repo';
@@ -322,25 +245,9 @@ let
         ds-test = ds-test_a4e4005;
       };
       repo' = {
-        name = "ds-spell-c908b78-source";
+        name = "ds-spell_c908b78-source";
         url = "https://github.com/dapphub/ds-spell";
         rev = "c908b7807f08661b4eca97adff6d9561d0116244";
-        ref = "HEAD";
-      };
-      src' = fetchGit repo';
-      src = "${src'}/src";
-    };
-    dss-proxy-actions_29e9084 = rec {
-      name = "dss-proxy-actions";
-      deps = {
-        ds-proxy = ds-proxy_379f5e2;
-        ds-test = ds-test_a4e4005;
-        dss-cdp-manager = dss-cdp-manager_802bcfe;
-      };
-      repo' = {
-        name = "dss-proxy-actions-29e9084-source";
-        url = "https://github.com/makerdao/dss-proxy-actions";
-        rev = "29e90840f1da30905e2cf8606cdff9eea5574d70";
         ref = "HEAD";
       };
       src' = fetchGit repo';
@@ -354,7 +261,7 @@ let
         ds-test = ds-test_5559e6c;
       };
       repo' = {
-        name = "ds-stop-31d56c4-source";
+        name = "ds-stop_31d56c4-source";
         url = "https://github.com/dapphub/ds-stop";
         rev = "31d56c42009939dc07eaa0c3ca91a8495c31b207";
         ref = "HEAD";
@@ -370,7 +277,7 @@ let
         ds-test = ds-test_a4e4005;
       };
       repo' = {
-        name = "ds-stop-6e2bda6-source";
+        name = "ds-stop_6e2bda6-source";
         url = "https://github.com/dapphub/ds-stop";
         rev = "6e2bda69cb3cbf25a475491d9bc22969adb05993";
         ref = "HEAD";
@@ -383,7 +290,7 @@ let
       deps = {
       };
       repo' = {
-        name = "ds-test-5559e6c-source";
+        name = "ds-test_5559e6c-source";
         url = "https://github.com/dapphub/ds-test";
         rev = "5559e6c3387a2c2bf0fc9df4d2b42b334efeb752";
         ref = "HEAD";
@@ -396,7 +303,7 @@ let
       deps = {
       };
       repo' = {
-        name = "ds-test-a4e4005-source";
+        name = "ds-test_a4e4005-source";
         url = "https://github.com/dapphub/ds-test";
         rev = "a4e40050b809705b15867939f5829540c50cb84f";
         ref = "HEAD";
@@ -413,7 +320,7 @@ let
         ds-test = ds-test_a4e4005;
       };
       repo' = {
-        name = "ds-thing-5e49fcb-source";
+        name = "ds-thing_5e49fcb-source";
         url = "https://github.com/dapphub/ds-thing";
         rev = "5e49fcbdf4ef8ccd241423ed114576f51c42f1e0";
         ref = "HEAD";
@@ -430,7 +337,7 @@ let
         ds-test = ds-test_5559e6c;
       };
       repo' = {
-        name = "ds-thing-f10766a-source";
+        name = "ds-thing_f10766a-source";
         url = "https://github.com/dapphub/ds-thing";
         rev = "f10766a6db294e020a5d540e07314633d15270f5";
         ref = "HEAD";
@@ -447,7 +354,7 @@ let
         erc20 = erc20_768a3d8;
       };
       repo' = {
-        name = "ds-token-bf25ded-source";
+        name = "ds-token_bf25ded-source";
         url = "https://github.com/dapphub/ds-token";
         rev = "bf25ded913f142759930e96dac74a642bb295692";
         ref = "HEAD";
@@ -464,7 +371,7 @@ let
         erc20 = erc20_f322aac;
       };
       repo' = {
-        name = "ds-token-cee36a1-source";
+        name = "ds-token_cee36a1-source";
         url = "https://github.com/dapphub/ds-token";
         rev = "cee36a14685b3f93ffa0332853d3fcd943fe96a5";
         ref = "HEAD";
@@ -479,7 +386,7 @@ let
         ds-thing = ds-thing_5e49fcb;
       };
       repo' = {
-        name = "ds-value-d2107c1-source";
+        name = "ds-value_d2107c1-source";
         url = "https://github.com/dapphub/ds-value";
         rev = "d2107c1751f086aed3c38a2f433d6945444af7d6";
         ref = "HEAD";
@@ -494,7 +401,7 @@ let
         ds-thing = ds-thing_5e49fcb;
       };
       repo' = {
-        name = "ds-value-f307171-source";
+        name = "ds-value_f307171-source";
         url = "https://github.com/dapphub/ds-value";
         rev = "f3071713afbd583991637f8cfab5e0d29466dffd";
         ref = "HEAD";
@@ -509,9 +416,79 @@ let
         erc20 = erc20_f322aac;
       };
       repo' = {
-        name = "ds-weth-dfada5b-source";
+        name = "ds-weth_dfada5b-source";
         url = "https://github.com/dapphub/ds-weth";
         rev = "dfada5bca7a00046c1ddc37c0c43106a8c0a4e5a";
+        ref = "HEAD";
+      };
+      src' = fetchGit repo';
+      src = "${src'}/src";
+    };
+    dss-cdp-manager_283a65d = rec {
+      name = "dss-cdp-manager";
+      deps = {
+        ds-test = ds-test_a4e4005;
+        dss-deploy = dss-deploy_5058077;
+      };
+      repo' = {
+        name = "dss-cdp-manager_283a65d-source";
+        url = "https://github.com/makerdao/dss-cdp-manager";
+        rev = "283a65d923c5729dbb9240e517799934d3f3aac5";
+        ref = "HEAD";
+      };
+      src' = fetchGit repo';
+      src = "${src'}/src";
+    };
+    dss-deploy_5058077 = rec {
+      name = "dss-deploy";
+      deps = {
+        ds-auth = ds-auth_f783169;
+        ds-guard = ds-guard_4678e1c;
+        ds-note = ds-note_beef816;
+        ds-pause = ds-pause_36ec7d7;
+        ds-roles = ds-roles_0138372;
+        ds-test = ds-test_a4e4005;
+        ds-token = ds-token_cee36a1;
+        ds-weth = ds-weth_dfada5b;
+        dss = dss_9746105;
+        esm = esm_e0a85d6;
+      };
+      repo' = {
+        name = "dss-deploy_5058077-source";
+        url = "https://github.com/makerdao/dss-deploy";
+        rev = "505807702e767f7fe66b99ee846cc8cd0a3a2dcc";
+        ref = "HEAD";
+      };
+      src' = fetchGit repo';
+      src = "${src'}/src";
+    };
+    dss-proxy-actions_efaaef9 = rec {
+      name = "dss-proxy-actions";
+      deps = {
+        ds-proxy = ds-proxy_379f5e2;
+        ds-test = ds-test_a4e4005;
+        dss-cdp-manager = dss-cdp-manager_283a65d;
+      };
+      repo' = {
+        name = "dss-proxy-actions_efaaef9-source";
+        url = "https://github.com/makerdao/dss-proxy-actions";
+        rev = "efaaef9114a9a83a0c9d012755a76f7f2405439a";
+        ref = "HEAD";
+      };
+      src' = fetchGit repo';
+      src = "${src'}/src";
+    };
+    dss_9746105 = rec {
+      name = "dss";
+      deps = {
+        ds-test = ds-test_a4e4005;
+        ds-token = ds-token_cee36a1;
+        ds-value = ds-value_f307171;
+      };
+      repo' = {
+        name = "dss_9746105-source";
+        url = "https://github.com/makerdao/dss";
+        rev = "97461050d4cb185522459cad474e82cd7ecf9757";
         ref = "HEAD";
       };
       src' = fetchGit repo';
@@ -522,7 +499,7 @@ let
       deps = {
       };
       repo' = {
-        name = "erc20-768a3d8-source";
+        name = "erc20_768a3d8-source";
         url = "https://github.com/dapphub/erc20";
         rev = "768a3d8ca30590522c68951e989e5b69f5859151";
         ref = "HEAD";
@@ -535,7 +512,7 @@ let
       deps = {
       };
       repo' = {
-        name = "erc20-f322aac-source";
+        name = "erc20_f322aac-source";
         url = "https://github.com/dapphub/erc20";
         rev = "f322aaca414db343337814097d2af43214bee96c";
         ref = "HEAD";
@@ -551,7 +528,7 @@ let
         ds-token = ds-token_cee36a1;
       };
       repo' = {
-        name = "esm-e0a85d6-source";
+        name = "esm_e0a85d6-source";
         url = "https://github.com/makerdao/esm";
         rev = "e0a85d6215cec2a7786c1dcaee188a3ff393710d";
         ref = "HEAD";
@@ -565,7 +542,7 @@ let
         ds-test = ds-test_a4e4005;
       };
       repo' = {
-        name = "gov-polling-generator-d08e43e-source";
+        name = "gov-polling-generator_d08e43e-source";
         url = "https://github.com/makerdao/gov-polling-generator";
         rev = "d08e43ee1a8d6daac3fc0bc4aee5a0c92f62c2e8";
         ref = "HEAD";
@@ -573,16 +550,16 @@ let
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    line-spell_6b2aa0a = rec {
+    line-spell_f34cbc5 = rec {
       name = "line-spell";
       deps = {
         ds-test = ds-test_a4e4005;
-        dss-deploy = dss-deploy_20e92b3;
+        dss-deploy = dss-deploy_5058077;
       };
       repo' = {
-        name = "line-spell-6b2aa0a-source";
+        name = "line-spell_f34cbc5-source";
         url = "https://github.com/makerdao/line-spell";
-        rev = "6b2aa0ac429e2e700a8b428dc8cf3d78b048616b";
+        rev = "f34cbc5ecbbdf8fa92599afe23f2612815e305ca";
         ref = "HEAD";
       };
       src' = fetchGit repo';
@@ -594,7 +571,7 @@ let
         ds-test = ds-test_a4e4005;
       };
       repo' = {
-        name = "median-ba60abb-source";
+        name = "median_ba60abb-source";
         url = "https://github.com/makerdao/median";
         rev = "ba60abbad1efd6a6922cfb14b7d4bba0a1ee830a";
         ref = "gas-saver";
@@ -608,7 +585,7 @@ let
         ds-test = ds-test_a4e4005;
       };
       repo' = {
-        name = "multicall-b8771d9-source";
+        name = "multicall_b8771d9-source";
         url = "https://github.com/makerdao/multicall";
         rev = "b8771d9fe2b1429ae95cae622c4d880fd897562a";
         ref = "HEAD";
@@ -624,7 +601,7 @@ let
         ds-value = ds-value_d2107c1;
       };
       repo' = {
-        name = "osm-1721b9d-source";
+        name = "osm_1721b9d-source";
         url = "https://github.com/makerdao/osm";
         rev = "1721b9d2eeedca4f270d992e27d0af0e1f05118d";
         ref = "HEAD";
@@ -639,7 +616,7 @@ let
         ds-test = ds-test_a4e4005;
       };
       repo' = {
-        name = "proxy-registry-1aa2ba3-source";
+        name = "proxy-registry_1aa2ba3-source";
         url = "https://github.com/makerdao/proxy-registry";
         rev = "1aa2ba356802a66f2de1f0ff78fabe1756b905a5";
         ref = "HEAD";
@@ -654,7 +631,7 @@ let
         median = median_ba60abb;
       };
       repo' = {
-        name = "testchain-medians-7b58d5e-source";
+        name = "testchain-medians_7b58d5e-source";
         url = "https://github.com/makerdao/testchain-medians";
         rev = "7b58d5ee6a84f6c01828a64da3815b9068d23e93";
         ref = "HEAD";
@@ -662,16 +639,16 @@ let
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    testchain-pause-proxy-actions_6cfa4a0 = rec {
+    testchain-pause-proxy-actions_15d863c = rec {
       name = "testchain-pause-proxy-actions";
       deps = {
         ds-test = ds-test_a4e4005;
-        dss-deploy = dss-deploy_20e92b3;
+        dss-deploy = dss-deploy_5058077;
       };
       repo' = {
-        name = "testchain-pause-proxy-actions-6cfa4a0-source";
+        name = "testchain-pause-proxy-actions_15d863c-source";
         url = "https://github.com/makerdao/testchain-pause-proxy-actions";
-        rev = "6cfa4a0cb57fd80e3747dba7e0f30c5e41390fe0";
+        rev = "15d863c5031e430437cd74b50468a6b672aea1e4";
         ref = "HEAD";
       };
       src' = fetchGit repo';
@@ -684,7 +661,7 @@ let
         ds-token = ds-token_cee36a1;
       };
       repo' = {
-        name = "token-faucet-adf294e-source";
+        name = "token-faucet_adf294e-source";
         url = "https://github.com/makerdao/token-faucet";
         rev = "adf294e2053d1fe7c14acc43529f2091b971b7a8";
         ref = "HEAD";
@@ -700,7 +677,7 @@ let
         ds-token = ds-token_bf25ded;
       };
       repo' = {
-        name = "vote-proxy-ebd7b2f-source";
+        name = "vote-proxy_ebd7b2f-source";
         url = "https://github.com/makerdao/vote-proxy";
         rev = "ebd7b2f484bc18d42563b443fbad05702d0abb38";
         ref = "HEAD";
@@ -708,33 +685,27 @@ let
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    testchain-dss-deployment-scripts_cdf1590 = rec {
+    testchain-dss-deployment-scripts_b595995 = rec {
       name = "testchain-dss-deployment-scripts";
       deps = {
         ds-chief = ds-chief_58a02ff;
         ds-guard = ds-guard_4678e1c;
-        dss-deploy = dss-deploy_df8e2fb;
-        dss-proxy-actions = dss-proxy-actions_29e9084;
+        dss-deploy = dss-deploy_5058077;
+        dss-proxy-actions = dss-proxy-actions_efaaef9;
         gov-polling-generator = gov-polling-generator_d08e43e;
-        line-spell = line-spell_6b2aa0a;
+        line-spell = line-spell_f34cbc5;
         multicall = multicall_b8771d9;
         osm = osm_1721b9d;
         proxy-registry = proxy-registry_1aa2ba3;
         testchain-medians = testchain-medians_7b58d5e;
-        testchain-pause-proxy-actions = testchain-pause-proxy-actions_6cfa4a0;
+        testchain-pause-proxy-actions = testchain-pause-proxy-actions_15d863c;
         token-faucet = token-faucet_adf294e;
         vote-proxy = vote-proxy_ebd7b2f;
       };
-      repo' = {
-        name = "testchain-dss-deployment-scripts-cdf1590-source";
-        url = "git@github.com:makerdao/testchain-dss-deployment-scripts";
-        rev = "cdf1590fa56b1394c2f61c10feaebab8b8f95d29";
-        ref = "HEAD";
-      };
-      src' = fetchGit repo';
-      src = "${src'}/src";
+      src' = ../.;
+      src = ../src;
     };
-    this = testchain-dss-deployment-scripts_cdf1590 // { src' = ../.; src = ../src; };
+    this = testchain-dss-deployment-scripts_b595995;
   };
 in {
   inherit package packageSpecs specs;
