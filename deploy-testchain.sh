@@ -2,8 +2,7 @@
 
 # shellcheck source=lib/common.sh
 . "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
-CONFIG_STEP=$(setConfigStep "step-1")
-export CONFIG_STEP
+setConfigFile "testchain"
 
 # Send ETH to Omnia Relayer
 OMNIA_RELAYER=$(jq -r ".omniaFromAddr" "$CONFIG_FILE")
@@ -64,7 +63,39 @@ for token in $tokens; do
     fi
 done
 
-if [[ "$CONFIG_STEP" == "step-1" ]]; then
-    "$LIBEXEC_DIR"/set-pause-auth-delay
-    echo "STEP 1 COMPLETED SUCCESSFULLY"
+"$LIBEXEC_DIR"/set-ilks-mat
+
+setLinesMode=$(jq -r ".setLinesMode" "$CONFIG_FILE")
+if [[ $setLinesMode = "direct" ]]; then
+    "$LIBEXEC_DIR"/set-ilks-line
+elif [[ $setLinesMode = "vote" ]]; then
+    "$LIBEXEC_DIR"/set-ilks-spell-line
+fi
+
+"$LIBEXEC_DIR"/set-ilks-duty
+
+"$LIBEXEC_DIR"/set-ilks-price
+
+"$LIBEXEC_DIR"/set-ilks-spotter-poke
+
+"$LIBEXEC_DIR"/set-ilks-chop
+
+"$LIBEXEC_DIR"/set-ilks-lump
+
+"$LIBEXEC_DIR"/set-ilks-beg
+
+"$LIBEXEC_DIR"/set-ilks-ttl
+
+"$LIBEXEC_DIR"/set-ilks-tau
+
+if [[ "$1" != "" ]]; then
+    "$LIBEXEC_DIR"/cases/$1
+fi
+
+"$LIBEXEC_DIR"/set-pause-auth-delay
+
+if [[ "$1" != "" ]]; then
+    echo "TESTCHAIN DEPLOYMENT + ${1} COMPLETED SUCCESSFULLY"
+else
+    echo "TESTCHAIN DEPLOYMENT COMPLETED SUCCESSFULLY"
 fi

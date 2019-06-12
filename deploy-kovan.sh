@@ -2,8 +2,7 @@
 
 # shellcheck source=lib/common.sh
 . "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
-CONFIG_STEP=$(setConfigStep "kovan")
-export CONFIG_STEP
+setConfigFile "kovan"
 
 test "$(seth chain)" == "kovan" || exit 1
 

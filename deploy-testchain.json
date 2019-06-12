@@ -1,5 +1,5 @@
 {
-  "description": "Step 4 - CDP Management",
+  "description": "Testchain Deployment",
   "defaults": {},
   "roles": ["CREATOR"],
   "omniaFromAddr": "0xdc9A20F5a46AFE0802b361076BeFC51f787B2e58",
@@ -15,6 +15,7 @@
   "flop_beg": "5",
   "flop_ttl": "10800",
   "flop_tau": "172800",
+  "setLinesMode": "direct",
   "tokens": {
     "ETH": {
       "pip": {

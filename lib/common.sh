@@ -13,21 +13,15 @@ DAPP_LIB=${DAPP_LIB:-$BIN_DIR/contracts}
 
 # Declare functions
 
-setConfigStep() {
-    CONFIG_STEP=${CONFIG_STEP:-"$1"}
-
-    # Only executes if called from the initial script
-    if [[ "$CONFIG_STEP" == "$1" ]]; then
-        # Clean out directory
-        rm -rf "$OUT_DIR" && mkdir "$OUT_DIR"
-        # If environment variable exists bring the values from there, otherwise use the config file
-        if [[ -n "$TDDS_CONFIG_VALUES" ]]; then
-            echo "$TDDS_CONFIG_VALUES" > "$CONFIG_FILE"
-        else
-            cp "$CONFIG_DIR/$CONFIG_STEP.json" "$CONFIG_FILE"
-        fi
+setConfigFile() {
+    # Clean out directory
+    rm -rf "$OUT_DIR" && mkdir "$OUT_DIR"
+    # If environment variable exists bring the values from there, otherwise use the config file
+    if [[ -n "$TDDS_CONFIG_VALUES" ]]; then
+        echo "$TDDS_CONFIG_VALUES" > "$CONFIG_FILE"
+    else
+        cp "$CONFIG_DIR/deploy-$1.json" "$CONFIG_FILE"
     fi
-    echo "$CONFIG_STEP"
 }
 
 loadAddresses() {

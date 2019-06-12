@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
 
 # shellcheck source=lib/common.sh
-. "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
-CONFIG_STEP=$(setConfigStep "step-7")
-export CONFIG_STEP
-
-"$BIN_DIR"/step-4-deploy
+. "${LIB_DIR:-$(cd "${0%/*}/../../lib"&&pwd)}/common.sh"
 
 loadAddresses
 
@@ -47,9 +43,3 @@ seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii 
 
 # Bite CDP
 seth send "$MCD_CAT" 'bite(bytes32,address)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$URN"
-
-# Set Pause Delay
-if [[ "$CONFIG_STEP" == "step-7" ]]; then
-    "$LIBEXEC_DIR"/set-pause-auth-delay
-    echo "STEP 7 COMPLETED SUCCESSFULLY"
-fi
