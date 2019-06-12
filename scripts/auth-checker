@@ -53,7 +53,7 @@ canCall() {
     local authority=$(seth call "$(eval echo "\$${2}")" 'authority()(address)')
     local CHECK=$(seth call "0x${authority}" 'canCall(address,address,bytes4)(bool)' "$(eval echo "\$${1}")" "$(eval echo "\$${2}")" "$(seth sig "$3")")
 
-    printf "CALL: ${1} -> ${2} -> ${3} "
+    printf "CALL: ${1} -> ${2} -> ${3} -> "
     if [[ $CHECK == true ]]; then
         printf "${GREEN}OK${NC}\n";
     else
