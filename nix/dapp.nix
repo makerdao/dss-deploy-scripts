@@ -682,7 +682,7 @@ let
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    testchain-dss-deployment-scripts_38cdd58 = rec {
+    testchain-dss-deployment-scripts_09ad9c3 = rec {
       name = "testchain-dss-deployment-scripts";
       deps = {
         ds-chief = ds-chief_58a02ff;
@@ -700,15 +700,15 @@ let
         vote-proxy = vote-proxy_ebd7b2f;
       };
       repo' = {
-        name = "testchain-dss-deployment-scripts-38cdd58-source";
+        name = "testchain-dss-deployment-scripts-09ad9c3-source";
         url = "git@github.com:makerdao/testchain-dss-deployment-scripts";
-        rev = "38cdd5824f1b61d832329fce9726dceb070abb16";
+        rev = "09ad9c31c06eb0c6cda4081019e92f8fcb71cb43";
         ref = "esm";
       };
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    this = testchain-dss-deployment-scripts_38cdd58 // { src' = ./.; src = ./src; };
+    this = testchain-dss-deployment-scripts_09ad9c3 // { src' = ../.; src = ../src; };
   };
 in {
   inherit package packageSpecs specs;
