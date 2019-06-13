@@ -89,7 +89,7 @@ fi
 "$LIBEXEC_DIR"/set-ilks-tau
 
 if [[ "$1" != "" ]]; then
-    "$LIBEXEC_DIR"/cases/$1
+    "$LIBEXEC_DIR/cases/$1"
 fi
 
 "$LIBEXEC_DIR"/set-pause-auth-delay
