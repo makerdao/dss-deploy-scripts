@@ -115,6 +115,7 @@ checkRely "MCD_FLOP" "MCD_PAUSE_PROXY" "AUTHED"
 
 # end
 checkRely "MCD_END" "MCD_DEPLOY" "NOT_AUTHED"
+checkRely "MCD_END" "MCD_ESM" "AUTHED"
 checkRely "MCD_END" "MCD_PAUSE_PROXY" "AUTHED"
 
 #flips
@@ -128,8 +129,18 @@ for token in $tokens; do
 done
 
 # pause
-checkAuthority "MCD_PAUSE" "MCD_ADM"
 checkOwner "MCD_PAUSE" "0x0000000000000000000000000000000000000000"
+checkAuthority "MCD_PAUSE" "MCD_ADM"
+
+# chief
+checkOwner "MCD_ADM" "0x0000000000000000000000000000000000000000"
+checkAuthority "MCD_ADM" "MCD_ADM"
+
+# iou
+checkOwner "MCD_IOU" "0x0000000000000000000000000000000000000000"
+
+# gov guard
+checkOwner "MCD_GOV_GUARD" "0x0000000000000000000000000000000000000000"
 
 # gov
 canCall "MCD_FLOP" "MCD_GOV" "mint(address,uint256)"
