@@ -19,18 +19,18 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 ok() {
-    printf '%sOK%s\n' "$GREEN" "$NC"
+    printf '%b\n' "${GREEN}OK${NC}"
 }
 
 err() {
-    printf '%sNOT OK%s\n' "$RED" "$NC"
+    printf '%b\n' "${RED}NOT OK${NC}"
 }
 
 checkRely() {
     local CHECK
     CHECK=$(seth call "${!1}" 'wards(address)' "${!2}")
 
-    printf "RELY: %s -> %s -> %s ->" "${1}" "${2}" "${3}"
+    printf "RELY: %s -> %s -> %s -> " "${1}" "${2}" "${3}"
     if [[ "${!3}" == "$CHECK" ]]; then
         ok
     else
@@ -42,7 +42,7 @@ checkAuthority() {
     local CHECK
     CHECK=$(seth call "${!1}" 'authority()(address)')
 
-    printf "AUTH: %s -> %s" "${1}" "${2}"
+    printf "AUTH: %s -> %s -> " "${1}" "${2}"
     if [[ "${!2}" == "0x${CHECK}" ]]; then
         ok
     else
@@ -54,7 +54,7 @@ checkOwner() {
     local CHECK
     CHECK=$(seth call "${!1}" 'owner()(address)')
 
-    printf "OWN: %s -> %s" "${1}" "${2}"
+    printf "OWN: %s -> %s -> " "${1}" "${2}"
     if [[ "$2" == "0x${CHECK}" ]]; then
         ok
     else
@@ -68,7 +68,7 @@ canCall() {
     authority=$(seth call "${!2}" 'authority()(address)')
     CHECK=$(seth call "0x${authority}" 'canCall(address,address,bytes4)(bool)' "${!1}" "${!2}" "$(seth sig "$3")")
 
-    printf "CALL: %s -> %s -> %s ->" "${1}" "${2}" "${3}"
+    printf "CALL: %s -> %s -> %s -> " "${1}" "${2}" "${3}"
     if [[ $CHECK == true ]]; then
         ok
     else
