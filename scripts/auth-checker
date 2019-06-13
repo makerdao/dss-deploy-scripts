@@ -10,54 +10,69 @@ loadAddresses
 
 set +x
 
+# shellcheck disable=SC2034
 AUTHED="0x0000000000000000000000000000000000000000000000000000000000000001"
+# shellcheck disable=SC2034
 NOT_AUTHED="0x0000000000000000000000000000000000000000000000000000000000000000"
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-checkRely() {
-    local CHECK=$(seth call "$(eval echo "\$${1}")" 'wards(address)' "$(eval echo "\$$2")")
+ok() {
+    printf '%sOK%s\n' "$GREEN" "$NC"
+}
 
-    printf "RELY: ${1} -> ${2} -> ${3} -> "
-    if [[ "$(eval echo "\$$3")" == "$CHECK" ]]; then
-        printf "${GREEN}OK${NC}\n";
+err() {
+    printf '%sNOT OK%s\n' "$RED" "$NC"
+}
+
+checkRely() {
+    local CHECK
+    CHECK=$(seth call "${!1}" 'wards(address)' "${!2}")
+
+    printf "RELY: %s -> %s -> %s ->" "${1}" "${2}" "${3}"
+    if [[ "${!3}" == "$CHECK" ]]; then
+        ok
     else
-        printf "${RED}NOT OK${NC}\n";
+        err
     fi
 }
 
 checkAuthority() {
-    local CHECK=$(seth call "$(eval echo "\$${1}")" 'authority()(address)')
+    local CHECK
+    CHECK=$(seth call "${!1}" 'authority()(address)')
 
-    printf "AUTH: ${1} -> ${2} "
-    if [[ "$(eval echo "\$$2")" == "0x${CHECK}" ]]; then
-        printf "${GREEN}OK${NC}\n";
+    printf "AUTH: %s -> %s" "${1}" "${2}"
+    if [[ "${!2}" == "0x${CHECK}" ]]; then
+        ok
     else
-        printf "${RED}NOT OK${NC}\n";
+        err
     fi
 }
 
 checkOwner() {
-    local CHECK=$(seth call "$(eval echo "\$${1}")" 'owner()(address)')
+    local CHECK
+    CHECK=$(seth call "${!1}" 'owner()(address)')
 
-    printf "OWN: ${1} -> ${2} "
+    printf "OWN: %s -> %s" "${1}" "${2}"
     if [[ "$2" == "0x${CHECK}" ]]; then
-        printf "${GREEN}OK${NC}\n";
+        ok
     else
-        printf "${RED}NOT OK${NC}\n";
+        err
     fi
 }
 
 canCall() {
-    local authority=$(seth call "$(eval echo "\$${2}")" 'authority()(address)')
-    local CHECK=$(seth call "0x${authority}" 'canCall(address,address,bytes4)(bool)' "$(eval echo "\$${1}")" "$(eval echo "\$${2}")" "$(seth sig "$3")")
+    local authority
+    local CHECK
+    authority=$(seth call "${!2}" 'authority()(address)')
+    CHECK=$(seth call "0x${authority}" 'canCall(address,address,bytes4)(bool)' "${!1}" "${!2}" "$(seth sig "$3")")
 
-    printf "CALL: ${1} -> ${2} -> ${3} -> "
+    printf "CALL: %s -> %s -> %s ->" "${1}" "${2}" "${3}"
     if [[ $CHECK == true ]]; then
-        printf "${GREEN}OK${NC}\n";
+        ok
     else
-        printf "${RED}NOT OK${NC}\n";
+        err
     fi
 }
 
