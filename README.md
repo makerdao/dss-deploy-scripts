@@ -92,7 +92,7 @@ drop into the shell.
 
 `./deploy-testchain.sh`
 
-It is possible to pass a unique parameter to define a testing scenario (e.g. `./deploy-testchain crash-bite`)
+It is possible to pass a unique parameter to define a testing scenario (e.g. `./deploy-testchain.sh crash-bite`)
 
 The following cases are available:
 
