@@ -14,16 +14,13 @@ set +x
 AUTHED="0x0000000000000000000000000000000000000000000000000000000000000001"
 # shellcheck disable=SC2034
 NOT_AUTHED="0x0000000000000000000000000000000000000000000000000000000000000000"
-GREEN='\033[0;32m'
-RED='\033[0;31m'
-NC='\033[0m' # No Color
 
 ok() {
-    printf '%b\n' "${GREEN}OK${NC}"
+    log "OK"
 }
 
-err() {
-    printf '%b\n' "${RED}NOT OK${NC}"
+notok() {
+    err "NOT OK"
 }
 
 checkRely() {
@@ -34,7 +31,7 @@ checkRely() {
     if [[ "${!3}" == "$CHECK" ]]; then
         ok
     else
-        err
+        notok
     fi
 }
 
@@ -46,7 +43,7 @@ checkAuthority() {
     if [[ "${!2}" == "0x${CHECK}" ]]; then
         ok
     else
-        err
+        notok
     fi
 }
 
@@ -58,7 +55,7 @@ checkOwner() {
     if [[ "$2" == "0x${CHECK}" ]]; then
         ok
     else
-        err
+        notok
     fi
 }
 
@@ -72,7 +69,7 @@ canCall() {
     if [[ $CHECK == true ]]; then
         ok
     else
-        err
+        notok
     fi
 }
 
