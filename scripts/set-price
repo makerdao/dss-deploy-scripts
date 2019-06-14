@@ -18,3 +18,5 @@ if [[ "$(eval echo "\$PIP_${1}")" != "$(eval echo "\$VAL_${1}")" ]]; then
     # Poke OSM
     seth send "$(eval echo "\$PIP_${1}")" 'poke()'
 fi
+
+log "SET PRICE COMPLETED SUCCESSFULLY"

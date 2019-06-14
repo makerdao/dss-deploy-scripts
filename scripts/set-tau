@@ -17,4 +17,4 @@ if [[ "$tau" != "" ]]; then
     seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi
 
-echo "SET $(echo "$1" | tr '[:lower:]' '[:upper:]') TAU COMPLETED SUCCESSFULLY"
+log "SET $(echo "$1" | tr '[:lower:]' '[:upper:]') TAU COMPLETED SUCCESSFULLY"

@@ -15,4 +15,4 @@ if [[ "$wait" != "" ]]; then
     seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi
 
-echo "SET WAIT COMPLETED SUCCESSFULLY"
+log "SET WAIT COMPLETED SUCCESSFULLY"

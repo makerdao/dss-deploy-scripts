@@ -17,4 +17,4 @@ if [[ "$hump" != "" ]]; then
     seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi
 
-echo "SET HUMP COMPLETED SUCCESSFULLY"
+log "SET HUMP COMPLETED SUCCESSFULLY"

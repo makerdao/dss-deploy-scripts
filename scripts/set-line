@@ -17,4 +17,4 @@ if [[ "$Line" != "" ]]; then
     seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi
 
-echo "SET LINE COMPLETED SUCCESSFULLY"
+log "SET LINE COMPLETED SUCCESSFULLY"

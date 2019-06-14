@@ -16,4 +16,4 @@ for token in $tokens; do
     done
 done
 
-echo "SET SPOTTER POKE COMPLETED SUCCESSFULLY"
+log "SET SPOTTER POKE COMPLETED SUCCESSFULLY"

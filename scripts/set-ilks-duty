@@ -20,4 +20,4 @@ for token in $tokens; do
     done
 done
 
-echo "SET ILKS DUTY COMPLETED SUCCESSFULLY"
+log "SET ILKS DUTY COMPLETED SUCCESSFULLY"
