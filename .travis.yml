@@ -13,8 +13,8 @@ script:
     nix-env -iA shellcheck
     # for some reason, `find` with multiple search paths piped to xargs
     # produces no output
-    find lib -type f -print | xargs shellcheck
-    find scripts -type f -print | xargs shellcheck
+    find lib -type f -print | xargs shellcheck -x
+    find scripts -type f -print | xargs shellcheck -x
   - nix-env -iA cachix -f https://cachix.org/api/v1/install
   - cachix use tdds
   - cachix push tdds --watch-store &
