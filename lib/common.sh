@@ -33,7 +33,7 @@ loadAddresses() {
     keys=$(jq -r "keys_unsorted[]" "$ADDRESSES_FILE")
     for KEY in $keys; do
         VALUE=$(jq -r ".$KEY" "$ADDRESSES_FILE")
-        eval "export $KEY=$VALUE"
+        export "$KEY"="$VALUE"
     done
 }
 
