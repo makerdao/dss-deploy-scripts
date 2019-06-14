@@ -13,7 +13,8 @@ DAPP_LIB=${DAPP_LIB:-$BIN_DIR/contracts}
 
 # Declare functions
 
-setConfigFile() {
+# arg: the name of the config file to write
+writeConfigFor() {
     # Clean out directory
     rm -rf "$OUT_DIR" && mkdir "$OUT_DIR"
     # If environment variable exists bring the values from there, otherwise use the config file

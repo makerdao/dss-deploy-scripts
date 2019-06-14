@@ -2,7 +2,7 @@
 
 # shellcheck source=lib/common.sh
 . "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
-setConfigFile "testchain"
+writeConfigFor "testchain"
 
 # Send ETH to Omnia Relayer
 OMNIA_RELAYER=$(jq -r ".omniaFromAddr" "$CONFIG_FILE")

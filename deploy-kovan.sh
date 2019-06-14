@@ -2,7 +2,7 @@
 
 # shellcheck source=lib/common.sh
 . "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
-setConfigFile "kovan"
+writeConfigFor "kovan"
 
 test "$(seth chain)" == "kovan" || exit 1
 
