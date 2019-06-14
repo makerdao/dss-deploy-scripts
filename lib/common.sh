@@ -25,19 +25,21 @@ writeConfigFor() {
     fi
 }
 
+# loads addresses as key-value pairs from $ADDRESSES_FILE and exports them as
+# environment variables.
 loadAddresses() {
     local keys
 
-    keys=$(jq -r "keys_unsorted[]" "$OUT_DIR/addresses.json")
+    keys=$(jq -r "keys_unsorted[]" "$ADDRESSES_FILE")
     for KEY in $keys; do
-        VALUE=$(jq -r ".$KEY" "$OUT_DIR/addresses.json")
+        VALUE=$(jq -r ".$KEY" "$ADDRESSES_FILE")
         eval "export $KEY=$VALUE"
     done
 }
 
 addAddresses() {
-    result=$(jq -s add "$OUT_DIR/addresses.json" /dev/stdin)
-    printf %s "$result" > "$OUT_DIR/addresses.json"
+    result=$(jq -s add "$ADDRESSES_FILE" /dev/stdin)
+    printf %s "$result" > "$ADDRESSES_FILE"
 }
 
 copyAbis() {
@@ -71,4 +73,5 @@ export ETH_GAS=7000000
 unset SOLC_FLAGS
 
 export OUT_DIR=${OUT_DIR:-$PWD/out}
+ADDRESSES_FILE="$OUT_DIR/addresses.json"
 export CONFIG_FILE="${OUT_DIR}/config.json"
