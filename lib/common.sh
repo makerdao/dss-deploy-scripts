@@ -70,11 +70,11 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 log() {
-    printf '%b\n' "${GREEN}${1}${NC}"
+    printf '%b\n' "${GREEN}✓ ${1}${NC}"
 }
 
 err() {
-    printf '%b\n' "${RED}${1}${NC}"
+    printf '%b\n' "${RED}❌${1}${NC}"
 }
 
 # Start verbose output
