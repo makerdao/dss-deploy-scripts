@@ -1,34 +1,70 @@
 # DSS deployment scripts
 
-A set of scripts that use [DSS deploy](https://github.com/makerdao/dss-deploy) to deploy the DSS system in a testchain, testnets and mainnet.
+A set of scripts that deploy [dss](http://github.com/makerdao/dss) to an
+Ethereum chain of your choosing.
 
-### TODO
+## Description
 
-- More cases to test scenarios for testchain script
-- Mainnet and other testnets scripts
+This repo is composed of two steps:
 
-## Additional Documentation
+* [smart contracts](./contracts) (imported as submodules) that deploy a base dss
+* Bash [scripts](/scripts) to modify the state of the base system
 
-- `dss-deploy` [source code](https://github.com/makerdao/dss-deploy)
-- `dss` is documented in the [wiki](https://github.com/makerdao/dss/wiki) and in [DEVELOPING.md](https://github.com/makerdao/dss/blob/master/DEVELOPING.md)
+At the end of the first step, the addresses of deployed contracts are written to
+an `out/addresses.json` file. The scripts read those addresses and use `seth`
+and `dapp` to modify the deployment, using the values in `out/config.json`.
 
-## Deployment
+## Installing
 
-### Prerequisites:
+The preferred way to install everything necessary to deploy is Nix. Run
 
-If you use nix, run `nix-shell` to drop into a shell with all dependencies
-installed.
+```
+$ nix-shell --pure
+```
 
-Otherwise:
+to drop into a Bash shell with all dependency installed.
+
+### Non-nix
+
+If you don't use Nix, you'll need to install:
 
 - seth/dapp/jq/mcd (https://dapp.tools/)
 - bc
+- pgrep
 
-Either way, you'll need to have an Ethereum node running, e.g. `dapp testnet` or
-`parity --chain=dev --tracing=on --fat-db=on --pruning=archive`.
+### Ethereum node
 
-### Config File:
-For each network there is a default config file in place `deploy-<NETWORK>.json`.
+You'll also need an Ethereum RPC node to connect to. Depending on your usecase, this
+could be a local node (e.g. `dapp testnet`) or a remote one.
+
+## Configuration
+
+There are 2 main pieces of configuration necessary for a deployment:
+
+* Ethereum account configuration
+* Chain configuration
+
+#### Account configuration
+
+seth relies on the presence of environment variables to know which Ethereum account to
+use, which RPC server to talk to, etc.
+
+If you're using `nix-shell`, these variables are set automatically for you in
+[shell.nix](./shell.nix).
+
+Non-nix users can run the [`lib/setup-env.sh`](./lib/setup-env.sh) script, or configure the below
+variables manually:
+
+- `ETH_FROM`: address of deployment account
+- `ETH_PASSWORD`: path of account password file
+- `ETH_KEYSTORE`: keystore path
+- `ETH_RPC_URL`: URL of the RPC node
+
+### Chain configuration
+
+Each supported `$NETWORK` has a default config file at `deploy-$NETWORK.json`.
+
+Below is the expected structure of such a config file:
 
 ```
 {
@@ -76,77 +112,60 @@ For each network there is a default config file in place `deploy-<NETWORK>.json`
 }
 
 ```
-### Pre-deploy:
 
-- `export ETH_FROM=DEPLOYMENT_ACCOUNT`
-- `export ETH_PASSWORD=ACCOUNT_PASSWORD_FILE_PATH`
-- `export ETH_KEYSTORE=KEYSTORE_PATH`
-- `export ETH_RPC_URL=THE_RPC_NODE_URL`
+## Deployment
 
-You can use `. lib/setup-env.sh` to help you set up these variables.
+Currently, 2 networks are supported:
 
-If you are using `nix-shell`, `setup-env.sh` will be run automatically when you
-drop into the shell.
+* a local testchain (e.g. `dapp testnet`)
+* Kovan
 
-### Testchain Deployment:
+### Local testchain
 
 `./deploy-testchain.sh`
 
 It is possible to pass a unique parameter to define a testing scenario (e.g. `./deploy-testchain.sh crash-bite`)
 
-The following cases are available:
+The following cases are currently available:
 
 - `crash-bite`
 
-### Kovan Deployment:
+### Kovan
 
 `./deploy-kovan.sh`
 
-### Output:
+### Output
 
-- `out/addresses.json` Group of contract addresses deployed
-- `out/abi/` ABI Json files from all the contracts deployed
-- `out/config.json` Copy of config json file used for deployment
+Successful deployments save their output to the following files:
 
-### Auth checker:
+- `out/addresses.json`: addresses of all deployed contracts
+- `out/abi/`: JSON representation of the ABIs of all deployed contracts
+- `out/config.json`: copy of the configuration file used for the deployment
 
-`./scripts/auth-checker` (load contracts addresses from `out/addresses.json`)
+### Helper scripts
 
-### Setter Scripts:
+The [`auth-checker`](./scripts/auth-checker) script loads the addresses
+in `out/addresses.json` and verifies that the deployed authorizations match what
+is expected.
 
-- `./scripts/set-beg` (load contracts addresses from `out/addresses.json` and value to set from `out/config.json`)
-- `./scripts/set-bump` (load contracts addresses from `out/addresses.json` and value to set from `out/config.json`)
-- `./scripts/set-hump` (load contracts addresses from `out/addresses.json` and value to set from `out/config.json`)
-- `./scripts/set-line` (load contracts addresses from `out/addresses.json` and value to set from `out/config.json`)
-- `./scripts/set-sump` (load contracts addresses from `out/addresses.json` and value to set from `out/config.json`)
-- `./scripts/set-tau <flap|flop>` (load contracts addresses from `out/addresses.json` and value to set from `out/config.json`)
-- `./scripts/set-ttl <flap|flop>` (load contracts addresses from `out/addresses.json` and value to set from `out/config.json`)
-
-- `./scripts/set-ilks-beg` (load contracts addresses from `out/addresses.json` and `ilk`s values to set from `out/config.json`)
-- `./scripts/set-ilks-chop` (load contracts addresses from `out/addresses.json` and `ilk`s values to set from `out/config.json`)
-- `./scripts/set-ilks-duty` (load contracts addresses from `out/addresses.json` and `ilk`s values to set from `out/config.json`)
-- `./scripts/set-ilks-line` (load contracts addresses from `out/addresses.json` and `ilk`s values to set from `out/config.json`)
-- `./scripts/set-ilks-lump` (load contracts addresses from `out/addresses.json` and `ilk`s values to set from `out/config.json`)
-- `./scripts/set-ilks-mat` (load contracts addresses from `out/addresses.json` and `ilk`s values to set from `out/config.json`)
-- `./scripts/set-ilks-price` (load contracts addresses from `out/addresses.json` and `ilk`s values to set from `out/config.json`)
-- `./scripts/set-ilks-spell-line` (load contracts addresses from `out/addresses.json` and `ilk`s values to set from `out/config.json`)
-- `./scripts/set-ilks-spotter-poke` (load contracts addresses from `out/addresses.json` and `ilk`s values to set from `out/config.json`)
-- `./scripts/set-ilks-tau` (load contracts addresses from `out/addresses.json` and `ilk`s values to set from `out/config.json`)
-- `./scripts/set-ilks-ttl` (load contracts addresses from `out/addresses.json` and `ilk`s values to set from `out/config.json`)
-
-### Load addresses:
-
-- `./scripts/load-addresses` (from `out/addresses.json` to ENV variables)
+The [`load-addresses`](./scripts/load-addresses) script reads contract addresses
+from `out/addresses.json` and exports them as environment variables.
 
 ## Nix
 
-To be able to easily share scripts with other repos and make sure that the
-exact dependencies needed to run the scripts are met we can use Nix.
+To enable full reproducibility of our deployments, we use Nix.
 
-You can now run deploy scripts without having to clone this repo:
+This command will drop you in a shell with all dependencies and environment
+variables definend:
 
 ```
-nix run -f https://github.com/makerdao/testchain-dss-deployment-scripts/tarball/master -c step-1-deploy
+nix-shell --pure
+```
+
+You can even run deploy scripts without having to clone this repo:
+
+```
+nix run -f https://github.com/makerdao/dss-deployment-scripts/tarball/master -c deploy-testchain.sh
 ```
 
 After changing submodules the lock file [`nix/dapp.nix`](nix/dapp.nix)
@@ -154,10 +173,21 @@ needs to be updated using `dapp2nix`. This is to avoid downloading all
 submodules when installing the deploy scripts without cloning `tdds`.
 
 ```sh
-nix-shell
+nix-shell --pure
 dapp2nix nix/dapp.nix
 ```
 
 Dependencies are managed through a central repository referenced in
 [`nix/pkgs.nix`](nix/pkgs.nix) and the main Nix expression to build this
 repo is in [`default.nix`](default.nix).
+
+## Additional Documentation
+
+- `dss-deploy` [source code](https://github.com/makerdao/dss-deploy)
+- `dss` is documented in the [wiki](https://github.com/makerdao/dss/wiki) and in [DEVELOPING.md](https://github.com/makerdao/dss/blob/master/DEVELOPING.md)
+
+## TODO
+
+- More cases to test scenarios for testchain script
+- Mainnet and other testnets scripts
+
