@@ -4,5 +4,7 @@
 . "${LIB_DIR:-$(cd "${0%/*}/../lib"&&pwd)}/common.sh"
 
 # Deploy Token Faucet (no solc optimization)
+# shellcheck source=/dev/null
 dappBuild token-faucet
-test -z "$FAUCET" && export FAUCET=$(dappCreate token-faucet TokenFaucet "$(seth --to-uint256 "$(seth --to-wei 50 ETH)")")
+test -z "$FAUCET" && FAUCET=$(dappCreate token-faucet TokenFaucet "$(seth --to-uint256 "$(seth --to-wei 50 ETH)")")
+test -z "$FAUCET" && export FAUCET
