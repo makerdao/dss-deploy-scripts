@@ -11,10 +11,13 @@ loadAddresses
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     # If it is a value set the price
-    type=$(jq -r ".tokens.${token} | .pip | .type" "$CONFIG_FILE")
-    if [[ "$type" == "value" ]]; then
-        price=$(jq -r ".tokens.${token} | .pip | .price" "$CONFIG_FILE")
-        "$LIBEXEC_DIR/set-price" "$token" "$price"
+    addr=$(jq -r ".tokens.${token} | .pip | .addr | values" "$CONFIG_FILE")
+    if [[ "$addr" == "" ]]; then
+        type=$(jq -r ".tokens.${token} | .pip | .type | values" "$CONFIG_FILE")
+        if [[ "$type" == "value" ]]; then
+            price=$(jq -r ".tokens.${token} | .pip | .price" "$CONFIG_FILE")
+            "$LIBEXEC_DIR/set-price" "$token" "$price"
+        fi
     fi
 done
 
