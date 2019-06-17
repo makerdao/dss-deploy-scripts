@@ -9,7 +9,7 @@ CASE="$LIBEXEC_DIR/cases/$1"
 test $1 != "" && test ! -f "$CASE" && exit 1
 
 # Send ETH to Omnia Relayer
-OMNIA_RELAYER=$(jq -r ".omniaFromAddr" "$CONFIG_FILE")
+export OMNIA_RELAYER=$(jq -r ".omniaFromAddr" "$CONFIG_FILE")
 seth send "$OMNIA_RELAYER" --value "$(seth --to-wei 10000 eth)"
 
 "$LIBEXEC_DIR"/base-deploy

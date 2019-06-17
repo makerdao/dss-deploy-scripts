@@ -25,6 +25,7 @@ setConfigFile() {
 }
 
 loadAddresses() {
+    set +x
     local keys
 
     keys=$(jq -r "keys_unsorted[]" "$OUT_DIR/addresses.json")
@@ -32,6 +33,7 @@ loadAddresses() {
         VALUE=$(jq -r ".$KEY" "$OUT_DIR/addresses.json")
         eval "export $KEY=$VALUE"
     done
+    set -x
 }
 
 addAddresses() {
