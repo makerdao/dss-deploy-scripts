@@ -46,6 +46,8 @@ for token in $tokens; do
     fi
 done
 
+"$LIBEXEC_DIR"/faucet-deploy
+
 "$LIBEXEC_DIR"/base-deploy
 
 loadAddresses

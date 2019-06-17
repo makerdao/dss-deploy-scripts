@@ -18,6 +18,8 @@ for token in $tokens; do
     eval "export PIP_${token}=$(jq -r ".tokens.${token} | .pip" "$CONFIG_FILE")"
 done
 
+"$LIBEXEC_DIR"/faucet-deploy
+
 "$LIBEXEC_DIR"/base-deploy
 
 "$LIBEXEC_DIR"/poll-deploy

@@ -3,13 +3,14 @@
 # shellcheck source=lib/common.sh
 . "${LIB_DIR:-$(cd "${0%/*}/../lib"&&pwd)}/common.sh"
 
+if [[ -z "$FAUCET" ]]; then
+    echo "FAUCET must be deployed"
+    exit 1
+fi
+
 # Deploy Multicall (no solc optimization)
 dappBuild multicall
 MULTICALL=$(dappCreate multicall Multicall)
-
-# Deploy Token Faucet (no solc optimization)
-dappBuild token-faucet
-test -z "$FAUCET" && FAUCET=$(dappCreate token-faucet TokenFaucet "$(seth --to-uint256 "$(seth --to-wei 50 ETH)")")
 
 # Deploy Guard for Gov and IOU tokens (no solc optimization)
 dappBuild ds-guard
