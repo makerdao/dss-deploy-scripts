@@ -15,6 +15,4 @@ fi
 
 "$LIBEXEC_DIR"/base-deploy
 
-"$LIBEXEC_DIR"/set-pause-auth-delay
-
 echo "KOVAN DEPLOYMENT COMPLETED SUCCESSFULLY"
