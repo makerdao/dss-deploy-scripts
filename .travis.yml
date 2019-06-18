@@ -18,4 +18,6 @@ script:
   - nix-env -iA cachix -f https://cachix.org/api/v1/install
   - cachix use tdds
   - cachix push tdds --watch-store &
+  - nix run -f https://github.com/dapphub/dapptools/archive/master.tar.gz -c "dapp testnet"
   - nix-build -j2 | cachix push tdds
+  - nix-shell --run "deploy-testchain.sh && scripts/auth-checker"
