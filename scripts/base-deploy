@@ -3,6 +3,49 @@
 # shellcheck source=lib/common.sh
 . "${LIB_DIR:-$(cd "${0%/*}/../lib"&&pwd)}/common.sh"
 
+# Deploy Values or Medians + OSMs (if delay > 0) (no solc optimization)
+dappBuild osm
+dappBuild testchain-medians
+
+tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
+for token in $tokens; do
+    addr=$(jq -r ".tokens.${token} | .pip | .addr | values" "$CONFIG_FILE")
+    if [[ "$addr" == "" ]]; then
+        type=$(jq -r ".tokens.${token} | .pip | .type | values" "$CONFIG_FILE")
+        # Deploy Medianizer as Feed
+        if [[ "$type" == "median" ]]; then
+            eval "export VAL_$token=$(dappCreate testchain-medians "Median${token}USD")"
+            signers=$(jq -r ".tokens.${token} | .pip | .signers | .[]" "$CONFIG_FILE")
+            # Approve oracle price feed providers
+            for signer in $signers; do
+                seth send "$(eval echo "\$VAL_${token}")" 'lift(address)' "$signer"
+            done
+            # Set quorum for Medianizer
+            seth send "$(eval echo "\$VAL_${token}")" 'setBar(uint256)' "$(seth --to-uint256 3)"
+            # Whitelist Omnia relayer to read price from Medianizer
+            seth send "$(eval echo "\$VAL_${token}")" 'kiss(address)' "$OMNIA_RELAYER"
+        fi
+        # Deploy DSValue as Feed
+        if [[ "${type}" == "value" ]]; then
+            eval "export VAL_$token=$(dappCreate osm DSValue)"
+        fi
+        # Deploy OSM if delay > 0
+        osm_delay=$(jq -r ".tokens.${token} | .pip | .osmDelay" "$CONFIG_FILE")
+        if [[ "$osm_delay" -gt 0 ]]; then
+            # Deploy OSM
+            eval "export PIP_$token=$(dappCreate osm OSM "$(eval echo "\$VAL_${token}")")"
+            # Set OSM delay
+            seth send "$(eval echo "\$PIP_${token}")" 'step(uint16)' "$osm_delay"
+            # Whitelist OSM in Medianizer (skip if source is DSValue)
+            [[ "$type" == "median" ]] && seth send "$(eval echo "\$VAL_${token}")" 'kiss(address)' "$(eval echo "\$PIP_${token}")"
+        else
+            eval export "PIP_${token}=\$VAL_${token}"
+        fi
+    else
+        eval "export PIP_${token}=${addr}"
+    fi
+done
+
 # Deploy Multicall (no solc optimization)
 dappBuild multicall
 MULTICALL=$(dappCreate multicall Multicall)
@@ -220,5 +263,34 @@ EOF
 
 # shellcheck source=/dev/null
 "$LIBEXEC_DIR"/set-tau "flop"
+
+"$LIBEXEC_DIR"/poll-deploy
+
+"$LIBEXEC_DIR"/set-ilks-price
+
+"$LIBEXEC_DIR"/set-ilks-pip-whitelist
+
+"$LIBEXEC_DIR"/set-ilks-mat
+
+setLinesMode=$(jq -r ".setLinesMode" "$CONFIG_FILE")
+if [[ $setLinesMode = "direct" ]]; then
+    "$LIBEXEC_DIR"/set-ilks-line
+elif [[ $setLinesMode = "vote" ]]; then
+    "$LIBEXEC_DIR"/set-ilks-spell-line
+fi
+
+"$LIBEXEC_DIR"/set-ilks-duty
+
+"$LIBEXEC_DIR"/set-ilks-spotter-poke
+
+"$LIBEXEC_DIR"/set-ilks-chop
+
+"$LIBEXEC_DIR"/set-ilks-lump
+
+"$LIBEXEC_DIR"/set-ilks-beg
+
+"$LIBEXEC_DIR"/set-ilks-ttl
+
+"$LIBEXEC_DIR"/set-ilks-tau
 
 echo "BASE DEPLOY COMPLETED SUCCESSFULLY"
