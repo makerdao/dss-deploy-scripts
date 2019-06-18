@@ -10,8 +10,8 @@ loadAddresses
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
-    osm_delay=$(jq -r ".tokens.${token} | .pip | .osmDelay" "$CONFIG_FILE")
     addr=$(jq -r ".tokens.${token} | .pip | .addr | values" "$CONFIG_FILE")
+    osm_delay=$(jq -r ".tokens.${token} | .pip | .osmDelay" "$CONFIG_FILE")
     type=$(jq -r ".tokens.${token} | .pip | .type | values" "$CONFIG_FILE")
     if [[ "$addr" != "" || "$osm_delay" -gt 0 || "$type" == "median" ]]; then
         # Whitelist Spotter in OSM or in Median
