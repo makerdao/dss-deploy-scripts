@@ -27,7 +27,7 @@ in makerScriptPackage {
 
   # Specify files to add to build environment
   src = lib.sourceByRegex ./. [
-    ".*deploy"
+    "deploy-.*"
     ".*\.json"
     ".*scripts.*"
     ".*lib.*"

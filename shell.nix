@@ -11,6 +11,7 @@ in mkShell {
     tdds
     sethret
     dapp2nix
+    procps
   ];
 
   shellHook = ''

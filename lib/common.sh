@@ -28,6 +28,7 @@ writeConfigFor() {
 # loads addresses as key-value pairs from $ADDRESSES_FILE and exports them as
 # environment variables.
 loadAddresses() {
+    set +x
     local keys
 
     keys=$(jq -r "keys_unsorted[]" "$ADDRESSES_FILE")
@@ -35,6 +36,7 @@ loadAddresses() {
         VALUE=$(jq -r ".$KEY" "$ADDRESSES_FILE")
         export "$KEY"="$VALUE"
     done
+    set -x
 }
 
 addAddresses() {

@@ -16,7 +16,9 @@
   "setLinesMode": "direct",
   "tokens": {
     "ETH": {
-      "pip": "0x8C73Ec0fBCdEC6b8C060BC224D94740FD41f3774",
+      "pip": {
+        "addr": "0x8C73Ec0fBCdEC6b8C060BC224D94740FD41f3774"
+      },
       "ilks":{
         "A": {
           "mat": "150",
@@ -51,7 +53,9 @@
       }
     },
     "COL1": {
-      "pip": "0xF2643546d27c8a5388D9Be48170d74b9c9Be39a6",
+      "pip": {
+        "addr": "0xF2643546d27c8a5388D9Be48170d74b9c9Be39a6"
+      },
       "ilks":{
         "A": {
           "mat": "180",
@@ -66,7 +70,9 @@
       }
     },
     "COL2": {
-      "pip": "0x8Df8f06DC2dE0434db40dcBb32a82A104218754c",
+      "pip": {
+        "addr": "0x8Df8f06DC2dE0434db40dcBb32a82A104218754c"
+      },
       "ilks":{
         "A": {
           "mat": "170",
@@ -81,7 +87,9 @@
       }
     },
     "COL3": {
-      "pip": "0xaa32EB42CBf3Bdb746b659c8DAF443f710497d80",
+      "pip": {
+        "addr": "0xaa32EB42CBf3Bdb746b659c8DAF443f710497d80"
+      },
       "ilks":{
         "A": {
           "mat": "160",
@@ -96,7 +104,9 @@
       }
     },
     "COL4": {
-      "pip": "0xc9eb67DA2d05702459C521CE3BFED097cB490F8b",
+      "pip": {
+        "addr": "0xc9eb67DA2d05702459C521CE3BFED097cB490F8b"
+      },
       "ilks":{
         "A": {
           "mat": "200",
@@ -111,7 +121,9 @@
       }
     },
     "COL5": {
-      "pip": "0xA53e6EFB4cBeD841Eace02220498860905E94998",
+      "pip": {
+        "addr": "0xA53e6EFB4cBeD841Eace02220498860905E94998"
+      },
       "ilks":{
         "A": {
           "mat": "190",
