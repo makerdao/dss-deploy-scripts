@@ -17,4 +17,4 @@ if [[ "$sump" != "" ]]; then
     seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi
 
-echo "SET SUMP COMPLETED SUCCESSFULLY"
+log "SET SUMP COMPLETED SUCCESSFULLY"

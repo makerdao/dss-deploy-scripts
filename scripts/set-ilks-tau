@@ -18,4 +18,4 @@ for token in $tokens; do
     done
 done
 
-echo "SET ILKS TAU COMPLETED SUCCESSFULLY"
+log "SET ILKS TAU COMPLETED SUCCESSFULLY"

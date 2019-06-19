@@ -13,7 +13,8 @@ DAPP_LIB=${DAPP_LIB:-$BIN_DIR/contracts}
 
 # Declare functions
 
-setConfigFile() {
+# arg: the name of the config file to write
+writeConfigFor() {
     # Clean out directory
     rm -rf "$OUT_DIR" && mkdir "$OUT_DIR"
     # If environment variable exists bring the values from there, otherwise use the config file
@@ -24,21 +25,23 @@ setConfigFile() {
     fi
 }
 
+# loads addresses as key-value pairs from $ADDRESSES_FILE and exports them as
+# environment variables.
 loadAddresses() {
     set +x
     local keys
 
-    keys=$(jq -r "keys_unsorted[]" "$OUT_DIR/addresses.json")
+    keys=$(jq -r "keys_unsorted[]" "$ADDRESSES_FILE")
     for KEY in $keys; do
-        VALUE=$(jq -r ".$KEY" "$OUT_DIR/addresses.json")
-        eval "export $KEY=$VALUE"
+        VALUE=$(jq -r ".$KEY" "$ADDRESSES_FILE")
+        export "$KEY"="$VALUE"
     done
     set -x
 }
 
 addAddresses() {
-    result=$(jq -s add "$OUT_DIR/addresses.json" /dev/stdin)
-    printf %s "$result" > "$OUT_DIR/addresses.json"
+    result=$(jq -s add "$ADDRESSES_FILE" /dev/stdin)
+    printf %s "$result" > "$ADDRESSES_FILE"
 }
 
 copyAbis() {
@@ -64,6 +67,18 @@ dappCreate() {
   copyAbis "$lib"
 }
 
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+log() {
+    printf '%b\n' "${GREEN}✓ ${1}${NC}"
+}
+
+err() {
+    printf '%b\n' "${RED}❌${1}${NC}"
+}
+
 # Start verbose output
 set -x
 
@@ -72,4 +87,5 @@ export ETH_GAS=7000000
 unset SOLC_FLAGS
 
 export OUT_DIR=${OUT_DIR:-$PWD/out}
+ADDRESSES_FILE="$OUT_DIR/addresses.json"
 export CONFIG_FILE="${OUT_DIR}/config.json"

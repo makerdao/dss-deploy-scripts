@@ -38,19 +38,23 @@ done
 # Deploy Multicall (no solc optimization)
 dappBuild multicall
 MULTICALL=$(dappCreate multicall Multicall)
+log "multicall deployed"
 
 # Deploy Token Faucet (no solc optimization)
 dappBuild token-faucet
 test -z "$FAUCET" && FAUCET=$(dappCreate token-faucet TokenFaucet "$(seth --to-uint256 "$(seth --to-wei 50 ETH)")")
+log "token faucet deployed"
 
 # Deploy Guard for Gov and IOU tokens (no solc optimization)
 dappBuild ds-guard
 MCD_GOV_GUARD=$(dappCreate ds-guard DSGuard)
+log "ds-guard deployed"
 
 # Deploy ProxyRegistry (no solc optimization)
 dappBuild proxy-registry
 PROXY_FACTORY=$(dappCreate proxy-registry DSProxyFactory)
 PROXY_REGISTRY=$(dappCreate proxy-registry ProxyRegistry "$PROXY_FACTORY")
+log "proxy-registry deployed"
 
 PATH="$DAPP_LIB/dss-deploy/bin:$PATH"
 
@@ -59,6 +63,7 @@ deploy-fab
 # shellcheck source=/dev/null
 . "load-fab-$(seth chain)"
 rm "load-fab-$(seth chain)"
+log "fabs deployed"
 
 # Set the pause delay to 0 in order to make the needed initial configurations
 export MCD_PAUSE_DELAY=0
@@ -78,6 +83,7 @@ deploy-core
 # shellcheck source=/dev/null
 . "load-mcd-$(seth chain)"
 rm "load-mcd-$(seth chain)"
+log "core deployed"
 
 # Mint Gov Token, send to the Faucet and set permissions if a new token
 if [[ "$newGovToken" == true ]]; then
@@ -101,6 +107,7 @@ for token in $tokens; do
         fi
 
         deploy-ilk-"$(echo "$token" | tr '[:upper:]' '[:lower:]')" "$ilk"
+        log "$token deployed"
 
         # shellcheck source=/dev/null
         . "load-ilk-$(echo "$token" | tr '[:upper:]' '[:lower:]')-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')-$(seth chain)"
@@ -120,10 +127,13 @@ for token in $tokens; do
     for ilk in $ilks; do
         seth send "$MCD_DEPLOY" 'releaseAuthFlip(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
     done
+
+    log "auth removed for $token"
 done
 
 # Deploy Pause Plan - Library functions for the Pause (no solc optimization)
 MCD_GOV_ACTIONS=$(dappCreate dss-deploy GovActions)
+log "gov actions deployed"
 
 unset SKIP_BUILD
 
@@ -135,12 +145,14 @@ PROXY_ACTIONS=$(dappCreate dss-proxy-actions DssProxyActions)
 # Deploy CdpManager (no solc optimization)
 CDP_MANAGER=$(dappCreate dss-proxy-actions DssCdpManager "$MCD_VAT")
 GET_CDPS=$(dappCreate dss-proxy-actions GetCdps)
+log "proxy actions deployed"
 
 # Deploy Pause Proxy Actions (support contract for executing initial set up of the dss system)
 dappBuild testchain-pause-proxy-actions
 
 PROXY_PAUSE_ACTIONS=$(dappCreate testchain-pause-proxy-actions TestchainPauseProxyActions)
 seth send "$PROXY_REGISTRY" 'build()'
+log "pause actions deployed"
 
 # Get a proxy for the deployer address
 PROXY_DEPLOYER=0x"$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$ETH_FROM")"
@@ -157,10 +169,12 @@ MCD_ADM=$(dappCreate ds-chief DSChief "$MCD_GOV" "$MCD_IOU" 5)
 seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_ADM" "$MCD_IOU" "$(seth --to-bytes32  "$(seth sig 'mint(address,uint256)')")"
 seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_ADM" "$MCD_IOU" "$(seth --to-bytes32  "$(seth sig 'burn(address,uint256)')")"
 seth send "$MCD_GOV_GUARD" 'setOwner(address)' "0x0000000000000000000000000000000000000000"
+log "chief deployed"
 
 # Deploy Vote Proxy Factory (no solc optimization)
 dappBuild vote-proxy --use solc:0.4.25
 VOTE_PROXY_FACTORY=$(dappCreate vote-proxy VoteProxyFactory "$MCD_ADM")
+log "vote proxy factory deployed"
 
 # Copy dss-deploy abi files
 copyAbis dss-deploy

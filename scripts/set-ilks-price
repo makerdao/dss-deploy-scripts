@@ -21,4 +21,4 @@ for token in $tokens; do
     fi
 done
 
-echo "SET ILKS PRICE COMPLETED SUCCESSFULLY"
+log "SET ILKS PRICE COMPLETED SUCCESSFULLY"
