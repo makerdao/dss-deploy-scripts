@@ -46,7 +46,7 @@ There are 2 main pieces of configuration necessary for a deployment:
 
 #### Account configuration
 
-seth relies on the presence of environment variables to know which Ethereum account to
+`seth` relies on the presence of environment variables to know which Ethereum account to
 use, which RPC server to talk to, etc.
 
 If you're using `nix-shell`, these variables are set automatically for you in
