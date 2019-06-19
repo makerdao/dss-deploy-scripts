@@ -49,3 +49,5 @@ export JSON_RPC="$ETH_RPC_URL"
 
 echo "=== DAPPTOOLS VARIABLES ==="
 env | grep ETH_
+seth --version | head -n1
+dapp --version | head -n1
