@@ -234,37 +234,26 @@ cat > "$OUT_DIR"/addresses.json <<EOF
 }
 EOF
 
-# shellcheck source=/dev/null
 "$LIBEXEC_DIR"/set-line
 
-# shellcheck source=/dev/null
 "$LIBEXEC_DIR"/set-wait
 
-# shellcheck source=/dev/null
 "$LIBEXEC_DIR"/set-bump
 
-# shellcheck source=/dev/null
 "$LIBEXEC_DIR"/set-sump
 
-# shellcheck source=/dev/null
 "$LIBEXEC_DIR"/set-hump
 
-# shellcheck source=/dev/null
 "$LIBEXEC_DIR"/set-beg "flap"
 
-# shellcheck source=/dev/null
 "$LIBEXEC_DIR"/set-ttl "flap"
 
-# shellcheck source=/dev/null
 "$LIBEXEC_DIR"/set-tau "flap"
 
-# shellcheck source=/dev/null
 "$LIBEXEC_DIR"/set-beg "flop"
 
-# shellcheck source=/dev/null
 "$LIBEXEC_DIR"/set-ttl "flop"
 
-# shellcheck source=/dev/null
 "$LIBEXEC_DIR"/set-tau "flop"
 
 "$LIBEXEC_DIR"/poll-deploy

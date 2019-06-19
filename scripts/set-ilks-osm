@@ -19,12 +19,13 @@ for token in $tokens; do
             # Set OSM delay
             seth send "$(eval echo "\$PIP_${token}")" 'step(uint16)' "$osm_delay"
             # Whitelist OSM in Medianizer (skip if source is DSValue)
+            type=$(jq -r ".tokens.${token} | .pip | .type | values" "$CONFIG_FILE")
             [[ "$type" == "median" ]] && seth send "$(eval echo "\$VAL_${token}")" 'kiss(address)' "$(eval echo "\$PIP_${token}")"
-            ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
             # Whithelist Spotter in OSM
             seth send "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$MCD_SPOT"
+            # Set osm in spotter ilks
+            ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
             for ilk in $ilks; do
-                # Set osm in spotter
                 calldata="$(seth calldata 'file(address,address,address,bytes32,address)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_SPOT" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(eval echo "\$PIP_${token}")")"
                 seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
             done

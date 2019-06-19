@@ -6,10 +6,11 @@ writeConfigFor "testchain"
 
 export CASE="$LIBEXEC_DIR/cases/$1"
 
-[[ $# > 0 && ! -f "$CASE" ]] && exit 1
+[[ $# -gt 0 && ! -f "$CASE" ]] && exit 1
 
 # Send ETH to Omnia Relayer
-export OMNIA_RELAYER=$(jq -r ".omniaFromAddr" "$CONFIG_FILE")
+OMNIA_RELAYER=$(jq -r ".omniaFromAddr" "$CONFIG_FILE")
+export OMNIA_RELAYER
 seth send "$OMNIA_RELAYER" --value "$(seth --to-wei 10000 eth)"
 
 "$LIBEXEC_DIR"/base-deploy
