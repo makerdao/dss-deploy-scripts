@@ -10,7 +10,7 @@ before_script:
   - echo "trusted-users = root $USER" | sudo tee -a /etc/nix/nix.conf
   - |
     cachix use dapp
-    nix-env -iA dapp -f https://github.com/dapphub/dapptools/archive/master.tar.gz
+    nix-env -iA dapp -f https://github.com/dapphub/dapptools/archive/nohup.tar.gz
     dapp testnet &
 script:
   - |
