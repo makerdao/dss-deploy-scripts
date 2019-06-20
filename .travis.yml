@@ -20,7 +20,7 @@ script:
   - nix-build -j2 | cachix push tdds
   - |
     cachix use dapp
-    nix-env -iA dapp
+    nix-env -iA dapp -f https://github.com/dapphub/dapptools/archive/master.tar.gz
     dapp testnet &
   - cachix use tdds
   - nix-shell --run "deploy-testchain.sh && scripts/auth-checker"
