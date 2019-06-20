@@ -7,7 +7,7 @@
 dappBuild gov-polling-generator
 GOV_POLL_GEN=$(dappCreate gov-polling-generator GovPollingGenerator)
 
-# tx=$(seth send --async "$GOV_POLL_GEN" 'createPoll()')
+# tx=$(sethSend --async "$GOV_POLL_GEN" 'createPoll()')
 
 # test "$(seth receipt "$tx" status)" -eq 0 && exit 1
 # number=$(seth --to-hex "$(seth receipt "$tx" blockNumber)")
@@ -17,7 +17,7 @@ GOV_POLL_GEN=$(dappCreate gov-polling-generator GovPollingGenerator)
 # VOTE_YES="0x${data:90:40}"
 # VOTE_NO="0x${data:154:40}"
 
-seth send "$GOV_POLL_GEN" 'createPoll()'
+sethSend "$GOV_POLL_GEN" 'createPoll()'
 POLL_ID=$(seth call "$GOV_POLL_GEN" 'polli()(uint256)')
 while IFS=$'\n' read -r line; do ADDRS+=("$line"); done < <(seth call "$GOV_POLL_GEN" 'polls(uint256)(address,address)' "$POLL_ID")
 POLL_ID=$((16#$POLL_ID))

@@ -14,7 +14,7 @@ if [[ "$hump" != "" ]]; then
     hump=$(echo "$hump"*10^45 | bc)
     hump=$(seth --to-uint256 "${hump%.*}")
     calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VOW" "$(seth --to-bytes32 "$(seth --from-ascii "hump")")" "$hump")"
-    seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+    sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi
 
 log "SET HUMP COMPLETED SUCCESSFULLY"

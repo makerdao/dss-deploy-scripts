@@ -14,7 +14,7 @@ for token in $tokens; do
     type=$(jq -r ".tokens.${token} | .pip | .type | values" "$CONFIG_FILE")
     if [[ "$addr" != "" || "$type" == "median" ]]; then
         # Whitelist Spotter in OSM or in Median
-        seth send "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$MCD_SPOT"
+        sethSend "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$MCD_SPOT"
     fi
 done
 

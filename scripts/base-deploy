@@ -18,12 +18,12 @@ for token in $tokens; do
             signers=$(jq -r ".tokens.${token} | .pip | .signers | .[]" "$CONFIG_FILE")
             # Approve oracle price feed providers
             for signer in $signers; do
-                seth send "$(eval echo "\$PIP_${token}")" 'lift(address)' "$signer"
+                sethSend "$(eval echo "\$PIP_${token}")" 'lift(address)' "$signer"
             done
             # Set quorum for Medianizer
-            seth send "$(eval echo "\$PIP_${token}")" 'setBar(uint256)' "$(seth --to-uint256 3)"
+            sethSend "$(eval echo "\$PIP_${token}")" 'setBar(uint256)' "$(seth --to-uint256 3)"
             # Whitelist Omnia relayer to read price from Medianizer
-            seth send "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$OMNIA_RELAYER"
+            sethSend "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$OMNIA_RELAYER"
         fi
         # Deploy DSValue as Feed
         if [[ "${type}" == "value" ]]; then
@@ -87,11 +87,11 @@ log "core deployed"
 
 # Mint Gov Token, send to the Faucet and set permissions if a new token
 if [[ "$newGovToken" == true ]]; then
-    seth send "$MCD_GOV" 'mint(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
-    seth send "$MCD_GOV" 'setAuthority(address)' "$MCD_GOV_GUARD"
-    seth send "$FAUCET" 'gulp(address)' "$MCD_GOV"
+    sethSend "$MCD_GOV" 'mint(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
+    sethSend "$MCD_GOV" 'setAuthority(address)' "$MCD_GOV_GUARD"
+    sethSend "$FAUCET" 'gulp(address)' "$MCD_GOV"
     # Allow Flop to mint Gov token
-    seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_FLOP" "$MCD_GOV" "$(seth --to-bytes32 "$(seth sig 'mint(address,uint256)')")"
+    sethSend "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_FLOP" "$MCD_GOV" "$(seth --to-bytes32 "$(seth sig 'mint(address,uint256)')")"
 fi
 
 # Deploy Collaterals (no solc optimization)
@@ -114,18 +114,18 @@ for token in $tokens; do
         rm "load-ilk-$(echo "$token" | tr '[:upper:]' '[:lower:]')-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')-$(seth chain)"
 
         if [[ "$token" != "ETH" && "$newToken" == true ]]; then
-            seth send "$(eval echo "\$$token")" 'transfer(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 999000 ETH)")"
+            sethSend "$(eval echo "\$$token")" 'transfer(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 999000 ETH)")"
         fi
         export SKIP_BUILD=true
     done
 done
 
 # As all initial collaterals were deployed, we can remove authority of the deployment contract from the core contracts
-seth send "$MCD_DEPLOY" 'releaseAuth()'
+sethSend "$MCD_DEPLOY" 'releaseAuth()'
 for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     for ilk in $ilks; do
-        seth send "$MCD_DEPLOY" 'releaseAuthFlip(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
+        sethSend "$MCD_DEPLOY" 'releaseAuthFlip(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
     done
 
     log "auth removed for $token"
@@ -151,24 +151,24 @@ log "proxy actions deployed"
 dappBuild testchain-pause-proxy-actions
 
 PROXY_PAUSE_ACTIONS=$(dappCreate testchain-pause-proxy-actions TestchainPauseProxyActions)
-seth send "$PROXY_REGISTRY" 'build()'
+sethSend "$PROXY_REGISTRY" 'build()'
 log "pause actions deployed"
 
 # Get a proxy for the deployer address
 PROXY_DEPLOYER=0x"$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$ETH_FROM")"
 
 # Set the proxy address as root of the roles (in order to be able to do all the variables set up)
-seth send "$MCD_ADM" 'setRootUser(address,bool)' "$PROXY_DEPLOYER" true
+sethSend "$MCD_ADM" 'setRootUser(address,bool)' "$PROXY_DEPLOYER" true
 
 # Deploy chief as new $MCD_ADM (no solc optimization)
 dappBuild ds-chief
 MCD_IOU=$(dappCreate ds-chief DSToken "$(seth --to-bytes32 "$(seth --from-ascii "IOU")")")
-seth send "$MCD_IOU" 'setAuthority(address)' "$MCD_GOV_GUARD"
-seth send "$MCD_IOU" 'setOwner(address)' "0x0000000000000000000000000000000000000000"
+sethSend "$MCD_IOU" 'setAuthority(address)' "$MCD_GOV_GUARD"
+sethSend "$MCD_IOU" 'setOwner(address)' "0x0000000000000000000000000000000000000000"
 MCD_ADM=$(dappCreate ds-chief DSChief "$MCD_GOV" "$MCD_IOU" 5)
-seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_ADM" "$MCD_IOU" "$(seth --to-bytes32  "$(seth sig 'mint(address,uint256)')")"
-seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_ADM" "$MCD_IOU" "$(seth --to-bytes32  "$(seth sig 'burn(address,uint256)')")"
-seth send "$MCD_GOV_GUARD" 'setOwner(address)' "0x0000000000000000000000000000000000000000"
+sethSend "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_ADM" "$MCD_IOU" "$(seth --to-bytes32  "$(seth sig 'mint(address,uint256)')")"
+sethSend "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_ADM" "$MCD_IOU" "$(seth --to-bytes32  "$(seth sig 'burn(address,uint256)')")"
+sethSend "$MCD_GOV_GUARD" 'setOwner(address)' "0x0000000000000000000000000000000000000000"
 log "chief deployed"
 
 # Deploy Vote Proxy Factory (no solc optimization)

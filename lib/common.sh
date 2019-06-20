@@ -60,11 +60,19 @@ dappBuild() {
   )
 }
 
+sethSend() {
+  export ETH_NONCE=$(cat "$TMP_FILE")
+  seth send "$@"
+  echo $((ETH_NONCE + 1)) > "$TMP_FILE"
+}
+
 dappCreate() {
+  export ETH_NONCE=$(cat "$TMP_FILE")
   local lib; lib=$1
   local class; class=$2
   DAPP_OUT="$DAPP_LIB/$lib/out" dapp create "$class" "${@:3}"
   copyAbis "$lib"
+  echo $((ETH_NONCE + 1)) > "$TMP_FILE"
 }
 
 GREEN='\033[0;32m'
