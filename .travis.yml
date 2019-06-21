@@ -10,7 +10,7 @@ before_script:
   - echo "trusted-users = root $USER" | sudo tee -a /etc/nix/nix.conf
 script:
   - |
-    nix-env -iA shellcheck
+    nix-env -iA shellcheck -f '<nixpkgs>'
     # for some reason, `find` with multiple search paths piped to xargs
     # produces no output
     find lib -type f -print | xargs shellcheck -x
