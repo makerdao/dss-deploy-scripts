@@ -19,6 +19,7 @@ script:
   - |
     cachix use dapp
     nix-env -iA dapp -f https://github.com/dapphub/dapptools/archive/nohup.tar.gz
+    git clone https://github.com/dapphub/dapptools --branch nohup ~/.dapp/dapptools
     dapp testnet &
   - cachix use tdds
   - cachix push tdds --watch-store &
