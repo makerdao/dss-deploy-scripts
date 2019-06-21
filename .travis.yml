@@ -26,4 +26,5 @@ script:
   - nix-build -j2 | cachix push tdds
   - |
     ps aux | grep unlimited
-    nix-shell --run "deploy-testchain.sh && scripts/auth-checker"
+    netstat -punta | grep 8545
+    nix-shell --run "setup-env && deploy-testchain.sh && scripts/auth-checker"
