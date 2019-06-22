@@ -18,7 +18,7 @@
   "setLinesMode": "direct",
   "tokens": {
     "ETH": {
-      "pip": {
+      "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
         "price": "150",
@@ -65,7 +65,7 @@
       }
     },
     "COL1": {
-      "pip": {
+      "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
         "price": "20",
@@ -92,7 +92,7 @@
       }
     },
     "COL2": {
-      "pip": {
+      "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
         "price": "25",
@@ -119,7 +119,7 @@
       }
     },
     "COL3": {
-      "pip": {
+      "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
         "price": "30",
@@ -146,7 +146,7 @@
       }
     },
     "COL4": {
-      "pip": {
+      "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
         "price": "40",
@@ -173,7 +173,7 @@
       }
     },
     "COL5": {
-      "pip": {
+      "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
         "price": "50",

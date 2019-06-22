@@ -10,9 +10,9 @@ loadAddresses
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
-    addr=$(jq -r ".tokens.${token} | .pip | .addr | values" "$CONFIG_FILE")
-    type=$(jq -r ".tokens.${token} | .pip | .type | values" "$CONFIG_FILE")
-    if [[ "$addr" != "" || "$type" == "median" ]]; then
+    pipAddr=$(jq -r ".tokens.${token} | .pip | values" "$CONFIG_FILE")
+    type=$(jq -r ".tokens.${token} | .pipDeploy | .type | values" "$CONFIG_FILE")
+    if [[ "$pipAddr" != "" || "$type" == "median" ]]; then
         # Whitelist Spotter in OSM or in Median
         seth send "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$MCD_SPOT"
     fi

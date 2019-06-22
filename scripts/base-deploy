@@ -9,13 +9,13 @@ dappBuild testchain-medians
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
-    addr=$(jq -r ".tokens.${token} | .pip | .addr | values" "$CONFIG_FILE")
-    if [[ "$addr" == "" ]]; then
-        type=$(jq -r ".tokens.${token} | .pip | .type | values" "$CONFIG_FILE")
+    pipAddr=$(jq -r ".tokens.${token} | .pip | values" "$CONFIG_FILE")
+    if [[ "$pipAddr" == "" ]]; then
+        type=$(jq -r ".tokens.${token} | .pipDeploy | .type | values" "$CONFIG_FILE")
         # Deploy Medianizer as Feed
         if [[ "$type" == "median" ]]; then
             eval "export PIP_$token=$(dappCreate testchain-medians "Median${token}USD")"
-            signers=$(jq -r ".tokens.${token} | .pip | .signers | .[]" "$CONFIG_FILE")
+            signers=$(jq -r ".tokens.${token} | .pipDeploy | .signers | .[]" "$CONFIG_FILE")
             # Approve oracle price feed providers
             for signer in $signers; do
                 seth send "$(eval echo "\$PIP_${token}")" 'lift(address)' "$signer"
@@ -27,10 +27,10 @@ for token in $tokens; do
         fi
         # Deploy DSValue as Feed
         if [[ "${type}" == "value" ]]; then
-            eval "export PIP_$token=$(dappCreate osm DSValue)"
+            eval "export PIP_${token}=$(dappCreate osm DSValue)"
         fi
     else
-        eval "export PIP_${token}=${addr}"
+        eval "export PIP_${token}=${pipAddr}"
     fi
     eval "export VAL_${token}=\$PIP_${token}"
 done
@@ -42,8 +42,8 @@ log "multicall deployed"
 
 # Deploy Token Faucet (no solc optimization)
 dappBuild token-faucet
-test -z "$FAUCET" && FAUCET=$(dappCreate token-faucet TokenFaucet "$(seth --to-uint256 "$(seth --to-wei 50 ETH)")")
-log "token faucet deployed"
+FAUCET=$(jq -r ".faucet | values" "$CONFIG_FILE")
+test -z "$FAUCET" && FAUCET=$(dappCreate token-faucet TokenFaucet "$(seth --to-uint256 "$(seth --to-wei 50 ETH)")") && log "token faucet deployed"
 
 # Deploy Guard for Gov and IOU tokens (no solc optimization)
 dappBuild ds-guard
@@ -71,11 +71,13 @@ export MCD_PAUSE_DELAY=0
 # Make sure there is not $MCD_ADM set, so a temporary roles is created as authority (to handle variables set up easier)
 unset MCD_ADM
 
+MCD_GOV=$(jq -r ".gov | values" "$CONFIG_FILE")
 if [[ -z "$MCD_GOV" ]]; then
     # It means the GOV token will be created now in the next deployment script call, then we can send funds to the Faucet and set permissions to FLOP
     newGovToken=true
 else
     newGovToken=false
+    export MCD_GOV
 fi
 
 # Deploy MCD Core Contratcs (solc optimized)
@@ -98,14 +100,11 @@ fi
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
-    for ilk in $ilks; do
-        if [[ -z "$(eval echo "\$$token")" ]]; then
-            # It means the ilk token will be created now in the next deployment script call, then we can send funds to the Faucet
-            newToken=true
-        else
-            newToken=false
-        fi
 
+    gemAddr=$(jq -r ".tokens.${token} | .gem | values" "$CONFIG_FILE")
+    eval "export ${token}=${gemAddr}"
+
+    for ilk in $ilks; do
         deploy-ilk-"$(echo "$token" | tr '[:upper:]' '[:lower:]')" "$ilk"
         log "$token deployed"
 
@@ -113,7 +112,8 @@ for token in $tokens; do
         . "load-ilk-$(echo "$token" | tr '[:upper:]' '[:lower:]')-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')-$(seth chain)"
         rm "load-ilk-$(echo "$token" | tr '[:upper:]' '[:lower:]')-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')-$(seth chain)"
 
-        if [[ "$token" != "ETH" && "$newToken" == true ]]; then
+        # If the ilk token was created by the previous deployment script call (new token) and it is not ETH, then we can send funds to the Faucet
+        if [[ "$token" != "ETH" && "$gemAddr" == "" ]]; then
             seth send "$(eval echo "\$$token")" 'transfer(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 999000 ETH)")"
         fi
         export SKIP_BUILD=true

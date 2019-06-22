@@ -7,7 +7,7 @@ loadAddresses
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
-    type=$(jq -r ".tokens.${token} | .pip | .type" "$CONFIG_FILE")
+    type=$(jq -r ".tokens.${token} | .pipDeploy | .type" "$CONFIG_FILE")
     if [[ "$type" == "value" ]]; then # Takes the first token which its pip is a value (not a median, so can be manipulated easily)
         break
     fi
@@ -29,7 +29,7 @@ seth send "$(eval echo "\$MCD_JOIN_${token}_${ilk}")" 'join(address,uint256)' "$
 
 dink=$(seth --to-uint256 "$(mcd --to-hex "$(seth --to-wei 5 eth)")")
 mat=$(jq -r ".tokens.${token}.ilks.${ilk} | .mat" "$CONFIG_FILE")
-price=$(jq -r ".tokens.${token} | .pip | .price" "$CONFIG_FILE")
+price=$(jq -r ".tokens.${token} | .pipDeploy | .price" "$CONFIG_FILE")
 dart=$(seth --to-uint256 "$(mcd --to-hex "$(seth --to-wei "$(echo "5 * $price * 100 / $mat" | bc -l)" eth)")") # Max debt amount
 
 "$LIBEXEC_DIR"/set-price "$token" "$price"
