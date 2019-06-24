@@ -165,18 +165,17 @@ PROXY_DEPLOYER=0x"$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$ET
 seth send "$MCD_ADM" 'setRootUser(address,bool)' "$PROXY_DEPLOYER" true
 
 # Deploy chief as new $MCD_ADM (no solc optimization)
-dappBuild ds-chief
-MCD_IOU=$(dappCreate ds-chief DSToken "$(seth --to-bytes32 "$(seth --from-ascii "IOU")")")
+dappBuild vote-proxy
+MCD_IOU=$(dappCreate vote-proxy DSToken "$(seth --to-bytes32 "$(seth --from-ascii "IOU")")")
 seth send "$MCD_IOU" 'setAuthority(address)' "$MCD_GOV_GUARD"
 seth send "$MCD_IOU" 'setOwner(address)' "0x0000000000000000000000000000000000000000"
-MCD_ADM=$(dappCreate ds-chief DSChief "$MCD_GOV" "$MCD_IOU" 5)
+MCD_ADM=$(dappCreate vote-proxy DSChief "$MCD_GOV" "$MCD_IOU" 5)
 seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_ADM" "$MCD_IOU" "$(seth --to-bytes32  "$(seth sig 'mint(address,uint256)')")"
 seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_ADM" "$MCD_IOU" "$(seth --to-bytes32  "$(seth sig 'burn(address,uint256)')")"
 seth send "$MCD_GOV_GUARD" 'setOwner(address)' "0x0000000000000000000000000000000000000000"
 log "chief deployed"
 
 # Deploy Vote Proxy Factory (no solc optimization)
-dappBuild vote-proxy --use solc:0.4.25
 VOTE_PROXY_FACTORY=$(dappCreate vote-proxy VoteProxyFactory "$MCD_ADM")
 log "vote proxy factory deployed"
 

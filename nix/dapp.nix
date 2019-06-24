@@ -27,20 +27,6 @@ let
   packageSpecs = mapAttrs (_: package);
 
   specs = rec {
-    ds-auth_b36fd91 = rec {
-      name = "ds-auth";
-      deps = {
-        ds-test = ds-test_5559e6c;
-      };
-      repo' = {
-        name = "ds-auth-b36fd91-source";
-        url = "https://github.com/dapphub/ds-auth";
-        rev = "b36fd917563483d10967b57af1c9c88d06204d67";
-        ref = "HEAD";
-      };
-      src' = fetchGit repo';
-      src = "${src'}/src";
-    };
     ds-auth_f783169 = rec {
       name = "ds-auth";
       deps = {
@@ -50,23 +36,6 @@ let
         name = "ds-auth-f783169-source";
         url = "https://github.com/dapphub/ds-auth";
         rev = "f783169408c278f85e26d77ba7b45823ed9503dd";
-        ref = "HEAD";
-      };
-      src' = fetchGit repo';
-      src = "${src'}/src";
-    };
-    ds-chief_3277c98 = rec {
-      name = "ds-chief";
-      deps = {
-        ds-roles = ds-roles_555a773;
-        ds-test = ds-test_5559e6c;
-        ds-thing = ds-thing_f10766a;
-        ds-token = ds-token_bf25ded;
-      };
-      repo' = {
-        name = "ds-chief-3277c98-source";
-        url = "https://github.com/dapphub/ds-chief";
-        rev = "3277c9809c26c4e26615bad71794c420cc0f56c6";
         ref = "HEAD";
       };
       src' = fetchGit repo';
@@ -84,6 +53,23 @@ let
         name = "ds-chief-58a02ff-source";
         url = "https://github.com/dapphub/ds-chief";
         rev = "58a02ff50bdbf5729252aab91bc468a3e77be6bb";
+        ref = "HEAD";
+      };
+      src' = fetchGit repo';
+      src = "${src'}/src";
+    };
+    ds-chief_ea05ee0 = rec {
+      name = "ds-chief";
+      deps = {
+        ds-roles = ds-roles_0138372;
+        ds-test = ds-test_a4e4005;
+        ds-thing = ds-thing_5e49fcb;
+        ds-token = ds-token_cee36a1;
+      };
+      repo' = {
+        name = "ds-chief-ea05ee0-source";
+        url = "https://github.com/dapphub/ds-chief";
+        rev = "ea05ee0413a8b3852142664a6c04d6e4923be426";
         ref = "HEAD";
       };
       src' = fetchGit repo';
@@ -118,20 +104,6 @@ let
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    ds-math_49b3893 = rec {
-      name = "ds-math";
-      deps = {
-        ds-test = ds-test_5559e6c;
-      };
-      repo' = {
-        name = "ds-math-49b3893-source";
-        url = "https://github.com/dapphub/ds-math";
-        rev = "49b38937c0c0b8af73b05f767a0af9d5e85a1e6c";
-        ref = "HEAD";
-      };
-      src' = fetchGit repo';
-      src = "${src'}/src";
-    };
     ds-math_784079b = rec {
       name = "ds-math";
       deps = {
@@ -155,20 +127,6 @@ let
         name = "ds-note-beef816-source";
         url = "https://github.com/dapphub/ds-note";
         rev = "beef8166f2184a4bac3d02abdb944647fd735060";
-        ref = "HEAD";
-      };
-      src' = fetchGit repo';
-      src = "${src'}/src";
-    };
-    ds-note_dbc97b1 = rec {
-      name = "ds-note";
-      deps = {
-        ds-test = ds-test_5559e6c;
-      };
-      repo' = {
-        name = "ds-note-dbc97b1-source";
-        url = "https://github.com/dapphub/ds-note";
-        rev = "dbc97b158c743d8a33634d26c543f59bc0be61c3";
         ref = "HEAD";
       };
       src' = fetchGit repo';
@@ -223,21 +181,6 @@ let
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    ds-roles_555a773 = rec {
-      name = "ds-roles";
-      deps = {
-        ds-auth = ds-auth_b36fd91;
-        ds-test = ds-test_5559e6c;
-      };
-      repo' = {
-        name = "ds-roles-555a773-source";
-        url = "https://github.com/dapphub/ds-roles";
-        rev = "555a7733b6beb5a550beb1c91334a24960ccdb14";
-        ref = "HEAD";
-      };
-      src' = fetchGit repo';
-      src = "${src'}/src";
-    };
     ds-spell_c908b78 = rec {
       name = "ds-spell";
       deps = {
@@ -254,22 +197,6 @@ let
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    ds-stop_31d56c4 = rec {
-      name = "ds-stop";
-      deps = {
-        ds-auth = ds-auth_b36fd91;
-        ds-note = ds-note_dbc97b1;
-        ds-test = ds-test_5559e6c;
-      };
-      repo' = {
-        name = "ds-stop-31d56c4-source";
-        url = "https://github.com/dapphub/ds-stop";
-        rev = "31d56c42009939dc07eaa0c3ca91a8495c31b207";
-        ref = "HEAD";
-      };
-      src' = fetchGit repo';
-      src = "${src'}/src";
-    };
     ds-stop_6e2bda6 = rec {
       name = "ds-stop";
       deps = {
@@ -281,19 +208,6 @@ let
         name = "ds-stop-6e2bda6-source";
         url = "https://github.com/dapphub/ds-stop";
         rev = "6e2bda69cb3cbf25a475491d9bc22969adb05993";
-        ref = "HEAD";
-      };
-      src' = fetchGit repo';
-      src = "${src'}/src";
-    };
-    ds-test_5559e6c = rec {
-      name = "ds-test";
-      deps = {
-      };
-      repo' = {
-        name = "ds-test-5559e6c-source";
-        url = "https://github.com/dapphub/ds-test";
-        rev = "5559e6c3387a2c2bf0fc9df4d2b42b334efeb752";
         ref = "HEAD";
       };
       src' = fetchGit repo';
@@ -324,40 +238,6 @@ let
         name = "ds-thing-5e49fcb-source";
         url = "https://github.com/dapphub/ds-thing";
         rev = "5e49fcbdf4ef8ccd241423ed114576f51c42f1e0";
-        ref = "HEAD";
-      };
-      src' = fetchGit repo';
-      src = "${src'}/src";
-    };
-    ds-thing_f10766a = rec {
-      name = "ds-thing";
-      deps = {
-        ds-auth = ds-auth_b36fd91;
-        ds-math = ds-math_49b3893;
-        ds-note = ds-note_dbc97b1;
-        ds-test = ds-test_5559e6c;
-      };
-      repo' = {
-        name = "ds-thing-f10766a-source";
-        url = "https://github.com/dapphub/ds-thing";
-        rev = "f10766a6db294e020a5d540e07314633d15270f5";
-        ref = "HEAD";
-      };
-      src' = fetchGit repo';
-      src = "${src'}/src";
-    };
-    ds-token_bf25ded = rec {
-      name = "ds-token";
-      deps = {
-        ds-math = ds-math_49b3893;
-        ds-stop = ds-stop_31d56c4;
-        ds-test = ds-test_5559e6c;
-        erc20 = erc20_768a3d8;
-      };
-      repo' = {
-        name = "ds-token-bf25ded-source";
-        url = "https://github.com/dapphub/ds-token";
-        rev = "bf25ded913f142759930e96dac74a642bb295692";
         ref = "HEAD";
       };
       src' = fetchGit repo';
@@ -490,19 +370,6 @@ let
         name = "dss-f1482ff-source";
         url = "https://github.com/makerdao/dss";
         rev = "f1482ff069fb833cf56b1f4d443dc6b23f4de091";
-        ref = "HEAD";
-      };
-      src' = fetchGit repo';
-      src = "${src'}/src";
-    };
-    erc20_768a3d8 = rec {
-      name = "erc20";
-      deps = {
-      };
-      repo' = {
-        name = "erc20-768a3d8-source";
-        url = "https://github.com/dapphub/erc20";
-        rev = "768a3d8ca30590522c68951e989e5b69f5859151";
         ref = "HEAD";
       };
       src' = fetchGit repo';
@@ -670,17 +537,17 @@ let
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    vote-proxy_ebd7b2f = rec {
+    vote-proxy_6fdbee3 = rec {
       name = "vote-proxy";
       deps = {
-        ds-chief = ds-chief_3277c98;
-        ds-test = ds-test_5559e6c;
-        ds-token = ds-token_bf25ded;
+        ds-chief = ds-chief_ea05ee0;
+        ds-test = ds-test_a4e4005;
+        ds-token = ds-token_cee36a1;
       };
       repo' = {
-        name = "vote-proxy-ebd7b2f-source";
+        name = "vote-proxy-6fdbee3-source";
         url = "https://github.com/makerdao/vote-proxy";
-        rev = "ebd7b2f484bc18d42563b443fbad05702d0abb38";
+        rev = "6fdbee3ac48bb915e715668374c1deba95cdb6f6";
         ref = "HEAD";
       };
       src' = fetchGit repo';
@@ -689,7 +556,6 @@ let
     dss-deploy-scripts = rec {
       name = "dss-deploy-scripts";
       deps = {
-        ds-chief = ds-chief_58a02ff;
         ds-guard = ds-guard_4678e1c;
         dss-deploy = dss-deploy_3f6422c;
         dss-proxy-actions = dss-proxy-actions_d268e43;
@@ -701,7 +567,7 @@ let
         testchain-medians = testchain-medians_7b58d5e;
         testchain-pause-proxy-actions = testchain-pause-proxy-actions_6ac265f;
         token-faucet = token-faucet_adf294e;
-        vote-proxy = vote-proxy_ebd7b2f;
+        vote-proxy = vote-proxy_6fdbee3;
       };
       src' = ../.;
       src = ../src;
