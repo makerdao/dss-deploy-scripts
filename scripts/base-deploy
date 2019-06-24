@@ -33,6 +33,8 @@ for token in $tokens; do
         fi
     else
         eval "export PIP_${token}=${pipAddr}"
+        copyAbis osm
+        copyAbis testchain-medians
     fi
     eval "export VAL_${token}=\$PIP_${token}"
 done
