@@ -24,11 +24,11 @@ dappBuild testchain-medians
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$SETUP_CONFIG_FILE")
 for token in $tokens; do
-    type=$(jq -r ".tokens.${token} | .pip | .type" "$SETUP_CONFIG_FILE")
+    type=$(jq -r ".tokens.${token} | .pipDeploy | .type" "$SETUP_CONFIG_FILE")
     # Deploy Medianizer as Feed
     if [[ "$type" == "median" ]]; then
         eval "export VAL_$token=$(dappCreate testchain-medians "Median${token}USD")"
-        signers=$(jq -r ".tokens.${token} | .pip | .signers | .[]" "$SETUP_CONFIG_FILE")
+        signers=$(jq -r ".tokens.${token} | .pipDeploy | .signers | .[]" "$SETUP_CONFIG_FILE")
         # Approve oracle price feed providers
         for signer in $signers; do
             seth send "$(eval echo "\$VAL_${token}")" 'lift(address)' "$signer"
@@ -43,7 +43,7 @@ for token in $tokens; do
         eval "export VAL_$token=$(dappCreate osm DSValue)"
     fi
     # Deploy OSM if delay > 0
-    osm_delay=$(jq -r ".tokens.${token} | .pip | .osmDelay" "$SETUP_CONFIG_FILE")
+    osm_delay=$(jq -r ".tokens.${token} | .pipDeploy | .osmDelay" "$SETUP_CONFIG_FILE")
     if [[ "$osm_delay" -gt 0 ]]; then
         # Deploy OSM
         eval "export PIP_$token=$(dappCreate osm OSM "$(eval echo "\$VAL_${token}")")"
@@ -54,30 +54,36 @@ for token in $tokens; do
     else
         eval export "PIP_${token}=\$VAL_${token}"
     fi
-    jq_inplace ".tokens.${token}.pip.addr = \"$(eval echo "\$PIP_${token}")\"" "$SETUP_CONFIG_FILE"
+    jq_inplace ".tokens.${token}.pip = \"$(eval echo "\$PIP_${token}")\"" "$SETUP_CONFIG_FILE"
 done
+
+log "pips deployed"
 
 cp "$CONFIG_DIR/deploy-kovan.json" "$CONFIG_DIR/deploy-kovan-live.json"
 cp "$SETUP_CONFIG_FILE" "$CONFIG_DIR/deploy-kovan.json"
 
+log "temp kovan config created"
+
 export SIMULATE="kovan"
-# . "$CONFIG_DIR/deploy-kovan.sh"
+"$CONFIG_DIR/deploy-kovan.sh"
 
 # Reset Kovan Config File
 cp "$CONFIG_DIR/deploy-kovan-live.json" "$CONFIG_DIR/deploy-kovan.json"
 rm "$CONFIG_DIR/deploy-kovan-live.json"
 
+log "kovan config reset"
+
 set +x
-echo "***************************************"
-echo "KOVAN LIKE DEPLOY COMPLETED SUCCESSFULLY"
-echo "***************************************"
+echo "******************************************"
+log "KOVAN LIKE DEPLOY COMPLETED SUCCESSFULLY"
+echo "******************************************"
 echo "STEPS TAKEN"
-echo "- Sent ETH to OMNIA"
-echo "- Deployed MEDIAN Pips for COLs"
-echo "- Saved PIP ADDR to prep config file"
-echo "- Copied real Kovan Config file to deploy-kovan-cp.json"
-echo "- Copied prep Config file to deploy-kovan.json"
-echo "- Ran ./deploy-kovan.sh"
-echo "- Ran ./kovan-like-reset.sh"
-echo "***************************************"
+log "Sent ETH to OMNIA"
+log "Deployed MEDIAN Pips for COLs"
+log "Saved PIP ADDR to prep config file"
+log "Copied real Kovan Config file to preserve it"
+log "Copied prep Config file to for use with deploy kovan"
+log "Ran deploy-kovan"
+log "Reset kovan config file"
+echo "******************************************"
 set -x

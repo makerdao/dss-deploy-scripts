@@ -16,7 +16,7 @@
   "omniaFromAddr": "0xdc9A20F5a46AFE0802b361076BeFC51f787B2e58",
   "tokens": {
     "ETH": {
-      "pip": {
+      "pipDeploy": {
         "osmDelay": "0",
         "type": "median",
         "price": "150",
@@ -60,10 +60,11 @@
           "ttl": "10800",
           "tau": "172800"
         }
-      }
+      },
+      "pip": "0xce59963dda8500e07627b8319ae06b57f8c96600"
     },
     "COL1": {
-      "pip": {
+      "pipDeploy": {
         "osmDelay": "0",
         "type": "median",
         "price": "15",
@@ -87,10 +88,11 @@
           "ttl": "10800",
           "tau": "172800"
         }
-      }
+      },
+      "pip": "0x8b4fe867547140422cc547673ba626b6aa1f96c4"
     },
     "COL2": {
-      "pip": {
+      "pipDeploy": {
         "osmDelay": "0",
         "type": "median",
         "price": "15",
@@ -114,10 +116,11 @@
           "ttl": "10800",
           "tau": "172800"
         }
-      }
+      },
+      "pip": "0x928fe6987a07c467fb0e8e9123dd837d1b9dbb35"
     },
     "COL3": {
-      "pip": {
+      "pipDeploy": {
         "osmDelay": "0",
         "type": "median",
         "price": "15",
@@ -141,10 +144,11 @@
           "ttl": "10800",
           "tau": "172800"
         }
-      }
+      },
+      "pip": "0x34a991686a06f88edb36194056dd4221f360d0ad"
     },
     "COL4": {
-      "pip": {
+      "pipDeploy": {
         "osmDelay": "0",
         "type": "median",
         "price": "15",
@@ -168,10 +172,11 @@
           "ttl": "10800",
           "tau": "172800"
         }
-      }
+      },
+      "pip": "0x55f6196e3182ce81a6988d94261bca07eb68579c"
     },
     "COL5": {
-      "pip": {
+      "pipDeploy": {
         "osmDelay": "0",
         "type": "median",
         "price": "15",
@@ -195,7 +200,8 @@
           "ttl": "10800",
           "tau": "172800"
         }
-      }
+      },
+      "pip": "0x4b4c37dd31b85f48c19b0f3ba6108a923dd0f5f4"
     }
   }
 }
