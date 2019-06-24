@@ -6,7 +6,6 @@
 # Deploy Values or Medians + OSMs (if delay > 0) (no solc optimization)
 dappBuild osm
 dappBuild testchain-medians
-copyAbis testchain-medians
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
@@ -32,6 +31,8 @@ for token in $tokens; do
         fi
     else
         eval "export PIP_${token}=${pipAddr}"
+        copyAbis osm
+        copyAbis testchain-medians
     fi
     eval "export VAL_${token}=\$PIP_${token}"
 done
