@@ -1,5 +1,5 @@
 {
-  "description": "Kovan Dryrun deployment",
+  "description": "Kovan Like deployment",
   "pauseDelay": "300",
   "wait": "0",
   "bump": "0.1",
@@ -27,7 +27,8 @@
           "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
           "0xce93de6B854E75987961533BC1FabCBA7d02BE5a",
           "0xa072Eaf3f9EbeA5e6c3A982A37bdF275E5925bFC"
-        ]
+        ],
+        "addr": "0xea5859b0c909fa5f1e069a8de583bba1a757ec1d"
       },
       "ilks": {
         "A": {
@@ -74,7 +75,8 @@
           "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
           "0xce93de6B854E75987961533BC1FabCBA7d02BE5a",
           "0xa072Eaf3f9EbeA5e6c3A982A37bdF275E5925bFC"
-        ]
+        ],
+        "addr": "0x60c8fe1b941a7df4389b42da2893be120ef491ff"
       },
       "ilks": {
         "A": {
@@ -101,7 +103,8 @@
           "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
           "0xce93de6B854E75987961533BC1FabCBA7d02BE5a",
           "0xa072Eaf3f9EbeA5e6c3A982A37bdF275E5925bFC"
-        ]
+        ],
+        "addr": "0xb5c5098c86286c51ada3d945b8b5affa32be594d"
       },
       "ilks": {
         "A": {
@@ -128,7 +131,8 @@
           "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
           "0xce93de6B854E75987961533BC1FabCBA7d02BE5a",
           "0xa072Eaf3f9EbeA5e6c3A982A37bdF275E5925bFC"
-        ]
+        ],
+        "addr": "0xdf42f627cfd46cce756e757494b6935421cbfb99"
       },
       "ilks": {
         "A": {
@@ -155,7 +159,8 @@
           "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
           "0xce93de6B854E75987961533BC1FabCBA7d02BE5a",
           "0xa072Eaf3f9EbeA5e6c3A982A37bdF275E5925bFC"
-        ]
+        ],
+        "addr": "0x8df851ad1d1d5c79157cb02797d63fb92bef51b2"
       },
       "ilks": {
         "A": {
@@ -182,7 +187,8 @@
           "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
           "0xce93de6B854E75987961533BC1FabCBA7d02BE5a",
           "0xa072Eaf3f9EbeA5e6c3A982A37bdF275E5925bFC"
-        ]
+        ],
+        "addr": "0x7408301293629917b1a52ef5fabf8176d5f61c65"
       },
       "ilks": {
         "A": {
