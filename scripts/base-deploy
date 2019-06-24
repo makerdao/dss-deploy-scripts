@@ -110,7 +110,7 @@ for token in $tokens; do
 
     for ilk in $ilks; do
         deploy-ilk-"$(echo "$token" | tr '[:upper:]' '[:lower:]')" "$ilk"
-        log "$token deployed"
+        log "${token}-${ilk} deployed"
 
         # shellcheck source=/dev/null
         . "load-ilk-$(echo "$token" | tr '[:upper:]' '[:lower:]')-$(echo "$ilk" | tr '[:upper:]' '[:lower:]')-$(seth chain)"
@@ -132,7 +132,7 @@ for token in $tokens; do
         seth send "$MCD_DEPLOY" 'releaseAuthFlip(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
     done
 
-    log "auth removed for $token"
+    log "auth removed for ${token}-${ilk}"
 done
 
 # Deploy Pause Plan - Library functions for the Pause (no solc optimization)
@@ -169,6 +169,7 @@ dappBuild vote-proxy
 MCD_IOU=$(dappCreate vote-proxy DSToken "$(seth --to-bytes32 "$(seth --from-ascii "IOU")")")
 seth send "$MCD_IOU" 'setAuthority(address)' "$MCD_GOV_GUARD"
 seth send "$MCD_IOU" 'setOwner(address)' "0x0000000000000000000000000000000000000000"
+log "IOU token deployed"
 MCD_ADM=$(dappCreate vote-proxy DSChief "$MCD_GOV" "$MCD_IOU" 5)
 seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_ADM" "$MCD_IOU" "$(seth --to-bytes32  "$(seth sig 'mint(address,uint256)')")"
 seth send "$MCD_GOV_GUARD" 'permit(address,address,bytes32)' "$MCD_ADM" "$MCD_IOU" "$(seth --to-bytes32  "$(seth sig 'burn(address,uint256)')")"
