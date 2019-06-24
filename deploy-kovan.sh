@@ -4,7 +4,9 @@
 . "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
 writeConfigFor "kovan"
 
-test "$(seth chain)" == "kovan" || exit 1
+if [[ "$SIMULATE" != "kovan" && "$(seth chain)" != "kovan" ]]; then
+    exit 1
+fi
 
 # Set verify contract option in Etherscan if the API key is in the config file
 etherscanApiKey=$(jq -r ".etherscanApiKey" "$CONFIG_FILE")
