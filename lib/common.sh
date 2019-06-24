@@ -45,26 +45,26 @@ addAddresses() {
 }
 
 copyAbis() {
-  local lib; lib=$1
-  mkdir -p "$OUT_DIR/abi"
-  find "$DAPP_LIB/$lib/out" -name "*.abi" ! -name "*Test.abi" \
+    local lib; lib=$1
+    mkdir -p "$OUT_DIR/abi"
+    find "$DAPP_LIB/$lib/out" -name "*.abi" ! -name "*Test.abi" \
     -exec cp -f {} "$OUT_DIR/abi" \;
 }
 
 dappBuild() {
-  [[ -n $DAPP_SKIP_BUILD ]] && return
+    [[ -n $DAPP_SKIP_BUILD ]] && return
 
-  local lib; lib=$1
-  (cd "$DAPP_LIB/$lib" || exit 1
-    dapp "${@:2}" build
-  )
+    local lib; lib=$1
+    (cd "$DAPP_LIB/$lib" || exit 1
+        dapp "${@:2}" build
+    )
 }
 
 dappCreate() {
-  local lib; lib=$1
-  local class; class=$2
-  DAPP_OUT="$DAPP_LIB/$lib/out" dapp create "$class" "${@:3}"
-  copyAbis "$lib"
+    local lib; lib=$1
+    local class; class=$2
+    DAPP_OUT="$DAPP_LIB/$lib/out" dapp create "$class" "${@:3}"
+    copyAbis "$lib"
 }
 
 GREEN='\033[0;32m'
