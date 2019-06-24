@@ -13,7 +13,6 @@ seth send "$OMNIA_RELAYER" --value "$(seth --to-wei 10000 eth)"
 # Export it so we can use it in pips-deploy
 export OMNIA_RELAYER
 
-# shellcheck source=/dev/null
 "$LIBEXEC_DIR"/pips-deploy
 
 # Run Deployment

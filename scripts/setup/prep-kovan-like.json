@@ -16,7 +16,7 @@
   "omniaFromAddr": "0xdc9A20F5a46AFE0802b361076BeFC51f787B2e58",
   "tokens": {
     "ETH": {
-      "pipConfig": {
+      "pip": {
         "osmDelay": "0",
         "type": "median",
         "price": "150",
@@ -63,7 +63,7 @@
       }
     },
     "COL1": {
-      "pipConfig": {
+      "pip": {
         "osmDelay": "0",
         "type": "median",
         "price": "15",
@@ -90,7 +90,7 @@
       }
     },
     "COL2": {
-      "pipConfig": {
+      "pip": {
         "osmDelay": "0",
         "type": "median",
         "price": "15",
@@ -117,7 +117,7 @@
       }
     },
     "COL3": {
-      "pipConfig": {
+      "pip": {
         "osmDelay": "0",
         "type": "median",
         "price": "15",
@@ -144,7 +144,7 @@
       }
     },
     "COL4": {
-      "pipConfig": {
+      "pip": {
         "osmDelay": "0",
         "type": "median",
         "price": "15",
@@ -171,7 +171,7 @@
       }
     },
     "COL5": {
-      "pipConfig": {
+      "pip": {
         "osmDelay": "0",
         "type": "median",
         "price": "15",
