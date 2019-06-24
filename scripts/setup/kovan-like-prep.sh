@@ -10,7 +10,7 @@ jq_inplace() {
 # shellcheck source=lib/common.sh
 . "./lib/common.sh"
 # . "../../${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
-export SETUP_CONFIG_FILE="${LIBEXEC_DIR:-$BIN_DIR}/setup/prep-kovan-like.json"
+export SETUP_CONFIG_FILE="${LIBEXEC_DIR:-$BIN_DIR}/setup/kovan-like-config.json"
 
 # Setup steps
 
