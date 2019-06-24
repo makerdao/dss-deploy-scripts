@@ -9,7 +9,7 @@ jq_inplace() {
 
 # shellcheck source=lib/common.sh
 . "./lib/common.sh"
-# . "../../${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
+rm -rf "$OUT_DIR" && mkdir "$OUT_DIR"
 export SETUP_CONFIG_FILE="${LIBEXEC_DIR:-$BIN_DIR}/setup/kovan-like-config.json"
 
 # Setup steps
@@ -61,7 +61,7 @@ cp "$CONFIG_DIR/deploy-kovan.json" "$CONFIG_DIR/deploy-kovan-live.json"
 cp "$SETUP_CONFIG_FILE" "$CONFIG_DIR/deploy-kovan.json"
 
 export SIMULATE="kovan"
-. "$CONFIG_DIR/deploy-kovan.sh"
+# . "$CONFIG_DIR/deploy-kovan.sh"
 
 # Reset Kovan Config File
 cp "$CONFIG_DIR/deploy-kovan-live.json" "$CONFIG_DIR/deploy-kovan.json"
