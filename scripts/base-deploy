@@ -6,6 +6,7 @@
 # Deploy Values or Medians + OSMs (if delay > 0) (no solc optimization)
 dappBuild osm
 dappBuild testchain-medians
+copyAbis testchain-medians
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
