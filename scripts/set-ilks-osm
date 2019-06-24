@@ -15,7 +15,8 @@ for token in $tokens; do
         osm_delay=$(jq -r ".tokens.${token} | .pipDeploy | .osmDelay" "$CONFIG_FILE")
         if [[ "$osm_delay" -gt 0 ]]; then
             # Deploy OSM
-            eval "export PIP_${token}=$(dappCreate osm OSM "$(eval echo "\$VAL_${token}")")"
+            contract=$(dappCreate osm OSM "$(eval echo "\$VAL_${token}")")
+            eval "export PIP_${token}=${contract}"
             # Set OSM delay
             seth send "$(eval echo "\$PIP_${token}")" 'step(uint16)' "$osm_delay"
             # Whitelist OSM in Medianizer (skip if source is DSValue)

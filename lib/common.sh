@@ -61,6 +61,7 @@ dappBuild() {
 }
 
 dappCreate() {
+    set -e
     local lib; lib=$1
     local class; class=$2
     DAPP_OUT="$DAPP_LIB/$lib/out" dapp create "$class" "${@:3}"

@@ -14,7 +14,8 @@ for token in $tokens; do
         type=$(jq -r ".tokens.${token} | .pipDeploy | .type | values" "$CONFIG_FILE")
         # Deploy Medianizer as Feed
         if [[ "$type" == "median" ]]; then
-            eval "export PIP_$token=$(dappCreate testchain-medians "Median${token}USD")"
+            contract=$(dappCreate testchain-medians "Median${token}USD")
+            eval "export PIP_${token}=${contract}"
             signers=$(jq -r ".tokens.${token} | .pipDeploy | .signers | .[]" "$CONFIG_FILE")
             # Approve oracle price feed providers
             for signer in $signers; do
@@ -27,7 +28,8 @@ for token in $tokens; do
         fi
         # Deploy DSValue as Feed
         if [[ "${type}" == "value" ]]; then
-            eval "export PIP_${token}=$(dappCreate osm DSValue)"
+            contract=$(dappCreate osm DSValue)
+            eval "export PIP_${token}=${contract}"
         fi
     else
         eval "export PIP_${token}=${pipAddr}"
