@@ -18,9 +18,6 @@ let
 
   # Create derivations from lock file data
   packages = packageSpecs (mapAttrs (_: v: v // { inherit doCheck; }) (deps // {
-    # Set specific solc versions for some contract derivations
-    multicall = deps.multicall   // { solc = solc-versions.solc_0_4_25; };
-    vote-proxy = deps.vote-proxy // { solc = solc-versions.solc_0_4_25; };
   }));
 in makerScriptPackage {
   name = "testchain-dss-deploy-scripts";
