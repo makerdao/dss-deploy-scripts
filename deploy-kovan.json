@@ -15,7 +15,7 @@
   "flop_tau": "172800",
   "setLinesMode": "direct",
   "gov": "",
-  "faucet": "0xa402e771a4662dcbe661e839a6e8c294d2ce44cf",
+  "faucet": "",
   "tokens": {
     "ETH": {
       "gem": "0xb39862d7d1b11cd9b781b1473e142cbb545a6871",
@@ -53,9 +53,9 @@
         }
       }
     },
-    "COL1": {
-      "gem": "0xc644e83399f3c0b4011d3dd3c61bc8b1617253e5",
-      "pip": "0xF2643546d27c8a5388D9Be48170d74b9c9Be39a6",
+    "REP": {
+      "gem": "",
+      "pip": "",
       "ilks":{
         "A": {
           "mat": "180",
@@ -69,9 +69,9 @@
         }
       }
     },
-    "COL2": {
-      "gem": "0x5500b807a9b2fada4d43c1cb5610c4338c4219cb",
-      "pip": "0x8Df8f06DC2dE0434db40dcBb32a82A104218754c",
+    "ZRX": {
+      "gem": "",
+      "pip": "",
       "ilks":{
         "A": {
           "mat": "170",
@@ -85,9 +85,9 @@
         }
       }
     },
-    "COL3": {
-      "gem": "0xc6f281b59782be94c9e5404b13a1c8fa17ba5998",
-      "pip": "0xaa32EB42CBf3Bdb746b659c8DAF443f710497d80",
+    "OMG": {
+      "gem": "",
+      "pip": "",
       "ilks":{
         "A": {
           "mat": "160",
@@ -101,9 +101,9 @@
         }
       }
     },
-    "COL4": {
-      "gem": "0xa5f3f333350bbaeb6d78c9bdebc77fcbf4b51e73",
-      "pip": "0xc9eb67DA2d05702459C521CE3BFED097cB490F8b",
+    "BAT": {
+      "gem": "",
+      "pip": "",
       "ilks":{
         "A": {
           "mat": "200",
@@ -117,14 +117,30 @@
         }
       }
     },
-    "COL5": {
-      "gem": "0x96650321379353cd636aa2d4e5d69cee1a0dd174",
-      "pip": "0xA53e6EFB4cBeD841Eace02220498860905E94998",
+    "DGD": {
+      "gem": "",
+      "pip": "",
       "ilks":{
         "A": {
           "mat": "190",
           "line": "200000",
           "duty": "1.8",
+          "chop": "5",
+          "lump": "10",
+          "beg": "5",
+          "ttl": "10800",
+          "tau": "172800"
+        }
+      }
+    },
+    "GNT": {
+      "gem": "",
+      "pip": "",
+      "ilks":{
+        "A": {
+          "mat": "180",
+          "line": "200000",
+          "duty": "1.6",
           "chop": "5",
           "lump": "10",
           "beg": "5",

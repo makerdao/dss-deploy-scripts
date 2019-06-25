@@ -64,7 +64,7 @@
         }
       }
     },
-    "COL1": {
+    "REP": {
       "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
@@ -91,7 +91,7 @@
         }
       }
     },
-    "COL2": {
+    "ZRX": {
       "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
@@ -118,7 +118,7 @@
         }
       }
     },
-    "COL3": {
+    "OMG": {
       "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
@@ -145,7 +145,7 @@
         }
       }
     },
-    "COL4": {
+    "BAT": {
       "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
@@ -172,7 +172,7 @@
         }
       }
     },
-    "COL5": {
+    "DGD": {
       "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
@@ -191,6 +191,33 @@
           "mat": "190",
           "line": "200000",
           "duty": "1.8",
+          "chop": "5",
+          "lump": "10",
+          "beg": "5",
+          "ttl": "10800",
+          "tau": "172800"
+        }
+      }
+    },
+    "GNT": {
+      "pipDeploy": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "50",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0xce93de6B854E75987961533BC1FabCBA7d02BE5a",
+          "0xa072Eaf3f9EbeA5e6c3A982A37bdF275E5925bFC"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "180",
+          "line": "200000",
+          "duty": "1.6",
           "chop": "5",
           "lump": "10",
           "beg": "5",
