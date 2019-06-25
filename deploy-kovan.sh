@@ -13,6 +13,7 @@ if [[ "$etherscanApiKey" != "" ]]; then
     export ETHERSCAN_API_KEY=$etherscanApiKey
 fi
 
+export DEPLOY_RESTRICTED_FAUCET="no"
 "$LIBEXEC_DIR"/base-deploy
 
 log "KOVAN DEPLOYMENT COMPLETED SUCCESSFULLY"

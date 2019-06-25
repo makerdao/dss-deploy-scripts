@@ -13,6 +13,7 @@ OMNIA_RELAYER=$(jq -r ".omniaFromAddr" "$CONFIG_FILE")
 export OMNIA_RELAYER
 seth send "$OMNIA_RELAYER" --value "$(seth --to-wei 10000 eth)"
 
+export DEPLOY_RESTRICTED_FAUCET="no"
 "$LIBEXEC_DIR"/base-deploy
 
 if [[ -f "$CASE" ]]; then

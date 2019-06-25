@@ -47,7 +47,13 @@ log "multicall deployed"
 # Deploy Token Faucet (no solc optimization)
 dappBuild token-faucet
 FAUCET=$(jq -r ".faucet | values" "$CONFIG_FILE")
-test -z "$FAUCET" && FAUCET=$(dappCreate token-faucet TokenFaucet "$(seth --to-uint256 "$(seth --to-wei 50 ETH)")") && log "token faucet deployed"
+if [[ -z "$FAUCET" ]]; then
+    FAUCET=$(dappCreate token-faucet RestrictedTokenFaucet "$(seth --to-uint256 "$(seth --to-wei 50 ETH)")")
+    if [[ "$DEPLOY_RESTRICTED_FAUCET" == "no" ]]; then
+        seth send "$FAUCET" 'hope(address)' "0x0000000000000000000000000000000000000000"
+    fi
+    log "token faucet deployed"
+fi
 
 # Deploy Guard for Gov and IOU tokens (no solc optimization)
 dappBuild ds-guard

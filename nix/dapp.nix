@@ -505,16 +505,16 @@ let
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    token-faucet_adf294e = rec {
+    token-faucet_d7349d1 = rec {
       name = "token-faucet";
       deps = {
         ds-test = ds-test_a4e4005;
         ds-token = ds-token_cee36a1;
       };
       repo' = {
-        name = "token-faucet-adf294e-source";
+        name = "token-faucet-d7349d1-source";
         url = "https://github.com/makerdao/token-faucet";
-        rev = "adf294e2053d1fe7c14acc43529f2091b971b7a8";
+        rev = "d7349d13f6cd83e8d0aa21e93544988fab0b6b24";
         ref = "HEAD";
       };
       src' = fetchGit repo';
@@ -549,7 +549,7 @@ let
         proxy-registry = proxy-registry_1aa2ba3;
         testchain-medians = testchain-medians_7b58d5e;
         testchain-pause-proxy-actions = testchain-pause-proxy-actions_94faad3;
-        token-faucet = token-faucet_adf294e;
+        token-faucet = token-faucet_d7349d1;
         vote-proxy = vote-proxy_6fdbee3;
       };
       src' = ../.;
