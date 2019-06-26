@@ -1,5 +1,5 @@
 {
-  "description": "Kovan deployment",
+  "description": "Mainnet deployment",
   "etherscanApiKey": "4PDDUF52BTUD32C3RJ7RJXRY7KIJFJ38RY",
   "pauseDelay": "300",
   "wait": "0",
@@ -14,39 +14,39 @@
   "flop_ttl": "10800",
   "flop_tau": "172800",
   "setLinesMode": "direct",
-  "gov": "0xaaf64bfcc32d0f15873a02163e7e500671a4ffcd",
+  "gov": "",
   "faucet": "",
   "tokens": {
     "ETH": {
-      "gem": "0xd0a1e359811322d97991e03f863a0c30c2cf029c",
+      "gem": "",
       "pip": "",
       "ilks": {
         "A": {
           "mat": "150",
-          "line": "100000",
+          "line": "5000",
           "duty": "5",
           "chop": "5",
-          "lump": "10",
+          "lump": "0.15",
           "beg": "1",
           "ttl": "3600",
           "tau": "172800"
         },
         "B": {
           "mat": "200",
-          "line": "100000",
+          "line": "5000",
           "duty": "4",
           "chop": "5",
-          "lump": "10",
+          "lump": "0.15",
           "beg": "1",
           "ttl": "3600",
           "tau": "172800"
         },
         "C": {
           "mat": "120",
-          "line": "100000",
+          "line": "5000",
           "duty": "10",
           "chop": "5",
-          "lump": "10",
+          "lump": "0.15",
           "beg": "1",
           "ttl": "3600",
           "tau": "172800"
@@ -62,7 +62,7 @@
           "line": "5000",
           "duty": "10",
           "chop": "8",
-          "lump": "50",
+          "lump": "2.75",
           "beg": "1",
           "ttl": "3600",
           "tau": "172800"
@@ -78,7 +78,7 @@
           "line": "5000",
           "duty": "9.5",
           "chop": "8",
-          "lump": "1000",
+          "lump": "150",
           "beg": "1",
           "ttl": "3600",
           "tau": "172800"
@@ -94,7 +94,7 @@
           "line": "5000",
           "duty": "11.5",
           "chop": "8",
-          "lump": "1000",
+          "lump": "16.5",
           "beg": "1",
           "ttl": "3600",
           "tau": "172800"
@@ -110,7 +110,7 @@
           "line": "5000",
           "duty": "10.5",
           "chop": "8",
-          "lump": "1000",
+          "lump": "155",
           "beg": "1",
           "ttl": "3600",
           "tau": "172800"
@@ -126,7 +126,7 @@
           "line": "5000",
           "duty": "9",
           "chop": "8",
-          "lump": "100",
+          "lump": "1.85",
           "beg": "1",
           "ttl": "3600",
           "tau": "172800"
@@ -142,7 +142,7 @@
           "line": "5000",
           "duty": "9",
           "chop": "5",
-          "lump": "2000",
+          "lump": "500",
           "beg": "1",
           "ttl": "3600",
           "tau": "172800"
