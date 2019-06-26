@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# shellcheck source=lib/common.sh
+. "${LIB_DIR:-$(cd "${0%/*}/../lib"&&pwd)}/common.sh"
+
+# Get config variables
+CONFIG_FILE="$OUT_DIR/config.json"
+# Get addresses
+loadAddresses
+
+# Set general debt ceiling (if defined)
+base=$(jq -r ".base | values" "$CONFIG_FILE")
+if [[ "$base" != "" ]]; then
+    base=$(bc -l <<< "scale=27; e( l(${base} / 100 + 1)/(60 * 60 * 24 * 365)) * 10^27")
+    base=$(seth --to-uint256 "${base%.*}")
+    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_JUG" "$(seth --to-bytes32 "$(seth --from-ascii "base")")" "$base")"
+    seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+fi
+
+log "SET BASE COMPLETED SUCCESSFULLY"

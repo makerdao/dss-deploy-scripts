@@ -246,6 +246,10 @@ EOF
 
 "$LIBEXEC_DIR"/set-line
 
+"$LIBEXEC_DIR"/set-base
+
+"$LIBEXEC_DIR"/set-dsr
+
 "$LIBEXEC_DIR"/set-wait
 
 "$LIBEXEC_DIR"/set-bump
