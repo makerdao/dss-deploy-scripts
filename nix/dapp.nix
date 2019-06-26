@@ -444,7 +444,7 @@ let
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    osm_1721b9d = rec {
+    osm_504c474 = rec {
       name = "osm";
       deps = {
         ds-stop = ds-stop_6e2bda6;
@@ -452,9 +452,9 @@ let
         ds-value = ds-value_d2107c1;
       };
       repo' = {
-        name = "osm-1721b9d-source";
+        name = "osm-504c474-source";
         url = "https://github.com/makerdao/osm";
-        rev = "1721b9d2eeedca4f270d992e27d0af0e1f05118d";
+        rev = "504c47437916e29d918a9d1f40eb1f7595f3e9ce";
         ref = "HEAD";
       };
       src' = fetchGit repo';
@@ -545,7 +545,7 @@ let
         gov-polling-generator = gov-polling-generator_d08e43e;
         line-spell = line-spell_47d51a6;
         multicall = multicall_b8771d9;
-        osm = osm_1721b9d;
+        osm = osm_504c474;
         proxy-registry = proxy-registry_1aa2ba3;
         testchain-medians = testchain-medians_2352489;
         testchain-pause-proxy-actions = testchain-pause-proxy-actions_47e7f74;
