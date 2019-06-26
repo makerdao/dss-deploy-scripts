@@ -18,9 +18,11 @@ for token in $tokens; do
             eval "export PIP_${token}=${contract}"
             signers=$(jq -r ".tokens.${token} | .pipDeploy | .signers | .[]" "$CONFIG_FILE")
             # Approve oracle price feed providers
+            allsigners=()
             for signer in $signers; do
-                seth send "$(eval echo "\$PIP_${token}")" 'lift(address)' "$signer"
+                allsigners+=("${signer#0x}")
             done
+            seth send "$(eval echo "\$PIP_${token}")" 'lift(address[] memory)' "[$(join "${allsigners[@]}")]"
             # Set quorum for Medianizer
             seth send "$(eval echo "\$PIP_${token}")" 'setBar(uint256)' "$(seth --to-uint256 3)"
             # Whitelist Omnia relayer to read price from Medianizer
