@@ -7,6 +7,8 @@
   "sump": "0.1",
   "hump": "0",
   "line": "1000000",
+  "base": "0",
+  "dsr": "1",
   "flap_beg": "5",
   "flap_ttl": "10800",
   "flap_tau": "172800",
@@ -14,12 +16,12 @@
   "flop_ttl": "10800",
   "flop_tau": "172800",
   "setLinesMode": "direct",
-  "gov": "",
-  "faucet": "",
+  "gov": "0xb80df2bf515cbef0e62b31ba67b288fd9cc164e5",
+  "faucet": "0x0000000000000000000000000000000000000000",
   "tokens": {
     "ETH": {
-      "gem": "",
-      "pip": "",
+      "gem": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      "pip": "0x822d49cc3e88897637697f0ccb569bf7acc06557",
       "ilks": {
         "A": {
           "mat": "150",
@@ -54,8 +56,8 @@
       }
     },
     "REP": {
-      "gem": "",
-      "pip": "",
+      "gem": "0x1985365e9f78359a9b6ad760e32412f4a445e862",
+      "pip": "0xf28d718656aa38607eadaac974e79ede986ac226",
       "ilks": {
         "A": {
           "mat": "180",
@@ -70,8 +72,8 @@
       }
     },
     "ZRX": {
-      "gem": "",
-      "pip": "",
+      "gem": "0xe41d2489571d322189246dafa5ebde1f4699f498",
+      "pip": "0x6157f64a2ceeeab76872ee384e4f26c9c8470aa4",
       "ilks": {
         "A": {
           "mat": "190",
@@ -86,8 +88,8 @@
       }
     },
     "OMG": {
-      "gem": "",
-      "pip": "",
+      "gem": "0xd26114cd6ee289accf82350c8d8487fedb8a0c07",
+      "pip": "0x8b50dde72fa07205e0f8b9bb82b24c5efb931c44",
       "ilks": {
         "A": {
           "mat": "180",
@@ -102,8 +104,8 @@
       }
     },
     "BAT": {
-      "gem": "",
-      "pip": "",
+      "gem": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+      "pip": "0x942e30879de5bae58aba51aa38fc18c4a37ea1a8",
       "ilks": {
         "A": {
           "mat": "200",
@@ -118,8 +120,8 @@
       }
     },
     "DGD": {
-      "gem": "",
-      "pip": "",
+      "gem": "0xe0b7927c4af23765cb51314a0e0521a9645f0e2a",
+      "pip": "0x61cc202c52c43d1a59c458431f5c43eae2666e34",
       "ilks": {
         "A": {
           "mat": "190",
@@ -134,8 +136,8 @@
       }
     },
     "GNT": {
-      "gem": "",
-      "pip": "",
+      "gem": "0xa74476443119a942de498590fe1f2454d7d4ac0d",
+      "pip": "0xd9d3274595436980ef66d714cd81d8f235514dd6",
       "ilks": {
         "A": {
           "mat": "180",

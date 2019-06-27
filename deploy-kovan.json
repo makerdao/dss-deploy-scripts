@@ -7,6 +7,8 @@
   "sump": "0.1",
   "hump": "0",
   "line": "1000000",
+  "base": "0",
+  "dsr": "1",
   "flap_beg": "5",
   "flap_ttl": "10800",
   "flap_tau": "172800",
@@ -19,7 +21,7 @@
   "tokens": {
     "ETH": {
       "gem": "0xd0a1e359811322d97991e03f863a0c30c2cf029c",
-      "pip": "",
+      "pip": "0x75dd74e8afe8110c8320ed397cccff3b8134d981",
       "ilks": {
         "A": {
           "mat": "150",
@@ -55,7 +57,7 @@
     },
     "REP": {
       "gem": "",
-      "pip": "",
+      "pip": "0x5debc8c4124db0c1d3bad99e69287a576c7b2ccc",
       "ilks": {
         "A": {
           "mat": "180",
@@ -71,7 +73,7 @@
     },
     "ZRX": {
       "gem": "",
-      "pip": "",
+      "pip": "0xc010f1bbde279a5bb05c93f5fc902293d5a9f7a9",
       "ilks": {
         "A": {
           "mat": "190",
@@ -87,7 +89,7 @@
     },
     "OMG": {
       "gem": "",
-      "pip": "",
+      "pip": "0x1e9740f61e80650a60ba70f2d0b477fb85db2b03",
       "ilks": {
         "A": {
           "mat": "180",
@@ -103,7 +105,7 @@
     },
     "BAT": {
       "gem": "",
-      "pip": "",
+      "pip": "0x5c40c9eb35c76069fa4c3a00ea59fac6ffa9c113",
       "ilks": {
         "A": {
           "mat": "200",
@@ -119,7 +121,7 @@
     },
     "DGD": {
       "gem": "",
-      "pip": "",
+      "pip": "0x112bf99e873317643fbfcc22d197e3e01b825cb0",
       "ilks": {
         "A": {
           "mat": "190",
@@ -135,7 +137,7 @@
     },
     "GNT": {
       "gem": "",
-      "pip": "",
+      "pip": "0xf46e96a6f23fdcb5870f0ac0dbe9d2c605485ddc",
       "ilks": {
         "A": {
           "mat": "180",
