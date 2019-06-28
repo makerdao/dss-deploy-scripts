@@ -3,13 +3,33 @@
 , pkgs ? (import ./nix/pkgs.nix { inherit pkgsSrc; }).pkgs
 , dss-deploy ? null
 , doCheck ? false
+, githubAuthToken ? null
 }: with pkgs;
 
 let
-  inherit (lib) mapAttrs;
+  inherit (builtins) replaceStrings;
+  inherit (lib) mapAttrs optionalAttrs id;
   # Get contract dependencies from lock file
   inherit (callPackage ./nix/dapp.nix {}) specs packageSpecs package;
   inherit (specs.this) deps;
+  optinalFunc = x: fn: if x then fn else id;
+
+  # Update GitHub repo URLs and add a auth token for private repos
+  addGithubToken = spec: spec // (let
+    url = replaceStrings
+      [ "https://github.com" ]
+      [ "https://${githubAuthToken}@github.com" ]
+      spec.repo'.url;
+  in rec {
+    repo' = spec.repo' // { inherit url; };
+    src' = fetchGit repo';
+    src = "${src'}/src";
+  });
+
+  # Recursively add GitHub auth token to spec
+  recAddGithubToken = spec: addGithubToken (spec // {
+    deps = mapAttrs (_: recAddGithubToken) spec.deps;
+  });
 
   # Import deploy scripts from dss-deploy
   dss-deploy' = if isNull dss-deploy
@@ -17,13 +37,17 @@ let
     else dss-deploy;
 
   # Create derivations from lock file data
-  packages = packageSpecs (mapAttrs (_: v: v // { inherit doCheck; }) deps);
+  packages = packageSpecs (mapAttrs (_: spec:
+    (optinalFunc (! isNull githubAuthToken) recAddGithubToken)
+      (spec // { inherit doCheck; })
+  ) deps);
   
   dss-proxy-actions-optimized = package (deps.dss-proxy-actions // {
     inherit doCheck;
     name = "dss-proxy-actions-optimized";
     solcFlags = "--optimize";
   });
+
 in makerScriptPackage {
   name = "testchain-dss-deploy-scripts";
 

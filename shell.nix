@@ -2,6 +2,7 @@
 , pkgs ? (import ./nix/pkgs.nix { inherit pkgsSrc; }).pkgs
 , dss-deploy ? null
 , doCheck ? false
+, githubAuthToken ? null
 }@args: with pkgs;
 
 let
