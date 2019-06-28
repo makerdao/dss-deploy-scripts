@@ -56,7 +56,7 @@
       }
     },
     "REP": {
-      "gem": "",
+      "gem": "0xc7aa227823789e363f29679f23f7e8f6d9904a9b",
       "pip": "0x5debc8c4124db0c1d3bad99e69287a576c7b2ccc",
       "ilks": {
         "A": {
@@ -72,7 +72,7 @@
       }
     },
     "ZRX": {
-      "gem": "",
+      "gem": "0x18392097549390502069c17700d21403ea3c721a",
       "pip": "0xc010f1bbde279a5bb05c93f5fc902293d5a9f7a9",
       "ilks": {
         "A": {
@@ -88,7 +88,7 @@
       }
     },
     "OMG": {
-      "gem": "",
+      "gem": "0x441b1a74c69ee6e631834b626b29801d42076d38",
       "pip": "0x1e9740f61e80650a60ba70f2d0b477fb85db2b03",
       "ilks": {
         "A": {
@@ -104,7 +104,7 @@
       }
     },
     "BAT": {
-      "gem": "",
+      "gem": "0x9f8cfb61d3b2af62864408dd703f9c3beb55dff7",
       "pip": "0x5c40c9eb35c76069fa4c3a00ea59fac6ffa9c113",
       "ilks": {
         "A": {
@@ -120,7 +120,7 @@
       }
     },
     "DGD": {
-      "gem": "",
+      "gem": "0x62aeec5fb140bb233b1c5612a8747ca1dc56dc1b",
       "pip": "0x112bf99e873317643fbfcc22d197e3e01b825cb0",
       "ilks": {
         "A": {
@@ -136,7 +136,7 @@
       }
     },
     "GNT": {
-      "gem": "",
+      "gem": "0xc81ba844f451d4452a01bbb2104c1c4f89252907",
       "pip": "0xf46e96a6f23fdcb5870f0ac0dbe9d2c605485ddc",
       "ilks": {
         "A": {
