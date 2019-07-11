@@ -288,27 +288,26 @@ let
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    dss-cdp-manager_fcec06f = rec {
+    dss-cdp-manager_8715eac = rec {
       name = "dss-cdp-manager";
       deps = {
         ds-test = ds-test_a4e4005;
-        dss-deploy = dss-deploy_9546985;
+        dss-deploy = dss-deploy_bb3f660;
       };
       repo' = {
-        name = "dss-cdp-manager-fcec06f-source";
+        name = "dss-cdp-manager-8715eac-source";
         url = "https://github.com/makerdao/dss-cdp-manager";
-        rev = "fcec06f03ba85fcee7b6957ecb3f8c1c7bfd7da1";
+        rev = "8715eac10ca86707e2bebc605b46e1f5fd1f1664";
         ref = "HEAD";
       };
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    dss-deploy_9546985 = rec {
+    dss-deploy_bb3f660 = rec {
       name = "dss-deploy";
       deps = {
         ds-auth = ds-auth_f783169;
         ds-guard = ds-guard_4678e1c;
-        ds-note = ds-note_beef816;
         ds-pause = ds-pause_81fd9d4;
         ds-roles = ds-roles_0138372;
         ds-test = ds-test_a4e4005;
@@ -318,25 +317,25 @@ let
         esm = esm_e0a85d6;
       };
       repo' = {
-        name = "dss-deploy-9546985-source";
+        name = "dss-deploy-bb3f660-source";
         url = "https://github.com/makerdao/dss-deploy";
-        rev = "9546985a146e425e9aa77e449a741ef79e89e5e1";
+        rev = "bb3f6609ac3cc08be0c3edead99444196dfe4fcd";
         ref = "HEAD";
       };
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    dss-proxy-actions_10e8277 = rec {
+    dss-proxy-actions_07c92fc = rec {
       name = "dss-proxy-actions";
       deps = {
         ds-proxy = ds-proxy_379f5e2;
         ds-test = ds-test_a4e4005;
-        dss-cdp-manager = dss-cdp-manager_fcec06f;
+        dss-cdp-manager = dss-cdp-manager_8715eac;
       };
       repo' = {
-        name = "dss-proxy-actions-10e8277-source";
+        name = "dss-proxy-actions-07c92fc-source";
         url = "https://github.com/makerdao/dss-proxy-actions";
-        rev = "10e8277050820251f49e71afd73758067f91d9f6";
+        rev = "07c92fca5a29bc52a350cb0bcd2983a05d2bbfb1";
         ref = "HEAD";
       };
       src' = fetchGit repo';
@@ -401,16 +400,16 @@ let
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    line-spell_6af239c = rec {
+    line-spell_16cb1d2 = rec {
       name = "line-spell";
       deps = {
         ds-test = ds-test_a4e4005;
-        dss-deploy = dss-deploy_9546985;
+        dss-deploy = dss-deploy_bb3f660;
       };
       repo' = {
-        name = "line-spell-6af239c-source";
+        name = "line-spell-16cb1d2-source";
         url = "https://github.com/makerdao/line-spell";
-        rev = "6af239c5fec7deb3d791af9e5337b138cb3494e8";
+        rev = "16cb1d25665d4a13fbf4a0b0d44a4017f7653d63";
         ref = "HEAD";
       };
       src' = fetchGit repo';
@@ -490,16 +489,16 @@ let
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    testchain-pause-proxy-actions_ffea5af = rec {
+    testchain-pause-proxy-actions_e0c9585 = rec {
       name = "testchain-pause-proxy-actions";
       deps = {
         ds-test = ds-test_a4e4005;
-        dss-deploy = dss-deploy_9546985;
+        dss-deploy = dss-deploy_bb3f660;
       };
       repo' = {
-        name = "testchain-pause-proxy-actions-ffea5af-source";
+        name = "testchain-pause-proxy-actions-e0c9585-source";
         url = "https://github.com/makerdao/testchain-pause-proxy-actions";
-        rev = "ffea5af861f629654ae29f5a37bd07eec10dcd06";
+        rev = "e0c95852a8aabd9df2d60646fac21ffb0c6497d5";
         ref = "HEAD";
       };
       src' = fetchGit repo';
@@ -540,15 +539,15 @@ let
       name = "dss-deploy-scripts";
       deps = {
         ds-guard = ds-guard_4678e1c;
-        dss-deploy = dss-deploy_9546985;
-        dss-proxy-actions = dss-proxy-actions_10e8277;
+        dss-deploy = dss-deploy_bb3f660;
+        dss-proxy-actions = dss-proxy-actions_07c92fc;
         gov-polling-generator = gov-polling-generator_d08e43e;
-        line-spell = line-spell_6af239c;
+        line-spell = line-spell_16cb1d2;
         multicall = multicall_b8771d9;
         osm = osm_504c474;
         proxy-registry = proxy-registry_1aa2ba3;
         testchain-medians = testchain-medians_2352489;
-        testchain-pause-proxy-actions = testchain-pause-proxy-actions_ffea5af;
+        testchain-pause-proxy-actions = testchain-pause-proxy-actions_e0c9585;
         token-faucet = token-faucet_d7349d1;
         vote-proxy = vote-proxy_6fdbee3;
       };
