@@ -10,7 +10,6 @@ export CASE="$LIBEXEC_DIR/cases/$1"
 
 # Send ETH to Omnia Relayer
 OMNIA_RELAYER=$(jq -r ".omniaFromAddr" "$CONFIG_FILE")
-export OMNIA_RELAYER
 seth send "$OMNIA_RELAYER" --value "$(seth --to-wei 10000 eth)"
 
 export DEPLOY_RESTRICTED_FAUCET="no"

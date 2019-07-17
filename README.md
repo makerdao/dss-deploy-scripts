@@ -71,7 +71,7 @@ Below is the expected structure of such a config file:
   "description": "",
   "defaults": {},
   "roles": ["CREATOR"],
-  "omniaFromAddr": "<Address being used by Omnia Service>",
+  "omniaFromAddr": "<Address being used by Omnia Service (only for testchain)>",
   "pauseDelay": "<Delay of Pause contract in seconds>",
   "wait": "<Flop delay in seconds>",
   "bump": "<Flap fixed lot size in DAI unit>",
