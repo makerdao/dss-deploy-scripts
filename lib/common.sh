@@ -56,7 +56,7 @@ dappBuild() {
 
     local lib; lib=$1
     (cd "$DAPP_LIB/$lib" || exit 1
-        dapp "${@:2}" build
+        dapp "${@:2}" build --extract
     )
 }
 
