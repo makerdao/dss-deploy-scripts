@@ -21,7 +21,7 @@
   "tokens": {
     "ETH": {
       "gem": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-      "pip": "0x822d49cc3e88897637697f0ccb569bf7acc06557",
+      "pip": "0x2955e2a9a5c3d286517ca74d22a62f4f55da3264",
       "ilks": {
         "A": {
           "mat": "150",
@@ -57,7 +57,7 @@
     },
     "REP": {
       "gem": "0x1985365e9f78359a9b6ad760e32412f4a445e862",
-      "pip": "0xf28d718656aa38607eadaac974e79ede986ac226",
+      "pip": "0x63a4b95b50ed9fe6507002fbb45f2139137af934",
       "ilks": {
         "A": {
           "mat": "180",
@@ -73,7 +73,7 @@
     },
     "ZRX": {
       "gem": "0xe41d2489571d322189246dafa5ebde1f4699f498",
-      "pip": "0x6157f64a2ceeeab76872ee384e4f26c9c8470aa4",
+      "pip": "0x004b750a71f1aa80150b18ecd510e6abf7e25480",
       "ilks": {
         "A": {
           "mat": "190",
@@ -89,7 +89,7 @@
     },
     "OMG": {
       "gem": "0xd26114cd6ee289accf82350c8d8487fedb8a0c07",
-      "pip": "0x8b50dde72fa07205e0f8b9bb82b24c5efb931c44",
+      "pip": "0x6897ecc2fe455a1cf2d3763fd75e1d282caff0f2",
       "ilks": {
         "A": {
           "mat": "180",
@@ -105,7 +105,7 @@
     },
     "BAT": {
       "gem": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
-      "pip": "0x942e30879de5bae58aba51aa38fc18c4a37ea1a8",
+      "pip": "0xe8b6f2f91aa88f1b9c36267f8fa2e49054976fbc",
       "ilks": {
         "A": {
           "mat": "200",
@@ -121,7 +121,7 @@
     },
     "DGD": {
       "gem": "0xe0b7927c4af23765cb51314a0e0521a9645f0e2a",
-      "pip": "0x61cc202c52c43d1a59c458431f5c43eae2666e34",
+      "pip": "0x11539dce2d28b4454ac7982e47e478db30264205",
       "ilks": {
         "A": {
           "mat": "190",
@@ -137,7 +137,7 @@
     },
     "GNT": {
       "gem": "0xa74476443119a942de498590fe1f2454d7d4ac0d",
-      "pip": "0xd9d3274595436980ef66d714cd81d8f235514dd6",
+      "pip": "0x6b872127c273e54e847c8b67e8a8bfe07b7f0553",
       "ilks": {
         "A": {
           "mat": "180",
