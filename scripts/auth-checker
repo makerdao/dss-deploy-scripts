@@ -149,12 +149,16 @@ checkOwner "MCD_ADM" "0x0000000000000000000000000000000000000000"
 checkAuthority "MCD_ADM" "MCD_ADM"
 
 # iou
-checkOwner "MCD_IOU" "0x0000000000000000000000000000000000000000"
+if [[ -n "$MCD_IOU" ]]; then
+    checkOwner "MCD_IOU" "0x0000000000000000000000000000000000000000"
+fi
 
 # gov guard
-checkOwner "MCD_GOV_GUARD" "0x0000000000000000000000000000000000000000"
+checkOwner "MCD_GUARD" "0x0000000000000000000000000000000000000000"
 
 # gov
 canCall "MCD_FLOP" "MCD_GOV" "mint(address,uint256)"
-canCall "MCD_ADM" "MCD_IOU" "mint(address,uint256)"
-canCall "MCD_ADM" "MCD_IOU" "mint(address,uint256)"
+if [[ -n "$MCD_IOU" ]]; then
+    canCall "MCD_ADM" "MCD_IOU" "mint(address,uint256)"
+    canCall "MCD_ADM" "MCD_IOU" "burn(address,uint256)"
+fi

@@ -17,6 +17,7 @@
   "flop_tau": "172800",
   "setLinesMode": "direct",
   "gov": "0xb80df2bf515cbef0e62b31ba67b288fd9cc164e5",
+  "authority": "",
   "faucet": "0x0000000000000000000000000000000000000000",
   "tokens": {
     "ETH": {
