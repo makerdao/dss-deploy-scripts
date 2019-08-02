@@ -84,7 +84,7 @@ Below is the expected structure of such a config file:
   "flop_beg": "<Minimum bid increase in percentage (e.g. 5.5)>",
   "flop_ttl": "<Max time between bids in seconds>",
   "flop_tau": "<Max auction duration in seconds>",
-  "setLinesMode": "<direct|vote>",
+  "setLinesMode": "<direct|vote|(any other value will do nothing about debt ceilings)>",
   "tokens": {
     "<ETH|COL>": {
       "pip": {
