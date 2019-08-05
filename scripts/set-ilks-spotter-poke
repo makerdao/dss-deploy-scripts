@@ -10,10 +10,20 @@ loadAddresses
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
-    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
-    for ilk in $ilks; do
-        seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
-    done
+    pipAddr=$(jq -r ".tokens.${token} | .pip | values" "$CONFIG_FILE")
+    type=$(jq -r ".tokens.${token} | .pipDeploy | .type | values" "$CONFIG_FILE")
+
+    SET=1
+    if [[ "$pipAddr" != "" || "$type" == "median" ]]; then
+        SET=$(seth call "$(eval echo "\$PIP_${token}")" 'bud(address)(uint256)' "$MCD_SPOT" | sed 's/^0*//')
+    fi
+
+    if [[ "$SET" == 1 ]]; then
+        ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+        for ilk in $ilks; do
+            seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
+        done
+    fi
 done
 
 log "SET SPOTTER POKE COMPLETED SUCCESSFULLY"

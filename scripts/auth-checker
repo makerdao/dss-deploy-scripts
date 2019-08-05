@@ -73,6 +73,18 @@ canCall() {
     fi
 }
 
+checkWhitelist() {
+    local CHECK
+    CHECK=$(seth call "${!1}" 'bud(address)(uint256)' "${!2}" | sed 's/^0*//')
+
+    printf "WHITELIST: %s -> %s -> " "${1}" "${2}"
+    if [[ "$CHECK" == 1 ]]; then
+        ok
+    else
+        notok
+    fi
+}
+
 # vat
 checkRely "MCD_VAT" "MCD_DEPLOY" "NOT_AUTHED"
 checkRely "MCD_VAT" "MCD_VOW" "AUTHED"
@@ -162,3 +174,18 @@ if [[ -n "$MCD_IOU" ]]; then
     canCall "MCD_ADM" "MCD_IOU" "mint(address,uint256)"
     canCall "MCD_ADM" "MCD_IOU" "burn(address,uint256)"
 fi
+
+# osms and medians whitelist
+for token in $tokens; do
+    pipAddr=$(jq -r ".tokens.${token} | .pip | values" "$CONFIG_FILE")
+    type=$(jq -r ".tokens.${token} | .pipDeploy | .type | values" "$CONFIG_FILE")
+    osmDelay=$(jq -r ".tokens.${token} | .pipDeploy | .osmDelay | values" "$CONFIG_FILE")
+
+    if [[ "$pipAddr" != "" || "$type" == "median" || "$osmDelay" -gt 0 ]]; then
+        checkWhitelist "PIP_${token}" "MCD_SPOT"
+    fi
+
+    if [[ "$pipAddr" == "" && "$type" == "median" && "$osmDelay" -gt 0 ]]; then
+        checkWhitelist "VAL_${token}" "PIP_${token}"
+    fi
+done
