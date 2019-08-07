@@ -170,6 +170,7 @@ checkOwner "MCD_GUARD" "0x0000000000000000000000000000000000000000"
 
 # gov
 canCall "MCD_FLOP" "MCD_GOV" "mint(address,uint256)"
+canCall "MCD_FLAP" "MCD_GOV" "burn(address,uint256)"
 if [[ -n "$MCD_IOU" ]]; then
     canCall "MCD_ADM" "MCD_IOU" "mint(address,uint256)"
     canCall "MCD_ADM" "MCD_IOU" "burn(address,uint256)"
