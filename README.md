@@ -78,6 +78,8 @@ Below is the expected structure of such a config file:
   "sump": "<Flop fixed lot size in DAI unit>",
   "hump": "<Surplus buffer in DAI unit>",
   "line": "<General debt ceiling in DAI unit>",
+  "base": "<Base component of stability fee in percentage per year (e.g. 2.5)>",
+  "dsr": "<Dai Savings Rate in percentage per year (e.g. 2.5)>",
   "flap_beg": "<Minimum bid increase in percentage (e.g. 5.5)>",
   "flap_ttl": "<Max time between bids in seconds>",
   "flap_tau": "<Max auction duration in seconds>",
@@ -85,6 +87,10 @@ Below is the expected structure of such a config file:
   "flop_ttl": "<Max time between bids in seconds>",
   "flop_tau": "<Max auction duration in seconds>",
   "setLinesMode": "<direct|vote|(any other value will do nothing about debt ceilings)>",
+  "gov": "<GOV token address (if there is an existing one to import)>",
+  "authority": "<Authority address (if there is an existing one to import)>",
+  "proxyRegistry": "<Proxy Registry address (if there is an existing one to import)>",
+  "faucet": "<Faucet address (if there is an existing one to import)>",
   "tokens": {
     "<ETH|COL>": {
       "pip": {
@@ -99,7 +105,7 @@ Below is the expected structure of such a config file:
         "A": {
           "mat": "<Liquidation ratio value in percentage (e.g. 150)>",
           "line": "<Debt ceiling value in DAI unit>",
-          "duty": "<Liquidation ratio value in percentage per year (e.g. 2.5)>",
+          "duty": "<Collateral component of stability fee in percentage per year (e.g. 2.5)>",
           "chop": "<Liquidation penalty value in percentage (e.g. 12.5)>",
           "lump": "<Liquidation Quantity in Collateral Unit>",
           "beg": "<Minimum bid increase in percentage (e.g. 5.5)>",
