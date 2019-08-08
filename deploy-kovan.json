@@ -18,6 +18,7 @@
   "setLinesMode": "direct",
   "gov": "0xaaf64bfcc32d0f15873a02163e7e500671a4ffcd",
   "authority": "",
+  "proxyRegistry": "0x64a436ae831c1672ae81f674cab8b6775df3475c",
   "faucet": "0x94598157fcf0715c3bc9b4a35450cce82ac57b20",
   "tokens": {
     "ETH": {

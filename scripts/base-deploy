@@ -62,8 +62,16 @@ log "ds-guard deployed"
 
 # Deploy ProxyRegistry (no solc optimization)
 dappBuild proxy-registry
-PROXY_FACTORY=$(dappCreate proxy-registry DSProxyFactory)
-PROXY_REGISTRY=$(dappCreate proxy-registry ProxyRegistry "$PROXY_FACTORY")
+PROXY_REGISTRY=$(jq -r ".proxyRegistry | values" "$CONFIG_FILE")
+if [[ -z "$PROXY_REGISTRY" ]]; then
+    PROXY_FACTORY=$(dappCreate proxy-registry DSProxyFactory)
+    PROXY_REGISTRY=$(dappCreate proxy-registry ProxyRegistry "$PROXY_FACTORY")
+else
+    PROXY_FACTORY=$(seth storage "$PROXY_REGISTRY" 1)
+    PROXY_FACTORY=0x${PROXY_FACTORY:26:66}
+    copyAbis proxy-registry
+fi
+
 log "proxy-registry deployed"
 
 PATH="$DAPP_LIB/dss-deploy/bin:$PATH"
@@ -160,13 +168,16 @@ log "proxy actions deployed"
 
 # Deploy Pause Proxy Actions (support contract for executing initial set up of the dss system)
 dappBuild testchain-pause-proxy-actions
-
 PROXY_PAUSE_ACTIONS=$(dappCreate testchain-pause-proxy-actions TestchainPauseProxyActions)
-seth send "$PROXY_REGISTRY" 'build()'
 log "pause actions deployed"
 
-# Get a proxy for the deployer address
-PROXY_DEPLOYER=0x"$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$ETH_FROM")"
+# Get a proxy for the deployer address (create if didn't previously exist)
+PROXY_DEPLOYER=0x$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$ETH_FROM")
+if [[ "$PROXY_DEPLOYER" == "0x0000000000000000000000000000000000000000" ]]; then
+    seth send "$PROXY_REGISTRY" 'build()'
+    log "proxy deployer deployed"
+    PROXY_DEPLOYER=0x"$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$ETH_FROM")"
+fi
 
 # Set the proxy address as root of the roles (in order to be able to do all the variables set up)
 seth send "$MCD_ADM" 'setRootUser(address,bool)' "$PROXY_DEPLOYER" true
