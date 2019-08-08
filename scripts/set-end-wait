@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# shellcheck source=lib/common.sh
+. "${LIB_DIR:-$(cd "${0%/*}/../lib"&&pwd)}/common.sh"
+
+# Get config variables
+CONFIG_FILE="$OUT_DIR/config.json"
+# Get addresses
+loadAddresses
+
+# Set general debt ceiling (if defined)
+wait=$(jq -r ".end_wait | values" "$CONFIG_FILE")
+if [[ "$wait" != "" ]]; then
+    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_END" "$(seth --to-bytes32 "$(seth --from-ascii "wait")")" "$wait")"
+    seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+fi
+
+log "SET END WAIT COMPLETED SUCCESSFULLY"

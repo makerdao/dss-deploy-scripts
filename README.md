@@ -80,6 +80,7 @@ Below is the expected structure of such a config file:
   "vow_hump": "<Surplus buffer in DAI unit>",
   "jug_base": "<Base component of stability fee in percentage per year (e.g. 2.5)>",
   "pot_dsr": "<Dai Savings Rate in percentage per year (e.g. 2.5)>",
+  "end_wait": "<Global Settlement cooldown period in seconds>",
   "flap_beg": "<Minimum bid increase in percentage (e.g. 5.5)>",
   "flap_ttl": "<Max time between bids in seconds>",
   "flap_tau": "<Max auction duration in seconds>",

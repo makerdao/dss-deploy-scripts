@@ -277,6 +277,8 @@ EOF
 
 "$LIBEXEC_DIR"/set-pot-dsr
 
+"$LIBEXEC_DIR"/set-end-wait
+
 "$LIBEXEC_DIR"/set-beg "flap"
 
 "$LIBEXEC_DIR"/set-ttl "flap"
