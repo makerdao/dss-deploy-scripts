@@ -9,7 +9,7 @@ CONFIG_FILE="$OUT_DIR/config.json"
 loadAddresses
 
 # Set general debt ceiling (if defined)
-base=$(jq -r ".base | values" "$CONFIG_FILE")
+base=$(jq -r ".jug_base | values" "$CONFIG_FILE")
 if [[ "$base" != "" ]]; then
     base=$(bc -l <<< "scale=27; e( l(${base} / 100 + 1)/(60 * 60 * 24 * 365)) * 10^27")
     base=$(bc -l <<< "${base} - 10^27")
@@ -18,4 +18,4 @@ if [[ "$base" != "" ]]; then
     seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi
 
-log "SET BASE COMPLETED SUCCESSFULLY"
+log "SET JUG BASE COMPLETED SUCCESSFULLY"

@@ -9,7 +9,7 @@ CONFIG_FILE="$OUT_DIR/config.json"
 loadAddresses
 
 # Set general debt ceiling (if defined)
-Line=$(jq -r ".line | values" "$CONFIG_FILE")
+Line=$(jq -r ".vat_line | values" "$CONFIG_FILE")
 if [[ "$Line" != "" ]]; then
     Line=$(echo "$Line"*10^45 | bc)
     Line=$(seth --to-uint256 "${Line%.*}")
@@ -17,4 +17,4 @@ if [[ "$Line" != "" ]]; then
     seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi
 
-log "SET LINE COMPLETED SUCCESSFULLY"
+log "SET VAT LINE COMPLETED SUCCESSFULLY"

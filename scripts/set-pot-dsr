@@ -9,7 +9,7 @@ CONFIG_FILE="$OUT_DIR/config.json"
 loadAddresses
 
 # Set general debt ceiling (if defined)
-dsr=$(jq -r ".dsr | values" "$CONFIG_FILE")
+dsr=$(jq -r ".pot_dsr | values" "$CONFIG_FILE")
 if [[ "$dsr" != "" ]]; then
     dsr=$(bc -l <<< "scale=27; e( l(${dsr} / 100 + 1)/(60 * 60 * 24 * 365)) * 10^27")
     dsr=$(seth --to-uint256 "${dsr%.*}")
@@ -17,4 +17,4 @@ if [[ "$dsr" != "" ]]; then
     seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi
 
-log "SET DSR COMPLETED SUCCESSFULLY"
+log "SET POT DSR COMPLETED SUCCESSFULLY"

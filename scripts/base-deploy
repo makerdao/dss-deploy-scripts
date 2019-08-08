@@ -263,19 +263,19 @@ cat > "$OUT_DIR"/addresses.json <<EOF
 }
 EOF
 
-"$LIBEXEC_DIR"/set-line
+"$LIBEXEC_DIR"/set-vat-line
 
-"$LIBEXEC_DIR"/set-base
+"$LIBEXEC_DIR"/set-vow-wait
 
-"$LIBEXEC_DIR"/set-dsr
+"$LIBEXEC_DIR"/set-vow-bump
 
-"$LIBEXEC_DIR"/set-wait
+"$LIBEXEC_DIR"/set-vow-sump
 
-"$LIBEXEC_DIR"/set-bump
+"$LIBEXEC_DIR"/set-vow-hump
 
-"$LIBEXEC_DIR"/set-sump
+"$LIBEXEC_DIR"/set-jug-base
 
-"$LIBEXEC_DIR"/set-hump
+"$LIBEXEC_DIR"/set-pot-dsr
 
 "$LIBEXEC_DIR"/set-beg "flap"
 

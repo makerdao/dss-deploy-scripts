@@ -9,7 +9,7 @@ CONFIG_FILE="$OUT_DIR/config.json"
 loadAddresses
 
 # Set general debt ceiling (if defined)
-sump=$(jq -r ".sump" "$CONFIG_FILE")
+sump=$(jq -r ".vow_sump" "$CONFIG_FILE")
 if [[ "$sump" != "" ]]; then
     sump=$(echo "$sump"*10^45 | bc)
     sump=$(seth --to-uint256 "${sump%.*}")
@@ -17,4 +17,4 @@ if [[ "$sump" != "" ]]; then
     seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi
 
-log "SET SUMP COMPLETED SUCCESSFULLY"
+log "SET VOW SUMP COMPLETED SUCCESSFULLY"

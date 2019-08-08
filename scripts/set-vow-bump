@@ -9,7 +9,7 @@ CONFIG_FILE="$OUT_DIR/config.json"
 loadAddresses
 
 # Set general debt ceiling (if defined)
-bump=$(jq -r ".bump | values" "$CONFIG_FILE")
+bump=$(jq -r ".vow_bump | values" "$CONFIG_FILE")
 if [[ "$bump" != "" ]]; then
     bump=$(echo "$bump"*10^45 | bc)
     bump=$(seth --to-uint256 "${bump%.*}")
@@ -17,4 +17,4 @@ if [[ "$bump" != "" ]]; then
     seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi
 
-log "SET BUMP COMPLETED SUCCESSFULLY"
+log "SET VOW BUMP COMPLETED SUCCESSFULLY"

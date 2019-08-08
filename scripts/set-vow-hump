@@ -9,7 +9,7 @@ CONFIG_FILE="$OUT_DIR/config.json"
 loadAddresses
 
 # Set general debt ceiling (if defined)
-hump=$(jq -r ".hump | values" "$CONFIG_FILE")
+hump=$(jq -r ".vow_hump | values" "$CONFIG_FILE")
 if [[ "$hump" != "" ]]; then
     hump=$(echo "$hump"*10^45 | bc)
     hump=$(seth --to-uint256 "${hump%.*}")
@@ -17,4 +17,4 @@ if [[ "$hump" != "" ]]; then
     seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi
 
-log "SET HUMP COMPLETED SUCCESSFULLY"
+log "SET VOW HUMP COMPLETED SUCCESSFULLY"
