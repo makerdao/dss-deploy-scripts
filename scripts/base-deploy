@@ -306,6 +306,8 @@ elif [[ $setLinesMode = "vote" ]]; then
     "$LIBEXEC_DIR"/set-ilks-spell-line
 fi
 
+"$LIBEXEC_DIR"/set-ilks-dust
+
 "$LIBEXEC_DIR"/set-ilks-duty
 
 "$LIBEXEC_DIR"/set-ilks-spotter-poke
