@@ -90,6 +90,7 @@ checkRely "MCD_VAT" "MCD_DEPLOY" "NOT_AUTHED"
 checkRely "MCD_VAT" "MCD_VOW" "AUTHED"
 checkRely "MCD_VAT" "MCD_CAT" "AUTHED"
 checkRely "MCD_VAT" "MCD_JUG" "AUTHED"
+checkRely "MCD_VAT" "MCD_POT" "AUTHED"
 checkRely "MCD_VAT" "MCD_SPOT" "AUTHED"
 checkRely "MCD_VAT" "MCD_END" "AUTHED"
 checkRely "MCD_VAT" "MCD_PAUSE_PROXY" "AUTHED"
@@ -122,6 +123,7 @@ checkRely "MCD_POT" "MCD_PAUSE_PROXY" "AUTHED"
 
 # dai
 checkRely "MCD_DAI" "MCD_DEPLOY" "NOT_AUTHED"
+checkRely "MCD_DAI" "MCD_JOIN_DAI" "AUTHED"
 
 # spotter
 checkRely "MCD_SPOT" "MCD_DEPLOY" "NOT_AUTHED"
@@ -151,6 +153,12 @@ for token in $tokens; do
         checkRely "MCD_FLIP_${token}_${ilk}" "MCD_PAUSE_PROXY" "AUTHED"
     done
 done
+
+# faucet
+faucet=$(jq -r ".faucet | values" "$CONFIG_FILE")
+if [[ -z "$faucet" ]]; then
+    checkRely "FAUCET" "DEPLOYER" "AUTHED"
+fi
 
 # pause
 checkOwner "MCD_PAUSE" "0x0000000000000000000000000000000000000000"
