@@ -61,15 +61,14 @@ MCD_GUARD=$(dappCreate ds-guard DSGuard)
 log "ds-guard deployed"
 
 # Deploy ProxyRegistry (no solc optimization)
-dappBuild proxy-registry
+dappBuild dss-proxy-actions
 PROXY_REGISTRY=$(jq -r ".proxyRegistry | values" "$CONFIG_FILE")
 if [[ -z "$PROXY_REGISTRY" ]]; then
-    PROXY_FACTORY=$(dappCreate proxy-registry DSProxyFactory)
-    PROXY_REGISTRY=$(dappCreate proxy-registry ProxyRegistry "$PROXY_FACTORY")
+    PROXY_FACTORY=$(dappCreate dss-proxy-actions DSProxyFactory)
+    PROXY_REGISTRY=$(dappCreate dss-proxy-actions ProxyRegistry "$PROXY_FACTORY")
 else
     PROXY_FACTORY=$(seth storage "$PROXY_REGISTRY" 1)
     PROXY_FACTORY=0x${PROXY_FACTORY:26:66}
-    copyAbis proxy-registry
 fi
 
 log "proxy-registry deployed"
@@ -155,8 +154,6 @@ MCD_GOV_ACTIONS=$(dappCreate dss-deploy GovActions)
 log "gov actions deployed"
 
 unset SKIP_BUILD
-
-dappBuild dss-proxy-actions
 
 # Deploy Proxy Actions (no solc optimization)
 PROXY_ACTIONS=$(dappCreate dss-proxy-actions DssProxyActions)

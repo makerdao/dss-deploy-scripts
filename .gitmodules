@@ -1,9 +1,6 @@
 [submodule "contracts/dss-proxy-actions"]
 	path = contracts/dss-proxy-actions
 	url = https://github.com/makerdao/dss-proxy-actions
-[submodule "contracts/proxy-registry"]
-	path = contracts/proxy-registry
-	url = https://github.com/makerdao/proxy-registry
 [submodule "contracts/osm"]
 	path = contracts/osm
 	url = https://github.com/makerdao/osm

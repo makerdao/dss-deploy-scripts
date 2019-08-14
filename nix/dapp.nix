@@ -325,17 +325,17 @@ let
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    dss-proxy-actions_696b9ac = rec {
+    dss-proxy-actions_f00349f = rec {
       name = "dss-proxy-actions";
       deps = {
-        ds-proxy = ds-proxy_379f5e2;
         ds-test = ds-test_a4e4005;
         dss-cdp-manager = dss-cdp-manager_b0dfe6a;
+        proxy-registry = proxy-registry_59e077f;
       };
       repo' = {
-        name = "dss-proxy-actions-696b9ac-source";
+        name = "dss-proxy-actions-f00349f-source";
         url = "https://github.com/makerdao/dss-proxy-actions";
-        rev = "696b9acd6040347781a5da97bc08c0890a49c9d3";
+        rev = "f00349fb397637ba2f8da44164da6ba6e06f1cd0";
         ref = "HEAD";
       };
       src' = fetchGit repo';
@@ -459,16 +459,16 @@ let
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    proxy-registry_1aa2ba3 = rec {
+    proxy-registry_59e077f = rec {
       name = "proxy-registry";
       deps = {
         ds-proxy = ds-proxy_379f5e2;
         ds-test = ds-test_a4e4005;
       };
       repo' = {
-        name = "proxy-registry-1aa2ba3-source";
+        name = "proxy-registry-59e077f-source";
         url = "https://github.com/makerdao/proxy-registry";
-        rev = "1aa2ba356802a66f2de1f0ff78fabe1756b905a5";
+        rev = "59e077f30133b059e1319a4830985da54dd2ee4b";
         ref = "HEAD";
       };
       src' = fetchGit repo';
@@ -540,12 +540,11 @@ let
       deps = {
         ds-guard = ds-guard_4678e1c;
         dss-deploy = dss-deploy_6100d63;
-        dss-proxy-actions = dss-proxy-actions_696b9ac;
+        dss-proxy-actions = dss-proxy-actions_f00349f;
         gov-polling-generator = gov-polling-generator_d08e43e;
         line-spell = line-spell_394ae37;
         multicall = multicall_b8771d9;
         osm = osm_504c474;
-        proxy-registry = proxy-registry_1aa2ba3;
         testchain-medians = testchain-medians_2352489;
         testchain-pause-proxy-actions = testchain-pause-proxy-actions_8ab93d1;
         token-faucet = token-faucet_d7349d1;
