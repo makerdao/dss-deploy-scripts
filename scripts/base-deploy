@@ -138,8 +138,49 @@ for token in $tokens; do
     done
 done
 
+# Deploy Proxy Actions (no solc optimization)
+PROXY_ACTIONS=$(dappCreate dss-proxy-actions DssProxyActions)
+log "proxy actions deployed"
+
+# Deploy CdpManager (no solc optimization)
+CDP_MANAGER=$(dappCreate dss-proxy-actions DssCdpManager "$MCD_VAT")
+log "manager deployed"
+GET_CDPS=$(dappCreate dss-proxy-actions GetCdps)
+log "getCdps deployed"
+
+SAI_TUB=$(jq -r ".migration.tub | values" "$CONFIG_FILE")
+ethAdapterAddr="$(eval echo "\$$(jq -r ".migration.ethAdapterVarName | values" "$CONFIG_FILE")")"
+if [[ -n "$SAI_TUB" && -n "$ethAdapterAddr" ]]; then
+    SAI="0x$(seth call "$SAI_TUB" 'sai()(address)')"
+    export SAI
+    export PIP_SAI=0x0000000000000000000000000000000000000001
+
+    deploy-ilk-sai
+    log "SAI deployed"
+
+    # shellcheck source=/dev/null
+    . "load-ilk-sai-$(seth chain)"
+    rm "load-ilk-sai-$(seth chain)"
+
+    # Deploy ScdMcdMigration (no solc optimization)
+    dappBuild scd-mcd-migration
+    MIGRATION=$(dappCreate scd-mcd-migration ScdMcdMigration "$SAI_TUB" "$CDP_MANAGER" "$MCD_JOIN_SAI" "$ethAdapterAddr" "$MCD_JOIN_DAI")
+
+    # Rely Migration contract to access the SAI Adapter
+    seth send "$MCD_JOIN_SAI" "rely(address)" "$MIGRATION"
+    # Deny deployer to access the SAI Adapter
+    seth send "$MCD_JOIN_SAI" "deny(address)" "$ETH_FROM"
+
+    seth send "$MCD_DEPLOY" 'releaseAuthFlip(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "SAI")")"
+    log "auth removed for SAI"
+
+    # Deploy MigrationProxyActions to use migrate function through DSProxy (no solc optimization)
+    MIGRATION_PROXY_ACTIONS=$(dappCreate scd-mcd-migration MigrationProxyActions)
+fi
+
 # As all initial collaterals were deployed, we can remove authority of the deployment contract from the core contracts
 seth send "$MCD_DEPLOY" 'releaseAuth()'
+log "general auth removed"
 for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     for ilk in $ilks; do
@@ -154,14 +195,6 @@ MCD_GOV_ACTIONS=$(dappCreate dss-deploy GovActions)
 log "gov actions deployed"
 
 unset SKIP_BUILD
-
-# Deploy Proxy Actions (no solc optimization)
-PROXY_ACTIONS=$(dappCreate dss-proxy-actions DssProxyActions)
-
-# Deploy CdpManager (no solc optimization)
-CDP_MANAGER=$(dappCreate dss-proxy-actions DssCdpManager "$MCD_VAT")
-GET_CDPS=$(dappCreate dss-proxy-actions GetCdps)
-log "proxy actions deployed"
 
 # Deploy Pause Proxy Actions (support contract for executing initial set up of the dss system)
 dappBuild testchain-pause-proxy-actions
@@ -223,6 +256,24 @@ for token in $tokens; do
     done
 done
 
+if [[ -n "$MIGRATION" ]]; then
+    ILKS_VARS+=",
+    \"SAI\": \"$SAI\""
+    ILKS_VARS+=",
+    \"PIP_SAI\": \"$PIP_SAI\""
+    ILKS_VARS+=",
+    \"MCD_JOIN_SAI\": \"$MCD_JOIN_SAI\""
+    ILKS_VARS+=",
+    \"MCD_FLIP_SAI\": \"$MCD_FLIP_SAI\""
+
+    MIGRATION_VARS=",
+    \"SAI_TUB\": \"$SAI_TUB\""
+    MIGRATION_VARS+=",
+    \"MIGRATION\": \"$MIGRATION\""
+    MIGRATION_VARS+=",
+    \"MIGRATION_PROXY_ACTIONS\": \"$MIGRATION_PROXY_ACTIONS\""
+fi
+
 # Generate addresses.json file
 cat > "$OUT_DIR"/addresses.json <<EOF
 {
@@ -256,7 +307,7 @@ cat > "$OUT_DIR"/addresses.json <<EOF
     "PROXY_FACTORY": "$PROXY_FACTORY",
     "PROXY_REGISTRY": "$PROXY_REGISTRY"$ILKS_VARS,
     "PROXY_PAUSE_ACTIONS": "$PROXY_PAUSE_ACTIONS",
-    "PROXY_DEPLOYER": "$PROXY_DEPLOYER"
+    "PROXY_DEPLOYER": "$PROXY_DEPLOYER"$MIGRATION_VARS
 }
 EOF
 
@@ -308,6 +359,12 @@ fi
 "$LIBEXEC_DIR"/set-ilks-duty
 
 "$LIBEXEC_DIR"/set-ilks-spotter-poke
+
+if [[ -n "$MIGRATION" ]]; then
+    spot=$(seth --to-uint256 "1000000000000000000000000000000000000000000000")
+    calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "SAI")")" "$(seth --to-bytes32 "$(seth --from-ascii "spot")")" "$spot")"
+    seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+fi
 
 "$LIBEXEC_DIR"/set-ilks-chop
 

@@ -31,3 +31,6 @@
 [submodule "contracts/testchain-pause-proxy-actions"]
 	path = contracts/testchain-pause-proxy-actions
 	url = https://github.com/makerdao/testchain-pause-proxy-actions
+[submodule "contracts/scd-mcd-migration"]
+	path = contracts/scd-mcd-migration
+	url = https://github.com/makerdao/scd-mcd-migration

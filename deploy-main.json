@@ -21,6 +21,11 @@
   "authority": "",
   "proxyRegistry": "0x4678f0a6958e4d2bc4f1baf7bc52e8f3564f3fe4",
   "faucet": "0x0000000000000000000000000000000000000000",
+  "migration": {
+    "tub": "0x448a5065aebb8e423f0896e6c5d525c040f59af3",
+    "ethAdapterVarName": "MCD_JOIN_ETH_A",
+    "line": "10000000"
+  },
   "tokens": {
     "ETH": {
       "gem": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",

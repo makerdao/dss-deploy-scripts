@@ -101,6 +101,10 @@ for token in $tokens; do
         checkRely "MCD_VAT" "MCD_JOIN_${token}_${ilk}" "AUTHED"
     done
 done
+if [[ -n "$MIGRATION" ]]; then
+    checkRely "MCD_VAT" "MCD_JOIN_SAI" "AUTHED"
+    checkRely "MCD_JOIN_SAI" "MIGRATION" "AUTHED"
+fi
 
 # cat
 checkRely "MCD_CAT" "MCD_DEPLOY" "NOT_AUTHED"
@@ -153,6 +157,11 @@ for token in $tokens; do
         checkRely "MCD_FLIP_${token}_${ilk}" "MCD_PAUSE_PROXY" "AUTHED"
     done
 done
+if [[ -n "$MIGRATION" ]]; then
+    checkRely "MCD_FLIP_SAI" "MCD_DEPLOY" "NOT_AUTHED"
+    checkRely "MCD_FLIP_SAI" "MCD_END" "AUTHED"
+    checkRely "MCD_FLIP_SAI" "MCD_PAUSE_PROXY" "AUTHED"
+fi
 
 # faucet
 faucet=$(jq -r ".faucet | values" "$CONFIG_FILE")

@@ -8,6 +8,11 @@ CONFIG_FILE="$OUT_DIR/config.json"
 # Get addresses
 loadAddresses
 
+setDuty() {
+    calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_JUG" "$(seth --to-bytes32 "$(seth --from-ascii "$1")")" "$(seth --to-bytes32 "$(seth --from-ascii "duty")")" "$2")"
+    seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+}
+
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
@@ -15,9 +20,12 @@ for token in $tokens; do
         duty=$(jq -r ".tokens.${token}.ilks.${ilk} | .duty" "$CONFIG_FILE")
         duty=$(bc -l <<< "scale=27; e( l(${duty} / 100 + 1)/(60 * 60 * 24 * 365)) * 10^27")
         duty=$(seth --to-uint256 "${duty%.*}")
-        calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_JUG" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "duty")")" "$duty")"
-        seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+        setDuty "${token}-${ilk}" "$duty"
     done
 done
+
+if [[ -n "$MIGRATION" ]]; then
+    setDuty "SAI" "$(seth --to-uint256 "1000000000000000000000000000")"
+fi
 
 log "SET ILKS DUTY COMPLETED SUCCESSFULLY"
