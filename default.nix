@@ -8,7 +8,7 @@
 let
   inherit (lib) mapAttrs;
   # Get contract dependencies from lock file
-  inherit (callPackage ./nix/dapp.nix {}) specs packageSpecs;
+  inherit (callPackage ./nix/dapp.nix {}) specs packageSpecs package;
   inherit (specs.this) deps;
 
   # Import deploy scripts from dss-deploy
@@ -17,8 +17,13 @@ let
     else dss-deploy;
 
   # Create derivations from lock file data
-  packages = packageSpecs (mapAttrs (_: v: v // { inherit doCheck; }) (deps // {
-  }));
+  packages = packageSpecs (mapAttrs (_: v: v // { inherit doCheck; }) deps);
+  
+  dss-proxy-actions-optimized = package (deps.dss-proxy-actions // {
+    inherit doCheck;
+    name = "dss-proxy-actions-optimized";
+    solcFlags = "--optimize";
+  });
 in makerScriptPackage {
   name = "testchain-dss-deploy-scripts";
 
@@ -30,7 +35,7 @@ in makerScriptPackage {
     ".*lib.*"
   ];
 
-  solidityPackages = builtins.attrValues packages;
+  solidityPackages = (builtins.attrValues packages) ++ [ dss-proxy-actions-optimized ];
 
   extraBins = [
     dss-deploy'
