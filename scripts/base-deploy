@@ -138,8 +138,8 @@ for token in $tokens; do
     done
 done
 
-# Deploy Proxy Actions (no solc optimization)
-PROXY_ACTIONS=$(dappCreate dss-proxy-actions DssProxyActions)
+# Deploy Proxy Actions (solc optimized)
+PROXY_ACTIONS=$(dappCreate dss-proxy-actions-optimized DssProxyActions)
 log "proxy actions deployed"
 
 # Deploy CdpManager (no solc optimization)

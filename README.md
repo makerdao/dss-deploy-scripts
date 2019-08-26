@@ -16,21 +16,13 @@ and `dapp` to modify the deployment, using the values in `out/config.json`.
 
 ## Installing
 
-The preferred way to install everything necessary to deploy is Nix. Run
+The only way to install everything necessary to deploy is Nix. Run
 
 ```
 $ nix-shell --pure
 ```
 
 to drop into a Bash shell with all dependency installed.
-
-### Non-nix
-
-If you don't use Nix, you'll need to install:
-
-- seth/dapp/jq/mcd (https://dapp.tools/)
-- bc
-- pgrep
 
 ### Ethereum node
 
@@ -52,8 +44,7 @@ use, which RPC server to talk to, etc.
 If you're using `nix-shell`, these variables are set automatically for you in
 [shell.nix](./shell.nix).
 
-Non-nix users can run the [`lib/setup-env.sh`](./lib/setup-env.sh) script, or configure the below
-variables manually:
+But you can also configure the below variables manually:
 
 - `ETH_FROM`: address of deployment account
 - `ETH_PASSWORD`: path of account password file
@@ -118,7 +109,6 @@ Below is the expected structure of such a config file:
     }
   }
 }
-
 ```
 
 ## Deployment
@@ -178,7 +168,7 @@ nix run -f https://github.com/makerdao/dss-deployment-scripts/tarball/master -c 
 
 After changing submodules the lock file [`nix/dapp.nix`](nix/dapp.nix)
 needs to be updated using `dapp2nix`. This is to avoid downloading all
-submodules when installing the deploy scripts without cloning `tdds`.
+submodules when installing the deploy scripts without cloning `dss-deploy-scripts`.
 
 ```sh
 nix-shell --pure
@@ -197,5 +187,3 @@ repo is in [`default.nix`](default.nix).
 ## TODO
 
 - More cases to test scenarios for testchain script
-- Mainnet and other testnets scripts
-
