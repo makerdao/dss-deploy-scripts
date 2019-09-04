@@ -163,7 +163,7 @@ nix-shell --pure
 You can even run deploy scripts without having to clone this repo:
 
 ```
-nix run -f https://github.com/makerdao/dss-deployment-scripts/tarball/master -c deploy-testchain.sh
+nix run -f https://github.com/makerdao/dss-deploy-scripts/tarball/master -c deploy-testchain.sh
 ```
 
 After changing submodules the lock file [`nix/dapp.nix`](nix/dapp.nix)
