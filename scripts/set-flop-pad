@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# shellcheck source=lib/common.sh
+. "${LIB_DIR:-$(cd "${0%/*}/../lib"&&pwd)}/common.sh"
+
+# Get config variables
+CONFIG_FILE="$OUT_DIR/config.json"
+# Get addresses
+loadAddresses
+
+# Set flop pad
+pad=$(jq -r ".flop_pad | values" "$CONFIG_FILE")
+if [[ "$pad" != "" ]]; then
+    pad=$(echo "($pad+100)"*10^25 | bc -l)
+    pad=$(seth --to-uint256 "${pad%.*}")
+    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_FLOP" "$(seth --to-bytes32 "$(seth --from-ascii "pad")")" "$pad")"
+    seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+fi
+
+log "SET FLOP PAD COMPLETED SUCCESSFULLY"

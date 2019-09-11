@@ -317,6 +317,8 @@ EOF
 
 "$LIBEXEC_DIR"/set-vow-bump
 
+"$LIBEXEC_DIR"/set-vow-dump
+
 "$LIBEXEC_DIR"/set-vow-sump
 
 "$LIBEXEC_DIR"/set-vow-hump
@@ -334,6 +336,8 @@ EOF
 "$LIBEXEC_DIR"/set-tau "flap"
 
 "$LIBEXEC_DIR"/set-beg "flop"
+
+"$LIBEXEC_DIR"/set-flop-pad
 
 "$LIBEXEC_DIR"/set-ttl "flop"
 

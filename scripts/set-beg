@@ -10,7 +10,7 @@ loadAddresses
 
 { test "$1" != "flap" && test "$1" != "flop"; } && exit 1
 
-# Set tau
+# Set beg
 beg=$(jq -r ".$1_beg | values" "$CONFIG_FILE")
 if [[ "$beg" != "" ]]; then
     beg=$(echo "($beg+100)"*10^25 | bc -l)
