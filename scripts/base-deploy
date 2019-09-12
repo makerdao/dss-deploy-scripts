@@ -97,6 +97,9 @@ else
     export MCD_GOV
 fi
 
+MCD_ESM_MIN="$(seth --to-uint256 "$(seth --to-wei "$(jq -r ".esm_min | values" "$CONFIG_FILE")" "eth")")"
+export MCD_ESM_MIN
+
 # Deploy MCD Core Contratcs (solc optimized)
 deploy-core
 # shellcheck source=/dev/null
