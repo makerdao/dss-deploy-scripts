@@ -149,9 +149,6 @@ The [`auth-checker`](./scripts/auth-checker) script loads the addresses
 in `out/addresses.json` and verifies that the deployed authorizations match what
 is expected.
 
-The [`load-addresses`](./scripts/load-addresses) script reads contract addresses
-from `out/addresses.json` and exports them as environment variables.
-
 ## Nix
 
 To enable full reproducibility of our deployments, we use Nix.
