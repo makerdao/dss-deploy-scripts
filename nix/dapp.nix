@@ -415,29 +415,29 @@ let
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    median_a5f39fa = rec {
+    median_d95bbc1 = rec {
       name = "median";
       deps = {
         ds-test = ds-test_a4e4005;
       };
       repo' = {
-        name = "median-a5f39fa-source";
+        name = "median-d95bbc1-source";
         url = "https://github.com/makerdao/median";
-        rev = "a5f39fab14f3b3bcd9576072da59984af8952606";
+        rev = "d95bbc1c3687160354f7156896017366652d6a73";
         ref = "HEAD";
       };
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    multicall_b8771d9 = rec {
+    multicall_df1e59d = rec {
       name = "multicall";
       deps = {
         ds-test = ds-test_a4e4005;
       };
       repo' = {
-        name = "multicall-b8771d9-source";
+        name = "multicall-df1e59d-source";
         url = "https://github.com/makerdao/multicall";
-        rev = "b8771d9fe2b1429ae95cae622c4d880fd897562a";
+        rev = "df1e59d39bc525d573ec351dbf23afe77c903a73";
         ref = "HEAD";
       };
       src' = fetchGit repo';
@@ -489,16 +489,16 @@ let
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    testchain-medians_2352489 = rec {
+    testchain-medians_1d01e6a = rec {
       name = "testchain-medians";
       deps = {
         ds-test = ds-test_a4e4005;
-        median = median_a5f39fa;
+        median = median_d95bbc1;
       };
       repo' = {
-        name = "testchain-medians-2352489-source";
+        name = "testchain-medians-1d01e6a-source";
         url = "https://github.com/makerdao/testchain-medians";
-        rev = "23524894915202452f5bb39e7c1d4375a4482c4f";
+        rev = "1d01e6ae331bfb2381e32e005abc2b090af02fad";
         ref = "HEAD";
       };
       src' = fetchGit repo';
@@ -558,10 +558,10 @@ let
         dss-proxy-actions = dss-proxy-actions_a801e1f;
         gov-polling-generator = gov-polling-generator_d08e43e;
         line-spell = line-spell_0a1321f;
-        multicall = multicall_b8771d9;
+        multicall = multicall_df1e59d;
         osm = osm_504c474;
         scd-mcd-migration = scd-mcd-migration_804a4ab;
-        testchain-medians = testchain-medians_2352489;
+        testchain-medians = testchain-medians_1d01e6a;
         testchain-pause-proxy-actions = testchain-pause-proxy-actions_ddf37ab;
         token-faucet = token-faucet_d7349d1;
         vote-proxy = vote-proxy_6fdbee3;
