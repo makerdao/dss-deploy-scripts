@@ -87,7 +87,6 @@ checkWhitelist() {
 
 # vat
 checkRely "MCD_VAT" "MCD_DEPLOY" "NOT_AUTHED"
-checkRely "MCD_VAT" "MCD_VOW" "AUTHED"
 checkRely "MCD_VAT" "MCD_CAT" "AUTHED"
 checkRely "MCD_VAT" "MCD_JUG" "AUTHED"
 checkRely "MCD_VAT" "MCD_POT" "AUTHED"
@@ -153,6 +152,7 @@ for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     for ilk in $ilks; do
         checkRely "MCD_FLIP_${token}_${ilk}" "MCD_DEPLOY" "NOT_AUTHED"
+        checkRely "MCD_FLIP_${token}_${ilk}" "MCD_CAT" "AUTHED"
         checkRely "MCD_FLIP_${token}_${ilk}" "MCD_END" "AUTHED"
         checkRely "MCD_FLIP_${token}_${ilk}" "MCD_PAUSE_PROXY" "AUTHED"
     done
