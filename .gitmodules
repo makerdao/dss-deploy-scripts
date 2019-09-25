@@ -28,9 +28,9 @@
 [submodule "contracts/testchain-medians"]
 	path = contracts/testchain-medians
 	url = https://github.com/makerdao/testchain-medians
-[submodule "contracts/testchain-pause-proxy-actions"]
-	path = contracts/testchain-pause-proxy-actions
-	url = https://github.com/makerdao/testchain-pause-proxy-actions
 [submodule "contracts/scd-mcd-migration"]
 	path = contracts/scd-mcd-migration
 	url = https://github.com/makerdao/scd-mcd-migration
+[submodule "contracts/dss-deploy-pause-proxy-actions"]
+	path = contracts/dss-deploy-pause-proxy-actions
+	url = https://github.com/makerdao/dss-deploy-pause-proxy-actions

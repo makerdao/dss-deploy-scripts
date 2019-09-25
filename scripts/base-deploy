@@ -200,8 +200,8 @@ log "gov actions deployed"
 unset SKIP_BUILD
 
 # Deploy Pause Proxy Actions (support contract for executing initial set up of the dss system)
-dappBuild testchain-pause-proxy-actions
-PROXY_PAUSE_ACTIONS=$(dappCreate testchain-pause-proxy-actions TestchainPauseProxyActions)
+dappBuild dss-deploy-pause-proxy-actions
+PROXY_PAUSE_ACTIONS=$(dappCreate dss-deploy-pause-proxy-actions DssDeployPauseProxyActions)
 log "pause actions deployed"
 
 # Get a proxy for the deployer address (create if didn't previously exist)

@@ -303,6 +303,21 @@ let
       src' = fetchGit repo';
       src = "${src'}/src";
     };
+    dss-deploy-pause-proxy-actions_83ac6cb = rec {
+      name = "dss-deploy-pause-proxy-actions";
+      deps = {
+        ds-test = ds-test_a4e4005;
+        dss-deploy = dss-deploy_3ee26ef;
+      };
+      repo' = {
+        name = "dss-deploy-pause-proxy-actions-83ac6cb-source";
+        url = "https://github.com/makerdao/dss-deploy-pause-proxy-actions";
+        rev = "83ac6cb80582627e57cd6a2f01c4a095b76c864c";
+        ref = "HEAD";
+      };
+      src' = fetchGit repo';
+      src = "${src'}/src";
+    };
     dss-deploy_3ee26ef = rec {
       name = "dss-deploy";
       deps = {
@@ -504,21 +519,6 @@ let
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    testchain-pause-proxy-actions_77af994 = rec {
-      name = "testchain-pause-proxy-actions";
-      deps = {
-        ds-test = ds-test_a4e4005;
-        dss-deploy = dss-deploy_3ee26ef;
-      };
-      repo' = {
-        name = "testchain-pause-proxy-actions-77af994-source";
-        url = "https://github.com/makerdao/testchain-pause-proxy-actions";
-        rev = "77af994bf2d55a30d777bc265d6805323f039591";
-        ref = "HEAD";
-      };
-      src' = fetchGit repo';
-      src = "${src'}/src";
-    };
     token-faucet_d7349d1 = rec {
       name = "token-faucet";
       deps = {
@@ -555,6 +555,7 @@ let
       deps = {
         ds-guard = ds-guard_4678e1c;
         dss-deploy = dss-deploy_3ee26ef;
+        dss-deploy-pause-proxy-actions = dss-deploy-pause-proxy-actions_83ac6cb;
         dss-proxy-actions = dss-proxy-actions_888c276;
         gov-polling-generator = gov-polling-generator_d08e43e;
         line-spell = line-spell_04b44f2;
@@ -562,7 +563,6 @@ let
         osm = osm_504c474;
         scd-mcd-migration = scd-mcd-migration_4f7030c;
         testchain-medians = testchain-medians_1d01e6a;
-        testchain-pause-proxy-actions = testchain-pause-proxy-actions_77af994;
         token-faucet = token-faucet_d7349d1;
         vote-proxy = vote-proxy_6fdbee3;
       };

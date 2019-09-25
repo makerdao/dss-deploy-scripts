@@ -26,7 +26,7 @@ let
     solcFlags = "--optimize";
   });
 in makerScriptPackage {
-  name = "testchain-dss-deploy-scripts";
+  name = "dss-deploy-scripts";
 
   # Specify files to add to build environment
   src = lib.sourceByRegex ./. [
