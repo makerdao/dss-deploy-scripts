@@ -55,11 +55,6 @@ if [[ -z "$FAUCET" ]]; then
     log "token faucet deployed"
 fi
 
-# Deploy Guard for Gov and IOU tokens (no solc optimization)
-dappBuild ds-guard
-MCD_GUARD=$(dappCreate ds-guard DSGuard)
-log "ds-guard deployed"
-
 # Deploy ProxyRegistry (no solc optimization)
 dappBuild dss-proxy-actions
 PROXY_REGISTRY=$(jq -r ".proxyRegistry | values" "$CONFIG_FILE")
@@ -110,11 +105,14 @@ log "core deployed"
 # Mint Gov Token, send to the Faucet and set permissions if a new token
 if [[ "$newGovToken" == true ]]; then
     seth send "$MCD_GOV" 'mint(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
-    seth send "$MCD_GOV" 'setAuthority(address)' "$MCD_GUARD"
     seth send "$FAUCET" 'gulp(address)' "$MCD_GOV"
+
+    # Use custom authority for the new GOV token
+    dappBuild mkr-authority
+    GOV_GUARD=$(dappCreate mkr-authority MkrAuthority)
     # Allow Flop to mint and Flap to burn Gov token
-    seth send "$MCD_GUARD" 'permit(address,address,bytes32)' "$MCD_FLOP" "$MCD_GOV" "$(seth --to-bytes32 "$(seth sig 'mint(address,uint256)')")"
-    seth send "$MCD_GUARD" 'permit(address,address,bytes32)' "$MCD_FLAP" "$MCD_GOV" "$(seth --to-bytes32 "$(seth sig 'burn(address,uint256)')")"
+    seth send "$GOV_GUARD" 'rely(address)' "$MCD_FLOP" 
+    export GOV_GUARD
 fi
 
 # Deploy Collaterals (no solc optimization)
@@ -220,13 +218,11 @@ dappBuild vote-proxy
 MCD_ADM=$(jq -r ".authority | values" "$CONFIG_FILE")
 if [[ -z "$MCD_ADM" ]]; then
     MCD_IOU=$(dappCreate vote-proxy DSToken "$(seth --to-bytes32 "$(seth --from-ascii "IOU")")")
-    seth send "$MCD_IOU" 'setAuthority(address)' "$MCD_GUARD"
-    seth send "$MCD_IOU" 'setOwner(address)' "0x0000000000000000000000000000000000000000"
+    seth send "$MCD_IOU" 'setAuthority(address)' "0x0000000000000000000000000000000000000000"
     log "IOU token deployed"
 
     MCD_ADM=$(dappCreate vote-proxy DSChief "$MCD_GOV" "$MCD_IOU" 5)
-    seth send "$MCD_GUARD" 'permit(address,address,bytes32)' "$MCD_ADM" "$MCD_IOU" "$(seth --to-bytes32  "$(seth sig 'mint(address,uint256)')")"
-    seth send "$MCD_GUARD" 'permit(address,address,bytes32)' "$MCD_ADM" "$MCD_IOU" "$(seth --to-bytes32  "$(seth sig 'burn(address,uint256)')")"
+    seth send "$MCD_IOU" 'setOwner(address)' "${MCD_ADM}"
     log "chief deployed"
 
     # Deploy Vote Proxy Factory (no solc optimization)
@@ -236,7 +232,10 @@ else
     copyAbis vote-proxy
 fi
 
-seth send "$MCD_GUARD" 'setOwner(address)' "0x0000000000000000000000000000000000000000"
+if [[ -n "$GOV_GUARD" ]]; then
+  seth send "$GOV_GUARD" 'setRoot(address)' "$MCD_PAUSE_PROXY"
+fi
+
 
 # Copy dss-deploy abi files
 copyAbis dss-deploy
@@ -285,7 +284,7 @@ cat > "$OUT_DIR"/addresses.json <<EOF
     "FAUCET": "$FAUCET",
     "MCD_DEPLOY": "$MCD_DEPLOY",
     "MCD_GOV": "$MCD_GOV",
-    "MCD_GUARD": "$MCD_GUARD",
+    "GOV_GUARD": "$GOV_GUARD",
     "MCD_ADM": "$MCD_ADM",
     "MCD_IOU": "$MCD_IOU",
     "VOTE_PROXY_FACTORY": "$VOTE_PROXY_FACTORY",
