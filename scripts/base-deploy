@@ -110,6 +110,10 @@ if [[ "$newGovToken" == true ]]; then
     # Use custom authority for the new GOV token
     dappBuild mkr-authority
     GOV_GUARD=$(dappCreate mkr-authority MkrAuthority)
+
+    # Set GOV_GUARD as authority of MCD_GOV
+    seth send "$MCD_GOV" 'setAuthority(address)' "$GOV_GUARD"
+
     # Allow Flop to mint and Flap to burn Gov token
     seth send "$GOV_GUARD" 'rely(address)' "$MCD_FLOP" 
 fi
@@ -217,7 +221,6 @@ dappBuild vote-proxy
 MCD_ADM=$(jq -r ".authority | values" "$CONFIG_FILE")
 if [[ -z "$MCD_ADM" ]]; then
     MCD_IOU=$(dappCreate vote-proxy DSToken "$(seth --to-bytes32 "$(seth --from-ascii "IOU")")")
-    seth send "$MCD_IOU" 'setAuthority(address)' "0x0000000000000000000000000000000000000000"
     log "IOU token deployed"
 
     MCD_ADM=$(dappCreate vote-proxy DSChief "$MCD_GOV" "$MCD_IOU" 5)
@@ -232,7 +235,7 @@ else
 fi
 
 if [[ -n "$GOV_GUARD" ]]; then
-  seth send "$GOV_GUARD" 'setRoot(address)' "$MCD_PAUSE_PROXY"
+    seth send "$GOV_GUARD" 'setRoot(address)' "$MCD_PAUSE_PROXY"
 fi
 
 
