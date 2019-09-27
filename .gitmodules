@@ -34,3 +34,6 @@
 [submodule "contracts/dss-deploy-pause-proxy-actions"]
 	path = contracts/dss-deploy-pause-proxy-actions
 	url = https://github.com/makerdao/dss-deploy-pause-proxy-actions
+[submodule "mkr-authority"]
+	path = mkr-authority
+	url = https://github.com/makerdao/mkr-authority
