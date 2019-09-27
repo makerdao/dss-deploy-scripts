@@ -15,6 +15,8 @@ AUTHED="0x0000000000000000000000000000000000000000000000000000000000000001"
 # shellcheck disable=SC2034
 NOT_AUTHED="0x0000000000000000000000000000000000000000000000000000000000000000"
 
+ZERO_ADDR="0x0000000000000000000000000000000000000000"
+
 ok() {
     log "OK"
 }
@@ -52,7 +54,19 @@ checkOwner() {
     CHECK=$(seth call "${!1}" 'owner()(address)')
 
     printf "OWN: %s -> %s -> " "${1}" "${2}"
-    if [[ "$2" == "0x${CHECK}" ]]; then
+    if [[ "${!2}" == "0x${CHECK}" ]]; then
+        ok
+    else
+        notok
+    fi
+}
+
+checkRoot() {
+    local CHECK
+    CHECK=$(seth call "${!1}" 'root()(address)')
+
+    printf "OWN: %s -> %s -> " "${1}" "${2}"
+    if [[ "${!2}" == "0x${CHECK}" ]]; then
         ok
     else
         notok
@@ -170,25 +184,25 @@ if [[ -z "$faucet" ]]; then
 fi
 
 # pause
-checkOwner "MCD_PAUSE" "0x0000000000000000000000000000000000000000"
+checkOwner "MCD_PAUSE" "ZERO_ADDR"
 checkAuthority "MCD_PAUSE" "MCD_ADM"
 
 # chief
-checkOwner "MCD_ADM" "0x0000000000000000000000000000000000000000"
+checkOwner "MCD_ADM" "ZERO_ADDR"
 checkAuthority "MCD_ADM" "MCD_ADM"
 
-# iou
-if [[ -n "$MCD_IOU" ]]; then
-    checkOwner "MCD_IOU" "MCD_ADM"
-    checkAuthority "MCD_IOU" "0x0000000000000000000000000000000000000000"
-fi
-
 # gov guard
-checkOwner "GOV_GUARD" "MCD_PAUSE_PROXY"
+checkRoot "GOV_GUARD" "MCD_PAUSE_PROXY"
 
 # gov
 canCall "MCD_FLOP" "MCD_GOV" "mint(address,uint256)"
 canCall "MCD_FLAP" "MCD_GOV" "burn(address,uint256)"
+
+# iou
+if [[ -n "$MCD_IOU" ]]; then
+    checkOwner "MCD_IOU" "MCD_ADM"
+    checkAuthority "MCD_IOU" "ZERO_ADDR"
+fi
 
 # osms and medians whitelist
 for token in $tokens; do
