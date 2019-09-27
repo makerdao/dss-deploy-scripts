@@ -114,7 +114,7 @@ if [[ "$newGovToken" == true ]]; then
     # Set GOV_GUARD as authority of MCD_GOV
     seth send "$MCD_GOV" 'setAuthority(address)' "$GOV_GUARD"
 
-    # Allow Flop to mint and Flap to burn Gov token
+    # Allow Flop to mint Gov token
     seth send "$GOV_GUARD" 'rely(address)' "$MCD_FLOP" 
 fi
 
