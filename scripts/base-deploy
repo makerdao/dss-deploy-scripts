@@ -112,7 +112,6 @@ if [[ "$newGovToken" == true ]]; then
     GOV_GUARD=$(dappCreate mkr-authority MkrAuthority)
     # Allow Flop to mint and Flap to burn Gov token
     seth send "$GOV_GUARD" 'rely(address)' "$MCD_FLOP" 
-    export GOV_GUARD
 fi
 
 # Deploy Collaterals (no solc optimization)
