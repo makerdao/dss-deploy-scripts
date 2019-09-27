@@ -3,6 +3,7 @@
 , dapptoolsOverrides ? {}
 , dss-deploy ? null
 , doCheck ? false
+, githubAuthToken ? null
 }@args: with pkgs;
 
 let
