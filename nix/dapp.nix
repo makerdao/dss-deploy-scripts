@@ -303,16 +303,16 @@ let
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    dss-deploy-pause-proxy-actions_966d541 = rec {
+    dss-deploy-pause-proxy-actions_7d25a37 = rec {
       name = "dss-deploy-pause-proxy-actions";
       deps = {
         ds-test = ds-test_a4e4005;
         dss-deploy = dss-deploy_29755b9;
       };
       repo' = {
-        name = "dss-deploy-pause-proxy-actions-966d541-source";
+        name = "dss-deploy-pause-proxy-actions-7d25a37-source";
         url = "https://github.com/makerdao/dss-deploy-pause-proxy-actions";
-        rev = "966d541d2701e8f5c5f9827f85be1721fa0a1320";
+        rev = "7d25a37ba3a9ca4814b3e85e95cc912c7a098503";
         ref = "HEAD";
       };
       src' = fetchGit repo';
@@ -415,16 +415,16 @@ let
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    line-spell_eabdb69 = rec {
+    line-spell_208d847 = rec {
       name = "line-spell";
       deps = {
         ds-test = ds-test_a4e4005;
         dss-deploy = dss-deploy_29755b9;
       };
       repo' = {
-        name = "line-spell-eabdb69-source";
+        name = "line-spell-208d847-source";
         url = "https://github.com/makerdao/line-spell";
-        rev = "eabdb6944fe87d827377b6726f00abf09f2d6538";
+        rev = "208d847535010fe632c579a038289ccfc2d90d91";
         ref = "HEAD";
       };
       src' = fetchGit repo';
@@ -503,16 +503,16 @@ let
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    scd-mcd-migration_c482682 = rec {
+    scd-mcd-migration_a9a1d29 = rec {
       name = "scd-mcd-migration";
       deps = {
         ds-test = ds-test_a4e4005;
         dss-cdp-manager = dss-cdp-manager_0707db9;
       };
       repo' = {
-        name = "scd-mcd-migration-c482682-source";
+        name = "scd-mcd-migration-a9a1d29-source";
         url = "https://github.com/makerdao/scd-mcd-migration";
-        rev = "c48268266e3be6165aa683e6e92721878a80c5a9";
+        rev = "a9a1d29840aadc7790d50900c300f0ddc7b32f51";
         ref = "HEAD";
       };
       src' = fetchGit repo';
@@ -568,14 +568,14 @@ let
       name = "dss-deploy-scripts";
       deps = {
         dss-deploy = dss-deploy_29755b9;
-        dss-deploy-pause-proxy-actions = dss-deploy-pause-proxy-actions_966d541;
+        dss-deploy-pause-proxy-actions = dss-deploy-pause-proxy-actions_7d25a37;
         dss-proxy-actions = dss-proxy-actions_341d689;
         gov-polling-generator = gov-polling-generator_d08e43e;
-        line-spell = line-spell_eabdb69;
+        line-spell = line-spell_208d847;
         mkr-authority = mkr-authority_441a77d;
         multicall = multicall_df1e59d;
         osm = osm_504c474;
-        scd-mcd-migration = scd-mcd-migration_c482682;
+        scd-mcd-migration = scd-mcd-migration_a9a1d29;
         testchain-medians = testchain-medians_1d01e6a;
         token-faucet = token-faucet_d7349d1;
         vote-proxy = vote-proxy_6fdbee3;
