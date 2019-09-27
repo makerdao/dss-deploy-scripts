@@ -340,7 +340,7 @@ let
       src' = fetchGit repo';
       src = "${src'}/src";
     };
-    dss-proxy-actions_2bfe32c = rec {
+    dss-proxy-actions_341d689 = rec {
       name = "dss-proxy-actions";
       deps = {
         ds-test = ds-test_a4e4005;
@@ -348,9 +348,9 @@ let
         proxy-registry = proxy-registry_59e077f;
       };
       repo' = {
-        name = "dss-proxy-actions-2bfe32c-source";
+        name = "dss-proxy-actions-341d689-source";
         url = "https://github.com/makerdao/dss-proxy-actions";
-        rev = "2bfe32ce10b0006eee53024ca19c5efe25840775";
+        rev = "341d6897114ef9a795d3025b6fd2535eef5098ba";
         ref = "HEAD";
       };
       src' = fetchGit repo';
@@ -569,7 +569,7 @@ let
       deps = {
         dss-deploy = dss-deploy_29755b9;
         dss-deploy-pause-proxy-actions = dss-deploy-pause-proxy-actions_966d541;
-        dss-proxy-actions = dss-proxy-actions_2bfe32c;
+        dss-proxy-actions = dss-proxy-actions_341d689;
         gov-polling-generator = gov-polling-generator_d08e43e;
         line-spell = line-spell_eabdb69;
         mkr-authority = mkr-authority_441a77d;

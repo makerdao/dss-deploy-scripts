@@ -144,6 +144,8 @@ done
 
 # Deploy Proxy Actions (solc optimized)
 PROXY_ACTIONS=$(dappCreate dss-proxy-actions-optimized DssProxyActions)
+PROXY_ACTIONS_END=$(dappCreate dss-proxy-actions-optimized DssProxyActionsEnd)
+PROXY_ACTIONS_DSR=$(dappCreate dss-proxy-actions-optimized DssProxyActionsDsr)
 log "proxy actions deployed"
 
 # Deploy CdpManager (no solc optimization)
@@ -306,6 +308,8 @@ cat > "$OUT_DIR"/addresses.json <<EOF
     "MCD_END": "$MCD_END",
     "MCD_ESM": "$MCD_ESM",
     "PROXY_ACTIONS": "$PROXY_ACTIONS",
+    "PROXY_ACTIONS_END": "$PROXY_ACTIONS_END",
+    "PROXY_ACTIONS_DSR": "$PROXY_ACTIONS_DSR",
     "CDP_MANAGER": "$CDP_MANAGER",
     "GET_CDPS": "$GET_CDPS",
     "PROXY_FACTORY": "$PROXY_FACTORY",
