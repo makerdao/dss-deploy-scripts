@@ -192,7 +192,9 @@ checkOwner "MCD_ADM" "ZERO_ADDR"
 checkAuthority "MCD_ADM" "MCD_ADM"
 
 # gov guard
-checkRoot "GOV_GUARD" "MCD_PAUSE_PROXY"
+if [[ -n "$GOV_GUARD" ]]; then
+    checkRoot "GOV_GUARD" "MCD_PAUSE_PROXY"
+fi
 
 # gov
 canCall "MCD_FLOP" "MCD_GOV" "mint(address,uint256)"
