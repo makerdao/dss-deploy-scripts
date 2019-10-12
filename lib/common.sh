@@ -47,8 +47,20 @@ addAddresses() {
 copyAbis() {
     local lib; lib=$1
     mkdir -p "$OUT_DIR/abi"
-    find "$DAPP_LIB/$lib/out" -name "*.abi" ! -name "*Test.abi" \
-    -exec cp -f {} "$OUT_DIR/abi" \;
+    find "$DAPP_LIB/$lib/out" \
+        -name "*.abi" ! -name "*Test.abi" \
+        -exec cp -f {} "$OUT_DIR/abi" \;
+}
+
+copyBins() {
+    local lib; lib=$1
+    mkdir -p "$OUT_DIR/bin"
+    find "$DAPP_LIB/$lib/out" \
+        -name "*.bin" ! -name "*Test.bin" \
+        -exec cp -f {} "$OUT_DIR/bin" \;
+    find "$DAPP_LIB/$lib/out" \
+        -name "*.bin-runtime" ! -name "*Test.bin-runtime" \
+        -exec cp -f {} "$OUT_DIR/bin" \;
 }
 
 dappBuild() {
@@ -66,6 +78,7 @@ dappCreate() {
     local class; class=$2
     DAPP_OUT="$DAPP_LIB/$lib/out" dapp create "$class" "${@:3}"
     copyAbis "$lib"
+    copyBins "$lib"
 }
 
 join() {
