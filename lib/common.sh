@@ -48,7 +48,7 @@ copyAbis() {
     local lib; lib=$1
     mkdir -p "$OUT_DIR/abi"
     find "$DAPP_LIB/$lib/out" \
-        -name "*.abi" ! -name "*Test.abi" \
+        -name "*.abi" ! -name "*Test.abi" ! -name "*Like.abi" ! -name "*DSNote.abi" ! -name "*FakeUser.abi" ! -name "*Hevm.abi" \
         -exec cp -f {} "$OUT_DIR/abi" \;
 }
 
@@ -56,10 +56,10 @@ copyBins() {
     local lib; lib=$1
     mkdir -p "$OUT_DIR/bin"
     find "$DAPP_LIB/$lib/out" \
-        -name "*.bin" ! -name "*Test.bin" \
+        -name "*.bin" ! -name "*Test.bin" ! -name "*Like.bin" ! -name "*DSNote.bin" ! -name "*FakeUser.bin" ! -name "*Hevm.bin" \
         -exec cp -f {} "$OUT_DIR/bin" \;
     find "$DAPP_LIB/$lib/out" \
-        -name "*.bin-runtime" ! -name "*Test.bin-runtime" \
+        -name "*.bin-runtime" ! -name "*Test.bin-runtime" ! -name "*Like.bin-runtime" ! -name "*DSNote.bin-runtime" ! -name "*FakeUser.bin-runtime" ! -name "*Hevm.bin-runtime"  \
         -exec cp -f {} "$OUT_DIR/bin" \;
 }
 
