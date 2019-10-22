@@ -1,48 +1,48 @@
 [submodule "contracts/dss-proxy-actions"]
 	path = contracts/dss-proxy-actions
 	url = https://github.com/makerdao/dss-proxy-actions
-	ignore = dirty
+	ignore = all
 [submodule "contracts/osm"]
 	path = contracts/osm
 	url = https://github.com/makerdao/osm
-	ignore = dirty
+	ignore = all
 [submodule "contracts/gov-polling-generator"]
 	path = contracts/gov-polling-generator
 	url = https://github.com/makerdao/gov-polling-generator
-	ignore = dirty
+	ignore = all
 [submodule "contracts/vote-proxy"]
 	path = contracts/vote-proxy
 	url = https://github.com/makerdao/vote-proxy
-	ignore = dirty
+	ignore = all
 [submodule "contracts/multicall"]
 	path = contracts/multicall
 	url = https://github.com/makerdao/multicall
-	ignore = dirty
+	ignore = all
 [submodule "contracts/line-spell"]
 	path = contracts/line-spell
 	url = https://github.com/makerdao/line-spell
-	ignore = dirty
+	ignore = all
 [submodule "contracts/token-faucet"]
 	path = contracts/token-faucet
 	url = https://github.com/makerdao/token-faucet
-	ignore = dirty
+	ignore = all
 [submodule "contracts/dss-deploy"]
 	path = contracts/dss-deploy
 	url = https://github.com/makerdao/dss-deploy
-	ignore = dirty
+	ignore = all
 [submodule "contracts/testchain-medians"]
 	path = contracts/testchain-medians
 	url = https://github.com/makerdao/testchain-medians
-	ignore = dirty
+	ignore = all
 [submodule "contracts/scd-mcd-migration"]
 	path = contracts/scd-mcd-migration
 	url = https://github.com/makerdao/scd-mcd-migration
-	ignore = dirty
+	ignore = all
 [submodule "contracts/dss-deploy-pause-proxy-actions"]
 	path = contracts/dss-deploy-pause-proxy-actions
 	url = https://github.com/makerdao/dss-deploy-pause-proxy-actions
-	ignore = dirty
+	ignore = all
 [submodule "contracts/mkr-authority"]
 	path = contracts/mkr-authority
 	url = https://github.com/makerdao/mkr-authority/
-	ignore = dirty
+	ignore = all
