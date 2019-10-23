@@ -7,7 +7,6 @@ Ethereum chain of your choosing.
 
 This repo is composed of two steps:
 
-* [smart contracts](./contracts) (imported as submodules) that deploy a base dss
 * Bash [scripts](/scripts) to modify the state of the base system
 
 At the end of the first step, the addresses of deployed contracts are written to
@@ -166,18 +165,26 @@ You can even run deploy scripts without having to clone this repo:
 nix run -f https://github.com/makerdao/dss-deploy-scripts/tarball/master -c deploy-testchain.sh
 ```
 
-After changing submodules the lock file [`nix/dapp.nix`](nix/dapp.nix)
-needs to be updated using `dapp2nix`. This is to avoid downloading all
-submodules when installing the deploy scripts without cloning `dss-deploy-scripts`.
-
-```sh
-nix-shell --pure
-dapp2nix nix/dapp.nix
-```
-
 Dependencies are managed through a central repository referenced in
 [`nix/pkgs.nix`](nix/pkgs.nix) and the main Nix expression to build this
 repo is in [`default.nix`](default.nix).
+
+## Smart Contract Dependencies
+
+To update smart contract dependencies use `dapp2nix`:
+
+```sh
+nix-shell --pure
+dapp2nix help
+dapp2nix list
+dapp2nix up vote-proxy <COMMIT_HASH>
+```
+
+To clone smart contract dependencies into working directory run:
+
+```sh
+dapp2nix clone-recursive contracts
+```
 
 ## Additional Documentation
 

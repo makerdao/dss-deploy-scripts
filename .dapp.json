@@ -1,0 +1,493 @@
+{
+  "contracts": {
+    "ds-auth_f783169": {
+      "deps": {
+        "ds-test": "ds-test_a4e4005"
+      },
+      "name": "ds-auth",
+      "repo": {
+        "name": "ds-auth-f783169",
+        "ref": "HEAD",
+        "rev": "f783169408c278f85e26d77ba7b45823ed9503dd",
+        "url": "https://github.com/dapphub/ds-auth"
+      }
+    },
+    "ds-chief_ea05ee0": {
+      "deps": {
+        "ds-roles": "ds-roles_0138372",
+        "ds-test": "ds-test_a4e4005",
+        "ds-thing": "ds-thing_5e49fcb",
+        "ds-token": "ds-token_cee36a1"
+      },
+      "name": "ds-chief",
+      "repo": {
+        "name": "ds-chief-ea05ee0",
+        "ref": "HEAD",
+        "rev": "ea05ee0413a8b3852142664a6c04d6e4923be426",
+        "url": "https://github.com/dapphub/ds-chief"
+      }
+    },
+    "ds-exec_c53aab4": {
+      "deps": {
+        "ds-test": "ds-test_a4e4005"
+      },
+      "name": "ds-exec",
+      "repo": {
+        "name": "ds-exec-c53aab4",
+        "ref": "HEAD",
+        "rev": "c53aab4ba91645b30b0644972ef016b5ee606ca8",
+        "url": "https://github.com/dapphub/ds-exec"
+      }
+    },
+    "ds-guard_4678e1c": {
+      "deps": {
+        "ds-auth": "ds-auth_f783169",
+        "ds-test": "ds-test_a4e4005"
+      },
+      "name": "ds-guard",
+      "repo": {
+        "name": "ds-guard-4678e1c",
+        "ref": "HEAD",
+        "rev": "4678e1c74fce1542f1379f11325d7bfbbb897344",
+        "url": "https://github.com/dapphub/ds-guard"
+      }
+    },
+    "ds-math_784079b": {
+      "deps": {
+        "ds-test": "ds-test_a4e4005"
+      },
+      "name": "ds-math",
+      "repo": {
+        "name": "ds-math-784079b",
+        "ref": "HEAD",
+        "rev": "784079b72c4d782b022b3e893a7c5659aa35971a",
+        "url": "https://github.com/dapphub/ds-math"
+      }
+    },
+    "ds-note_beef816": {
+      "deps": {
+        "ds-test": "ds-test_a4e4005"
+      },
+      "name": "ds-note",
+      "repo": {
+        "name": "ds-note-beef816",
+        "ref": "HEAD",
+        "rev": "beef8166f2184a4bac3d02abdb944647fd735060",
+        "url": "https://github.com/dapphub/ds-note"
+      }
+    },
+    "ds-pause_81fd9d4": {
+      "deps": {
+        "ds-chief": "ds-chief_ea05ee0",
+        "ds-proxy": "ds-proxy_379f5e2",
+        "ds-spell": "ds-spell_c908b78",
+        "ds-test": "ds-test_a4e4005",
+        "ds-token": "ds-token_cee36a1"
+      },
+      "name": "ds-pause",
+      "repo": {
+        "name": "ds-pause-81fd9d4",
+        "ref": "HEAD",
+        "rev": "81fd9d43e56615267a10e29710716342bcca0ce3",
+        "url": "https://github.com/dapphub/ds-pause"
+      }
+    },
+    "ds-proxy_379f5e2": {
+      "deps": {
+        "ds-auth": "ds-auth_f783169",
+        "ds-note": "ds-note_beef816",
+        "ds-test": "ds-test_a4e4005"
+      },
+      "name": "ds-proxy",
+      "repo": {
+        "name": "ds-proxy-379f5e2",
+        "ref": "HEAD",
+        "rev": "379f5e2fc0a6ed5a7a96d3f211cc5ed8761baf00",
+        "url": "https://github.com/dapphub/ds-proxy"
+      }
+    },
+    "ds-roles_0138372": {
+      "deps": {
+        "ds-auth": "ds-auth_f783169",
+        "ds-test": "ds-test_a4e4005"
+      },
+      "name": "ds-roles",
+      "repo": {
+        "name": "ds-roles-0138372",
+        "ref": "HEAD",
+        "rev": "01383725a4240000c0e274e55bdcf251570fd486",
+        "url": "https://github.com/dapphub/ds-roles"
+      }
+    },
+    "ds-spell_c908b78": {
+      "deps": {
+        "ds-exec": "ds-exec_c53aab4",
+        "ds-note": "ds-note_beef816",
+        "ds-test": "ds-test_a4e4005"
+      },
+      "name": "ds-spell",
+      "repo": {
+        "name": "ds-spell-c908b78",
+        "ref": "HEAD",
+        "rev": "c908b7807f08661b4eca97adff6d9561d0116244",
+        "url": "https://github.com/dapphub/ds-spell"
+      }
+    },
+    "ds-stop_6e2bda6": {
+      "deps": {
+        "ds-auth": "ds-auth_f783169",
+        "ds-note": "ds-note_beef816",
+        "ds-test": "ds-test_a4e4005"
+      },
+      "name": "ds-stop",
+      "repo": {
+        "name": "ds-stop-6e2bda6",
+        "ref": "HEAD",
+        "rev": "6e2bda69cb3cbf25a475491d9bc22969adb05993",
+        "url": "https://github.com/dapphub/ds-stop"
+      }
+    },
+    "ds-test_a4e4005": {
+      "deps": {},
+      "name": "ds-test",
+      "repo": {
+        "name": "ds-test-a4e4005",
+        "ref": "HEAD",
+        "rev": "a4e40050b809705b15867939f5829540c50cb84f",
+        "url": "https://github.com/dapphub/ds-test"
+      }
+    },
+    "ds-thing_5e49fcb": {
+      "deps": {
+        "ds-auth": "ds-auth_f783169",
+        "ds-math": "ds-math_784079b",
+        "ds-note": "ds-note_beef816",
+        "ds-test": "ds-test_a4e4005"
+      },
+      "name": "ds-thing",
+      "repo": {
+        "name": "ds-thing-5e49fcb",
+        "ref": "HEAD",
+        "rev": "5e49fcbdf4ef8ccd241423ed114576f51c42f1e0",
+        "url": "https://github.com/dapphub/ds-thing"
+      }
+    },
+    "ds-token_cee36a1": {
+      "deps": {
+        "ds-math": "ds-math_784079b",
+        "ds-stop": "ds-stop_6e2bda6",
+        "ds-test": "ds-test_a4e4005",
+        "erc20": "erc20_f322aac"
+      },
+      "name": "ds-token",
+      "repo": {
+        "name": "ds-token-cee36a1",
+        "ref": "HEAD",
+        "rev": "cee36a14685b3f93ffa0332853d3fcd943fe96a5",
+        "url": "https://github.com/dapphub/ds-token"
+      }
+    },
+    "ds-value_d2107c1": {
+      "deps": {
+        "ds-test": "ds-test_a4e4005",
+        "ds-thing": "ds-thing_5e49fcb"
+      },
+      "name": "ds-value",
+      "repo": {
+        "name": "ds-value-d2107c1",
+        "ref": "HEAD",
+        "rev": "d2107c1751f086aed3c38a2f433d6945444af7d6",
+        "url": "https://github.com/dapphub/ds-value"
+      }
+    },
+    "ds-value_f307171": {
+      "deps": {
+        "ds-test": "ds-test_a4e4005",
+        "ds-thing": "ds-thing_5e49fcb"
+      },
+      "name": "ds-value",
+      "repo": {
+        "name": "ds-value-f307171",
+        "ref": "HEAD",
+        "rev": "f3071713afbd583991637f8cfab5e0d29466dffd",
+        "url": "https://github.com/dapphub/ds-value"
+      }
+    },
+    "ds-weth_dfada5b": {
+      "deps": {
+        "ds-test": "ds-test_a4e4005",
+        "erc20": "erc20_f322aac"
+      },
+      "name": "ds-weth",
+      "repo": {
+        "name": "ds-weth-dfada5b",
+        "ref": "HEAD",
+        "rev": "dfada5bca7a00046c1ddc37c0c43106a8c0a4e5a",
+        "url": "https://github.com/dapphub/ds-weth"
+      }
+    },
+    "dss-cdp-manager_0707db9": {
+      "deps": {
+        "ds-test": "ds-test_a4e4005",
+        "dss-deploy": "dss-deploy_29755b9"
+      },
+      "name": "dss-cdp-manager",
+      "repo": {
+        "name": "dss-cdp-manager-0707db9",
+        "ref": "HEAD",
+        "rev": "0707db99b3076eb52a15897a1ac222ca5df94be3",
+        "url": "https://github.com/makerdao/dss-cdp-manager"
+      }
+    },
+    "dss-deploy-pause-proxy-actions_7d25a37": {
+      "deps": {
+        "ds-test": "ds-test_a4e4005",
+        "dss-deploy": "dss-deploy_29755b9"
+      },
+      "name": "dss-deploy-pause-proxy-actions",
+      "repo": {
+        "name": "dss-deploy-pause-proxy-actions-7d25a37",
+        "ref": "HEAD",
+        "rev": "7d25a37ba3a9ca4814b3e85e95cc912c7a098503",
+        "url": "https://github.com/makerdao/dss-deploy-pause-proxy-actions"
+      }
+    },
+    "dss-deploy_29755b9": {
+      "deps": {
+        "ds-auth": "ds-auth_f783169",
+        "ds-guard": "ds-guard_4678e1c",
+        "ds-pause": "ds-pause_81fd9d4",
+        "ds-roles": "ds-roles_0138372",
+        "ds-test": "ds-test_a4e4005",
+        "ds-token": "ds-token_cee36a1",
+        "ds-weth": "ds-weth_dfada5b",
+        "dss": "dss_407afdc",
+        "esm": "esm_e0a85d6"
+      },
+      "name": "dss-deploy",
+      "repo": {
+        "name": "dss-deploy-29755b9",
+        "ref": "HEAD",
+        "rev": "29755b9d637384821f7839adda5a0f71269125c9",
+        "url": "https://github.com/makerdao/dss-deploy"
+      }
+    },
+    "dss-proxy-actions_341d689": {
+      "deps": {
+        "ds-test": "ds-test_a4e4005",
+        "dss-cdp-manager": "dss-cdp-manager_0707db9",
+        "proxy-registry": "proxy-registry_59e077f"
+      },
+      "name": "dss-proxy-actions",
+      "repo": {
+        "name": "dss-proxy-actions-341d689",
+        "ref": "HEAD",
+        "rev": "341d6897114ef9a795d3025b6fd2535eef5098ba",
+        "url": "https://github.com/makerdao/dss-proxy-actions"
+      }
+    },
+    "dss_407afdc": {
+      "deps": {
+        "ds-test": "ds-test_a4e4005",
+        "ds-token": "ds-token_cee36a1",
+        "ds-value": "ds-value_f307171"
+      },
+      "name": "dss",
+      "repo": {
+        "name": "dss-407afdc",
+        "ref": "HEAD",
+        "rev": "407afdcb034db841b25823a4aa312c005b3edf4d",
+        "url": "https://github.com/makerdao/dss"
+      }
+    },
+    "erc20_f322aac": {
+      "deps": {},
+      "name": "erc20",
+      "repo": {
+        "name": "erc20-f322aac",
+        "ref": "HEAD",
+        "rev": "f322aaca414db343337814097d2af43214bee96c",
+        "url": "https://github.com/dapphub/erc20"
+      }
+    },
+    "esm_e0a85d6": {
+      "deps": {
+        "ds-note": "ds-note_beef816",
+        "ds-test": "ds-test_a4e4005",
+        "ds-token": "ds-token_cee36a1"
+      },
+      "name": "esm",
+      "repo": {
+        "name": "esm-e0a85d6",
+        "ref": "HEAD",
+        "rev": "e0a85d6215cec2a7786c1dcaee188a3ff393710d",
+        "url": "https://github.com/makerdao/esm"
+      }
+    },
+    "gov-polling-generator_d08e43e": {
+      "deps": {
+        "ds-test": "ds-test_a4e4005"
+      },
+      "name": "gov-polling-generator",
+      "repo": {
+        "name": "gov-polling-generator-d08e43e",
+        "ref": "HEAD",
+        "rev": "d08e43ee1a8d6daac3fc0bc4aee5a0c92f62c2e8",
+        "url": "https://github.com/makerdao/gov-polling-generator"
+      }
+    },
+    "line-spell_208d847": {
+      "deps": {
+        "ds-test": "ds-test_a4e4005",
+        "dss-deploy": "dss-deploy_29755b9"
+      },
+      "name": "line-spell",
+      "repo": {
+        "name": "line-spell-208d847",
+        "ref": "HEAD",
+        "rev": "208d847535010fe632c579a038289ccfc2d90d91",
+        "url": "https://github.com/makerdao/line-spell"
+      }
+    },
+    "median_d95bbc1": {
+      "deps": {
+        "ds-test": "ds-test_a4e4005"
+      },
+      "name": "median",
+      "repo": {
+        "name": "median-d95bbc1",
+        "ref": "HEAD",
+        "rev": "d95bbc1c3687160354f7156896017366652d6a73",
+        "url": "https://github.com/makerdao/median"
+      }
+    },
+    "mkr-authority_441a77d": {
+      "deps": {
+        "ds-test": "ds-test_a4e4005"
+      },
+      "name": "mkr-authority",
+      "repo": {
+        "name": "mkr-authority-441a77d",
+        "ref": "HEAD",
+        "rev": "441a77d5e769d0a18a107522b8a99c58d0e7d55d",
+        "url": "https://github.com/makerdao/mkr-authority"
+      }
+    },
+    "multicall_df1e59d": {
+      "deps": {
+        "ds-test": "ds-test_a4e4005"
+      },
+      "name": "multicall",
+      "repo": {
+        "name": "multicall-df1e59d",
+        "ref": "HEAD",
+        "rev": "df1e59d39bc525d573ec351dbf23afe77c903a73",
+        "url": "https://github.com/makerdao/multicall"
+      }
+    },
+    "osm_504c474": {
+      "deps": {
+        "ds-stop": "ds-stop_6e2bda6",
+        "ds-test": "ds-test_a4e4005",
+        "ds-value": "ds-value_d2107c1"
+      },
+      "name": "osm",
+      "repo": {
+        "name": "osm-504c474",
+        "ref": "HEAD",
+        "rev": "504c47437916e29d918a9d1f40eb1f7595f3e9ce",
+        "url": "https://github.com/makerdao/osm"
+      }
+    },
+    "proxy-registry_59e077f": {
+      "deps": {
+        "ds-proxy": "ds-proxy_379f5e2",
+        "ds-test": "ds-test_a4e4005"
+      },
+      "name": "proxy-registry",
+      "repo": {
+        "name": "proxy-registry-59e077f",
+        "ref": "HEAD",
+        "rev": "59e077f30133b059e1319a4830985da54dd2ee4b",
+        "url": "https://github.com/makerdao/proxy-registry"
+      }
+    },
+    "scd-mcd-migration_a9a1d29": {
+      "deps": {
+        "ds-test": "ds-test_a4e4005",
+        "dss-cdp-manager": "dss-cdp-manager_0707db9"
+      },
+      "name": "scd-mcd-migration",
+      "repo": {
+        "name": "scd-mcd-migration-a9a1d29",
+        "ref": "HEAD",
+        "rev": "a9a1d29840aadc7790d50900c300f0ddc7b32f51",
+        "url": "https://github.com/makerdao/scd-mcd-migration"
+      }
+    },
+    "testchain-medians_1d01e6a": {
+      "deps": {
+        "ds-test": "ds-test_a4e4005",
+        "median": "median_d95bbc1"
+      },
+      "name": "testchain-medians",
+      "repo": {
+        "name": "testchain-medians-1d01e6a",
+        "ref": "HEAD",
+        "rev": "1d01e6ae331bfb2381e32e005abc2b090af02fad",
+        "url": "https://github.com/makerdao/testchain-medians"
+      }
+    },
+    "token-faucet_d7349d1": {
+      "deps": {
+        "ds-test": "ds-test_a4e4005",
+        "ds-token": "ds-token_cee36a1"
+      },
+      "name": "token-faucet",
+      "repo": {
+        "name": "token-faucet-d7349d1",
+        "ref": "HEAD",
+        "rev": "d7349d13f6cd83e8d0aa21e93544988fab0b6b24",
+        "url": "https://github.com/makerdao/token-faucet"
+      }
+    },
+    "vote-proxy_6fdbee3": {
+      "deps": {
+        "ds-chief": "ds-chief_ea05ee0",
+        "ds-test": "ds-test_a4e4005",
+        "ds-token": "ds-token_cee36a1"
+      },
+      "name": "vote-proxy",
+      "repo": {
+        "name": "vote-proxy-6fdbee3",
+        "ref": "HEAD",
+        "rev": "6fdbee3ac48bb915e715668374c1deba95cdb6f6",
+        "url": "https://github.com/makerdao/vote-proxy"
+      }
+    }
+  },
+  "this": {
+    "deps": {
+      "dss-deploy": "dss-deploy_29755b9",
+      "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_7d25a37",
+      "dss-proxy-actions": "dss-proxy-actions_341d689",
+      "gov-polling-generator": "gov-polling-generator_d08e43e",
+      "line-spell": "line-spell_208d847",
+      "mkr-authority": "mkr-authority_441a77d",
+      "multicall": "multicall_df1e59d",
+      "osm": "osm_504c474",
+      "scd-mcd-migration": "scd-mcd-migration_a9a1d29",
+      "testchain-medians": "testchain-medians_1d01e6a",
+      "token-faucet": "token-faucet_d7349d1",
+      "vote-proxy": "vote-proxy_6fdbee3"
+    },
+    "name": "dss-deploy-scripts",
+    "repo": {
+      "name": "dss-deploy-scripts-a0b2589",
+      "ref": "HEAD",
+      "rev": "a0b25890fe207c19ae40cab698fb3b75dd9e7b30",
+      "url": "git@github.com:makerdao/dss-deploy-scripts"
+    }
+  },
+  "version": 1
+}
