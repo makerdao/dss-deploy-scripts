@@ -173,9 +173,11 @@ if [[ -n "$SAI_TUB" && -n "$ethAdapterAddr" ]]; then
     MIGRATION=$(dappCreate scd-mcd-migration ScdMcdMigration "$SAI_TUB" "$CDP_MANAGER" "$MCD_JOIN_SAI" "$ethAdapterAddr" "$MCD_JOIN_DAI")
 
     # Rely Migration contract to access the SAI Adapter
-    seth send "$MCD_JOIN_SAI" "rely(address)" "$MIGRATION"
+    seth send "$MCD_JOIN_SAI" 'rely(address)' "$MIGRATION"
+    # Rely Pause Proxy contract to access the SAI Adapter
+    seth send "$MCD_JOIN_SAI" 'rely(address)' "$MCD_PAUSE_PROXY"
     # Deny deployer to access the SAI Adapter
-    seth send "$MCD_JOIN_SAI" "deny(address)" "$ETH_FROM"
+    seth send "$MCD_JOIN_SAI" 'deny(address)' "$ETH_FROM"
 
     seth send "$MCD_DEPLOY" 'releaseAuthFlip(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "SAI")")"
     log "auth removed for SAI"
@@ -190,6 +192,11 @@ log "general auth removed"
 for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     for ilk in $ilks; do
+        # Rely Pause Proxy contract to access the Adapter
+        seth send "$(eval echo "\$MCD_JOIN_${token}_${ilk}")" 'rely(address)' "$MCD_PAUSE_PROXY"
+        # Deny deployer to access the Adapter
+        seth send "$(eval echo "\$MCD_JOIN_${token}_${ilk}")" 'deny(address)' "$ETH_FROM"
+
         seth send "$MCD_DEPLOY" 'releaseAuthFlip(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
     done
 

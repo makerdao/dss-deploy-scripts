@@ -112,11 +112,15 @@ for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     for ilk in $ilks; do
         checkRely "MCD_VAT" "MCD_JOIN_${token}_${ilk}" "AUTHED"
+        checkRely "MCD_JOIN_${token}_${ilk}" "MCD_PAUSE_PROXY" "AUTHED"
+        checkRely "MCD_JOIN_${token}_${ilk}" "DEPLOYER" "NOT_AUTHED"
     done
 done
 if [[ -n "$MIGRATION" ]]; then
     checkRely "MCD_VAT" "MCD_JOIN_SAI" "AUTHED"
+    checkRely "MCD_JOIN_SAI" "MCD_PAUSE_PROXY" "AUTHED"
     checkRely "MCD_JOIN_SAI" "MIGRATION" "AUTHED"
+    checkRely "MCD_JOIN_SAI" "DEPLOYER" "NOT_AUTHED"
 fi
 
 # cat
