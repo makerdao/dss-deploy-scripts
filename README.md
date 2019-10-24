@@ -73,6 +73,7 @@ Below is the expected structure of such a config file:
   "jug_base": "<Base component of stability fee in percentage per year (e.g. 2.5)>",
   "pot_dsr": "<Dai Savings Rate in percentage per year (e.g. 2.5)>",
   "end_wait": "<Global Settlement cooldown period in seconds>",
+  "esm_pit": "<Pit address to send MKR to be burnt when ESM is fired>",
   "esm_min": "<Minimum amount to trigger ESM in MKR unit>",
   "flap_beg": "<Minimum bid increase in percentage (e.g. 5.5)>",
   "flap_ttl": "<Max time between bids in seconds>",

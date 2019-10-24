@@ -94,6 +94,8 @@ fi
 
 MCD_ESM_MIN="$(seth --to-uint256 "$(seth --to-wei "$(jq -r ".esm_min | values" "$CONFIG_FILE")" "eth")")"
 export MCD_ESM_MIN
+MCD_ESM_PIT="$(jq -r ".esm_pit | values" "$CONFIG_FILE")"
+export MCD_ESM_PIT
 
 # Deploy MCD Core Contratcs (solc optimized)
 deploy-core
