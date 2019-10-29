@@ -10,8 +10,8 @@ let
   tdds = import ./. args;
   dapp2nix = import (fetchGit {
     url = "https://github.com/icetan/dapp2nix";
-    ref = "master";
-    rev = "4905086d664b63921fc69be5d6ced1ea111d4463";
+    ref = "v2.0.1";
+    rev = "0ecfc2f1086c8068a5abec8827997c8ee303e6d5";
   }) {};
 in mkShell {
   buildInputs = tdds.bins ++ [
@@ -21,6 +21,8 @@ in mkShell {
   ];
 
   shellHook = ''
+    export NIX_SSL_CERT_FILE=${cacert}/etc/ssl/certs/ca-bundle.crt
+
     setup-env() {
       . ${tdds}/lib/setup-env.sh
     }
