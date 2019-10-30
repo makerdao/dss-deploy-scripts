@@ -18,6 +18,8 @@ in mkShell {
     tdds
     dapp2nix
     procps
+    hevm
+    jshon
   ];
 
   shellHook = ''
