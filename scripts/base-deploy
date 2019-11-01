@@ -161,7 +161,7 @@ ethAdapterAddr="$(eval echo "\$$(jq -r ".migration.ethAdapterVarName | values" "
 if [[ -n "$SAI_TUB" && -n "$ethAdapterAddr" ]]; then
     SAI="0x$(seth call "$SAI_TUB" 'sai()(address)')"
     export SAI
-    export PIP_SAI=0x0000000000000000000000000000000000000001
+    export PIP_SAI=0x0000000000000000000000000000000000000000
 
     deploy-ilk-sai
     log "SAI deployed"
