@@ -324,18 +324,6 @@
         "url": "https://github.com/makerdao/esm"
       }
     },
-    "gov-polling-generator_d08e43e": {
-      "deps": {
-        "ds-test": "ds-test_a4e4005"
-      },
-      "name": "gov-polling-generator",
-      "repo": {
-        "name": "gov-polling-generator-d08e43e",
-        "ref": "HEAD",
-        "rev": "d08e43ee1a8d6daac3fc0bc4aee5a0c92f62c2e8",
-        "url": "https://github.com/makerdao/gov-polling-generator"
-      }
-    },
     "line-spell_9b52aae": {
       "deps": {
         "ds-test": "ds-test_a4e4005",
@@ -491,7 +479,6 @@
       "dss-deploy": "dss-deploy_99a8123",
       "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_bba3c99",
       "dss-proxy-actions": "dss-proxy-actions_7821a23",
-      "gov-polling-generator": "gov-polling-generator_d08e43e",
       "line-spell": "line-spell_9b52aae",
       "mkr-authority": "mkr-authority_441a77d",
       "multicall": "multicall_df1e59d",

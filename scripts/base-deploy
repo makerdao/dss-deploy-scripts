@@ -360,8 +360,6 @@ EOF
 
 "$LIBEXEC_DIR"/set-tau "flop"
 
-"$LIBEXEC_DIR"/poll-deploy
-
 "$LIBEXEC_DIR"/set-ilks-price
 
 "$LIBEXEC_DIR"/set-ilks-pip-whitelist
