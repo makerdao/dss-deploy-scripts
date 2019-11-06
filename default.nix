@@ -5,13 +5,14 @@
 , dss-deploy ? null
 , doCheck ? false
 , githubAuthToken ? null
+, srcRoot ? null
 }: with pkgs;
 
 let
   inherit (builtins) replaceStrings;
   inherit (lib) mapAttrs optionalAttrs id;
   # Get contract dependencies from lock file
-  inherit (callPackage ./dapp2.nix {}) specs packageSpecs package;
+  inherit (callPackage ./dapp2.nix { inherit srcRoot; }) specs packageSpecs package;
   inherit (specs.this) deps;
   optinalFunc = x: fn: if x then fn else id;
 
@@ -38,16 +39,25 @@ let
   # Create derivations from lock file data
   packages = packageSpecs (mapAttrs (_: spec:
     (optinalFunc (! isNull githubAuthToken) recAddGithubToken)
-      (spec // { inherit doCheck; })
+      (spec // {
+        inherit doCheck;
+        flatten = true;
+      })
   ) deps);
   
   dss-proxy-actions-optimized = package (deps.dss-proxy-actions // {
     inherit doCheck;
     name = "dss-proxy-actions-optimized";
     solcFlags = "--optimize";
+    flatten = true;
   });
 
+  solidityPackages' = (builtins.attrValues packages) ++ [ dss-proxy-actions-optimized ];
+  solidityPackages = solidityPackages';
+
 in makerScriptPackage {
+  inherit solidityPackages;
+
   name = "dss-deploy-scripts";
 
   # Specify files to add to build environment
@@ -57,8 +67,6 @@ in makerScriptPackage {
     ".*scripts.*"
     ".*lib.*"
   ];
-
-  solidityPackages = (builtins.attrValues packages) ++ [ dss-proxy-actions-optimized ];
 
   extraBins = [
     dss-deploy'

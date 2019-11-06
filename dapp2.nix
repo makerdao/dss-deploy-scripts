@@ -1,4 +1,4 @@
-{ solidityPackage, solc, dapp2 }:
+{ solidityPackage, solc, hevm, dapp2, srcRoot ? null }:
 
 let
   inherit (builtins) map listToAttrs attrNames attrValues length fromJSON readFile;
@@ -10,15 +10,15 @@ let
         (attrNames attrs));
 
   defaults = {
-    inherit solc;
+    inherit solc hevm;
     test-hevm = dapp2.test-hevm;
     doCheck = true;
   };
 
   package = spec: let
-    spec' = defaults // (removeAttrs spec [ "repo" "repo'" "src'" ]);
+    spec' = defaults // (removeAttrs spec [ "repo" ]);
     deps = map (spec:
-      package (spec // { inherit (spec') solc test-hevm doCheck; })
+      package (spec // { inherit (spec') solc test-hevm hevm doCheck; })
     ) (attrValues spec'.deps);
   in solidityPackage (spec' // { inherit deps; });
 
@@ -26,21 +26,28 @@ let
 
   jsonSpecs = fromJSON (readFile ./.dapp.json);
 
-  resolveDeps = _: v:
+  resolveDeps = root: _: v:
     let
       contract = jsonSpecs.contracts."${v}";
       contract' = contract // {
-        src = "${fetchGit contract.repo}/src";
+        src = if (srcRoot == null)
+          then "${fetchGit contract.repo}/src"
+          else "${srcRoot}/${root}/${contract.name}/src";
       };
       noDeps = length (attrNames contract.deps) == 0;
     in
       if noDeps
       then contract'
-      else contract' // { deps = mapAttrs resolveDeps contract.deps; };
+      else contract' // {
+        deps = mapAttrs
+          (resolveDeps "${root}/${contract.name}/lib")
+          contract.deps;
+      };
 
   specs = (mapAttrs resolveDeps jsonSpecs.contracts) // {
     this = jsonSpecs.this // {
-      deps = mapAttrs resolveDeps jsonSpecs.this.deps;
+      src = ./.;
+      deps = mapAttrs (resolveDeps ".") jsonSpecs.this.deps;
     };
   };
 in {
