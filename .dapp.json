@@ -457,7 +457,7 @@
       "osm": "osm_44a107c",
       "scd-mcd-migration": "scd-mcd-migration_c7fc6d9",
       "testchain-medians": "testchain-medians_1d01e6a",
-      "token-faucet": "token-faucet_8d011a9",
+      "token-faucet": "token-faucet_d7349d1",
       "vote-proxy": "vote-proxy_3c4f8dd"
     },
     "name": "dss-deploy-scripts"
