@@ -310,19 +310,6 @@
         "url": "https://github.com/makerdao/esm"
       }
     },
-    "line-spell_b3e4abe": {
-      "deps": {
-        "ds-test": "ds-test_a4e4005",
-        "dss-deploy": "dss-deploy_e1ed265"
-      },
-      "name": "line-spell",
-      "repo": {
-        "name": "line-spell-b3e4abe",
-        "ref": "HEAD",
-        "rev": "b3e4abeed98ccb1065e79f3b92d28b25567369f4",
-        "url": "https://github.com/makerdao/line-spell"
-      }
-    },
     "median_d95bbc1": {
       "deps": {
         "ds-test": "ds-test_a4e4005"
@@ -465,7 +452,6 @@
       "dss-deploy": "dss-deploy_e1ed265",
       "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_0044ae8",
       "dss-proxy-actions": "dss-proxy-actions_c8f0f38",
-      "line-spell": "line-spell_b3e4abe",
       "mkr-authority": "mkr-authority_441a77d",
       "multicall": "multicall_df1e59d",
       "osm": "osm_44a107c",

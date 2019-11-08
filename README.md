@@ -81,7 +81,6 @@ Below is the expected structure of such a config file:
   "flop_pad": "<Increase of lot size after `tick` in percentage (e.g. 50)>",
   "flop_ttl": "<Max time between bids in seconds>",
   "flop_tau": "<Max auction duration in seconds>",
-  "setLinesMode": "<direct|vote|(any other value will do nothing about debt ceilings)>",
   "gov": "<GOV token address (if there is an existing one to import)>",
   "authority": "<Authority address (if there is an existing one to import)>",
   "proxyRegistry": "<Proxy Registry address (if there is an existing one to import)>",

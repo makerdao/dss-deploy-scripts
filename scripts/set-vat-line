@@ -10,7 +10,7 @@ loadAddresses
 
 # Set general debt ceiling (if defined)
 Line=$(jq -r ".vat_line | values" "$CONFIG_FILE")
-if [[ "$Line" != "" ]]; then
+if [[ "$Line" != "" && "$Line" != "0" ]]; then
     Line=$(echo "$Line"*10^45 | bc)
     Line=$(seth --to-uint256 "${Line%.*}")
     calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "Line")")" "$Line")"

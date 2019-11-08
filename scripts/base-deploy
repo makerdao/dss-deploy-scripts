@@ -366,12 +366,7 @@ EOF
 
 "$LIBEXEC_DIR"/set-ilks-mat
 
-setLinesMode=$(jq -r ".setLinesMode" "$CONFIG_FILE")
-if [[ $setLinesMode = "direct" ]]; then
-    "$LIBEXEC_DIR"/set-ilks-line
-elif [[ $setLinesMode = "vote" ]]; then
-    "$LIBEXEC_DIR"/set-ilks-spell-line
-fi
+"$LIBEXEC_DIR"/set-ilks-line
 
 "$LIBEXEC_DIR"/set-ilks-dust
 

@@ -20,7 +20,6 @@
   "flop_pad": "50",
   "flop_ttl": "10800",
   "flop_tau": "172800",
-  "setLinesMode": "direct",
   "gov": "0xaaf64bfcc32d0f15873a02163e7e500671a4ffcd",
   "authority": "",
   "proxyRegistry": "0x64a436ae831c1672ae81f674cab8b6775df3475c",
