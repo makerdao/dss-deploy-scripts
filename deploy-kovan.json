@@ -1,6 +1,5 @@
 {
   "description": "Kovan deployment",
-  "etherscanApiKey": "4PDDUF52BTUD32C3RJ7RJXRY7KIJFJ38RY",
   "pauseDelay": "0",
   "vat_line": "153000000",
   "vow_wait": "0",
