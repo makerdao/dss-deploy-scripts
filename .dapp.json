@@ -213,16 +213,16 @@
         "url": "https://github.com/dapphub/ds-weth"
       }
     },
-    "dss-cdp-manager_7691246": {
+    "dss-cdp-manager_a9ee991": {
       "deps": {
         "ds-test": "ds-test_a4e4005",
         "dss-deploy": "dss-deploy_e1ed265"
       },
       "name": "dss-cdp-manager",
       "repo": {
-        "name": "dss-cdp-manager-7691246",
+        "name": "dss-cdp-manager-a9ee991",
         "ref": "HEAD",
-        "rev": "769124666ad242a3746f54e6a08bd1e299080354",
+        "rev": "a9ee991449c180c27d33428db8eaec21f352735e",
         "url": "https://github.com/makerdao/dss-cdp-manager"
       }
     },
@@ -259,17 +259,17 @@
         "url": "https://github.com/makerdao/dss-deploy"
       }
     },
-    "dss-proxy-actions_c8f0f38": {
+    "dss-proxy-actions_1d6706a": {
       "deps": {
         "ds-test": "ds-test_a4e4005",
-        "dss-cdp-manager": "dss-cdp-manager_7691246",
+        "dss-cdp-manager": "dss-cdp-manager_a9ee991",
         "proxy-registry": "proxy-registry_59e077f"
       },
       "name": "dss-proxy-actions",
       "repo": {
-        "name": "dss-proxy-actions-c8f0f38",
+        "name": "dss-proxy-actions-1d6706a",
         "ref": "HEAD",
-        "rev": "c8f0f3895fbddf7cea66cb431b7286c791e0d3d3",
+        "rev": "1d6706a1a6ba960a3a7019d9e9e4173e593d3756",
         "url": "https://github.com/makerdao/dss-proxy-actions"
       }
     },
@@ -392,17 +392,17 @@
         "url": "https://github.com/makerdao/sai"
       }
     },
-    "scd-mcd-migration_dfe6473": {
+    "scd-mcd-migration_985a60b": {
       "deps": {
         "ds-test": "ds-test_a4e4005",
-        "dss-cdp-manager": "dss-cdp-manager_7691246",
+        "dss-cdp-manager": "dss-cdp-manager_a9ee991",
         "sai": "sai_fe18033"
       },
       "name": "scd-mcd-migration",
       "repo": {
-        "name": "scd-mcd-migration-dfe6473",
+        "name": "scd-mcd-migration-985a60b",
         "ref": "HEAD",
-        "rev": "dfe6473389ce0640a7e5866a88a4d982147365b1",
+        "rev": "985a60b38a865a6d8a0f7f460fec83446ec5e743",
         "url": "https://github.com/makerdao/scd-mcd-migration"
       }
     },
@@ -451,11 +451,11 @@
     "deps": {
       "dss-deploy": "dss-deploy_e1ed265",
       "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_0044ae8",
-      "dss-proxy-actions": "dss-proxy-actions_c8f0f38",
+      "dss-proxy-actions": "dss-proxy-actions_1d6706a",
       "mkr-authority": "mkr-authority_441a77d",
       "multicall": "multicall_df1e59d",
       "osm": "osm_44a107c",
-      "scd-mcd-migration": "scd-mcd-migration_dfe6473",
+      "scd-mcd-migration": "scd-mcd-migration_985a60b",
       "testchain-medians": "testchain-medians_1d01e6a",
       "token-faucet": "token-faucet_d7349d1",
       "vote-proxy": "vote-proxy_6fdbee3"
