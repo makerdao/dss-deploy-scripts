@@ -2,7 +2,7 @@
   "description": "Mainnet deployment",
   "etherscanApiKey": "4PDDUF52BTUD32C3RJ7RJXRY7KIJFJ38RY",
   "pauseDelay": "0",
-  "vat_line": "153000000",
+  "vat_line": "0",
   "vow_wait": "172800",
   "vow_dump": "250",
   "vow_sump": "50000",
@@ -27,7 +27,7 @@
   "migration": {
     "tub": "0x448a5065aebb8e423f0896e6c5d525c040f59af3",
     "ethAdapterVarName": "MCD_JOIN_ETH_A",
-    "line": "100000000"
+    "line": "0"
   },
   "tokens": {
     "ETH": {
@@ -36,7 +36,7 @@
       "ilks": {
         "A": {
           "mat": "150",
-          "line": "50000000",
+          "line": "0",
           "dust": "20",
           "duty": "4",
           "chop": "13",
@@ -53,7 +53,7 @@
       "ilks": {
         "A": {
           "mat": "150",
-          "line": "3000000",
+          "line": "0",
           "dust": "20",
           "duty": "4",
           "chop": "13",
