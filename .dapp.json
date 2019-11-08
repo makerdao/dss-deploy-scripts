@@ -419,20 +419,20 @@
         "url": "https://github.com/makerdao/testchain-medians"
       }
     },
-    "token-faucet_d7349d1": {
+    "token-faucet_8d011a9": {
       "deps": {
         "ds-test": "ds-test_a4e4005",
         "ds-token": "ds-token_cee36a1"
       },
       "name": "token-faucet",
       "repo": {
-        "name": "token-faucet-d7349d1",
+        "name": "token-faucet-8d011a9",
         "ref": "HEAD",
-        "rev": "d7349d13f6cd83e8d0aa21e93544988fab0b6b24",
+        "rev": "8d011a96092c49868c0b4b91dc1b70e636d57eba",
         "url": "https://github.com/makerdao/token-faucet"
       }
     },
-    "vote-proxy_6fdbee3": {
+    "vote-proxy_3c4f8dd": {
       "deps": {
         "ds-chief": "ds-chief_ea05ee0",
         "ds-test": "ds-test_a4e4005",
@@ -440,9 +440,9 @@
       },
       "name": "vote-proxy",
       "repo": {
-        "name": "vote-proxy-6fdbee3",
+        "name": "vote-proxy-3c4f8dd",
         "ref": "HEAD",
-        "rev": "6fdbee3ac48bb915e715668374c1deba95cdb6f6",
+        "rev": "3c4f8ddc815d047019518fb8dce14d6997c63f3f",
         "url": "https://github.com/makerdao/vote-proxy"
       }
     }
@@ -457,8 +457,8 @@
       "osm": "osm_44a107c",
       "scd-mcd-migration": "scd-mcd-migration_985a60b",
       "testchain-medians": "testchain-medians_1d01e6a",
-      "token-faucet": "token-faucet_d7349d1",
-      "vote-proxy": "vote-proxy_6fdbee3"
+      "token-faucet": "token-faucet_8d011a9",
+      "vote-proxy": "vote-proxy_3c4f8dd"
     },
     "name": "dss-deploy-scripts"
   },
