@@ -432,7 +432,7 @@
         "url": "https://github.com/makerdao/token-faucet"
       }
     },
-    "vote-proxy_3c4f8dd": {
+    "vote-proxy_6fdbee3": {
       "deps": {
         "ds-chief": "ds-chief_ea05ee0",
         "ds-test": "ds-test_a4e4005",
@@ -440,9 +440,9 @@
       },
       "name": "vote-proxy",
       "repo": {
-        "name": "vote-proxy-3c4f8dd",
+        "name": "vote-proxy-6fdbee3",
         "ref": "HEAD",
-        "rev": "3c4f8ddc815d047019518fb8dce14d6997c63f3f",
+        "rev": "6fdbee3ac48bb915e715668374c1deba95cdb6f6",
         "url": "https://github.com/makerdao/vote-proxy"
       }
     }
@@ -458,7 +458,7 @@
       "scd-mcd-migration": "scd-mcd-migration_c7fc6d9",
       "testchain-medians": "testchain-medians_1d01e6a",
       "token-faucet": "token-faucet_d7349d1",
-      "vote-proxy": "vote-proxy_3c4f8dd"
+      "vote-proxy": "vote-proxy_6fdbee3"
     },
     "name": "dss-deploy-scripts"
   },

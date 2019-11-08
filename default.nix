@@ -1,7 +1,13 @@
 # Default import pinned pkgs
 { pkgsSrc ? (import ./nix/pkgs.nix {}).pkgsSrc
 , pkgs ? (import ./nix/pkgs.nix { inherit pkgsSrc dapptoolsOverrides; }).pkgs
-, dapptoolsOverrides ? {}
+, dapptoolsOverrides ? {
+  current = fetchGit {
+    url = "https://github.com/icetan/dapptools";
+    ref = "nix-solpkg-flatten";
+    rev = "f34c2b30bce5e28ff8fbf9d1d16ef58f03127497";
+  };
+}
 , dss-deploy ? null
 , doCheck ? false
 , githubAuthToken ? null
@@ -44,7 +50,7 @@ let
         flatten = true;
       })
   ) deps);
-  
+
   dss-proxy-actions-optimized = package (deps.dss-proxy-actions // {
     inherit doCheck;
     name = "dss-proxy-actions-optimized";
