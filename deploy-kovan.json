@@ -1,33 +1,33 @@
 {
   "description": "Kovan deployment",
   "etherscanApiKey": "4PDDUF52BTUD32C3RJ7RJXRY7KIJFJ38RY",
-  "pauseDelay": "300",
-  "vat_line": "100000000",
+  "pauseDelay": "0",
+  "vat_line": "153000000",
   "vow_wait": "0",
   "vow_dump": "0.01",
   "vow_sump": "0.1",
   "vow_bump": "0.1",
   "vow_hump": "0",
   "jug_base": "0",
-  "pot_dsr": "1",
-  "end_wait": "0",
+  "pot_dsr": "2",
+  "end_wait": "262800",
   "esm_pit": "0xbd747742b0f1f9791d3e6b85f8797a0cf4fbf10b",
   "esm_min": "50000",
-  "flap_beg": "5",
-  "flap_ttl": "10800",
-  "flap_tau": "172800",
-  "flop_beg": "5",
-  "flop_pad": "50",
-  "flop_ttl": "10800",
-  "flop_tau": "172800",
+  "flap_beg": "3",
+  "flap_ttl": "1800",
+  "flap_tau": "259200",
+  "flop_beg": "3",
+  "flop_pad": "20",
+  "flop_ttl": "600",
+  "flop_tau": "259200",
   "gov": "0xaaf64bfcc32d0f15873a02163e7e500671a4ffcd",
-  "authority": "",
+  "authority": "0xbbffc76e94b34f72d96d054b31f6424249c1337d",
   "proxyRegistry": "0x64a436ae831c1672ae81f674cab8b6775df3475c",
   "faucet": "0x94598157fcf0715c3bc9b4a35450cce82ac57b20",
   "migration": {
     "tub": "0xa71937147b55deb8a530c7229c442fd3f31b7db2",
     "ethAdapterVarName": "MCD_JOIN_ETH_A",
-    "line": "10000000"
+    "line": "100000000"
   },
   "tokens": {
     "ETH": {
@@ -36,87 +36,14 @@
       "ilks": {
         "A": {
           "mat": "150",
-          "line": "10000000",
-          "dust": "0",
-          "duty": "5",
-          "chop": "5",
-          "lump": "1.5",
-          "beg": "1",
-          "ttl": "3600",
-          "tau": "172800"
-        },
-        "B": {
-          "mat": "200",
-          "line": "10000000",
-          "dust": "0",
+          "line": "50000000",
+          "dust": "20",
           "duty": "4",
-          "chop": "5",
+          "chop": "13",
           "lump": "1.5",
-          "beg": "1",
-          "ttl": "3600",
-          "tau": "172800"
-        },
-        "C": {
-          "mat": "120",
-          "line": "10000000",
-          "dust": "0",
-          "duty": "10",
-          "chop": "5",
-          "lump": "1.5",
-          "beg": "1",
-          "ttl": "3600",
-          "tau": "172800"
-        }
-      }
-    },
-    "REP": {
-      "gem": "0xc7aa227823789e363f29679f23f7e8f6d9904a9b",
-      "pip": "0x5debc8c4124db0c1d3bad99e69287a576c7b2ccc",
-      "ilks": {
-        "A": {
-          "mat": "180",
-          "line": "5000000",
-          "dust": "0",
-          "duty": "10",
-          "chop": "8",
-          "lump": "27.5",
-          "beg": "1",
-          "ttl": "3600",
-          "tau": "172800"
-        }
-      }
-    },
-    "ZRX": {
-      "gem": "0x18392097549390502069c17700d21403ea3c721a",
-      "pip": "0xc010f1bbde279a5bb05c93f5fc902293d5a9f7a9",
-      "ilks": {
-        "A": {
-          "mat": "190",
-          "line": "5000000",
-          "dust": "0",
-          "duty": "9.5",
-          "chop": "8",
-          "lump": "1500",
-          "beg": "1",
-          "ttl": "3600",
-          "tau": "172800"
-        }
-      }
-    },
-    "OMG": {
-      "gem": "0x441b1a74c69ee6e631834b626b29801d42076d38",
-      "pip": "0x1e9740f61e80650a60ba70f2d0b477fb85db2b03",
-      "ilks": {
-        "A": {
-          "mat": "180",
-          "line": "5000000",
-          "dust": "0",
-          "duty": "11.5",
-          "chop": "8",
-          "lump": "165",
-          "beg": "1",
-          "ttl": "3600",
-          "tau": "172800"
+          "beg": "3",
+          "ttl": "600",
+          "tau": "259200"
         }
       }
     },
@@ -125,49 +52,15 @@
       "pip": "0x5c40c9eb35c76069fa4c3a00ea59fac6ffa9c113",
       "ilks": {
         "A": {
-          "mat": "200",
-          "line": "5000000",
-          "dust": "0",
-          "duty": "10.5",
-          "chop": "8",
+          "mat": "150",
+          "line": "3000000",
+          "dust": "20",
+          "duty": "4",
+          "chop": "13",
           "lump": "1550",
-          "beg": "1",
-          "ttl": "3600",
-          "tau": "172800"
-        }
-      }
-    },
-    "DGD": {
-      "gem": "0x62aeec5fb140bb233b1c5612a8747ca1dc56dc1b",
-      "pip": "0x112bf99e873317643fbfcc22d197e3e01b825cb0",
-      "ilks": {
-        "A": {
-          "mat": "190",
-          "line": "5000000",
-          "dust": "0",
-          "duty": "9",
-          "chop": "8",
-          "lump": "18.5",
-          "beg": "1",
-          "ttl": "3600",
-          "tau": "172800"
-        }
-      }
-    },
-    "GNT": {
-      "gem": "0xc81ba844f451d4452a01bbb2104c1c4f89252907",
-      "pip": "0xf46e96a6f23fdcb5870f0ac0dbe9d2c605485ddc",
-      "ilks": {
-        "A": {
-          "mat": "180",
-          "line": "5000000",
-          "dust": "0",
-          "duty": "9",
-          "chop": "5",
-          "lump": "5000",
-          "beg": "1",
-          "ttl": "3600",
-          "tau": "172800"
+          "beg": "3",
+          "ttl": "600",
+          "tau": "259200"
         }
       }
     }

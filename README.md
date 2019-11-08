@@ -99,7 +99,7 @@ Below is the expected structure of such a config file:
         "A": {
           "mat": "<Liquidation ratio value in percentage (e.g. 150)>",
           "line": "<Debt ceiling value in DAI unit>",
-          "dust": "<Min amount of debt a CDP can hold in DAI unit (rad)>"
+          "dust": "<Min amount of debt a CDP can hold in DAI unit>"
           "duty": "<Collateral component of stability fee in percentage per year (e.g. 2.5)>",
           "chop": "<Liquidation penalty value in percentage (e.g. 12.5)>",
           "lump": "<Liquidation Quantity in Collateral Unit>",
