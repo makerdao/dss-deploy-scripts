@@ -14,9 +14,9 @@ for token in $tokens; do
     type=$(jq -r ".tokens.${token} | .pipDeploy | .type | values" "$CONFIG_FILE")
     if [[ "$pipAddr" != "" || "$type" == "median" ]]; then
         # Whitelist Spotter in OSM or in Median only if DEPLOYER has permission to do it
-
         if [[ "$(seth call "$(eval echo "\$PIP_${token}")" 'wards(address)(uint256)' "$ETH_FROM" | sed 's/^0*//')" == 1 ]]; then
             seth send "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$MCD_SPOT"
+            seth send "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$MCD_END"
         fi
     fi
 done

@@ -24,6 +24,8 @@ for token in $tokens; do
             [[ "$type" == "median" ]] && seth send "$(eval echo "\$VAL_${token}")" 'kiss(address)' "$(eval echo "\$PIP_${token}")"
             # Whithelist Spotter in OSM
             seth send "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$MCD_SPOT"
+            # Whithelist End in OSM
+            seth send "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$MCD_END"
             # Set osm in spotter ilks
             ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
             for ilk in $ilks; do

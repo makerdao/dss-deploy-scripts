@@ -218,6 +218,7 @@ for token in $tokens; do
 
     if [[ "$pipAddr" != "" || "$type" == "median" || "$osmDelay" -gt 0 ]]; then
         checkWhitelist "PIP_${token}" "MCD_SPOT"
+        checkWhitelist "PIP_${token}" "MCD_END"
     fi
 
     if [[ "$pipAddr" == "" && "$type" == "median" && "$osmDelay" -gt 0 ]]; then
