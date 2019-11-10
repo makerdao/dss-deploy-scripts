@@ -195,6 +195,12 @@ checkAuthority "MCD_PAUSE" "MCD_ADM"
 checkOwner "MCD_ADM" "ZERO_ADDR"
 checkAuthority "MCD_ADM" "MCD_ADM"
 
+# pip SAI
+if [[ -n "$MIGRATION" ]]; then
+    checkOwner "PIP_SAI" "MCD_PAUSE_PROXY"
+    checkAuthority "PIP_SAI" "ZERO_ADDR"
+fi
+
 # gov guard
 if [[ -n "$GOV_GUARD" ]]; then
     checkRoot "GOV_GUARD" "MCD_PAUSE_PROXY"

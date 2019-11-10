@@ -161,7 +161,6 @@ ethAdapterAddr="$(eval echo "\$$(jq -r ".migration.ethAdapterVarName | values" "
 if [[ -n "$SAI_TUB" && -n "$ethAdapterAddr" ]]; then
     SAI="0x$(seth call "$SAI_TUB" 'sai()(address)')"
     export SAI
-    export PIP_SAI=0x0000000000000000000000000000000000000000
 
     deploy-ilk-sai
     log "SAI deployed"
@@ -169,6 +168,12 @@ if [[ -n "$SAI_TUB" && -n "$ethAdapterAddr" ]]; then
     # shellcheck source=/dev/null
     . "load-ilk-sai-$(seth chain)"
     rm "load-ilk-sai-$(seth chain)"
+
+    # Set SAI price = 1 USD
+    seth send "$PIP_SAI" 'poke(bytes32)' "$(seth --to-uint256 "$(seth --to-wei 1 ETH)")"
+
+    # Set SAI pip authority to Proxy Pause
+    seth send "$PIP_SAI" 'setOwner(address)' "$MCD_PAUSE_PROXY"
 
     # Deploy ScdMcdMigration (no solc optimization)
     dappBuild scd-mcd-migration
@@ -373,12 +378,6 @@ EOF
 "$LIBEXEC_DIR"/set-ilks-duty
 
 "$LIBEXEC_DIR"/set-ilks-spotter-poke
-
-if [[ -n "$MIGRATION" ]]; then
-    spot=$(seth --to-uint256 "100000000000000000000000000000000000000000000000000")
-    calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "SAI")")" "$(seth --to-bytes32 "$(seth --from-ascii "spot")")" "$spot")"
-    seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
-fi
 
 "$LIBEXEC_DIR"/set-ilks-chop
 
