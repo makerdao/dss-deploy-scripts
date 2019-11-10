@@ -15,7 +15,7 @@
 }: with pkgs;
 
 let
-  inherit (builtins) replaceStrings;
+  inherit (builtins) replaceStrings attrValues;
   inherit (lib) mapAttrs optionalAttrs id;
   # Get contract dependencies from lock file
   inherit (callPackage ./dapp2.nix { inherit srcRoot; }) specs packageSpecs package;
@@ -58,12 +58,13 @@ let
     flatten = true;
   });
 
-  solidityPackages' = (builtins.attrValues packages) ++ [ dss-proxy-actions-optimized ];
-  solidityPackages = solidityPackages';
+  dss-flat = package (deps.dss-deploy.deps.dss // {
+    inherit doCheck;
+    name = "dss-flat";
+    flatten = true;
+  });
 
 in makerScriptPackage {
-  inherit solidityPackages;
-
   name = "dss-deploy-scripts";
 
   # Specify files to add to build environment
@@ -73,6 +74,13 @@ in makerScriptPackage {
     ".*scripts.*"
     ".*lib.*"
   ];
+
+  solidityPackages =
+    (attrValues packages)
+    ++ [
+      dss-proxy-actions-optimized
+      dss-flat
+    ];
 
   extraBins = [
     dss-deploy'
