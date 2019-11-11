@@ -7,6 +7,6 @@ writeConfigFor "kovan"
 test "$(seth chain)" == "kovan" || exit 1
 
 export DEPLOY_RESTRICTED_FAUCET="no"
-"$LIBEXEC_DIR"/base-deploy
+"$LIBEXEC_DIR"/base-deploy |& tee "$OUT_DIR/dss_kovan.log"
 
 log "KOVAN DEPLOYMENT COMPLETED SUCCESSFULLY"
