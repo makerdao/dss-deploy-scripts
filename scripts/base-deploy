@@ -294,6 +294,19 @@ if [[ -n "$MIGRATION" ]]; then
     \"MIGRATION_PROXY_ACTIONS\": \"$MIGRATION_PROXY_ACTIONS\""
 fi
 
+if [[ -n $GOV_GUARD ]]; then
+    GOV_GUARD_VAR=",
+    \"GOV_GUARD\": \"$GOV_GUARD\""
+fi
+if [[ -n $MCD_IOU ]]; then
+    MCD_IOU_VAR=",
+    \"MCD_IOU\": \"$MCD_IOU\""
+fi
+if [[ -n $VOTE_PROXY_FACTORY ]]; then
+    VOTE_PROXY_FACTORY_VAR=",
+    \"VOTE_PROXY_FACTORY\": \"$VOTE_PROXY_FACTORY\""
+fi
+
 # Generate addresses.json file
 cat > "$OUT_DIR"/addresses.json <<EOF
 {
@@ -301,11 +314,8 @@ cat > "$OUT_DIR"/addresses.json <<EOF
     "MULTICALL": "$MULTICALL",
     "FAUCET": "$FAUCET",
     "MCD_DEPLOY": "$MCD_DEPLOY",
-    "MCD_GOV": "$MCD_GOV",
-    "GOV_GUARD": "$GOV_GUARD",
-    "MCD_ADM": "$MCD_ADM",
-    "MCD_IOU": "$MCD_IOU",
-    "VOTE_PROXY_FACTORY": "$VOTE_PROXY_FACTORY",
+    "MCD_GOV": "$MCD_GOV"$GOV_GUARD_VAR$MCD_IOU_VAR,
+    "MCD_ADM": "$MCD_ADM"$VOTE_PROXY_FACTORY_VAR,
     "MCD_VAT": "$MCD_VAT",
     "MCD_JUG": "$MCD_JUG",
     "MCD_CAT": "$MCD_CAT",
