@@ -310,15 +310,15 @@
         "url": "https://github.com/makerdao/esm"
       }
     },
-    "median_d95bbc1": {
+    "median_703bc06": {
       "deps": {
         "ds-test": "ds-test_a4e4005"
       },
       "name": "median",
       "repo": {
-        "name": "median-d95bbc1",
+        "name": "median-703bc06",
         "ref": "HEAD",
-        "rev": "d95bbc1c3687160354f7156896017366652d6a73",
+        "rev": "703bc06d2c8cecdea23fc1db9f94df5ddcc1a409",
         "url": "https://github.com/makerdao/median"
       }
     },
@@ -346,7 +346,7 @@
         "url": "https://github.com/makerdao/multicall"
       }
     },
-    "osm_44a107c": {
+    "osm_0399d52": {
       "deps": {
         "ds-stop": "ds-stop_6e2bda6",
         "ds-test": "ds-test_a4e4005",
@@ -354,9 +354,9 @@
       },
       "name": "osm",
       "repo": {
-        "name": "osm-44a107c",
+        "name": "osm-0399d52",
         "ref": "HEAD",
-        "rev": "44a107cc4b8e0367b851525af3e425a21cc52a2a",
+        "rev": "0399d525256e6e1fb432d7d5d142b39738d54835",
         "url": "https://github.com/makerdao/osm"
       }
     },
@@ -406,16 +406,16 @@
         "url": "https://github.com/makerdao/scd-mcd-migration"
       }
     },
-    "testchain-medians_1d01e6a": {
+    "testchain-medians_7f457c3": {
       "deps": {
         "ds-test": "ds-test_a4e4005",
-        "median": "median_d95bbc1"
+        "median": "median_703bc06"
       },
       "name": "testchain-medians",
       "repo": {
-        "name": "testchain-medians-1d01e6a",
+        "name": "testchain-medians-7f457c3",
         "ref": "HEAD",
-        "rev": "1d01e6ae331bfb2381e32e005abc2b090af02fad",
+        "rev": "7f457c30f5994afe2fbe9f0b2ffc4570ba93b2f3",
         "url": "https://github.com/makerdao/testchain-medians"
       }
     },
@@ -454,9 +454,9 @@
       "dss-proxy-actions": "dss-proxy-actions_a64b04b",
       "mkr-authority": "mkr-authority_441a77d",
       "multicall": "multicall_df1e59d",
-      "osm": "osm_44a107c",
+      "osm": "osm_0399d52",
       "scd-mcd-migration": "scd-mcd-migration_e730e63",
-      "testchain-medians": "testchain-medians_1d01e6a",
+      "testchain-medians": "testchain-medians_7f457c3",
       "token-faucet": "token-faucet_8d011a9",
       "vote-proxy": "vote-proxy_3c4f8dd"
     },
