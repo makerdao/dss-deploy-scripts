@@ -24,6 +24,10 @@ for token in $tokens; do
             seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
         done
     fi
+
+    if [[ -n "$MIGRATION" ]]; then
+        seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "SAI")")"
+    fi
 done
 
 log "SET SPOTTER POKE COMPLETED SUCCESSFULLY"
