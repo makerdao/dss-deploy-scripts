@@ -63,6 +63,14 @@ copyBins() {
         -exec cp -f {} "$OUT_DIR/bin" \;
 }
 
+copySources() {
+    local lib; lib=$1
+    mkdir -p "$OUT_DIR/src"
+    find "$DAPP_LIB/$lib/out" \
+        -name "*.sol.flat" \
+        -exec cp -f {} "$OUT_DIR/src" \;
+}
+
 dappBuild() {
     [[ -n $DAPP_SKIP_BUILD ]] && return
 
@@ -79,6 +87,7 @@ dappCreate() {
     DAPP_OUT="$DAPP_LIB/$lib/out" dapp create "$class" "${@:3}"
     copyAbis "$lib"
     copyBins "$lib"
+    copySources "$lib"
 }
 
 join() {

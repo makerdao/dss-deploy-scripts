@@ -1,17 +1,24 @@
 # Default import pinned pkgs
 { pkgsSrc ? (import ./nix/pkgs.nix {}).pkgsSrc
 , pkgs ? (import ./nix/pkgs.nix { inherit pkgsSrc dapptoolsOverrides; }).pkgs
-, dapptoolsOverrides ? {}
+, dapptoolsOverrides ? {
+  current = fetchGit {
+    url = "https://github.com/icetan/dapptools";
+    ref = "nix-solpkg-flatten";
+    rev = "f34c2b30bce5e28ff8fbf9d1d16ef58f03127497";
+  };
+}
 , dss-deploy ? null
 , doCheck ? false
 , githubAuthToken ? null
+, srcRoot ? null
 }: with pkgs;
 
 let
-  inherit (builtins) replaceStrings;
+  inherit (builtins) replaceStrings attrValues;
   inherit (lib) mapAttrs optionalAttrs id;
   # Get contract dependencies from lock file
-  inherit (callPackage ./dapp2.nix {}) specs packageSpecs package;
+  inherit (callPackage ./dapp2.nix { inherit srcRoot; }) specs packageSpecs package;
   inherit (specs.this) deps;
   optinalFunc = x: fn: if x then fn else id;
 
@@ -38,13 +45,23 @@ let
   # Create derivations from lock file data
   packages = packageSpecs (mapAttrs (_: spec:
     (optinalFunc (! isNull githubAuthToken) recAddGithubToken)
-      (spec // { inherit doCheck; })
+      (spec // {
+        inherit doCheck;
+        flatten = true;
+      })
   ) deps);
-  
+
   dss-proxy-actions-optimized = package (deps.dss-proxy-actions // {
     inherit doCheck;
     name = "dss-proxy-actions-optimized";
     solcFlags = "--optimize";
+    flatten = true;
+  });
+
+  dss-flat = package (deps.dss-deploy.deps.dss // {
+    inherit doCheck;
+    name = "dss-flat";
+    flatten = true;
   });
 
 in makerScriptPackage {
@@ -58,7 +75,12 @@ in makerScriptPackage {
     ".*lib.*"
   ];
 
-  solidityPackages = (builtins.attrValues packages) ++ [ dss-proxy-actions-optimized ];
+  solidityPackages =
+    (attrValues packages)
+    ++ [
+      dss-proxy-actions-optimized
+      dss-flat
+    ];
 
   extraBins = [
     dss-deploy'
