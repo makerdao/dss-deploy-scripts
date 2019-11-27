@@ -38,13 +38,16 @@ let
   # Create derivations from lock file data
   packages = packageSpecs (mapAttrs (_: spec:
     (optinalFunc (! isNull githubAuthToken) recAddGithubToken)
-      (spec // { inherit doCheck; })
+      (spec // {
+        inherit doCheck;
+        solcFlags = "--metadata";
+      })
   ) deps);
-  
+
   dss-proxy-actions-optimized = package (deps.dss-proxy-actions // {
     inherit doCheck;
     name = "dss-proxy-actions-optimized";
-    solcFlags = "--optimize";
+    solcFlags = "--optimize --metadata";
   });
 
 in makerScriptPackage {
