@@ -58,7 +58,11 @@ in makerScriptPackage {
     ".*lib.*"
   ];
 
-  solidityPackages = (builtins.attrValues packages) ++ [ dss-proxy-actions-optimized ];
+  solidityPackages =
+    (builtins.attrValues packages)
+    ++ [ dss-proxy-actions-optimized ]
+    ++ dss-deploy'.optimized.solidityPackages
+    ++ dss-deploy'.nonOptimized.solidityPackages;
 
   extraBins = [
     dss-deploy'
