@@ -2,7 +2,10 @@
 { pkgsSrc ? (import ./nix/pkgs.nix {}).pkgsSrc
 , pkgs ? (import ./nix/pkgs.nix { inherit pkgsSrc dapptoolsOverrides; }).pkgs
 , dapptoolsOverrides ? {}
-, dss-deploy ? null
+, dss-deploy ? import (fetchGit {
+    url = "https://github.com/makerdao/dss-deploy";
+    ref = "expose-pkgs";
+  }) {}
 , doCheck ? false
 , githubAuthToken ? null
 }: with pkgs;
@@ -58,7 +61,11 @@ in makerScriptPackage {
     ".*lib.*"
   ];
 
-  solidityPackages = (builtins.attrValues packages) ++ [ dss-proxy-actions-optimized ];
+  solidityPackages =
+    (builtins.attrValues packages)
+    ++ [ dss-proxy-actions-optimized ]
+    ++ dss-deploy'.optimized.solidityPackages
+    ++ dss-deploy'.nonOptimized.solidityPackages;
 
   extraBins = [
     dss-deploy'
