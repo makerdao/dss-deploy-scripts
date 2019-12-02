@@ -54,13 +54,37 @@ copyAbis() {
 
 copyBins() {
     local lib; lib=$1
-    mkdir -p "$OUT_DIR/bin"
+    local DIR; DIR="$OUT_DIR/bin"
+    if [[ $(isOptimized "$1") == "optimized" ]]; then
+        DIR="$DIR/optimized"
+    fi
+
+    mkdir -p "$DIR"
     find "$DAPP_LIB/$lib/out" \
         -name "*.bin" ! -name "*Test.bin" ! -name "*Like.bin" ! -name "*DSNote.bin" ! -name "*FakeUser.bin" ! -name "*Hevm.bin" \
-        -exec cp -f {} "$OUT_DIR/bin" \;
+        -exec cp -f {} "$DIR" \;
     find "$DAPP_LIB/$lib/out" \
         -name "*.bin-runtime" ! -name "*Test.bin-runtime" ! -name "*Like.bin-runtime" ! -name "*DSNote.bin-runtime" ! -name "*FakeUser.bin-runtime" ! -name "*Hevm.bin-runtime"  \
-        -exec cp -f {} "$OUT_DIR/bin" \;
+        -exec cp -f {} "$DIR" \;
+}
+
+copyMeta() {
+    local lib; lib=$1
+    local DIR; DIR="$OUT_DIR/meta"
+    if [[ $(isOptimized "$1") == "optimized" ]]; then
+        DIR="$DIR/optimized"
+    fi
+
+    mkdir -p "$DIR"
+    find "$DAPP_LIB/$lib/out" \
+        -name "*_meta.json" ! -name "*Test_meta.json" ! -name "*Like_meta.json" ! -name "*DSNote_meta.json" ! -name "*FakeUser_meta.json" ! -name "*Hevm_meta.json" \
+        -exec cp -f {} "$DIR" \;
+}
+
+isOptimized() {
+    local val; val=$1
+    local i; i=$((${#val}-1))
+    echo "${val:$i-8:10}"
 }
 
 dappBuild() {
@@ -79,6 +103,7 @@ dappCreate() {
     DAPP_OUT="$DAPP_LIB/$lib/out" dapp create "$class" "${@:3}"
     copyAbis "$lib"
     copyBins "$lib"
+    copyMeta "$lib"
 }
 
 join() {

@@ -34,7 +34,11 @@ for token in $tokens; do
     else
         eval "export PIP_${token}=${pipAddr}"
         copyAbis osm
+        copyBins osm
+        copyMeta osm
         copyAbis testchain-medians
+        copyBins testchain-medians
+        copyMeta testchain-medians
     fi
     eval "export VAL_${token}=\$PIP_${token}"
 done
@@ -248,6 +252,8 @@ if [[ -z "$MCD_ADM" ]]; then
     log "vote proxy factory deployed"
 else
     copyAbis vote-proxy
+    copyBins vote-proxy
+    copyMeta vote-proxy
 fi
 
 if [[ -n "$GOV_GUARD" ]]; then
@@ -257,6 +263,11 @@ fi
 
 # Copy dss-deploy abi files
 copyAbis dss-deploy
+copyBins dss-deploy
+copyMeta dss-deploy
+copyAbis dss-deploy-optimized
+copyBins dss-deploy-optimized
+copyMeta dss-deploy-optimized
 
 for token in $tokens; do
     ILKS_VARS+=",
