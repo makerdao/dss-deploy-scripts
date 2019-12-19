@@ -15,7 +15,7 @@ done
 
 ilk=$(jq -r ".tokens.${token}.ilks | keys_unsorted[0]" "$CONFIG_FILE")
 
-seth send "$CDP_MANAGER" 'open(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
+seth send "$CDP_MANAGER" 'open(bytes32,address)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$ETH_FROM"
 ID=$(seth call "$CDP_MANAGER" 'cdpi()(uint256)')
 URN=$(seth call "$CDP_MANAGER" 'urns(uint256)(address)' "$ID")
 
@@ -32,13 +32,13 @@ mat=$(jq -r ".tokens.${token}.ilks.${ilk} | .mat" "$CONFIG_FILE")
 price=$(jq -r ".tokens.${token} | .pipDeploy | .price" "$CONFIG_FILE")
 dart=$(seth --to-uint256 "$(mcd --to-hex "$(seth --to-wei "$(echo "5 * $price * 100 / $mat" | bc -l)" eth)")") # Max debt amount
 
-"$LIBEXEC_DIR"/set-price "$token" "$price"
+"$LIBEXEC_DIR"/setters/set-price "$token" "$price"
 
 seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
 
 seth send "$CDP_MANAGER" 'frob(uint256,int256,int256)' "$ID" "$dink" "$dart"
 
-"$LIBEXEC_DIR"/set-price "$token" "$(echo "$price - 1" | bc -l)"
+"$LIBEXEC_DIR"/setters/set-price "$token" "$(echo "$price - 1" | bc -l)"
 seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
 
 # Bite CDP

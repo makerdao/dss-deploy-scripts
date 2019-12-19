@@ -4,9 +4,6 @@
 . "${LIB_DIR:-$(cd "${0%/*}/../lib"&&pwd)}/common.sh"
 
 # Deploy Values or Medians + OSMs (if delay > 0) (no solc optimization)
-dappBuild osm
-dappBuild testchain-medians
-
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     pipAddr=$(jq -r ".tokens.${token} | .pip | values" "$CONFIG_FILE")
@@ -31,25 +28,20 @@ for token in $tokens; do
             contract=$(dappCreate osm DSValue)
             eval "export PIP_${token}=${contract}"
         fi
+        log "PIP_${token} deployed"
     else
         eval "export PIP_${token}=${pipAddr}"
-        copyAbis osm
-        copyBins osm
-        copyMeta osm
-        copyAbis testchain-medians
-        copyBins testchain-medians
-        copyMeta testchain-medians
+        copy osm
+        copy testchain-medians
     fi
     eval "export VAL_${token}=\$PIP_${token}"
 done
 
 # Deploy Multicall (no solc optimization)
-dappBuild multicall
 MULTICALL=$(dappCreate multicall Multicall)
 log "multicall deployed"
 
 # Deploy Token Faucet (no solc optimization)
-dappBuild token-faucet
 FAUCET=$(jq -r ".faucet | values" "$CONFIG_FILE")
 if [[ -z "$FAUCET" ]]; then
     FAUCET=$(dappCreate token-faucet RestrictedTokenFaucet "$(seth --to-uint256 "$(seth --to-wei 50 ETH)")")
@@ -60,17 +52,15 @@ if [[ -z "$FAUCET" ]]; then
 fi
 
 # Deploy ProxyRegistry (no solc optimization)
-dappBuild dss-proxy-actions
 PROXY_REGISTRY=$(jq -r ".proxyRegistry | values" "$CONFIG_FILE")
 if [[ -z "$PROXY_REGISTRY" ]]; then
     PROXY_FACTORY=$(dappCreate dss-proxy-actions DSProxyFactory)
     PROXY_REGISTRY=$(dappCreate dss-proxy-actions ProxyRegistry "$PROXY_FACTORY")
+    log "proxy-registry deployed"
 else
     PROXY_FACTORY=$(seth storage "$PROXY_REGISTRY" 1)
     PROXY_FACTORY=0x${PROXY_FACTORY:26:66}
 fi
-
-log "proxy-registry deployed"
 
 PATH="$DAPP_LIB/dss-deploy/bin:$PATH"
 
@@ -114,7 +104,6 @@ if [[ "$newGovToken" == true ]]; then
     seth send "$FAUCET" 'gulp(address)' "$MCD_GOV"
 
     # Use custom authority for the new GOV token
-    dappBuild mkr-authority
     GOV_GUARD=$(dappCreate mkr-authority MkrAuthority)
 
     # Set GOV_GUARD as authority of MCD_GOV
@@ -122,6 +111,7 @@ if [[ "$newGovToken" == true ]]; then
 
     # Allow Flop to mint Gov token
     seth send "$GOV_GUARD" 'rely(address)' "$MCD_FLOP" 
+    log "gov deployed"
 fi
 
 # Deploy Collaterals (no solc optimization)
@@ -180,7 +170,6 @@ if [[ -n "$SAI_TUB" && -n "$ethAdapterAddr" ]]; then
     seth send "$PIP_SAI" 'setOwner(address)' "$MCD_PAUSE_PROXY"
 
     # Deploy ScdMcdMigration (no solc optimization)
-    dappBuild scd-mcd-migration
     MIGRATION=$(dappCreate scd-mcd-migration ScdMcdMigration "$SAI_TUB" "$CDP_MANAGER" "$MCD_JOIN_SAI" "$ethAdapterAddr" "$MCD_JOIN_DAI")
 
     # Rely Migration contract to access the SAI Adapter
@@ -221,7 +210,6 @@ log "gov actions deployed"
 unset SKIP_BUILD
 
 # Deploy Pause Proxy Actions (support contract for executing initial set up of the dss system)
-dappBuild dss-deploy-pause-proxy-actions
 PROXY_PAUSE_ACTIONS=$(dappCreate dss-deploy-pause-proxy-actions DssDeployPauseProxyActions)
 log "pause actions deployed"
 
@@ -237,7 +225,6 @@ fi
 seth send "$MCD_ADM" 'setRootUser(address,bool)' "$PROXY_DEPLOYER" true
 
 # Deploy chief as new $MCD_ADM if there isn't an authority in the config file (no solc optimization)
-dappBuild vote-proxy
 MCD_ADM=$(jq -r ".authority | values" "$CONFIG_FILE")
 if [[ -z "$MCD_ADM" ]]; then
     MCD_IOU=$(dappCreate vote-proxy DSToken "$(seth --to-bytes32 "$(seth --from-ascii "IOU")")")
@@ -251,9 +238,7 @@ if [[ -z "$MCD_ADM" ]]; then
     VOTE_PROXY_FACTORY=$(dappCreate vote-proxy VoteProxyFactory "$MCD_ADM")
     log "vote proxy factory deployed"
 else
-    copyAbis vote-proxy
-    copyBins vote-proxy
-    copyMeta vote-proxy
+    copy vote-proxy
 fi
 
 if [[ -n "$GOV_GUARD" ]]; then
@@ -262,12 +247,8 @@ fi
 
 
 # Copy dss-deploy abi files
-copyAbis dss-deploy
-copyBins dss-deploy
-copyMeta dss-deploy
-copyAbis dss-deploy-optimized
-copyBins dss-deploy-optimized
-copyMeta dss-deploy-optimized
+copy dss-deploy
+copy dss-deploy-optimized
 
 for token in $tokens; do
     ILKS_VARS+=",
@@ -354,66 +335,66 @@ cat > "$OUT_DIR"/addresses.json <<EOF
 }
 EOF
 
-"$LIBEXEC_DIR"/set-vat-line
+"$LIBEXEC_DIR"/setters/set-vat-line
 
-"$LIBEXEC_DIR"/set-vow-wait
+"$LIBEXEC_DIR"/setters/set-vow-wait
 
-"$LIBEXEC_DIR"/set-vow-bump
+"$LIBEXEC_DIR"/setters/set-vow-bump
 
-"$LIBEXEC_DIR"/set-vow-dump
+"$LIBEXEC_DIR"/setters/set-vow-dump
 
-"$LIBEXEC_DIR"/set-vow-sump
+"$LIBEXEC_DIR"/setters/set-vow-sump
 
-"$LIBEXEC_DIR"/set-vow-hump
+"$LIBEXEC_DIR"/setters/set-vow-hump
 
-"$LIBEXEC_DIR"/set-jug-base
+"$LIBEXEC_DIR"/setters/set-jug-base
 
-"$LIBEXEC_DIR"/set-pot-dsr
+"$LIBEXEC_DIR"/setters/set-pot-dsr
 
-"$LIBEXEC_DIR"/set-end-wait
+"$LIBEXEC_DIR"/setters/set-end-wait
 
-"$LIBEXEC_DIR"/set-beg "flap"
+"$LIBEXEC_DIR"/setters/set-beg "flap"
 
-"$LIBEXEC_DIR"/set-ttl "flap"
+"$LIBEXEC_DIR"/setters/set-ttl "flap"
 
-"$LIBEXEC_DIR"/set-tau "flap"
+"$LIBEXEC_DIR"/setters/set-tau "flap"
 
-"$LIBEXEC_DIR"/set-beg "flop"
+"$LIBEXEC_DIR"/setters/set-beg "flop"
 
-"$LIBEXEC_DIR"/set-flop-pad
+"$LIBEXEC_DIR"/setters/set-flop-pad
 
-"$LIBEXEC_DIR"/set-ttl "flop"
+"$LIBEXEC_DIR"/setters/set-ttl "flop"
 
-"$LIBEXEC_DIR"/set-tau "flop"
+"$LIBEXEC_DIR"/setters/set-tau "flop"
 
-"$LIBEXEC_DIR"/set-ilks-price
+"$LIBEXEC_DIR"/setters/set-ilks-price
 
-"$LIBEXEC_DIR"/set-ilks-pip-whitelist
+"$LIBEXEC_DIR"/setters/set-ilks-pip-whitelist
 
-"$LIBEXEC_DIR"/set-ilks-mat
+"$LIBEXEC_DIR"/setters/set-ilks-mat
 
-"$LIBEXEC_DIR"/set-ilks-line
+"$LIBEXEC_DIR"/setters/set-ilks-line
 
-"$LIBEXEC_DIR"/set-ilks-dust
+"$LIBEXEC_DIR"/setters/set-ilks-dust
 
-"$LIBEXEC_DIR"/set-ilks-duty
+"$LIBEXEC_DIR"/setters/set-ilks-duty
 
-"$LIBEXEC_DIR"/set-ilks-spotter-poke
+"$LIBEXEC_DIR"/setters/set-ilks-spotter-poke
 
-"$LIBEXEC_DIR"/set-ilks-chop
+"$LIBEXEC_DIR"/setters/set-ilks-chop
 
-"$LIBEXEC_DIR"/set-ilks-lump
+"$LIBEXEC_DIR"/setters/set-ilks-lump
 
-"$LIBEXEC_DIR"/set-ilks-beg
+"$LIBEXEC_DIR"/setters/set-ilks-beg
 
-"$LIBEXEC_DIR"/set-ilks-ttl
+"$LIBEXEC_DIR"/setters/set-ilks-ttl
 
-"$LIBEXEC_DIR"/set-ilks-tau
+"$LIBEXEC_DIR"/setters/set-ilks-tau
 
 if [[ -f "$CASE" ]]; then
     "$CASE"
 fi
 
-"$LIBEXEC_DIR"/set-ilks-osm
+"$LIBEXEC_DIR"/setters/set-ilks-osm
 
-"$LIBEXEC_DIR"/set-pause-auth-delay
+"$LIBEXEC_DIR"/setters/set-pause-auth-delay

@@ -81,19 +81,17 @@ copyMeta() {
         -exec cp -f {} "$DIR" \;
 }
 
+copy() {
+    local lib; lib=$1
+    copyAbis "$lib"
+    copyBins "$lib"
+    copyMeta "$lib"
+}
+
 isOptimized() {
     local val; val=$1
     local i; i=$((${#val}-1))
     echo "${val:$i-8:10}"
-}
-
-dappBuild() {
-    [[ -n $DAPP_SKIP_BUILD ]] && return
-
-    local lib; lib=$1
-    (cd "$DAPP_LIB/$lib" || exit 1
-        dapp "${@:2}" build --extract
-    )
 }
 
 dappCreate() {
@@ -101,9 +99,7 @@ dappCreate() {
     local lib; lib=$1
     local class; class=$2
     DAPP_OUT="$DAPP_LIB/$lib/out" dapp create "$class" "${@:3}"
-    copyAbis "$lib"
-    copyBins "$lib"
-    copyMeta "$lib"
+    copy "$lib"
 }
 
 join() {
