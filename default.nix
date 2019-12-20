@@ -2,7 +2,6 @@
 { pkgsSrc ? (import ./nix/pkgs.nix {}).pkgsSrc
 , pkgs ? (import ./nix/pkgs.nix { inherit pkgsSrc dapptoolsOverrides; }).pkgs
 , dapptoolsOverrides ? {}
-, dss-deploy ? null
 , doCheck ? false
 , githubAuthToken ? null
 }: with pkgs;
@@ -30,11 +29,6 @@ let
     deps = mapAttrs (_: recAddGithubToken) spec.deps;
   });
 
-  # Import deploy scripts from dss-deploy
-  dss-deploy' = if isNull dss-deploy
-    then import (fetchGit deps.dss-deploy.repo) { inherit doCheck; }
-    else dss-deploy;
-
   # Create derivations from lock file data
   packages = packageSpecs (mapAttrs (_: spec:
     (optinalFunc (! isNull githubAuthToken) recAddGithubToken)
@@ -43,6 +37,12 @@ let
         solcFlags = "--metadata";
       })
   ) deps);
+
+  dss-deploy-optimized = package (deps.dss-deploy // {
+    inherit doCheck;
+    name = "dss-deploy-optimized";
+    solcFlags = "--optimize --metadata";
+  });
   
   dss-proxy-actions-optimized = package (deps.dss-proxy-actions // {
     inherit doCheck;
@@ -64,12 +64,7 @@ in makerScriptPackage {
   solidityPackages =
     (builtins.attrValues packages)
     ++ [ dss-proxy-actions-optimized ]
-    ++ dss-deploy'.optimized.solidityPackages
-    ++ dss-deploy'.nonOptimized.solidityPackages;
-
-  extraBins = [
-    dss-deploy'
-  ];
+    ++ [ dss-deploy-optimized ];
 
   scriptEnv = {
     SKIP_BUILD = true;

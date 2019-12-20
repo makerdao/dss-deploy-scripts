@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# shellcheck source=bin/lib/common.sh
+. "$LIB_DIR/common.sh"
+
+export ETH_FROM=${ETH_FROM:-$(seth rpc eth_coinbase)}
+
+test -z "$OMG" && OMG=$(dappCreate dss-deploy OMG "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")")
+export OMG
+
+# shellcheck source=/dev/null
+source "$LIBEXEC_DIR/dss/deploy-ilk" "OMG" "${1:-"A"}" "GemJoin2"

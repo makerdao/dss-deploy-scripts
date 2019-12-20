@@ -10,7 +10,7 @@ if [[ -z "$BIN_DIR" ]]; then
 fi
 
 # shellcheck source=lib/common.sh
-. "${LIB_DIR:-$(cd "${0%/*}/lib"&&pwd)}/common.sh"
+. "$LIB_DIR/common.sh"
 writeConfigFor "kovan"
 
 test "$(seth chain)" == "kovan" || exit 1

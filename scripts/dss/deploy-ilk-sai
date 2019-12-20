@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# shellcheck source=bin/lib/common.sh
+. "$LIB_DIR/common.sh"
+
+export ETH_FROM=${ETH_FROM:-$(seth rpc eth_coinbase)}
+
+test -z "$SAI" && SAI=$(dappCreate dss-deploy DSToken "$(seth --to-bytes32 "$(seth --from-ascii "SAI")")")
+export SAI
+
+# shellcheck source=/dev/null
+source "$LIBEXEC_DIR/dss/deploy-ilk" "SAI" "" "AuthGemJoin"

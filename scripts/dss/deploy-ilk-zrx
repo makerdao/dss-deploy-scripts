@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# shellcheck source=bin/lib/common.sh
+. "$LIB_DIR/common.sh"
+
+export ETH_FROM=${ETH_FROM:-$(seth rpc eth_coinbase)}
+
+test -z "$ZRX" && ZRX=$(dappCreate dss-deploy ZRX "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")")
+export ZRX
+
+# shellcheck source=/dev/null
+source "$LIBEXEC_DIR/dss/deploy-ilk" "ZRX" "${1:-"A"}" "GemJoin"

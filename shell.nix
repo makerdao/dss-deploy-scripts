@@ -1,7 +1,6 @@
 { pkgsSrc ? (import ./nix/pkgs.nix {}).pkgsSrc
 , pkgs ? (import ./nix/pkgs.nix { inherit pkgsSrc dapptoolsOverrides; }).pkgs
 , dapptoolsOverrides ? {}
-, dss-deploy ? null
 , doCheck ? false
 , githubAuthToken ? null
 }@args: with pkgs;

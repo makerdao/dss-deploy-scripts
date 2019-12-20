@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+
+# shellcheck source=bin/lib/common.sh
+. "$LIB_DIR/common.sh"
+
+export ETH_FROM=${ETH_FROM:-$(seth rpc eth_coinbase)}
+
+# If no Governance token is defined, create one
+test -z "$MCD_GOV" && MCD_GOV=$(dappCreate dss-deploy DSToken "$(seth --to-bytes32 "$(seth --from-ascii "MKR")")")
+
+# Create deploy contract
+MCD_DEPLOY=$(dappCreate dss-deploy-optimized DssDeploy "$VAT_FAB" "$JUG_FAB" "$VOW_FAB" "$CAT_FAB" "$DAI_FAB" "$MCD_JOIN_FAB" "$FLAP_FAB" "$FLOP_FAB" "$FLIP_FAB" "$SPOT_FAB" "$POT_FAB" "$END_FAB" "$ESM_FAB" "$PAUSE_FAB")
+
+# If no Authority is defined, create one
+if [ -z "$MCD_ADM" ]
+then
+    MCD_ADM=$(dappCreate dss-deploy DSRoles)
+    seth send "$MCD_ADM" 'setRootUser(address,bool)' "$ETH_FROM" true
+fi
+
+# Deploy VAT
+seth send "$MCD_DEPLOY" "deployVat()"
+
+# Deploy MCD
+seth send "$MCD_DEPLOY" "deployDai(uint256)" "$(seth rpc net_version)"
+
+# Deploy Taxation
+seth send "$MCD_DEPLOY" "deployTaxation()"
+
+# Deploy Auctions
+seth send "$MCD_DEPLOY" "deployAuctions(address)" "$MCD_GOV"
+
+# Deploy Liquidation
+seth send "$MCD_DEPLOY" "deployLiquidator()"
+
+# Deploy End
+MCD_ESM_PIT=${MCD_ESM_PIT:-"0x0000000000000000000000000000000000000000"}
+MCD_ESM_MIN=${MCD_ESM_MIN:-"$(seth --to-uint256 "$(seth --to-wei 50000 "eth")")"}
+seth send "$MCD_DEPLOY" "deployShutdown(address,address,uint256)" "$MCD_GOV" "$MCD_ESM_PIT" "$MCD_ESM_MIN"
+
+# Deploy pause
+MCD_PAUSE_DELAY=${MCD_PAUSE_DELAY:-"3600"}
+seth send "$MCD_DEPLOY" "deployPause(uint256,address)" "$(seth --to-uint256 "$MCD_PAUSE_DELAY")" "$MCD_ADM"
+
+cat > "$OUT_DIR/load-core-addr-temp" << EOF
+#!/bin/bash
+export MCD_DEPLOY=$MCD_DEPLOY
+export MCD_GOV=$MCD_GOV
+export MCD_ADM=$MCD_ADM
+export MCD_VAT=0x$(seth call "$MCD_DEPLOY" "vat()(address)")
+export MCD_JUG=0x$(seth call "$MCD_DEPLOY" "jug()(address)")
+export MCD_CAT=0x$(seth call "$MCD_DEPLOY" "cat()(address)")
+export MCD_VOW=0x$(seth call "$MCD_DEPLOY" "vow()(address)")
+export MCD_JOIN_DAI=0x$(seth call "$MCD_DEPLOY" "daiJoin()(address)")
+export MCD_FLAP=0x$(seth call "$MCD_DEPLOY" "flap()(address)")
+export MCD_FLOP=0x$(seth call "$MCD_DEPLOY" "flop()(address)")
+export MCD_SPOT=0x$(seth call "$MCD_DEPLOY" "spotter()(address)")
+export MCD_POT=0x$(seth call "$MCD_DEPLOY" "pot()(address)")
+export MCD_END=0x$(seth call "$MCD_DEPLOY" "end()(address)")
+export MCD_ESM=0x$(seth call "$MCD_DEPLOY" "esm()(address)")
+export MCD_PAUSE=0x$(seth call "$MCD_DEPLOY" "pause()(address)")
+export MCD_PAUSE_PROXY=0x$(seth call "0x$(seth call "$MCD_DEPLOY" "pause()(address)")" "proxy()(address)")
+export MCD_DAI=0x$(seth call "$MCD_DEPLOY" "dai()(address)")
+EOF
