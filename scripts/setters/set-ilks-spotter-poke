@@ -8,6 +8,8 @@ CONFIG_FILE="$OUT_DIR/config.json"
 # Get addresses
 loadAddresses
 
+log "SET SPOTTER POKE:"
+
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     pipAddr=$(jq -r ".tokens.${token} | .pip | values" "$CONFIG_FILE")
@@ -21,13 +23,11 @@ for token in $tokens; do
     if [[ "$SET" == 1 ]]; then
         ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
         for ilk in $ilks; do
-            seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
+            sethSend "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
         done
     fi
 
     if [[ -n "$MIGRATION" ]]; then
-        seth send "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "SAI")")"
+        sethSend "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "SAI")")"
     fi
 done
-
-log "SET SPOTTER POKE COMPLETED SUCCESSFULLY"

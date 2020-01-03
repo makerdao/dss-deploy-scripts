@@ -8,6 +8,8 @@ CONFIG_FILE="$OUT_DIR/config.json"
 # Get addresses
 loadAddresses
 
+log "SET JUG BASE:"
+
 # Set general debt ceiling (if defined)
 base=$(jq -r ".jug_base | values" "$CONFIG_FILE")
 if [[ "$base" != "" ]]; then
@@ -15,7 +17,5 @@ if [[ "$base" != "" ]]; then
     base=$(bc -l <<< "${base} - 10^27")
     base=$(seth --to-uint256 "${base%.*}")
     calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_JUG" "$(seth --to-bytes32 "$(seth --from-ascii "base")")" "$base")"
-    seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+    sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi
-
-log "SET JUG BASE COMPLETED SUCCESSFULLY"

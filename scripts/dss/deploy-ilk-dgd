@@ -6,6 +6,7 @@
 export ETH_FROM=${ETH_FROM:-$(seth rpc eth_coinbase)}
 
 test -z "$DGD" && DGD=$(dappCreate dss-deploy DGD "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")")
+log "DGD=$DGD"
 export DGD
 
 # shellcheck source=/dev/null

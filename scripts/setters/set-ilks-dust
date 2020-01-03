@@ -8,6 +8,8 @@ CONFIG_FILE="$OUT_DIR/config.json"
 # Get addresses
 loadAddresses
 
+log "SET ILKS DUST:"
+
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
@@ -16,8 +18,6 @@ for token in $tokens; do
         dust=$(echo "$dust"*10^45 | bc)
         dust=$(seth --to-uint256 "${dust%.*}")
         calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "dust")")" "$dust")"
-        seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+        sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
     done
 done
-
-log "SET ILKS DUST COMPLETED SUCCESSFULLY"

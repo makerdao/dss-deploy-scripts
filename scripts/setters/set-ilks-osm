@@ -8,6 +8,8 @@ CONFIG_FILE="$OUT_DIR/config.json"
 # Get addresses
 loadAddresses
 
+log "SET ILKS OSM:"
+
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     pipAddr=$(jq -r ".tokens.${token} | .pip | values" "$CONFIG_FILE")
@@ -17,20 +19,21 @@ for token in $tokens; do
             # Deploy OSM
             contract=$(dappCreate osm OSM "$(eval echo "\$VAL_${token}")")
             eval "export PIP_${token}=${contract}"
+            log "PIP_${token}=$(eval "echo ${contract}")"
             # Set OSM delay
-            seth send "$(eval echo "\$PIP_${token}")" 'step(uint16)' "$osmDelay"
+            sethSend "$(eval echo "\$PIP_${token}")" 'step(uint16)' "$osmDelay"
             # Whitelist OSM in Medianizer (skip if source is DSValue)
             type=$(jq -r ".tokens.${token} | .pipDeploy | .type | values" "$CONFIG_FILE")
-            [[ "$type" == "median" ]] && seth send "$(eval echo "\$VAL_${token}")" 'kiss(address)' "$(eval echo "\$PIP_${token}")"
+            [[ "$type" == "median" ]] && sethSend "$(eval echo "\$VAL_${token}")" 'kiss(address)' "$(eval echo "\$PIP_${token}")"
             # Whithelist Spotter in OSM
-            seth send "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$MCD_SPOT"
+            sethSend "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$MCD_SPOT"
             # Whithelist End in OSM
-            seth send "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$MCD_END"
+            sethSend "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$MCD_END"
             # Set osm in spotter ilks
             ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
             for ilk in $ilks; do
                 calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,address)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_SPOT" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "pip")")" "$(eval echo "\$PIP_${token}")")"
-                seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+                sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
             done
         fi
     fi
@@ -43,5 +46,3 @@ addAddresses <<EOF
 }
 EOF
 done
-
-echo "SET ILKS OSM COMPLETED SUCCESSFULLY"

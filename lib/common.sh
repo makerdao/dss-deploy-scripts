@@ -28,7 +28,6 @@ writeConfigFor() {
 # loads addresses as key-value pairs from $ADDRESSES_FILE and exports them as
 # environment variables.
 loadAddresses() {
-    set +x
     local keys
 
     keys=$(jq -r "keys_unsorted[]" "$ADDRESSES_FILE")
@@ -36,7 +35,6 @@ loadAddresses() {
         VALUE=$(jq -r ".$KEY" "$ADDRESSES_FILE")
         export "$KEY"="$VALUE"
     done
-    set -x
 }
 
 addAddresses() {
@@ -102,25 +100,28 @@ dappCreate() {
     copy "$lib"
 }
 
+sethSend() {
+    set -e
+    echo "seth send $*"
+    seth send "$@"
+    echo ""
+}
+
 join() {
     local IFS=","
     echo "$*"
 }
 
 GREEN='\033[0;32m'
-RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 log() {
-    printf '%b\n' "${GREEN}✓ ${1}${NC}"
-}
-
-err() {
-    printf '%b\n' "${RED}❌${1}${NC}"
+    printf '%b\n' "${GREEN}${1}${NC}"
+    echo ""
 }
 
 # Start verbose output
-set -x
+# set -x
 
 # Set exported variables
 export ETH_GAS=7000000

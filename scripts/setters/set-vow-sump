@@ -8,13 +8,13 @@ CONFIG_FILE="$OUT_DIR/config.json"
 # Get addresses
 loadAddresses
 
+log "SET VOW SUMP:"
+
 # Set general debt ceiling (if defined)
 sump=$(jq -r ".vow_sump" "$CONFIG_FILE")
 if [[ "$sump" != "" ]]; then
     sump=$(echo "$sump"*10^45 | bc)
     sump=$(seth --to-uint256 "${sump%.*}")
     calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VOW" "$(seth --to-bytes32 "$(seth --from-ascii "sump")")" "$sump")"
-    seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+    sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi
-
-log "SET VOW SUMP COMPLETED SUCCESSFULLY"

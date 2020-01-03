@@ -6,41 +6,47 @@
 export ETH_FROM=${ETH_FROM:-$(seth rpc eth_coinbase)}
 
 # If no Governance token is defined, create one
-test -z "$MCD_GOV" && MCD_GOV=$(dappCreate dss-deploy DSToken "$(seth --to-bytes32 "$(seth --from-ascii "MKR")")")
+if [ -z "$MCD_GOV" ]
+then
+    MCD_GOV=$(dappCreate dss-deploy DSToken "$(seth --to-bytes32 "$(seth --from-ascii "MKR")")")
+    log "MCD_GOV=$MCD_GOV"
+fi
 
 # Create deploy contract
 MCD_DEPLOY=$(dappCreate dss-deploy-optimized DssDeploy "$VAT_FAB" "$JUG_FAB" "$VOW_FAB" "$CAT_FAB" "$DAI_FAB" "$MCD_JOIN_FAB" "$FLAP_FAB" "$FLOP_FAB" "$FLIP_FAB" "$SPOT_FAB" "$POT_FAB" "$END_FAB" "$ESM_FAB" "$PAUSE_FAB")
+log "MCD_DEPLOY=$MCD_DEPLOY"
 
 # If no Authority is defined, create one
 if [ -z "$MCD_ADM" ]
 then
     MCD_ADM=$(dappCreate dss-deploy DSRoles)
-    seth send "$MCD_ADM" 'setRootUser(address,bool)' "$ETH_FROM" true
+    log "MCD_ADM=$MCD_ADM"
+    sethSend "$MCD_ADM" 'setRootUser(address,bool)' "$ETH_FROM" true
 fi
 
 # Deploy VAT
-seth send "$MCD_DEPLOY" "deployVat()"
+sethSend "$MCD_DEPLOY" "deployVat()"
 
 # Deploy MCD
-seth send "$MCD_DEPLOY" "deployDai(uint256)" "$(seth rpc net_version)"
+sethSend "$MCD_DEPLOY" "deployDai(uint256)" "$(seth rpc net_version)"
 
 # Deploy Taxation
-seth send "$MCD_DEPLOY" "deployTaxation()"
+sethSend "$MCD_DEPLOY" "deployTaxation()"
 
 # Deploy Auctions
-seth send "$MCD_DEPLOY" "deployAuctions(address)" "$MCD_GOV"
+sethSend "$MCD_DEPLOY" "deployAuctions(address)" "$MCD_GOV"
 
 # Deploy Liquidation
-seth send "$MCD_DEPLOY" "deployLiquidator()"
+sethSend "$MCD_DEPLOY" "deployLiquidator()"
 
 # Deploy End
 MCD_ESM_PIT=${MCD_ESM_PIT:-"0x0000000000000000000000000000000000000000"}
 MCD_ESM_MIN=${MCD_ESM_MIN:-"$(seth --to-uint256 "$(seth --to-wei 50000 "eth")")"}
-seth send "$MCD_DEPLOY" "deployShutdown(address,address,uint256)" "$MCD_GOV" "$MCD_ESM_PIT" "$MCD_ESM_MIN"
+sethSend "$MCD_DEPLOY" "deployShutdown(address,address,uint256)" "$MCD_GOV" "$MCD_ESM_PIT" "$MCD_ESM_MIN"
 
 # Deploy pause
 MCD_PAUSE_DELAY=${MCD_PAUSE_DELAY:-"3600"}
-seth send "$MCD_DEPLOY" "deployPause(uint256,address)" "$(seth --to-uint256 "$MCD_PAUSE_DELAY")" "$MCD_ADM"
+sethSend "$MCD_DEPLOY" "deployPause(uint256,address)" "$(seth --to-uint256 "$MCD_PAUSE_DELAY")" "$MCD_ADM"
 
 cat > "$OUT_DIR/load-core-addr-temp" << EOF
 #!/bin/bash

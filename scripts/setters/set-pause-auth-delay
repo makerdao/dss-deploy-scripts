@@ -11,7 +11,7 @@ delay=$(jq -r ".pauseDelay" "$CONFIG_FILE")
 # Get addresses
 loadAddresses
 
-calldata="$(seth calldata 'setAuthorityAndDelay(address,address,address,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_ADM" "$(seth --to-uint256 "$delay")")"
-seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+log "SET PAUSE AUTH DELAY:"
 
-log "SET PAUSE AUTH DELAY COMPLETED SUCCESSFULLY"
+calldata="$(seth calldata 'setAuthorityAndDelay(address,address,address,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_ADM" "$(seth --to-uint256 "$delay")")"
+sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"

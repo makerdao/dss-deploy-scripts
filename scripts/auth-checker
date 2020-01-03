@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # shellcheck source=lib/common.sh
-. "$LIB_DIR/common.sh"
+. "${LIB_DIR:-$(cd "${0%/*}/../lib"&&pwd)}/common.sh"
 
 # Get config variables
 CONFIG_FILE="$OUT_DIR/config.json"
@@ -17,12 +17,16 @@ NOT_AUTHED="0x0000000000000000000000000000000000000000000000000000000000000000"
 # shellcheck disable=SC2034
 ZERO_ADDR="0x0000000000000000000000000000000000000000"
 
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
 ok() {
-    log "OK"
+    printf '%b\n' "${GREEN}✓ OK${NC}"
 }
 
 notok() {
-    err "NOT OK"
+    printf '%b\n' "${RED}❌NOT OK${NC}"
 }
 
 checkRely() {

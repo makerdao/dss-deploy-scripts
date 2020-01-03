@@ -8,9 +8,11 @@ CONFIG_FILE="$OUT_DIR/config.json"
 # Get addresses
 loadAddresses
 
+log "SET ILKS DUTY:"
+
 setDuty() {
     calldata="$(seth calldata 'dripAndFile(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_JUG" "$(seth --to-bytes32 "$(seth --from-ascii "$1")")" "$(seth --to-bytes32 "$(seth --from-ascii "duty")")" "$2")"
-    seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+    sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 }
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
@@ -27,5 +29,3 @@ done
 if [[ -n "$MIGRATION" ]]; then
     setDuty "SAI" "$(seth --to-uint256 "1000000000000000000000000000")"
 fi
-
-log "SET ILKS DUTY COMPLETED SUCCESSFULLY"

@@ -8,11 +8,11 @@ CONFIG_FILE="$OUT_DIR/config.json"
 # Get addresses
 loadAddresses
 
+log "SET VOW WAIT:"
+
 # Set general debt ceiling (if defined)
 wait=$(jq -r ".vow_wait | values" "$CONFIG_FILE")
 if [[ "$wait" != "" ]]; then
     calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VOW" "$(seth --to-bytes32 "$(seth --from-ascii "wait")")" "$wait")"
-    seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+    sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi
-
-log "SET VOW WAIT COMPLETED SUCCESSFULLY"

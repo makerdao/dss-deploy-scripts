@@ -8,6 +8,8 @@ CONFIG_FILE="$OUT_DIR/config.json"
 # Get addresses
 loadAddresses
 
+log "SET ILKS PRICE:"
+
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     # If it is a value set the price
@@ -20,5 +22,3 @@ for token in $tokens; do
         fi
     fi
 done
-
-log "SET ILKS PRICE COMPLETED SUCCESSFULLY"

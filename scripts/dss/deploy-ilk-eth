@@ -6,6 +6,7 @@
 export ETH_FROM=${ETH_FROM:-$(seth rpc eth_coinbase)}
 
 test -z "$ETH" && ETH=$(dappCreate dss-deploy WETH9_)
+log "ETH=$ETH"
 export ETH
 
 # shellcheck source=/dev/null

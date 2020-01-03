@@ -55,6 +55,22 @@ END_FAB=$(seth receipt "$END_FABtx" contractAddress)
 ESM_FAB=$(seth receipt "$ESM_FABtx" contractAddress)
 PAUSE_FAB=$(seth receipt "$PAUSE_FABtx" contractAddress)
 
+log "VAT_FAB=$VAT_FAB"
+log "JUG_FAB=$JUG_FAB"
+log "VOW_FAB=$VOW_FAB"
+log "CAT_FAB=$CAT_FAB"
+log "DAI_FAB=$DAI_FAB"
+log "MCD_JOIN_FAB=$MCD_JOIN_FAB"
+log "FLAP_FAB=$FLAP_FAB"
+log "FLOP_FAB=$FLOP_FAB"
+log "FLIP_FAB=$FLIP_FAB"
+log "SPOT_FAB=$SPOT_FAB"
+log "POT_FAB=$POT_FAB"
+log "END_FAB=$END_FAB"
+log "ESM_FAB=$ESM_FAB"
+log "PAUSE_FAB=$VAT_FAB"
+
+
 cat > "$OUT_DIR/load-fabs-addr-temp" <<EOF
 #!/bin/bash
 export VAT_FAB=$VAT_FAB

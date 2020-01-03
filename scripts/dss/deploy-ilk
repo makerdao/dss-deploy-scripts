@@ -24,15 +24,14 @@ test -z "$MCD_DEPLOY" && exit 1
 MCD_VAT=0x$(seth call "$MCD_DEPLOY" "vat()(address)")
 contract=$(dappCreate dss-deploy "$ilkJoin" "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")" "$(eval echo "\$${tok}")" "$decimals")
 eval export "\MCD_JOIN_${ilkVar}=${contract}"
-seth send "$MCD_DEPLOY" "deployCollateral(bytes32,address,address)" "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")" "$(eval echo "\$MCD_JOIN_${ilkVar}")" "$(eval echo "\$PIP_${tok}")"
+log "MCD_JOIN_${ilkVar}=$(eval "echo ${contract}")"
+
+sethSend "$MCD_DEPLOY" "deployCollateral(bytes32,address,address)" "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")" "$(eval echo "\$MCD_JOIN_${ilkVar}")" "$(eval echo "\$PIP_${tok}")"
 while IFS=$'\n' read -r line; do data+=("$line"); done < <(seth call "$MCD_DEPLOY" "ilks(bytes32)(address,address)" "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")")
 eval export "\MCD_FLIP_${ilkVar}=0x${data[0]}"
 
 cat > "$OUT_DIR/load-ilk-addr-temp" << EOF
 #!/bin/bash
-
-# ilk deployment on $(seth chain) from $(git rev-parse HEAD)
-# $(date)
 export PIP_${tok}=$(eval echo "\$PIP_${tok}")
 export ${tok}=$(eval echo "\$${tok}")
 export MCD_JOIN_${ilkVar}=$(eval echo "\$MCD_JOIN_${ilkVar}")

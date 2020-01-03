@@ -8,13 +8,15 @@ CONFIG_FILE="$OUT_DIR/config.json"
 # Get addresses
 loadAddresses
 
+log "SET ILKS LINE:"
+
 setLine() {
     if [[ "$2" != "" && "$2" != "0" ]]; then
         local line
         line=$(echo "$2"*10^45 | bc)
         line=$(seth --to-uint256 "${line%.*}")
         calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "$1")")" "$(seth --to-bytes32 "$(seth --from-ascii "line")")" "$line")"
-        seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+        sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
     fi
 }
 
@@ -30,5 +32,3 @@ done
 if [[ -n "$MIGRATION" ]]; then
     setLine "SAI" "$(jq -r ".migration | .line" "$CONFIG_FILE")"
 fi
-
-log "SET ILKS LINE COMPLETED SUCCESSFULLY"

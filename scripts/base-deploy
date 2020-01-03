@@ -12,51 +12,53 @@ for token in $tokens; do
         # Deploy Medianizer as Feed
         if [[ "$type" == "median" ]]; then
             contract=$(dappCreate testchain-medians "Median${token}USD")
-            eval "export PIP_${token}=${contract}"
+            eval "export VAL_${token}=${contract}"
+            log "VAL_${token}=$(eval "echo ${contract}")"
             signers=$(jq -r ".tokens.${token} | .pipDeploy | .signers | .[]" "$CONFIG_FILE")
             # Approve oracle price feed providers
             allsigners=()
             for signer in $signers; do
                 allsigners+=("${signer#0x}")
             done
-            seth send "$(eval echo "\$PIP_${token}")" 'lift(address[] memory)' "[$(join "${allsigners[@]}")]"
+            sethSend "$(eval echo "\$VAL_${token}")" 'lift(address[] memory)' "[$(join "${allsigners[@]}")]"
             # Set quorum for Medianizer
-            seth send "$(eval echo "\$PIP_${token}")" 'setBar(uint256)' "$(seth --to-uint256 3)"
+            sethSend "$(eval echo "\$VAL_${token}")" 'setBar(uint256)' "$(seth --to-uint256 3)"
         fi
         # Deploy DSValue as Feed
         if [[ "${type}" == "value" ]]; then
             contract=$(dappCreate osm DSValue)
-            eval "export PIP_${token}=${contract}"
+            eval "export VAL_${token}=${contract}"
+            log "VAL_${token}=$(eval "echo ${contract}")"
         fi
-        log "PIP_${token} deployed"
     else
-        eval "export PIP_${token}=${pipAddr}"
+        eval "export VAL_${token}=${pipAddr}"
         copy osm
         copy testchain-medians
     fi
-    eval "export VAL_${token}=\$PIP_${token}"
+    eval "export PIP_${token}=\$VAL_${token}"
 done
 
 # Deploy Multicall
 MULTICALL=$(dappCreate multicall Multicall)
-log "multicall deployed"
+log "MULTICALL=$MULTICALL"
 
 # Deploy Token Faucet
 FAUCET=$(jq -r ".faucet | values" "$CONFIG_FILE")
 if [[ -z "$FAUCET" ]]; then
     FAUCET=$(dappCreate token-faucet RestrictedTokenFaucet "$(seth --to-uint256 "$(seth --to-wei 50 ETH)")")
+    log "FAUCET=$FAUCET"
     if [[ "$DEPLOY_RESTRICTED_FAUCET" == "no" ]]; then
-        seth send "$FAUCET" 'hope(address)' "0x0000000000000000000000000000000000000000"
+        sethSend "$FAUCET" 'hope(address)' "0x0000000000000000000000000000000000000000"
     fi
-    log "token faucet deployed"
 fi
 
 # Deploy ProxyRegistry
 PROXY_REGISTRY=$(jq -r ".proxyRegistry | values" "$CONFIG_FILE")
 if [[ -z "$PROXY_REGISTRY" ]]; then
     PROXY_FACTORY=$(dappCreate dss-proxy-actions DSProxyFactory)
+    log "PROXY_FACTORY=$PROXY_FACTORY"
     PROXY_REGISTRY=$(dappCreate dss-proxy-actions ProxyRegistry "$PROXY_FACTORY")
-    log "proxy-registry deployed"
+    log "PROXY_REGISTRY=$PROXY_REGISTRY"
 else
     PROXY_FACTORY=$(seth storage "$PROXY_REGISTRY" 1)
     PROXY_FACTORY=0x${PROXY_FACTORY:26:66}
@@ -68,7 +70,6 @@ fi
 # shellcheck source=/dev/null
 . "$OUT_DIR/load-fabs-addr-temp"
 rm "$OUT_DIR/load-fabs-addr-temp"
-log "fabs deployed"
 
 # Set the pause delay to 0 in order to make the needed initial configurations
 export MCD_PAUSE_DELAY=0
@@ -96,22 +97,21 @@ export MCD_ESM_PIT
 # shellcheck source=/dev/null
 . "$OUT_DIR/load-core-addr-temp"
 rm "$OUT_DIR/load-core-addr-temp"
-log "core deployed"
 
 # Mint Gov Token, send to the Faucet and set permissions if a new token
 if [[ "$newGovToken" == true ]]; then
-    seth send "$MCD_GOV" 'mint(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
-    seth send "$FAUCET" 'gulp(address)' "$MCD_GOV"
+    sethSend "$MCD_GOV" 'mint(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
+    sethSend "$FAUCET" 'gulp(address)' "$MCD_GOV"
 
     # Use custom authority for the new GOV token
     GOV_GUARD=$(dappCreate mkr-authority MkrAuthority)
+    log "GOV_GUARD=$GOV_GUARD"
 
     # Set GOV_GUARD as authority of MCD_GOV
-    seth send "$MCD_GOV" 'setAuthority(address)' "$GOV_GUARD"
+    sethSend "$MCD_GOV" 'setAuthority(address)' "$GOV_GUARD"
 
     # Allow Flop to mint Gov token
-    seth send "$GOV_GUARD" 'rely(address)' "$MCD_FLOP" 
-    log "gov deployed"
+    sethSend "$GOV_GUARD" 'rely(address)' "$MCD_FLOP"
 fi
 
 # Deploy Collaterals
@@ -128,11 +128,10 @@ for token in $tokens; do
         # shellcheck source=/dev/null
         . "$OUT_DIR/load-ilk-addr-temp"
         rm "$OUT_DIR/load-ilk-addr-temp"
-        log "${token}-${ilk} deployed"
 
         # If the ilk token was created by the previous deployment script call (new token) and it is not ETH, then we can send funds to the Faucet
         if [[ "$token" != "ETH" && "$gemAddr" == "" ]]; then
-            seth send "$(eval echo "\$$token")" 'transfer(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 999000 ETH)")"
+            sethSend "$(eval echo "\$$token")" 'transfer(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 999000 ETH)")"
         fi
         export SKIP_BUILD=true
     done
@@ -140,15 +139,17 @@ done
 
 # Deploy Proxy Actions
 PROXY_ACTIONS=$(dappCreate dss-proxy-actions-optimized DssProxyActions)
+log "PROXY_ACTIONS=$PROXY_ACTIONS"
 PROXY_ACTIONS_END=$(dappCreate dss-proxy-actions-optimized DssProxyActionsEnd)
+log "PROXY_ACTIONS_END=$PROXY_ACTIONS_END"
 PROXY_ACTIONS_DSR=$(dappCreate dss-proxy-actions-optimized DssProxyActionsDsr)
-log "proxy actions deployed"
+log "PROXY_ACTIONS_DSR=$PROXY_ACTIONS_DSR"
 
 # Deploy CdpManager
 CDP_MANAGER=$(dappCreate dss-proxy-actions DssCdpManager "$MCD_VAT")
-log "manager deployed"
+log "CDP_MANAGER=$CDP_MANAGER"
 GET_CDPS=$(dappCreate dss-proxy-actions GetCdps)
-log "getCdps deployed"
+log "GET_CDPS=$GET_CDPS"
 
 SAI_TUB=$(jq -r ".migration.tub | values" "$CONFIG_FILE")
 ethAdapterAddr="$(eval echo "\$$(jq -r ".migration.ethAdapterVarName | values" "$CONFIG_FILE")")"
@@ -161,88 +162,85 @@ if [[ -n "$SAI_TUB" && -n "$ethAdapterAddr" ]]; then
     # shellcheck source=/dev/null
     . "$OUT_DIR/load-ilk-addr-temp"
     rm "$OUT_DIR/load-ilk-addr-temp"
-    log "SAI deployed"
 
     # Set SAI price = 1 USD
-    seth send "$PIP_SAI" 'poke(bytes32)' "$(seth --to-uint256 "$(seth --to-wei 1 ETH)")"
+    sethSend "$PIP_SAI" 'poke(bytes32)' "$(seth --to-uint256 "$(seth --to-wei 1 ETH)")"
 
     # Set SAI pip authority to Proxy Pause
-    seth send "$PIP_SAI" 'setOwner(address)' "$MCD_PAUSE_PROXY"
+    sethSend "$PIP_SAI" 'setOwner(address)' "$MCD_PAUSE_PROXY"
 
     # Deploy ScdMcdMigration
     MIGRATION=$(dappCreate scd-mcd-migration ScdMcdMigration "$SAI_TUB" "$CDP_MANAGER" "$MCD_JOIN_SAI" "$ethAdapterAddr" "$MCD_JOIN_DAI")
+    log "MIGRATION=$MIGRATION"
 
     # Rely Migration contract to access the SAI Adapter
-    seth send "$MCD_JOIN_SAI" 'rely(address)' "$MIGRATION"
+    sethSend "$MCD_JOIN_SAI" 'rely(address)' "$MIGRATION"
     # Rely Pause Proxy contract to access the SAI Adapter
-    seth send "$MCD_JOIN_SAI" 'rely(address)' "$MCD_PAUSE_PROXY"
+    sethSend "$MCD_JOIN_SAI" 'rely(address)' "$MCD_PAUSE_PROXY"
     # Deny deployer to access the SAI Adapter
-    seth send "$MCD_JOIN_SAI" 'deny(address)' "$ETH_FROM"
+    sethSend "$MCD_JOIN_SAI" 'deny(address)' "$ETH_FROM"
 
-    seth send "$MCD_DEPLOY" 'releaseAuthFlip(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "SAI")")"
-    log "auth removed for SAI"
+    sethSend "$MCD_DEPLOY" 'releaseAuthFlip(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "SAI")")"
 
     # Deploy MigrationProxyActions to use migrate function through DSProxy
     MIGRATION_PROXY_ACTIONS=$(dappCreate scd-mcd-migration MigrationProxyActions)
+    log "MIGRATION_PROXY_ACTIONS=$MIGRATION_PROXY_ACTIONS"
 fi
 
 # As all initial collaterals were deployed, we can remove authority of the deployment contract from the core contracts
-seth send "$MCD_DEPLOY" 'releaseAuth()'
-log "general auth removed"
+sethSend "$MCD_DEPLOY" 'releaseAuth()'
 for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     for ilk in $ilks; do
         # Rely Pause Proxy contract to access the Adapter
-        seth send "$(eval echo "\$MCD_JOIN_${token}_${ilk}")" 'rely(address)' "$MCD_PAUSE_PROXY"
+        sethSend "$(eval echo "\$MCD_JOIN_${token}_${ilk}")" 'rely(address)' "$MCD_PAUSE_PROXY"
         # Deny deployer to access the Adapter
-        seth send "$(eval echo "\$MCD_JOIN_${token}_${ilk}")" 'deny(address)' "$ETH_FROM"
+        sethSend "$(eval echo "\$MCD_JOIN_${token}_${ilk}")" 'deny(address)' "$ETH_FROM"
 
-        seth send "$MCD_DEPLOY" 'releaseAuthFlip(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
+        sethSend "$MCD_DEPLOY" 'releaseAuthFlip(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
     done
-
-    log "auth removed for ${token}-${ilk}"
 done
 
 # Deploy GovActions - Library functions for the Pause
 MCD_GOV_ACTIONS=$(dappCreate dss-deploy GovActions)
-log "gov actions deployed"
+log "MCD_GOV_ACTIONS=$MCD_GOV_ACTIONS"
 
 unset SKIP_BUILD
 
 # Deploy Pause Proxy Actions (support contract for executing initial set up of the dss system)
 PROXY_PAUSE_ACTIONS=$(dappCreate dss-deploy-pause-proxy-actions DssDeployPauseProxyActions)
-log "pause actions deployed"
+log "PROXY_PAUSE_ACTIONS=$PROXY_PAUSE_ACTIONS"
 
 # Get a proxy for the deployer address (create if didn't previously exist)
 PROXY_DEPLOYER=0x$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$ETH_FROM")
 if [[ "$PROXY_DEPLOYER" == "0x0000000000000000000000000000000000000000" ]]; then
-    seth send "$PROXY_REGISTRY" 'build()'
-    log "proxy deployer deployed"
+    sethSend "$PROXY_REGISTRY" 'build()'
     PROXY_DEPLOYER=0x"$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$ETH_FROM")"
+    log "PROXY_DEPLOYER=$PROXY_DEPLOYER"
 fi
 
 # Set the proxy address as root of the roles (in order to be able to do all the variables set up)
-seth send "$MCD_ADM" 'setRootUser(address,bool)' "$PROXY_DEPLOYER" true
+sethSend "$MCD_ADM" 'setRootUser(address,bool)' "$PROXY_DEPLOYER" true
 
 # Deploy chief as new $MCD_ADM if there isn't an authority in the config file
 MCD_ADM=$(jq -r ".authority | values" "$CONFIG_FILE")
 if [[ -z "$MCD_ADM" ]]; then
     MCD_IOU=$(dappCreate vote-proxy DSToken "$(seth --to-bytes32 "$(seth --from-ascii "IOU")")")
-    log "IOU token deployed"
+    log "MCD_IOU=$MCD_IOU"
 
     MCD_ADM=$(dappCreate vote-proxy DSChief "$MCD_GOV" "$MCD_IOU" 5)
-    seth send "$MCD_IOU" 'setOwner(address)' "${MCD_ADM}"
-    log "chief deployed"
+    log "MCD_ADM=$MCD_ADM"
+    sethSend "$MCD_IOU" 'setOwner(address)' "${MCD_ADM}"
 
     # Deploy Vote Proxy Factory
     VOTE_PROXY_FACTORY=$(dappCreate vote-proxy VoteProxyFactory "$MCD_ADM")
-    log "vote proxy factory deployed"
+    log "VOTE_PROXY_FACTORY=$VOTE_PROXY_FACTORY"
 else
     copy vote-proxy
 fi
 
 if [[ -n "$GOV_GUARD" ]]; then
-    seth send "$GOV_GUARD" 'setRoot(address)' "$MCD_PAUSE_PROXY"
+    sethSend "$GOV_GUARD" 'setRoot(address)' "$MCD_PAUSE_PROXY"
 fi
 
 for token in $tokens; do

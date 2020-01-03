@@ -10,11 +10,11 @@ loadAddresses
 
 { test "$1" != "flap" && test "$1" != "flop"; } && exit 1
 
+log "SET $(echo "$1" | tr '[:lower:]' '[:upper:]') TTL:"
+
 # Set ttl
 ttl=$(jq -r ".$1_ttl | values" "$CONFIG_FILE")
 if [[ "$ttl" != "" ]]; then
     calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$(eval echo "\$MCD_$(echo "$1" | tr '[:lower:]' '[:upper:]')")" "$(seth --to-bytes32 "$(seth --from-ascii "ttl")")" "$ttl")"
-    seth send "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+    sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi
-
-log "SET $(echo "$1" | tr '[:lower:]' '[:upper:]') TTL COMPLETED SUCCESSFULLY"
