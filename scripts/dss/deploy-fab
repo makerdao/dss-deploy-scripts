@@ -3,8 +3,6 @@
 # shellcheck source=bin/lib/common.sh
 . "$LIB_DIR/common.sh"
 
-export ETH_FROM=${ETH_FROM:-$(seth rpc eth_coinbase)}
-
 export SETH_ASYNC=yes
 
 ETH_NONCE=$(seth nonce "$ETH_FROM")

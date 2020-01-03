@@ -3,11 +3,11 @@
 # shellcheck source=bin/lib/common.sh
 . "$LIB_DIR/common.sh"
 
-export ETH_FROM=${ETH_FROM:-$(seth rpc eth_coinbase)}
-
-test -z "$REP" && REP=$(dappCreate dss-deploy REP "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")")
-log "REP=$REP"
-export REP
+if [[ -z "$REP" ]]; then
+    REP=$(dappCreate dss-deploy REP "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")")
+    log "REP=$REP"
+    export REP
+fi
 
 # shellcheck source=/dev/null
 source "$LIBEXEC_DIR/dss/deploy-ilk" "REP" "${1:-"A"}" "GemJoin"
