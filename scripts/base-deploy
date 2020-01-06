@@ -156,6 +156,9 @@ ethAdapterAddr="$(eval echo "\$$(jq -r ".migration.ethAdapterVarName | values" "
 if [[ -n "$SAI_TUB" && -n "$ethAdapterAddr" ]]; then
     SAI="0x$(seth call "$SAI_TUB" 'sai()(address)')"
     export SAI
+    PIP_SAI=$(dappCreate osm DSValue)
+    log "PIP_SAI=$PIP_SAI"
+    export PIP_SAI
 
     # shellcheck source=/dev/null
     "$LIBEXEC_DIR/dss/deploy-ilk-sai"
