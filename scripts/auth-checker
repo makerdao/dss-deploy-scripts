@@ -186,7 +186,7 @@ if [[ -n "$MIGRATION" ]]; then
 fi
 
 # faucet
-faucet=$(jq -r ".faucet | values" "$CONFIG_FILE")
+faucet=$(jq -r ".import.faucet | values" "$CONFIG_FILE")
 if [[ -z "$faucet" ]]; then
     checkRely "FAUCET" "DEPLOYER" "AUTHED"
 fi
@@ -222,7 +222,7 @@ fi
 
 # osms and medians whitelist
 for token in $tokens; do
-    pipAddr=$(jq -r ".tokens.${token} | .pip | values" "$CONFIG_FILE")
+    pipAddr=$(jq -r ".tokens.${token} | .import.pip | values" "$CONFIG_FILE")
     type=$(jq -r ".tokens.${token} | .pipDeploy | .type | values" "$CONFIG_FILE")
     osmDelay=$(jq -r ".tokens.${token} | .pipDeploy | .osmDelay | values" "$CONFIG_FILE")
 

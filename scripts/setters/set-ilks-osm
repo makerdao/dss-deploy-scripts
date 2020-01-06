@@ -12,7 +12,7 @@ log "SET ILKS OSM:"
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
-    pipAddr=$(jq -r ".tokens.${token} | .pip | values" "$CONFIG_FILE")
+    pipAddr=$(jq -r ".tokens.${token} | .import.pip | values" "$CONFIG_FILE")
     if [[ "$pipAddr" == "" ]]; then
         osmDelay=$(jq -r ".tokens.${token} | .pipDeploy | .osmDelay" "$CONFIG_FILE")
         if [[ "$osmDelay" -gt 0 ]]; then

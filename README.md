@@ -59,9 +59,8 @@ Below is the expected structure of such a config file:
 ```
 {
   "description": "",
-  "defaults": {},
-  "roles": ["CREATOR"],
   "omniaFromAddr": "<Address being used by Omnia Service (only for testchain)>",
+  "omniaAmount": "<Amount in ETH to be sent to Omnia Address (only for testchain)>",
   "pauseDelay": "<Delay of Pause contract in seconds>",
   "vat_line": "<General debt ceiling in DAI unit>",
   "vow_wait": "<Flop delay in seconds>",
@@ -81,13 +80,24 @@ Below is the expected structure of such a config file:
   "flop_pad": "<Increase of lot size after `tick` in percentage (e.g. 50)>",
   "flop_ttl": "<Max time between bids in seconds>",
   "flop_tau": "<Max auction duration in seconds>",
-  "gov": "<GOV token address (if there is an existing one to import)>",
-  "authority": "<Authority address (if there is an existing one to import)>",
-  "proxyRegistry": "<Proxy Registry address (if there is an existing one to import)>",
-  "faucet": "<Faucet address (if there is an existing one to import)>",
+  import: {
+    "gov": "<GOV token address (if there is an existing one to import)>",
+    "authority": "<Authority address (if there is an existing one to import)>",
+    "proxyRegistry": "<Proxy Registry address (if there is an existing one to import)>",
+    "faucet": "<Faucet address (if there is an existing one to import)>"
+  },
+  "migration": {
+    "tub": "<SCD tub address>",
+    "ethAdapterVarName": "<Name of ETH adapter being used by the migration contract (e.g. MCD_JOIN_ETH_A)>",
+    "line": "<SAI Collateral Debt ceiling in DAI unit>"
+  },
   "tokens": {
     "<ETH|COL>": {
-      "pip": {
+      "import": {
+        "gem": "<Gem token address (if there is an existing one to import)>",
+        "pip": "<Price feed address (if there is an existing one to import)>"
+      },
+      "pipDeploy": { // Only used if there is not a pip imported
         "osmDelay": "<Time in seconds for the OSM delay>",
         "type": "<median|value>",
         "price": "<Initial oracle price (only if type == "value")>",

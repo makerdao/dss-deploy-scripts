@@ -19,10 +19,12 @@
   "flop_pad": "20",
   "flop_ttl": "600",
   "flop_tau": "259200",
-  "gov": "0xaaf64bfcc32d0f15873a02163e7e500671a4ffcd",
-  "authority": "0xbbffc76e94b34f72d96d054b31f6424249c1337d",
-  "proxyRegistry": "0x64a436ae831c1672ae81f674cab8b6775df3475c",
-  "faucet": "0x94598157fcf0715c3bc9b4a35450cce82ac57b20",
+  "import": {
+    "gov": "0xaaf64bfcc32d0f15873a02163e7e500671a4ffcd",
+    "authority": "0xbbffc76e94b34f72d96d054b31f6424249c1337d",
+    "proxyRegistry": "0x64a436ae831c1672ae81f674cab8b6775df3475c",
+    "faucet": "0x94598157fcf0715c3bc9b4a35450cce82ac57b20"
+  },
   "migration": {
     "tub": "0xa71937147b55deb8a530c7229c442fd3f31b7db2",
     "ethAdapterVarName": "MCD_JOIN_ETH_A",
@@ -30,8 +32,10 @@
   },
   "tokens": {
     "ETH": {
-      "gem": "0xd0a1e359811322d97991e03f863a0c30c2cf029c",
-      "pip": "0x75dd74e8afe8110c8320ed397cccff3b8134d981",
+      "import": {
+        "gem": "0xd0a1e359811322d97991e03f863a0c30c2cf029c",
+        "pip": "0x75dd74e8afe8110c8320ed397cccff3b8134d981"
+      },
       "ilks": {
         "A": {
           "mat": "150",
@@ -47,8 +51,10 @@
       }
     },
     "BAT": {
-      "gem": "0x9f8cfb61d3b2af62864408dd703f9c3beb55dff7",
-      "pip": "0x5c40c9eb35c76069fa4c3a00ea59fac6ffa9c113",
+      "import": {
+        "gem": "0x9f8cfb61d3b2af62864408dd703f9c3beb55dff7",
+        "pip": "0x5c40c9eb35c76069fa4c3a00ea59fac6ffa9c113"
+      },
       "ilks": {
         "A": {
           "mat": "150",

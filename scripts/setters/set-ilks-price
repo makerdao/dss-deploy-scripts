@@ -13,7 +13,7 @@ log "SET ILKS PRICE:"
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     # If it is a value set the price
-    pipAddr=$(jq -r ".tokens.${token} | .pip | values" "$CONFIG_FILE")
+    pipAddr=$(jq -r ".tokens.${token} | .import.pip | values" "$CONFIG_FILE")
     if [[ "$pipAddr" == "" ]]; then
         type=$(jq -r ".tokens.${token} | .pipDeploy | .type | values" "$CONFIG_FILE")
         if [[ "$type" == "value" ]]; then
