@@ -419,16 +419,16 @@
         "url": "https://github.com/makerdao/testchain-medians"
       }
     },
-    "token-faucet_8d011a9": {
+    "token-faucet_34a44c5": {
       "deps": {
         "ds-test": "ds-test_a4e4005",
         "ds-token": "ds-token_cee36a1"
       },
       "name": "token-faucet",
       "repo": {
-        "name": "token-faucet-8d011a9",
+        "name": "token-faucet-34a44c5",
         "ref": "HEAD",
-        "rev": "8d011a96092c49868c0b4b91dc1b70e636d57eba",
+        "rev": "34a44c5314d9f1d8dce346d4853eb78823fc1061",
         "url": "https://github.com/makerdao/token-faucet"
       }
     },
@@ -457,7 +457,7 @@
       "osm": "osm_0399d52",
       "scd-mcd-migration": "scd-mcd-migration_78c3fc0",
       "testchain-medians": "testchain-medians_7f457c3",
-      "token-faucet": "token-faucet_8d011a9",
+      "token-faucet": "token-faucet_34a44c5",
       "vote-proxy": "vote-proxy_3c4f8dd"
     },
     "name": "dss-deploy-scripts"
