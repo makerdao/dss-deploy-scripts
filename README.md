@@ -53,6 +53,7 @@ But you can also configure the below variables manually:
 ### Chain configuration
 
 Each supported `$NETWORK` has a default config file at `deploy-$NETWORK.json`.
+Also a custom file can be passed via param with flag `-f` (e.g. `./deploy-testchain.sh -f <CONFIG_FILE_PATH>`)
 
 Below is the expected structure of such a config file:
 
@@ -125,16 +126,17 @@ Below is the expected structure of such a config file:
 
 ## Deployment
 
-Currently, 2 networks are supported:
+Currently, 3 networks are supported:
 
 * a local testchain (e.g. `dapp testnet`)
 * Kovan
+* Mainnet
 
 ### Local testchain
 
 `./deploy-testchain.sh`
 
-It is possible to pass a unique parameter to define a testing scenario (e.g. `./deploy-testchain.sh crash-bite`)
+It is possible to pass a unique parameter to define a testing scenario via flag `-c` (e.g. `./deploy-testchain.sh -c crash-bite`)
 
 The following cases are currently available:
 
@@ -172,7 +174,7 @@ nix-shell --pure
 You can even run deploy scripts without having to clone this repo:
 
 ```
-nix run -f https://github.com/makerdao/dss-deploy-scripts/tarball/master -c deploy-testchain.sh
+IN_NIX_SHELL=yes nix run -f https://github.com/makerdao/dss-deploy-scripts/tarball/master -c deploy-testchain.sh
 ```
 
 Dependencies are managed through a central repository referenced in

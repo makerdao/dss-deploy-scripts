@@ -17,9 +17,13 @@ DAPP_LIB=${DAPP_LIB:-$BIN_DIR/contracts}
 writeConfigFor() {
     # Clean out directory
     rm -rf "$OUT_DIR" && mkdir "$OUT_DIR"
-    # If environment variable exists bring the values from there, otherwise use the config file
-    if [[ -n "$TDDS_CONFIG_VALUES" ]]; then
+    # If config file is passed via param used that one
+    if [[ -n "$CONFIG" ]]; then
+        cp "$CONFIG" "$CONFIG_FILE"
+    # If environment variable exists bring the values from there
+    elif [[ -n "$TDDS_CONFIG_VALUES" ]]; then
         echo "$TDDS_CONFIG_VALUES" > "$CONFIG_FILE"
+    # otherwise use the default config file
     else
         cp "$CONFIG_DIR/deploy-$1.json" "$CONFIG_FILE"
     fi
