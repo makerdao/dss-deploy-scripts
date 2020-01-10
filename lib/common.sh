@@ -3,8 +3,6 @@
 # Set fail flags
 set -eo pipefail
 
-# Fix config dir
-CONFIG_DIR="${CONFIG_DIR}/config"
 DAPP_LIB=${DAPP_LIB:-$BIN_DIR/contracts}
 
 # Declare functions

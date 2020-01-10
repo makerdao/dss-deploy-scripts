@@ -12,9 +12,10 @@ fi
 setCase() {
     export CASE="$LIBEXEC_DIR/cases/$1"
     CASE_NAME="$1"
-    [[ $# -gt 0 && ! -f "$CASE" ]] && exit 1
+    [[ $# -gt 0 && ! -f "$CASE" ]] && echo "Invalid case" && exit 1
 }
 
+OPTIND=2
 while getopts "c:f:" opt; do
     case "$opt" in
         c) setCase "$OPTARG";;
@@ -48,8 +49,9 @@ fi
 
 "$LIBEXEC_DIR"/base-deploy |& tee "$OUT_DIR/dss_$1.log"
 
+NETWORK=$(echo "$1" | tr '[:lower:]' '[:upper:]')
 if [[ -f "$CASE" ]]; then
-    log "${1} DEPLOYMENT + ${CASE_NAME} COMPLETED SUCCESSFULLY"
+    log "${NETWORK} DEPLOYMENT + ${CASE_NAME} COMPLETED SUCCESSFULLY"
 else
-    log "${1} DEPLOYMENT COMPLETED SUCCESSFULLY"
+    log "${NETWORK} DEPLOYMENT COMPLETED SUCCESSFULLY"
 fi

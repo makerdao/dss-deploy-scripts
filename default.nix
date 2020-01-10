@@ -55,9 +55,10 @@ in makerScriptPackage {
 
   # Specify files to add to build environment
   src = lib.sourceByRegex ./. [
-    ".*dss-deploy.*"
-    ".*lib.*"
-    ".*config.*"
+    "bin" "bin/.*"
+    "lib" "lib/.*"
+    "libexec" "libexec/.*"
+    "config" "config/.*"
   ];
 
   solidityPackages =
