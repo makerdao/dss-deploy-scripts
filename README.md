@@ -52,8 +52,8 @@ But you can also configure the below variables manually:
 
 ### Chain configuration
 
-Each supported `$NETWORK` has a default config file at `deploy-$NETWORK.json`.
-Also a custom file can be passed via param with flag `-f` (e.g. `./deploy-testchain.sh -f <CONFIG_FILE_PATH>`)
+Some networks have a default config file at `config/<NETWORK>.json`.
+Also a custom file can be passed via param with flag `-f` allowing to execute the script in any network (e.g. `dss-deploy testchain -f <CONFIG_FILE_PATH>`)
 
 Below is the expected structure of such a config file:
 
@@ -124,41 +124,50 @@ Below is the expected structure of such a config file:
 }
 ```
 
-## Deployment
+## Default config files
 
-Currently, 3 networks are supported:
+Currently, there are default config files for 3 networks:
 
 * a local testchain (e.g. `dapp testnet`)
 * Kovan
 * Mainnet
 
-### Local testchain
+### Deploy on local testchain with default config file
 
-`./deploy-testchain.sh`
+`dss-deploy testchain`
 
-It is possible to pass a unique parameter to define a testing scenario via flag `-c` (e.g. `./deploy-testchain.sh -c crash-bite`)
+It is possible to pass a unique parameter to define a testing scenario via `-c` flag (e.g. `dss-deploy testchain -c crash-bite`)
 
-The following cases are currently available:
+The only case currently available is:
 
 - `crash-bite`
 
-### Kovan
+### Deploy on Kovan with default config file
 
-`./deploy-kovan.sh`
+`dss-deploy kovan`
+
+### Deploy on Mainnet with default config file
+
+`dss-deploy main`
+
+### Deploy on any network passing a custom config file
+
+`dss-deploy <NETWORK> -f <CONFIG_FILE_PATH>`
 
 ### Output
 
 Successful deployments save their output to the following files:
 
 - `out/addresses.json`: addresses of all deployed contracts
-- `out/abi/`: JSON representation of the ABIs of all deployed contracts
 - `out/config.json`: copy of the configuration file used for the deployment
+- `out/abi/`: JSON representation of the ABIs of all deployed contracts
+- `out/bin/`: .bin and .bin-runtime files of all deployed contracts
+- `out/meta/`: meta.json files of all deployed contracts
+- `out/dss-<NETWORK>.log`: output log of deployment
 
 ### Helper scripts
 
-The [`auth-checker`](./scripts/auth-checker) script loads the addresses
-in `out/addresses.json` and verifies that the deployed authorizations match what
-is expected.
+The `auth-checker` script loads the addresses from `out/addresses.json` and the config file from `out/config.json` and verifies that the deployed authorizations match what is expected.
 
 ## Nix
 
@@ -174,7 +183,7 @@ nix-shell --pure
 You can even run deploy scripts without having to clone this repo:
 
 ```
-IN_NIX_SHELL=yes nix run -f https://github.com/makerdao/dss-deploy-scripts/tarball/master -c deploy-testchain.sh
+IN_NIX_SHELL=yes nix run -f https://github.com/makerdao/dss-deploy-scripts/tarball/master -c dss-deploy testchain
 ```
 
 Dependencies are managed through a central repository referenced in
