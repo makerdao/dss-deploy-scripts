@@ -183,7 +183,7 @@ nix-shell --pure
 You can even run deploy scripts without having to clone this repo:
 
 ```
-IN_NIX_SHELL=yes nix run -f https://github.com/makerdao/dss-deploy-scripts/tarball/master -c dss-deploy testchain
+nix run -f https://github.com/makerdao/dss-deploy-scripts/tarball/master -c dss-deploy testchain
 ```
 
 Dependencies are managed through a central repository referenced in

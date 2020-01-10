@@ -19,6 +19,8 @@ in mkShell {
     procps
   ];
 
+  NIX_RUNNING="yes";
+
   shellHook = ''
     export NIX_SSL_CERT_FILE=${cacert}/etc/ssl/certs/ca-bundle.crt
 
@@ -27,6 +29,5 @@ in mkShell {
     }
     export -f setup-env
     setup-env || echo Re-run setup script with \'setup-env\'
-    export IN_NIX_SHELL=yes
   '';
 }

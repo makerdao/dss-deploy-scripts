@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [[ "$IN_NIX_SHELL" != "yes" ]]; then
+if [[ "$NIX_RUNNING" != "yes" ]]; then
     echo "This command must be run via nix-shell"
     exit 1
 fi
