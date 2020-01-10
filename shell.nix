@@ -19,8 +19,6 @@ in mkShell {
     procps
   ];
 
-  NIX_RUNNING="yes";
-
   shellHook = ''
     export NIX_SSL_CERT_FILE=${cacert}/etc/ssl/certs/ca-bundle.crt
 

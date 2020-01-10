@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
 
-if [[ "$NIX_RUNNING" != "yes" ]]; then
-    echo "This command must be run via nix-shell"
-    exit 1
-fi
 if [[ -z "$BIN_DIR" ]]; then
-    echo "This command must be called without \"./\""
+    echo "Just execute \"dss-deploy <NETWORK>\" via nix"
     exit 1
 fi
 
