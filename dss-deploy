@@ -31,6 +31,8 @@ test -z "$1" && echo "Missing network" && exit 1
 RPC_CHAIN="$(seth chain)"
 if [[ "$RPC_CHAIN" == "unknown" ]]; then
     RPC_CHAIN="testchain"
+elif [[ "$RPC_CHAIN" == "ethlive" ]]; then
+    RPC_CHAIN="main"
 fi
 
 test "$RPC_CHAIN" == "$1" || (echo "Network doesn't match with current node" && exit 1)
