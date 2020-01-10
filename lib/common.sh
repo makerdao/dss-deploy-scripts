@@ -3,12 +3,8 @@
 # Set fail flags
 set -eo pipefail
 
-# Set internal paths
-BIN_DIR=${BIN_DIR:-$(cd "${BASH_SOURCE[0]%/*}/.."&&pwd)}
-LIB_DIR=${LIB_DIR:-$BIN_DIR/lib}
-LIBEXEC_DIR=${LIBEXEC_DIR:-$BIN_DIR/scripts}
-CONFIG_DIR=${CONFIG_DIR:-$BIN_DIR}
-
+# Fix config dir
+CONFIG_DIR="${CONFIG_DIR}/config"
 DAPP_LIB=${DAPP_LIB:-$BIN_DIR/contracts}
 
 # Declare functions
@@ -25,7 +21,7 @@ writeConfigFor() {
         echo "$TDDS_CONFIG_VALUES" > "$CONFIG_FILE"
     # otherwise use the default config file
     else
-        cp "$CONFIG_DIR/deploy-$1.json" "$CONFIG_FILE"
+        cp "$CONFIG_DIR/$1.json" "$CONFIG_FILE"
     fi
 }
 

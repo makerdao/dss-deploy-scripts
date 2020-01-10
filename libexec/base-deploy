@@ -134,7 +134,6 @@ for token in $tokens; do
         if [[ "$token" != "ETH" && "$gemAddr" == "" ]]; then
             sethSend "$(eval echo "\$$token")" 'transfer(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 999000 ETH)")"
         fi
-        export SKIP_BUILD=true
     done
 done
 
@@ -214,8 +213,6 @@ done
 # Deploy GovActions - Library functions for the Pause
 MCD_GOV_ACTIONS=$(dappCreate dss-deploy GovActions)
 log "MCD_GOV_ACTIONS=$MCD_GOV_ACTIONS"
-
-unset SKIP_BUILD
 
 # Deploy Pause Proxy Actions (support contract for executing initial set up of the dss system)
 PROXY_PAUSE_ACTIONS=$(dappCreate dss-deploy-pause-proxy-actions DssDeployPauseProxyActions)

@@ -55,18 +55,13 @@ in makerScriptPackage {
 
   # Specify files to add to build environment
   src = lib.sourceByRegex ./. [
-    "deploy-.*"
-    ".*\.json"
-    ".*scripts.*"
+    ".*dss-deploy.*"
     ".*lib.*"
+    ".*config.*"
   ];
 
   solidityPackages =
     (builtins.attrValues packages)
     ++ [ dss-proxy-actions-optimized ]
     ++ [ dss-deploy-optimized ];
-
-  scriptEnv = {
-    SKIP_BUILD = true;
-  };
 }
