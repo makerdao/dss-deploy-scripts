@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# shellcheck source=bin/lib/common.sh
+# shellcheck source=lib/common.sh
 . "$LIB_DIR/common.sh"
 
 export SETH_ASYNC=yes

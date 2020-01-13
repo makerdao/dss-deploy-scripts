@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# shellcheck source=bin/lib/common.sh
+# shellcheck source=lib/common.sh
 . "$LIB_DIR/common.sh"
 
 if [[ -z "$DGD" ]]; then
@@ -9,5 +9,5 @@ if [[ -z "$DGD" ]]; then
     export DGD
 fi
 
-# shellcheck source=/dev/null
-source "$LIBEXEC_DIR/dss/deploy-ilk" "DGD" "${1:-"A"}" "GemJoin3" 9
+# shellcheck source=libexec/dss/deploy-ilk
+. "$LIBEXEC_DIR/dss/deploy-ilk" "DGD" "${1:-"A"}" "GemJoin3" 9

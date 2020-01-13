@@ -67,7 +67,6 @@ else
 fi
 
 # Deploy Fabs
-# shellcheck source=/dev/null
 "$LIBEXEC_DIR/dss/deploy-fab"
 # shellcheck source=/dev/null
 . "$OUT_DIR/load-fabs-addr-temp"
@@ -94,7 +93,6 @@ MCD_ESM_PIT="$(jq -r ".esm_pit | values" "$CONFIG_FILE")"
 export MCD_ESM_PIT
 
 # Deploy MCD Core Contratcs
-# shellcheck source=/dev/null
 "$LIBEXEC_DIR/dss/deploy-core"
 # shellcheck source=/dev/null
 . "$OUT_DIR/load-core-addr-temp"
@@ -124,7 +122,6 @@ for token in $tokens; do
     eval "export ${token}=${gemAddr}"
 
     for ilk in $ilks; do
-        # shellcheck source=/dev/null
         "$LIBEXEC_DIR/dss/deploy-ilk-$(echo "$token" | tr '[:upper:]' '[:lower:]')" "$ilk"
         # shellcheck source=/dev/null
         . "$OUT_DIR/load-ilk-addr-temp"
@@ -166,7 +163,6 @@ if [[ -n "$SAI_TUB" && -n "$ethAdapterAddr" ]]; then
     log "PIP_SAI=$PIP_SAI"
     export PIP_SAI
 
-    # shellcheck source=/dev/null
     "$LIBEXEC_DIR/dss/deploy-ilk-sai"
     # shellcheck source=/dev/null
     . "$OUT_DIR/load-ilk-addr-temp"
