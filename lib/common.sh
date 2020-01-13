@@ -15,8 +15,8 @@ writeConfigFor() {
     if [[ -n "$CONFIG" ]]; then
         cp "$CONFIG" "$CONFIG_FILE"
     # If environment variable exists bring the values from there
-    elif [[ -n "$TDDS_CONFIG_VALUES" ]]; then
-        echo "$TDDS_CONFIG_VALUES" > "$CONFIG_FILE"
+    elif [[ -n "$DDS_CONFIG_VALUES" ]]; then
+        echo "$DDS_CONFIG_VALUES" > "$CONFIG_FILE"
     # otherwise use the default config file
     else
         cp "$CONFIG_DIR/$1.json" "$CONFIG_FILE"

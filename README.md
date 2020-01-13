@@ -52,8 +52,10 @@ But you can also configure the below variables manually:
 
 ### Chain configuration
 
-Some networks have a default config file at `config/<NETWORK>.json`.
-Also a custom file can be passed via param with flag `-f` allowing to execute the script in any network (e.g. `dss-deploy testchain -f <CONFIG_FILE_PATH>`)
+Some networks have a default config file at `config/<NETWORK>.json`, which will be used if non custom config values are set.
+A config file can be passed via param with flag `-f` allowing to execute the script in any network (e.g. `dss-deploy testchain -f <CONFIG_FILE_PATH>`).
+As other option, custom config values can be loaded as an environment variable called `DDS_CONFIG_VALUES`.
+File passed by parameter overwrites the environment variable.
 
 Below is the expected structure of such a config file:
 
@@ -136,7 +138,7 @@ Currently, there are default config files for 3 networks:
 
 `dss-deploy testchain`
 
-It is possible to pass a unique parameter to define a testing scenario via `-c` flag (e.g. `dss-deploy testchain -c crash-bite`)
+It is possible to pass a value to define a testing scenario via `-c` flag (e.g. `dss-deploy testchain -c crash-bite`)
 
 The only case currently available is:
 
