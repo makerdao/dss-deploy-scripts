@@ -5,7 +5,16 @@ set -eo pipefail
 
 DAPP_LIB=${DAPP_LIB:-$BIN_DIR/contracts}
 
-# Declare functions
+export NONCE_TMP_FILE
+clean() {
+    test -f "$NONCE_TMP_FILE" && rm "$NONCE_TMP_FILE"
+}
+[[ -z $NONCE_TMP_FILE ]] && {
+    nonce=$(seth nonce "$ETH_FROM")
+    NONCE_TMP_FILE=$(mktemp)
+    echo "$nonce" > "$NONCE_TMP_FILE"
+    trap clean EXIT
+}
 
 # arg: the name of the config file to write
 writeConfigFor() {
@@ -94,14 +103,18 @@ dappCreate() {
     set -e
     local lib; lib=$1
     local class; class=$2
-    DAPP_OUT="$DAPP_LIB/$lib/out" dapp create "$class" "${@:3}"
+    ETH_NONCE=$(cat "$NONCE_TMP_FILE")
+    DAPP_OUT="$DAPP_LIB/$lib/out" ETH_NONCE="$ETH_NONCE" dapp create "$class" "${@:3}"
+    echo $((ETH_NONCE + 1)) > "$NONCE_TMP_FILE"
     copy "$lib"
 }
 
 sethSend() {
     set -e
     echo "seth send $*"
-    seth send "$@"
+    ETH_NONCE=$(cat "$NONCE_TMP_FILE")
+    ETH_NONCE="$ETH_NONCE" seth send "$@"
+    echo $((ETH_NONCE + 1)) > "$NONCE_TMP_FILE"
     echo ""
 }
 

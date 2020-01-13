@@ -5,21 +5,20 @@
 
 export SETH_ASYNC=yes
 
-ETH_NONCE=$(seth nonce "$ETH_FROM")
-VAT_FABtx=$(ETH_NONCE=$ETH_NONCE dappCreate dss-deploy VatFab)
-JUG_FABtx=$(ETH_NONCE=$((ETH_NONCE + 1)) dappCreate dss-deploy JugFab)
-VOW_FABtx=$(ETH_NONCE=$((ETH_NONCE + 2)) dappCreate dss-deploy VowFab)
-CAT_FABtx=$(ETH_NONCE=$((ETH_NONCE + 3)) dappCreate dss-deploy CatFab)
-DAI_FABtx=$(ETH_NONCE=$((ETH_NONCE + 4)) dappCreate dss-deploy DaiFab)
-MCD_JOIN_FABtx=$(ETH_NONCE=$((ETH_NONCE + 5)) dappCreate dss-deploy DaiJoinFab)
-FLAP_FABtx=$(ETH_NONCE=$((ETH_NONCE + 6)) dappCreate dss-deploy FlapFab)
-FLOP_FABtx=$(ETH_NONCE=$((ETH_NONCE + 7)) dappCreate dss-deploy FlopFab)
-FLIP_FABtx=$(ETH_NONCE=$((ETH_NONCE + 8)) dappCreate dss-deploy FlipFab)
-SPOT_FABtx=$(ETH_NONCE=$((ETH_NONCE + 9)) dappCreate dss-deploy SpotFab)
-POT_FABtx=$(ETH_NONCE=$((ETH_NONCE + 10)) dappCreate dss-deploy PotFab)
-END_FABtx=$(ETH_NONCE=$((ETH_NONCE + 11)) dappCreate dss-deploy EndFab)
-ESM_FABtx=$(ETH_NONCE=$((ETH_NONCE + 12)) dappCreate dss-deploy ESMFab)
-PAUSE_FABtx=$(ETH_NONCE=$((ETH_NONCE + 13)) dappCreate dss-deploy PauseFab)
+VAT_FABtx=$(dappCreate dss-deploy VatFab)
+JUG_FABtx=$(dappCreate dss-deploy JugFab)
+VOW_FABtx=$(dappCreate dss-deploy VowFab)
+CAT_FABtx=$(dappCreate dss-deploy CatFab)
+DAI_FABtx=$(dappCreate dss-deploy DaiFab)
+MCD_JOIN_FABtx=$(dappCreate dss-deploy DaiJoinFab)
+FLAP_FABtx=$(dappCreate dss-deploy FlapFab)
+FLOP_FABtx=$(dappCreate dss-deploy FlopFab)
+FLIP_FABtx=$(dappCreate dss-deploy FlipFab)
+SPOT_FABtx=$(dappCreate dss-deploy SpotFab)
+POT_FABtx=$(dappCreate dss-deploy PotFab)
+END_FABtx=$(dappCreate dss-deploy EndFab)
+ESM_FABtx=$(dappCreate dss-deploy ESMFab)
+PAUSE_FABtx=$(dappCreate dss-deploy PauseFab)
 
 export SETH_ASYNC=no
 
@@ -67,7 +66,6 @@ log "POT_FAB=$POT_FAB"
 log "END_FAB=$END_FAB"
 log "ESM_FAB=$ESM_FAB"
 log "PAUSE_FAB=$VAT_FAB"
-
 
 cat > "$OUT_DIR/load-fabs-addr-temp" <<EOF
 #!/bin/bash
