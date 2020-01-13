@@ -27,6 +27,5 @@ in mkShell {
     }
     export -f setup-env
     setup-env || echo Re-run setup script with \'setup-env\'
-    export IN_NIX_SHELL=yes
   '';
 }

@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+if [[ -z "$BIN_DIR" ]]; then
+    echo "Just execute \"dss-deploy <NETWORK>\" via nix"
+    exit 1
+fi
+
+setCase() {
+    export CASE="$LIBEXEC_DIR/cases/$1"
+    CASE_NAME="$1"
+    [[ $# -gt 0 && ! -f "$CASE" ]] && echo "Invalid case" && exit 1
+}
+
+OPTIND=2
+while getopts "c:f:" opt; do
+    case "$opt" in
+        c) setCase "$OPTARG";;
+        f) export CONFIG="$OPTARG" ;;
+        *) ;;
+    esac
+done
+
+# shellcheck source=lib/common.sh
+. "$LIB_DIR/common.sh"
+
+test -z "$1" && echo "Missing network" && exit 1
+
+RPC_CHAIN="$(seth chain)"
+if [[ "$RPC_CHAIN" == "unknown" ]]; then
+    RPC_CHAIN="testchain"
+elif [[ "$RPC_CHAIN" == "ethlive" ]]; then
+    RPC_CHAIN="main"
+fi
+
+test "$RPC_CHAIN" == "$1" || (echo "Network doesn't match with current node" && exit 1)
+
+writeConfigFor "$1"
+
+# Send ETH to Omnia Relayer
+OMNIA_ADDR="$(jq -r ".omniaFromAddr" "$CONFIG_FILE")"
+OMNIA_AMT="$(jq -r ".omniaAmount" "$CONFIG_FILE")"
+if [[ "$RPC_CHAIN" == "testchain" && -n "$OMNIA_ADDR" && -n "$OMNIA_AMT" ]]; then
+    sethSend "$OMNIA_ADDR" --value "$(seth --to-wei "$OMNIA_AMT" eth)"
+fi
+
+"$LIBEXEC_DIR"/base-deploy |& tee "$OUT_DIR/dss_$1.log"
+
+NETWORK=$(echo "$1" | tr '[:lower:]' '[:upper:]')
+if [[ -f "$CASE" ]]; then
+    log "${NETWORK} DEPLOYMENT + ${CASE_NAME} COMPLETED SUCCESSFULLY"
+else
+    log "${NETWORK} DEPLOYMENT COMPLETED SUCCESSFULLY"
+fi

@@ -5,29 +5,29 @@
     {
       "name": "scenario0",
       "description": "MCD - General deployment",
-      "run": "deploy-testchain.sh",
-      "configPath": "deploy-testchain.json",
+      "run": "dss-deploy testchain",
+      "configPath": "config/testchain.json",
       "outPath": "out/addresses.json"
     },
     {
       "name": "scenario1",
       "description": "Example 1",
-      "run": "deploy-testchain.sh",
-      "configPath": "deploy-testchain.json",
+      "run": "dss-deploy testchain",
+      "configPath": "config/testchain.json",
       "outPath": "out/addresses.json"
     },
     {
       "name": "scenario2",
       "description": "Example 2",
-      "run": "deploy-testchain.sh",
-      "configPath": "deploy-testchain.json",
+      "run": "dss-deploy testchain",
+      "configPath": "config/testchain.json",
       "outPath": "out/addresses.json"
     },
     {
       "name": "scenario3",
       "description": "Example 3",
-      "run": "deploy-testchain.sh",
-      "configPath": "deploy-testchain.json",
+      "run": "dss-deploy testchain",
+      "configPath": "config/testchain.json",
       "outPath": "out/addresses.json"
     }
   ]
