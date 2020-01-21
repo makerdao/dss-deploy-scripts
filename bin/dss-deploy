@@ -43,7 +43,7 @@ if [[ "$RPC_CHAIN" == "testchain" && -n "$OMNIA_ADDR" && -n "$OMNIA_AMT" ]]; the
     sethSend "$OMNIA_ADDR" --value "$(seth --to-wei "$OMNIA_AMT" eth)"
 fi
 
-"$LIBEXEC_DIR"/base-deploy |& tee "$OUT_DIR/dss_$1.log"
+"$LIBEXEC_DIR"/base-deploy |& tee "$OUT_DIR/dss-$1.log"
 
 NETWORK=$(echo "$1" | tr '[:lower:]' '[:upper:]')
 if [[ -f "$CASE" ]]; then
