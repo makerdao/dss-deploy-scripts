@@ -322,15 +322,15 @@
         "url": "https://github.com/makerdao/median"
       }
     },
-    "mkr-authority_441a77d": {
+    "mkr-authority_3625950": {
       "deps": {
         "ds-test": "ds-test_a4e4005"
       },
       "name": "mkr-authority",
       "repo": {
-        "name": "mkr-authority-441a77d",
+        "name": "mkr-authority-3625950",
         "ref": "HEAD",
-        "rev": "441a77d5e769d0a18a107522b8a99c58d0e7d55d",
+        "rev": "362595069dc12ee16adbcb68bf74035a50414fee",
         "url": "https://github.com/makerdao/mkr-authority"
       }
     },
@@ -452,7 +452,7 @@
       "dss-deploy": "dss-deploy_fa48131",
       "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_c0ad453",
       "dss-proxy-actions": "dss-proxy-actions_cb516ad",
-      "mkr-authority": "mkr-authority_441a77d",
+      "mkr-authority": "mkr-authority_3625950",
       "multicall": "multicall_df1e59d",
       "osm": "osm_0399d52",
       "scd-mcd-migration": "scd-mcd-migration_78c3fc0",
