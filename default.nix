@@ -34,6 +34,7 @@ let
     (optinalFunc (! isNull githubAuthToken) recAddGithubToken)
       (spec // {
         inherit doCheck;
+        solc = solc-versions.solc_0_5_12;
         solcFlags = "--metadata";
       })
   ) deps);
@@ -41,12 +42,14 @@ let
   dss-deploy-optimized = package (deps.dss-deploy // {
     inherit doCheck;
     name = "dss-deploy-optimized";
+    solc = solc-versions.solc_0_5_12;
     solcFlags = "--optimize --metadata";
   });
   
   dss-proxy-actions-optimized = package (deps.dss-proxy-actions // {
     inherit doCheck;
     name = "dss-proxy-actions-optimized";
+    solc = solc-versions.solc_0_5_12;
     solcFlags = "--optimize --metadata";
   });
 
