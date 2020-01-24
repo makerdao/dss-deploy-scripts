@@ -155,8 +155,9 @@ GET_CDPS=$(dappCreate dss-proxy-actions GetCdps)
 log "GET_CDPS=$GET_CDPS"
 
 SAI_TUB=$(jq -r ".migration.tub | values" "$CONFIG_FILE")
-ethAdapterAddr="$(jq -r ".migration.ethAdapterVarName | values" "$CONFIG_FILE")"
+ethAdapterAddr="$(eval echo "\$$(jq -r ".migration.ethAdapterVarName | values" "$CONFIG_FILE")")"
 if [[ -n "$SAI_TUB" && -n "$ethAdapterAddr" ]]; then
+    SAI_TUB=$(seth --to-checksum-address "$SAI_TUB")
     SAI="0x$(seth call "$SAI_TUB" 'sai()(address)')"
     export SAI
     PIP_SAI=$(dappCreate osm DSValue)
@@ -248,31 +249,31 @@ fi
 
 for token in $tokens; do
     ILKS_VARS+=",
-    \"${token}\": \"$(eval echo "\$${token}")\""
+    \"${token}\": \"$(seth --to-checksum-address "$(eval echo "\$${token}")")\""
     if [[ "$(eval echo "\$VAL_${token}")" != "" ]]; then
     ILKS_VARS+=",
-    \"VAL_${token}\": \"$(eval echo "\$VAL_${token}")\""
+    \"VAL_${token}\": \"$(seth --to-checksum-address "$(eval echo "\$VAL_${token}")")\""
     fi
     ILKS_VARS+=",
-    \"PIP_${token}\": \"$(eval echo "\$PIP_${token}")\""
+    \"PIP_${token}\": \"$(seth --to-checksum-address "$(eval echo "\$PIP_${token}")")\""
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     for ilk in $ilks; do
     ILKS_VARS+=",
     \"MCD_JOIN_${token}_${ilk}\": \"$(eval echo "\$MCD_JOIN_${token}_${ilk}")\""
     ILKS_VARS+=",
-    \"MCD_FLIP_${token}_${ilk}\": \"$(eval echo "\$MCD_FLIP_${token}_${ilk}")\""
+    \"MCD_FLIP_${token}_${ilk}\": \"$(seth --to-checksum-address "$(eval echo "\$MCD_FLIP_${token}_${ilk}")")\""
     done
 done
 
 if [[ -n "$MIGRATION" ]]; then
     ILKS_VARS+=",
-    \"SAI\": \"$SAI\""
+    \"SAI\": \"$(seth --to-checksum-address "$SAI")\""
     ILKS_VARS+=",
     \"PIP_SAI\": \"$PIP_SAI\""
     ILKS_VARS+=",
     \"MCD_JOIN_SAI\": \"$MCD_JOIN_SAI\""
     ILKS_VARS+=",
-    \"MCD_FLIP_SAI\": \"$MCD_FLIP_SAI\""
+    \"MCD_FLIP_SAI\": \"$(seth --to-checksum-address "$MCD_FLIP_SAI")\""
 
     MIGRATION_VARS=",
     \"SAI_TUB\": \"$SAI_TUB\""
@@ -298,36 +299,36 @@ fi
 # Generate addresses.json file
 cat > "$OUT_DIR"/addresses.json <<EOF
 {
-    "DEPLOYER": "$ETH_FROM",
+    "DEPLOYER": "$(seth --to-checksum-address "$ETH_FROM")",
     "MULTICALL": "$MULTICALL",
-    "FAUCET": "$FAUCET",
+    "FAUCET": "$(seth --to-checksum-address "$FAUCET")",
     "MCD_DEPLOY": "$MCD_DEPLOY",
-    "MCD_GOV": "$MCD_GOV"$GOV_GUARD_VAR$MCD_IOU_VAR,
-    "MCD_ADM": "$MCD_ADM"$VOTE_PROXY_FACTORY_VAR,
-    "MCD_VAT": "$MCD_VAT",
-    "MCD_JUG": "$MCD_JUG",
-    "MCD_CAT": "$MCD_CAT",
-    "MCD_VOW": "$MCD_VOW",
-    "MCD_JOIN_DAI": "$MCD_JOIN_DAI",
-    "MCD_FLAP": "$MCD_FLAP",
-    "MCD_FLOP": "$MCD_FLOP",
-    "MCD_PAUSE": "$MCD_PAUSE",
-    "MCD_PAUSE_PROXY": "$MCD_PAUSE_PROXY",
+    "MCD_GOV": "$(seth --to-checksum-address "$MCD_GOV")"$GOV_GUARD_VAR$MCD_IOU_VAR,
+    "MCD_ADM": "$(seth --to-checksum-address "$MCD_ADM")"$VOTE_PROXY_FACTORY_VAR,
+    "MCD_VAT": "$(seth --to-checksum-address "$MCD_VAT")",
+    "MCD_JUG": "$(seth --to-checksum-address "$MCD_JUG")",
+    "MCD_CAT": "$(seth --to-checksum-address "$MCD_CAT")",
+    "MCD_VOW": "$(seth --to-checksum-address "$MCD_VOW")",
+    "MCD_JOIN_DAI": "$(seth --to-checksum-address "$MCD_JOIN_DAI")",
+    "MCD_FLAP": "$(seth --to-checksum-address "$MCD_FLAP")",
+    "MCD_FLOP": "$(seth --to-checksum-address "$MCD_FLOP")",
+    "MCD_PAUSE": "$(seth --to-checksum-address "$MCD_PAUSE")",
+    "MCD_PAUSE_PROXY": "$(seth --to-checksum-address "$MCD_PAUSE_PROXY")",
     "MCD_GOV_ACTIONS": "$MCD_GOV_ACTIONS",
-    "MCD_DAI": "$MCD_DAI",
-    "MCD_SPOT": "$MCD_SPOT",
-    "MCD_POT": "$MCD_POT",
-    "MCD_END": "$MCD_END",
-    "MCD_ESM": "$MCD_ESM",
+    "MCD_DAI": "$(seth --to-checksum-address "$MCD_DAI")",
+    "MCD_SPOT": "$(seth --to-checksum-address "$MCD_SPOT")",
+    "MCD_POT": "$(seth --to-checksum-address "$MCD_POT")",
+    "MCD_END": "$(seth --to-checksum-address "$MCD_END")",
+    "MCD_ESM": "$(seth --to-checksum-address "$MCD_ESM")",
     "PROXY_ACTIONS": "$PROXY_ACTIONS",
     "PROXY_ACTIONS_END": "$PROXY_ACTIONS_END",
     "PROXY_ACTIONS_DSR": "$PROXY_ACTIONS_DSR",
     "CDP_MANAGER": "$CDP_MANAGER",
     "GET_CDPS": "$GET_CDPS",
-    "PROXY_FACTORY": "$PROXY_FACTORY",
-    "PROXY_REGISTRY": "$PROXY_REGISTRY"$ILKS_VARS,
+    "PROXY_FACTORY": "$(seth --to-checksum-address "$PROXY_FACTORY")",
+    "PROXY_REGISTRY": "$(seth --to-checksum-address "$PROXY_REGISTRY")"$ILKS_VARS,
     "PROXY_PAUSE_ACTIONS": "$PROXY_PAUSE_ACTIONS",
-    "PROXY_DEPLOYER": "$PROXY_DEPLOYER"$MIGRATION_VARS
+    "PROXY_DEPLOYER": "$(seth --to-checksum-address "$PROXY_DEPLOYER")"$MIGRATION_VARS
 }
 EOF
 

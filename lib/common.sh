@@ -131,6 +131,14 @@ log() {
     echo ""
 }
 
+toUpper() {
+    echo "$1" | tr '[:lower:]' '[:upper:]'
+}
+
+toLower() {
+    echo "$1" | tr '[:upper:]' '[:lower:]'
+}
+
 # Start verbose output
 # set -x
 

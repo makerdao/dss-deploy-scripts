@@ -34,7 +34,7 @@ checkRely() {
     CHECK=$(seth call "${!1}" 'wards(address)' "${!2}")
 
     printf "RELY: %s -> %s -> %s -> " "${1}" "${2}" "${3}"
-    if [[ "${!3}" == "$CHECK" ]]; then
+    if [[ $(toLower "${!3}") == $(toLower "${CHECK}") ]]; then
         ok
     else
         notok
@@ -43,10 +43,10 @@ checkRely() {
 
 checkAuthority() {
     local CHECK
-    CHECK=$(seth call "${!1}" 'authority()(address)')
+    CHECK=0x$(seth call "${!1}" 'authority()(address)')
 
     printf "AUTH: %s -> %s -> " "${1}" "${2}"
-    if [[ "${!2}" == "0x${CHECK}" ]]; then
+    if [[ $(toLower "${!2}") == $(toLower "${CHECK}") ]]; then
         ok
     else
         notok
@@ -55,10 +55,10 @@ checkAuthority() {
 
 checkOwner() {
     local CHECK
-    CHECK=$(seth call "${!1}" 'owner()(address)')
+    CHECK=0x$(seth call "${!1}" 'owner()(address)')
 
     printf "OWN: %s -> %s -> " "${1}" "${2}"
-    if [[ "${!2}" == "0x${CHECK}" ]]; then
+    if [[ $(toLower "${!2}") == $(toLower "${CHECK}") ]]; then
         ok
     else
         notok
@@ -67,10 +67,10 @@ checkOwner() {
 
 checkRoot() {
     local CHECK
-    CHECK=$(seth call "${!1}" 'root()(address)')
+    CHECK=0x$(seth call "${!1}" 'root()(address)')
 
     printf "OWN: %s -> %s -> " "${1}" "${2}"
-    if [[ "${!2}" == "0x${CHECK}" ]]; then
+    if [[ $(toLower "${!2}") == $(toLower "${CHECK}") ]]; then
         ok
     else
         notok
@@ -103,6 +103,8 @@ checkWhitelist() {
     fi
 }
 
+tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
+
 # vat
 checkRely "MCD_VAT" "MCD_DEPLOY" "NOT_AUTHED"
 checkRely "MCD_VAT" "MCD_CAT" "AUTHED"
@@ -111,7 +113,6 @@ checkRely "MCD_VAT" "MCD_POT" "AUTHED"
 checkRely "MCD_VAT" "MCD_SPOT" "AUTHED"
 checkRely "MCD_VAT" "MCD_END" "AUTHED"
 checkRely "MCD_VAT" "MCD_PAUSE_PROXY" "AUTHED"
-tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     for ilk in $ilks; do

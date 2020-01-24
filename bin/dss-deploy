@@ -55,7 +55,7 @@ fi
 
 "$LIBEXEC_DIR"/base-deploy |& tee "$OUT_DIR/dss-$1.log"
 
-NETWORK=$(echo "$1" | tr '[:lower:]' '[:upper:]')
+NETWORK=$(toUpper "$1")
 if [[ -f "$CASE" ]]; then
     log "${NETWORK} DEPLOYMENT + ${CASE_NAME} COMPLETED SUCCESSFULLY"
 else
