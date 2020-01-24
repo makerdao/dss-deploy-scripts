@@ -1,9 +1,29 @@
 #!/usr/bin/env bash
 
 if [[ -z "$BIN_DIR" ]]; then
-    echo "Just execute \"dss-deploy <NETWORK>\" via nix"
+    echo "Execute \"dss-deploy <NETWORK>\" via nix"
     exit 1
 fi
+
+help() {
+  echo "Usage: dss-deploy <NETWORK> [ -f file ] [ -c CASE ]" 1>&2
+  exit 1
+}
+
+test -z "$1" && echo "Missing network" && help
+
+RPC_CHAIN="$(seth chain)"
+if [[ "$RPC_CHAIN" == "unknown" ]]; then
+    RPC_CHAIN="testchain"
+elif [[ "$RPC_CHAIN" == "ethlive" ]]; then
+    RPC_CHAIN="main"
+fi
+
+test -z "$RPC_CHAIN" && echo "There is not node running configured" && exit 1
+
+test "$RPC_CHAIN" != "$1" && echo "Network doesn't exist or doesn't match with current running node" && exit 1
+
+test -z "$ETH_FROM" && echo "Please export ETH_FROM before running the script" && exit 1
 
 setCase() {
     export CASE="$LIBEXEC_DIR/cases/$1"
@@ -16,23 +36,13 @@ while getopts "c:f:" opt; do
     case "$opt" in
         c) setCase "$OPTARG";;
         f) export CONFIG="$OPTARG" ;;
-        *) ;;
+        *) help
+      ;;
     esac
 done
 
 # shellcheck source=lib/common.sh
 . "$LIB_DIR/common.sh"
-
-test -z "$1" && echo "Missing network" && exit 1
-
-RPC_CHAIN="$(seth chain)"
-if [[ "$RPC_CHAIN" == "unknown" ]]; then
-    RPC_CHAIN="testchain"
-elif [[ "$RPC_CHAIN" == "ethlive" ]]; then
-    RPC_CHAIN="main"
-fi
-
-test "$RPC_CHAIN" == "$1" || (echo "Network doesn't match with current node" && exit 1)
 
 writeConfigFor "$1"
 
