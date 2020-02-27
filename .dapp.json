@@ -346,6 +346,19 @@
         "url": "https://github.com/makerdao/multicall"
       }
     },
+    "osm-mom_cca3967": {
+      "deps": {
+        "ds-test": "ds-test_a4e4005",
+        "osm": "osm_0399d52"
+      },
+      "name": "osm-mom",
+      "repo": {
+        "name": "osm-mom-cca3967",
+        "ref": "HEAD",
+        "rev": "cca396707f878d97482b02e678828a1fb824a3bc",
+        "url": "https://github.com/makerdao/osm-mom"
+      }
+    },
     "osm_0399d52": {
       "deps": {
         "ds-stop": "ds-stop_6e2bda6",
@@ -455,6 +468,7 @@
       "mkr-authority": "mkr-authority_3625950",
       "multicall": "multicall_df1e59d",
       "osm": "osm_0399d52",
+      "osm-mom": "osm-mom_cca3967",
       "scd-mcd-migration": "scd-mcd-migration_e7e7da5",
       "testchain-medians": "testchain-medians_7f457c3",
       "token-faucet": "token-faucet_34a44c5",

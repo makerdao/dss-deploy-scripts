@@ -154,11 +154,15 @@ log "CDP_MANAGER=$CDP_MANAGER"
 GET_CDPS=$(dappCreate dss-proxy-actions GetCdps)
 log "GET_CDPS=$GET_CDPS"
 
+# Deploy OsmMom
+OSM_MOM=$(dappCreate osm-mom OsmMom)
+log "OSM_MOM=$OSM_MOM"
+
 SAI_TUB=$(jq -r ".migration.tub | values" "$CONFIG_FILE")
 ethAdapterAddr="$(eval echo "\$$(jq -r ".migration.ethAdapterVarName | values" "$CONFIG_FILE")")"
 if [[ -n "$SAI_TUB" && -n "$ethAdapterAddr" ]]; then
     SAI_TUB=$(seth --to-checksum-address "$SAI_TUB")
-    SAI="0x$(seth call "$SAI_TUB" 'sai()(address)')"
+    SAI="$(seth call "$SAI_TUB" 'sai()(address)')"
     export SAI
     PIP_SAI=$(dappCreate osm DSValue)
     log "PIP_SAI=$PIP_SAI"
@@ -216,10 +220,10 @@ PROXY_PAUSE_ACTIONS=$(dappCreate dss-deploy-pause-proxy-actions DssDeployPausePr
 log "PROXY_PAUSE_ACTIONS=$PROXY_PAUSE_ACTIONS"
 
 # Get a proxy for the deployer address (create if didn't previously exist)
-PROXY_DEPLOYER=0x$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$ETH_FROM")
+PROXY_DEPLOYER=$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$ETH_FROM")
 if [[ "$PROXY_DEPLOYER" == "0x0000000000000000000000000000000000000000" ]]; then
     sethSend "$PROXY_REGISTRY" 'build()'
-    PROXY_DEPLOYER=0x"$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$ETH_FROM")"
+    PROXY_DEPLOYER="$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$ETH_FROM")"
     log "PROXY_DEPLOYER=$PROXY_DEPLOYER"
 fi
 
@@ -325,6 +329,7 @@ cat > "$OUT_DIR"/addresses.json <<EOF
     "PROXY_ACTIONS_DSR": "$PROXY_ACTIONS_DSR",
     "CDP_MANAGER": "$CDP_MANAGER",
     "GET_CDPS": "$GET_CDPS",
+    "OSM_MOM": "$OSM_MOM",
     "PROXY_FACTORY": "$(seth --to-checksum-address "$PROXY_FACTORY")",
     "PROXY_REGISTRY": "$(seth --to-checksum-address "$PROXY_REGISTRY")"$ILKS_VARS,
     "PROXY_PAUSE_ACTIONS": "$PROXY_PAUSE_ACTIONS",
@@ -393,5 +398,7 @@ if [[ -f "$CASE" ]]; then
 fi
 
 "$LIBEXEC_DIR"/setters/set-ilks-osm
+
+"$LIBEXEC_DIR"/setters/set-ilks-osm-mom
 
 "$LIBEXEC_DIR"/setters/set-pause-auth-delay

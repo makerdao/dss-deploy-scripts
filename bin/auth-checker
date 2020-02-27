@@ -43,7 +43,7 @@ checkRely() {
 
 checkAuthority() {
     local CHECK
-    CHECK=0x$(seth call "${!1}" 'authority()(address)')
+    CHECK=$(seth call "${!1}" 'authority()(address)')
 
     printf "AUTH: %s -> %s -> " "${1}" "${2}"
     if [[ $(toLower "${!2}") == $(toLower "${CHECK}") ]]; then
@@ -55,7 +55,7 @@ checkAuthority() {
 
 checkOwner() {
     local CHECK
-    CHECK=0x$(seth call "${!1}" 'owner()(address)')
+    CHECK=$(seth call "${!1}" 'owner()(address)')
 
     printf "OWN: %s -> %s -> " "${1}" "${2}"
     if [[ $(toLower "${!2}") == $(toLower "${CHECK}") ]]; then
@@ -67,7 +67,7 @@ checkOwner() {
 
 checkRoot() {
     local CHECK
-    CHECK=0x$(seth call "${!1}" 'root()(address)')
+    CHECK=$(seth call "${!1}" 'root()(address)')
 
     printf "OWN: %s -> %s -> " "${1}" "${2}"
     if [[ $(toLower "${!2}") == $(toLower "${CHECK}") ]]; then
@@ -81,7 +81,7 @@ canCall() {
     local authority
     local CHECK
     authority=$(seth call "${!2}" 'authority()(address)')
-    CHECK=$(seth call "0x${authority}" 'canCall(address,address,bytes4)(bool)' "${!1}" "${!2}" "$(seth sig "$3")")
+    CHECK=$(seth call "${authority}" 'canCall(address,address,bytes4)(bool)' "${!1}" "${!2}" "$(seth sig "$3")")
 
     printf "CALL: %s -> %s -> %s -> " "${1}" "${2}" "${3}"
     if [[ $CHECK == true ]]; then
@@ -97,6 +97,18 @@ checkWhitelist() {
 
     printf "WHITELIST: %s -> %s -> " "${1}" "${2}"
     if [[ "$CHECK" == 1 ]]; then
+        ok
+    else
+        notok
+    fi
+}
+
+checkInOsmMom() {
+    local CHECK
+    CHECK=$(seth call "$OSM_MOM" 'osms(bytes32)(address)' "$(seth --to-bytes32 "$(seth --from-ascii "${1}")")")
+
+    printf "OSM-MOM: %s -> %s -> " "${1}" "${2}"
+    if [[ "$CHECK" == "${!2}" ]]; then
         ok
     else
         notok
@@ -235,4 +247,15 @@ for token in $tokens; do
     if [[ "$pipAddr" == "" && "$type" == "median" && "$osmDelay" -gt 0 ]]; then
         checkWhitelist "VAL_${token}" "PIP_${token}"
     fi
+
+    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+    for ilk in $ilks; do
+        # Workaround to see if there is a 'src()' method => assume is an OSM
+        src=$(seth call "$(eval echo "\$PIP_${token}")" 'src()(address)' 2>/dev/null)
+        # if PIP is an OSM
+        if [[ ${#src} == 42 && "${src:0:2}" == "0x" ]]; then
+            checkInOsmMom "${token}-${ilk}" "PIP_${token}"
+            checkRely "PIP_${token}" "OSM_MOM" "AUTHED"
+        fi
+    done
 done
