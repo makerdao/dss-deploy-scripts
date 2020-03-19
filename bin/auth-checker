@@ -251,7 +251,7 @@ for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     for ilk in $ilks; do
         # Workaround to see if there is a 'src()' method => assume is an OSM
-        src=$(seth call "$(eval echo "\$PIP_${token}")" 'src()(address)' 2>/dev/null)
+        set +e; src=$(seth call "$(eval echo "\$PIP_${token}")" 'src()(address)' 2>/dev/null); set -e;
         # if PIP is an OSM
         if [[ ${#src} == 42 && "${src:0:2}" == "0x" ]]; then
             checkInOsmMom "${token}-${ilk}" "PIP_${token}"

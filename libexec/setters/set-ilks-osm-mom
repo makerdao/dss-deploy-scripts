@@ -13,7 +13,7 @@ log "SET ILKS OSM-MOM:"
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     # Workaround to see if there is a 'src()' method => assume is an OSM
-    src=$(seth call "$(eval echo "\$PIP_${token}")" 'src()(address)' 2>/dev/null)
+    set +e; src=$(seth call "$(eval echo "\$PIP_${token}")" 'src()(address)' 2>/dev/null); set -e
     # if PIP is an OSM
     if [[ ${#src} == 42 && "${src:0:2}" == "0x" ]]; then
         ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
