@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# shellcheck source=lib/common.sh
+. "$LIB_DIR/common.sh"
+
+if [[ -z "$USDC" ]]; then
+    USDC=$(dappCreate dss-deploy USDC "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")")
+    log "USDC=$USDC"
+    export USDC
+fi
+
+# shellcheck source=libexec/dss/deploy-ilk
+. "$LIBEXEC_DIR/dss/deploy-ilk" "USDC" "${1:-"A"}" "GemJoin5"

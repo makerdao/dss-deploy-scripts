@@ -10,7 +10,7 @@
   "jug_base": "0",
   "pot_dsr": "2",
   "end_wait": "262800",
-  "esm_pit": "0xbd747742b0f1f9791d3e6b85f8797a0cf4fbf10b",
+  "esm_pit": "0xbd747742B0F1f9791d3e6B85f8797A0cf4fbf10b",
   "esm_min": "50000",
   "flap_beg": "3",
   "flap_ttl": "1800",
@@ -20,21 +20,21 @@
   "flop_ttl": "600",
   "flop_tau": "259200",
   "import": {
-    "gov": "0xaaf64bfcc32d0f15873a02163e7e500671a4ffcd",
-    "authority": "0xbbffc76e94b34f72d96d054b31f6424249c1337d",
-    "proxyRegistry": "0x64a436ae831c1672ae81f674cab8b6775df3475c",
-    "faucet": "0x94598157fcf0715c3bc9b4a35450cce82ac57b20"
+    "gov": "0xAaF64BFCC32d0F15873a02163e7E500671a4ffcD",
+    "authority": "0xbBFFC76e94B34F72D96D054b31f6424249c1337d",
+    "proxyRegistry": "0x64A436ae831C1672AE81F674CAb8B6775df3475C",
+    "faucet": "0x94598157fcf0715C3bC9B4a35450cce82AC57B20"
   },
   "migration": {
-    "tub": "0xa71937147b55deb8a530c7229c442fd3f31b7db2",
+    "tub": "0xa71937147b55Deb8a530C7229C442Fd3F31b7db2",
     "ethAdapterVarName": "MCD_JOIN_ETH_A",
     "line": "100000000"
   },
   "tokens": {
     "ETH": {
       "import": {
-        "gem": "0xd0a1e359811322d97991e03f863a0c30c2cf029c",
-        "pip": "0x75dd74e8afe8110c8320ed397cccff3b8134d981"
+        "gem": "0xd0A1E359811322d97991E03f863a0C30C2cF029C",
+        "pip": "0x75dD74e8afE8110C8320eD397CcCff3B8134d981"
       },
       "ilks": {
         "A": {
@@ -52,8 +52,8 @@
     },
     "BAT": {
       "import": {
-        "gem": "0x9f8cfb61d3b2af62864408dd703f9c3beb55dff7",
-        "pip": "0x5c40c9eb35c76069fa4c3a00ea59fac6ffa9c113"
+        "gem": "0x9f8cFB61D3B2aF62864408DD703F9C3BEB55dff7",
+        "pip": "0x5C40C9Eb35c76069fA4C3A00EA59fAc6fFA9c113"
       },
       "ilks": {
         "A": {
@@ -63,6 +63,25 @@
           "duty": "4",
           "chop": "13",
           "lump": "1550",
+          "beg": "3",
+          "ttl": "600",
+          "tau": "259200"
+        }
+      }
+    },
+    "USDC": {
+      "import": {
+        "gem": "0xBD84be3C303f6821ab297b840a99Bd0d4c4da6b5",
+        "pip": "0x4c51c2584309b7BF328F89609FDd03B3b95fC677"
+      },
+      "ilks": {
+        "A": {
+          "mat": "125",
+          "line": "20000000",
+          "dust": "20",
+          "duty": "20",
+          "chop": "13",
+          "lump": "50000",
           "beg": "3",
           "ttl": "600",
           "tau": "259200"
