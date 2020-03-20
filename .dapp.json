@@ -226,16 +226,16 @@
         "url": "https://github.com/makerdao/dss-cdp-manager"
       }
     },
-    "dss-deploy-pause-proxy-actions_b9fd4ef": {
+    "dss-deploy-pause-proxy-actions_ca2c0f2": {
       "deps": {
         "ds-test": "ds-test_a4e4005",
         "dss-deploy": "dss-deploy_4aead83"
       },
       "name": "dss-deploy-pause-proxy-actions",
       "repo": {
-        "name": "dss-deploy-pause-proxy-actions-b9fd4ef",
+        "name": "dss-deploy-pause-proxy-actions-ca2c0f2",
         "ref": "HEAD",
-        "rev": "b9fd4efd0199b1ca53adf1e4c78c560261533f6d",
+        "rev": "ca2c0f255b5533e8c0cc3abf09d61bd48b2a69cf",
         "url": "https://github.com/makerdao/dss-deploy-pause-proxy-actions"
       }
     },
@@ -308,6 +308,18 @@
         "ref": "HEAD",
         "rev": "8e2d767b2e8fcff79cc5a2cdf0a84c6081f64213",
         "url": "https://github.com/makerdao/esm"
+      }
+    },
+    "flipper-mom_a448599": {
+      "deps": {
+        "ds-test": "ds-test_a4e4005"
+      },
+      "name": "flipper-mom",
+      "repo": {
+        "name": "flipper-mom-a448599",
+        "ref": "HEAD",
+        "rev": "a448599df1bdf95a2062b641de9e4f3497a39a90",
+        "url": "https://github.com/makerdao/flipper-mom"
       }
     },
     "median_703bc06": {
@@ -463,8 +475,9 @@
   "this": {
     "deps": {
       "dss-deploy": "dss-deploy_4aead83",
-      "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_b9fd4ef",
+      "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_ca2c0f2",
       "dss-proxy-actions": "dss-proxy-actions_968b503",
+      "flipper-mom": "flipper-mom_a448599",
       "mkr-authority": "mkr-authority_3625950",
       "multicall": "multicall_df1e59d",
       "osm": "osm_0399d52",
