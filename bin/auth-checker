@@ -8,8 +8,6 @@ CONFIG_FILE="$OUT_DIR/config.json"
 # Get addresses
 loadAddresses
 
-set +x
-
 # shellcheck disable=SC2034
 AUTHED="0x0000000000000000000000000000000000000000000000000000000000000001"
 # shellcheck disable=SC2034
@@ -182,7 +180,7 @@ checkRely "MCD_END" "MCD_DEPLOY" "NOT_AUTHED"
 checkRely "MCD_END" "MCD_ESM" "AUTHED"
 checkRely "MCD_END" "MCD_PAUSE_PROXY" "AUTHED"
 
-#flips
+# flips
 for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     for ilk in $ilks; do
@@ -190,6 +188,7 @@ for token in $tokens; do
         checkRely "MCD_FLIP_${token}_${ilk}" "MCD_CAT" "AUTHED"
         checkRely "MCD_FLIP_${token}_${ilk}" "MCD_END" "AUTHED"
         checkRely "MCD_FLIP_${token}_${ilk}" "MCD_PAUSE_PROXY" "AUTHED"
+        checkRely "MCD_FLIP_${token}_${ilk}" "FLIPPER_MOM" "AUTHED"
     done
 done
 if [[ -n "$MIGRATION" ]]; then
@@ -197,6 +196,10 @@ if [[ -n "$MIGRATION" ]]; then
     checkRely "MCD_FLIP_SAI" "MCD_END" "AUTHED"
     checkRely "MCD_FLIP_SAI" "MCD_PAUSE_PROXY" "AUTHED"
 fi
+
+# flipperMom
+checkOwner "FLIPPER_MOM" "MCD_PAUSE_PROXY"
+checkAuthority "FLIPPER_MOM" "MCD_ADM"
 
 # faucet
 faucet=$(jq -r ".import.faucet | values" "$CONFIG_FILE")
@@ -239,7 +242,10 @@ for token in $tokens; do
     type=$(jq -r ".tokens.${token} | .pipDeploy | .type | values" "$CONFIG_FILE")
     osmDelay=$(jq -r ".tokens.${token} | .pipDeploy | .osmDelay | values" "$CONFIG_FILE")
 
-    if [[ "$pipAddr" != "" || "$type" == "median" || "$osmDelay" -gt 0 ]]; then
+    # Check if $PIP_${token} has whitelist
+    set +e; WHITELISTED=$(seth call "$(eval echo "\$PIP_${token}")" 'bud(address)(uint256)' "$ZERO_ADDR" 2>/dev/null); set -e
+
+    if [[ "$WHITELISTED" == "0" || "$WHITELISTED" == "1" ]]; then
         checkWhitelist "PIP_${token}" "MCD_SPOT"
         checkWhitelist "PIP_${token}" "MCD_END"
     fi
@@ -259,3 +265,7 @@ for token in $tokens; do
         fi
     done
 done
+
+# osmMom
+checkOwner "OSM_MOM" "MCD_PAUSE_PROXY"
+checkAuthority "OSM_MOM" "MCD_ADM"
