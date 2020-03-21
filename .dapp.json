@@ -431,16 +431,16 @@
         "url": "https://github.com/makerdao/scd-mcd-migration"
       }
     },
-    "testchain-medians_7f457c3": {
+    "testchain-medians_0ec9873": {
       "deps": {
         "ds-test": "ds-test_a4e4005",
         "median": "median_703bc06"
       },
       "name": "testchain-medians",
       "repo": {
-        "name": "testchain-medians-7f457c3",
+        "name": "testchain-medians-0ec9873",
         "ref": "HEAD",
-        "rev": "7f457c30f5994afe2fbe9f0b2ffc4570ba93b2f3",
+        "rev": "0ec987388c53fecabbb1cf2d749587928d906fcf",
         "url": "https://github.com/makerdao/testchain-medians"
       }
     },
@@ -483,7 +483,7 @@
       "osm": "osm_0399d52",
       "osm-mom": "osm-mom_cca3967",
       "scd-mcd-migration": "scd-mcd-migration_7c19247",
-      "testchain-medians": "testchain-medians_7f457c3",
+      "testchain-medians": "testchain-medians_0ec9873",
       "token-faucet": "token-faucet_34a44c5",
       "vote-proxy": "vote-proxy_3c4f8dd"
     },
