@@ -21,10 +21,8 @@ for token in $tokens; do
             sethSend "$OSM_MOM" 'setOsm(bytes32,address)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(eval echo "\$PIP_${token}")"
         done
         # Rely OsmMom in OSM only if DEPLOYER has permission to do it
-        if [[ "$(seth call "$(eval echo "\$PIP_${token}")" 'wards(address)(uint256)' "$ETH_FROM" | sed 's/^0*//')" == 1 ]]; then
-            for ilk in $ilks; do
-                sethSend "$(eval echo "\$PIP_${token}")" 'rely(address)' "$OSM_MOM"
-            done
+        if [[ "$(seth call "$(eval echo "\$PIP_${token}")" 'wards(address)(uint256)' "$ETH_FROM")" == 1 ]]; then
+            sethSend "$(eval echo "\$PIP_${token}")" 'rely(address)' "$OSM_MOM"
         fi
     fi
 done

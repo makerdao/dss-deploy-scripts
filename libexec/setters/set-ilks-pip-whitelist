@@ -12,13 +12,16 @@ log "SET ILKS PIP WHITELIST:"
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
-    pipAddr=$(jq -r ".tokens.${token} | .import.pip | values" "$CONFIG_FILE")
-    type=$(jq -r ".tokens.${token} | .pipDeploy | .type | values" "$CONFIG_FILE")
-    if [[ "$pipAddr" != "" || "$type" == "median" ]]; then
-        # Whitelist Spotter in OSM or in Median only if DEPLOYER has permission to do it
-        if [[ "$(seth call "$(eval echo "\$PIP_${token}")" 'wards(address)(uint256)' "$ETH_FROM" | sed 's/^0*//')" == 1 ]]; then
-            sethSend "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$MCD_SPOT"
-            sethSend "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$MCD_END"
-        fi
+    # Check if ETH_FROM is relied or $PIP_${token} doesn't have a wards system
+    set +e; RELIED=$(seth call "$(eval echo "\$PIP_${token}")" 'wards(address)(uint256)' "$ETH_FROM" 2>/dev/null); set -e
+
+    # "" : Doesn't have wards system
+    # "0": Has wards system and ETH_FROM is not relied
+    # "1": Has wards system and ETH_FROM is relied
+
+    if [[ "$RELIED" == "1" ]]; then
+        # Whitelist Spotter in PIP (OSM or Median)
+        sethSend "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$MCD_SPOT"
+        sethSend "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$MCD_END"
     fi
 done
