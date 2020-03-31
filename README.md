@@ -95,9 +95,9 @@ Below is the expected structure of such a config file:
     "go": "<Deviation multiplier for faster response in nullifying market forces>",
     "how": "<Sensitivity parameter to adjust rates in case the deviation is kept constantly negative/positive>",
     "dawn": "<Default per-second lending rate>",
-    "dusk": "<Default per second >",
-    "up": "1000000000158153903837946258",
-    "down": "1000000000158153903837946258"
+    "dusk": "<Default per second target rate of change>",
+    "up": "<Upper bound for the lending rate>",
+    "down": "<Lower bound for the lending rate>"
   },
   "gov_holders": {
     "amounts": "<Array of GOV token amounts that will be minted>",

@@ -3,7 +3,7 @@
   "omniaFromAddr": "0xdc9A20F5a46AFE0802b361076BeFC51f787B2e58",
   "omniaAmount": "10000",
   "pauseDelay": "0",
-  "vat_line": "1000000000000000000000000000000",
+  "vat_line": "10000000000000",
   "vow_wait": "172800",
   "vow_dump": "250",
   "vow_sump": "50000",
@@ -23,7 +23,7 @@
   "flop_tau": "259200",
   "oracle_quorum": "1",
   "multisig_owners": [],
-  "multisig_quorum": "1",
+  "multisig_quorum": "0",
   "vox": {
     "version": "1",
     "span": "2",

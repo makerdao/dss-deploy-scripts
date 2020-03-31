@@ -3,7 +3,7 @@
   "omniaFromAddr": "0xdc9A20F5a46AFE0802b361076BeFC51f787B2e58",
   "omniaAmount": "10000",
   "pauseDelay": "0",
-  "vat_line": "1000000",
+  "vat_line": "10000000000000",
   "vow_wait": "0",
   "vow_dump": "0.01",
   "vow_sump": "0.1",

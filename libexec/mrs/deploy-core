@@ -23,8 +23,8 @@ MRS_DEPLOY=$(dappCreate mrs-deploy-optimized MrsDeploy)
 log "MRS_DEPLOY=$MRS_DEPLOY"
 
 # Set fab batches
-seth send "$MRS_DEPLOY" "setFirstFabBatch(address,address,address,address,address,address,address)" "$VAT_FAB" "$JUG_FAB" "$VOW_FAB" "$CAT_FAB" "$COIN_FAB" "$MRS_JOIN_FAB" "$POT_FAB"
-seth send "$MRS_DEPLOY" "setSecondFabBatch(address,address,address,address,address,address,address,address)" "$FLAP_FAB" "$FLOP_FAB" "$FLIP_FAB" "$SPOT_FAB" "$VOX1_FAB" "$END_FAB" "$ESM_FAB" "$PAUSE_FAB"
+sethSend "$MRS_DEPLOY" "setFirstFabBatch(address,address,address,address,address,address,address)" "$VAT_FAB" "$JUG_FAB" "$VOW_FAB" "$CAT_FAB" "$COIN_FAB" "$MRS_JOIN_FAB" "$POT_FAB"
+sethSend "$MRS_DEPLOY" "setSecondFabBatch(address,address,address,address,address,address,address,address)" "$FLAP_FAB" "$FLOP_FAB" "$FLIP_FAB" "$SPOT_FAB" "$VOX1_FAB" "$END_FAB" "$ESM_FAB" "$PAUSE_FAB"
 
 # Check if we need to create a multisig
 if [[ -z "$MULTISIG_QUORUM" && "$MULTISIG_QUORUM" -gt 0 ]]; then
@@ -39,7 +39,7 @@ if [[ -z "$MULTISIG_QUORUM" && "$MULTISIG_QUORUM" -gt 0 ]]; then
   MRS_MULTISIG=$(dappCreate mrs-deploy-optimized MultiSigWallet "[$(join "${allowners[@]}")]" "$(seth --to-uint256 "1")")
 
   # Create a proxy for the multisig
-  seth send "$PROXY_REGISTRY" 'build(address)' "$MRS_MULTISIG"
+  sethSend "$PROXY_REGISTRY" 'build(address)' "$MRS_MULTISIG"
   MULTISIG_PROXY=0x"$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$MRS_MULTISIG")"
 fi
 
@@ -58,22 +58,48 @@ sethSend "$MRS_DEPLOY" "deployVat()"
 sethSend "$MRS_DEPLOY" "deployCoin(string memory,string memory,uint8,uint256)" "$COIN_NAME" "$COIN_SYMBOL" "$(seth --to-uint256 "$COIN_DECIMALS")" "$(seth rpc net_version)"
 
 # Deploy Taxation
-SAVE="true"
+SAVINGS="1"
 if [ "$COIN_TYPE" != "STABLE" ]; then
-  SAVE="false"
+  SAVINGS="0"
 fi
-sethSend "$MRS_DEPLOY" "deployTaxation(bool)" "$SAVE"
+sethSend "$MRS_DEPLOY" "deployTaxation(uint256)" $(seth --to-uint256 $SAVINGS)
 
 # Deploy Rate Setter
-if [ "$SAVE" == "false" ]; then
-  sethSend "$MRS_DEPLOY" "deployRateSetter(uint256,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256)" "$VOX_VERSION" "$ORACLE_SECURITY_MODULE_COIN" "$VOX_SPAN" "$VOX_TRIM" "$VOX_DAWN" "$VOX_DUSK" "$VOX_HOW" "$VOX_UP" "$VOX_DOWN" "$VOX_GO"
+if [[ "$SAVINGS" == "0" ]]; then
+  span=$(bc -l <<< "scale=27; ${VOX_SPAN} * 10^27")
+  span=$(seth --to-uint256 "${span%.*}")
+
+  trim=$(bc -l <<< "scale=27; ${VOX_TRIM} * 10^27")
+  trim=$(seth --to-uint256 "${trim%.*}")
+
+  dawn=$(bc -l <<< "scale=27; e( l(${VOX_DAWN} / 100 + 1)/(60 * 60 * 24 * 365)) * 10^27")
+  dawn=$(seth --to-uint256 "${dawn%.*}")
+
+  dusk=$(bc -l <<< "scale=27; e( l(${VOX_DUSK} / 100 + 1)/(60 * 60 * 24 * 365)) * 10^27")
+  dusk=$(seth --to-uint256 "${dusk%.*}")
+
+  how=$(bc -l <<< "scale=27; ${VOX_HOW} * 10^27")
+  how=$(seth --to-uint256 "${how%.*}")
+
+  up=$(bc -l <<< "scale=27; e( l(${VOX_UP} / 100 + 1)/(60 * 60 * 24 * 365)) * 10^27")
+  up=$(seth --to-uint256 "${up%.*}")
+
+  down=$(bc -l <<< "scale=27; e( l(${VOX_DOWN} / 100 + 1)/(60 * 60 * 24 * 365)) * 10^27")
+  down=$(seth --to-uint256 "${down%.*}")
+
+  go=$(bc -l <<< "scale=27; ${VOX_GO} * 10^27")
+  go=$(seth --to-uint256 "${go%.*}")
+  sethSend "$MRS_DEPLOY" "deployRateSetter(uint256,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256)" $(seth --to-uint256 "$VOX_VERSION") "$ORACLE_SECURITY_MODULE_COIN" "$span" "$trim" "$dawn" "$dusk" "$how" "$up" "$down" "$go"
 fi
 
 # Deploy DEX aggregator
-MRS_BIN=$(sethSend mrs-deploy Bin "$MRS_UNISWAP_ONE" "$MRS_KYBER")
+MRS_BIN=$(dappCreate mrs-optimized Bin "$MRS_UNISWAP_ONE" "$MRS_KYBER")
 
 # Deploy Auctions
 sethSend "$MRS_DEPLOY" "deployAuctions(address,address)" "$MRS_GOV" "$MRS_BIN"
+
+# Deploy Vow
+sethSend "$MRS_DEPLOY" "deployVow()"
 
 # Deploy Liquidation
 sethSend "$MRS_DEPLOY" "deployLiquidator()"

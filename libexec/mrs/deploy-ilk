@@ -3,7 +3,7 @@
 # shellcheck source=lib/common.sh
 . "$LIB_DIR/common.sh"
 
-{ test -z "$1" || test -z "$3" || test -z "$5"; } && exit 1
+{ test -z "$1" || test -z "$3"; } && exit 1
 
 tok=$1
 if [[ -n "$2" ]]; then
@@ -15,9 +15,8 @@ else
 fi
 ilkJoin=$3 # adapter contract name
 decimals=$4
-cut=$5
 
-cut=$(echo "$cut"*10^27 | bc -l)
+cut=$(echo "$FLIPPER_CUT"*10^27 | bc -l)
 cut=$(seth --to-uint256 "${cut%.*}")
 
 # Deploy ilk (adapter, spotter, flip and init variables)

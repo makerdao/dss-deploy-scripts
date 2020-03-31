@@ -34,22 +34,29 @@ let
     (optinalFunc (! isNull githubAuthToken) recAddGithubToken)
       (spec // {
         inherit doCheck;
-        solc = solc-versions.solc_0_5_12;
+        solc = solc-versions.solc_0_5_15;
         solcFlags = "--metadata";
       })
   ) deps);
 
+  mrs-optimized = package (deps.mrs // {
+    inherit doCheck;
+    name = "mrs-optimized";
+    solc = solc-versions.solc_0_5_15;
+    solcFlags = "--optimize --metadata";
+  });
+
   mrs-deploy-optimized = package (deps.mrs-deploy // {
     inherit doCheck;
     name = "mrs-deploy-optimized";
-    solc = solc-versions.solc_0_5_12;
+    solc = solc-versions.solc_0_5_15;
     solcFlags = "--optimize --metadata";
   });
 
   mrs-proxy-actions-optimized = package (deps.mrs-proxy-actions // {
     inherit doCheck;
     name = "mrs-proxy-actions-optimized";
-    solc = solc-versions.solc_0_5_12;
+    solc = solc-versions.solc_0_5_15;
     solcFlags = "--optimize --metadata";
   });
 
@@ -66,6 +73,7 @@ in makerScriptPackage {
 
   solidityPackages =
     (builtins.attrValues packages)
+    ++ [ mrs-optimized ]
     ++ [ mrs-proxy-actions-optimized ]
     ++ [ mrs-deploy-optimized ];
 }
