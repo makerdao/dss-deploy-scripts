@@ -99,7 +99,7 @@ done
 # Deploy Median or Value for COIN
 if [ "$COIN_TYPE" == "BOND" ]; then
   if [[ "$COIN_PIP_TYPE" == "median" ]]; then
-    ORACLE_SECURITY_MODULE_COIN=$(dappCreate testchain-medians "MedianCoinUSD")
+    ORACLE_SECURITY_MODULE_COIN=$(dappCreate testchain-medians "MedianCOINUSD")
     eval "export ORACLE_SECURITY_MODULE_COIN=${ORACLE_SECURITY_MODULE_COIN}"
     # Approve oracle price feed providers
     allsigners=()
