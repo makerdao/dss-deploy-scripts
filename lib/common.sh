@@ -53,7 +53,7 @@ copyAbis() {
     local lib; lib=$1
     mkdir -p "$OUT_DIR/abi"
     find "$DAPP_LIB/$lib/out" \
-        -name "*.abi" ! -name "*Test.abi" ! -name "*Like.abi" ! -name "*DSNote.abi" ! -name "*FakeUser.abi" ! -name "*Hevm.abi" \
+        -name "*.abi" ! -name "*Test.abi" ! -name "*FakeRoot.abi" ! -name "*FakePurse.abi" ! -name "*Like.abi" ! -name "*DSNote.abi" ! -name "*FakeUser.abi" ! -name "*Hevm.abi" \
         -exec cp -f {} "$OUT_DIR/abi" \;
 }
 
@@ -66,10 +66,10 @@ copyBins() {
 
     mkdir -p "$DIR"
     find "$DAPP_LIB/$lib/out" \
-        -name "*.bin" ! -name "*Test.bin" ! -name "*Like.bin" ! -name "*DSNote.bin" ! -name "*FakeUser.bin" ! -name "*Hevm.bin" \
+        -name "*.bin" ! -name "*Test.bin" ! -name "*FakeRoot.bin" ! -name "*FakePurse.bin" ! -name "*Like.bin" ! -name "*DSNote.bin" ! -name "*FakeUser.bin" ! -name "*Hevm.bin" \
         -exec cp -f {} "$DIR" \;
     find "$DAPP_LIB/$lib/out" \
-        -name "*.bin-runtime" ! -name "*Test.bin-runtime" ! -name "*Like.bin-runtime" ! -name "*DSNote.bin-runtime" ! -name "*FakeUser.bin-runtime" ! -name "*Hevm.bin-runtime"  \
+        -name "*.bin-runtime" ! -name "*Test.bin-runtime" ! -name "*FakeRoot.bin-runtime" ! -name "*FakePurse.bin-runtime" ! -name "*Like.bin-runtime" ! -name "*DSNote.bin-runtime" ! -name "*FakeUser.bin-runtime" ! -name "*Hevm.bin-runtime"  \
         -exec cp -f {} "$DIR" \;
 }
 
@@ -82,7 +82,7 @@ copyMeta() {
 
     mkdir -p "$DIR"
     find "$DAPP_LIB/$lib/out" \
-        -name "*_meta.json" ! -name "*Test_meta.json" ! -name "*Like_meta.json" ! -name "*DSNote_meta.json" ! -name "*FakeUser_meta.json" ! -name "*Hevm_meta.json" \
+        -name "*_meta.json" ! -name "*Test_meta.json" ! -name "*FakeRoot.json" ! -name "*FakePurse.json" ! -name "*Like_meta.json" ! -name "*DSNote_meta.json" ! -name "*FakeUser_meta.json" ! -name "*Hevm_meta.json" \
         -exec cp -f {} "$DIR" \;
 }
 

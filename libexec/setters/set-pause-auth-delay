@@ -13,5 +13,5 @@ loadAddresses
 
 log "SET PAUSE AUTH DELAY:"
 
-calldata="$(seth calldata 'setAuthorityAndDelay(address,address,address,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_ADM" "$(seth --to-uint256 "$delay")")"
+calldata="$(seth calldata 'setAuthorityAndDelay(address,address,address,uint256)' "$MRS_PAUSE" "$MRS_GOV_ACTIONS" "$MRS_ADM" "$(seth --to-uint256 "$delay")")"
 sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"

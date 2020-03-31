@@ -23,9 +23,9 @@ if [[ "${token}" == "ETH" ]]; then
     sethSend "$ETH" 'deposit()' --value "$(seth --to-wei 5 ETH)"
 fi
 
-sethSend "$(eval echo "\$$token")" "approve(address,uint256)" "$(eval echo "\$MCD_JOIN_${token}_${ilk}")" "$(seth --to-uint256 "$(seth --to-wei 5 ETH)")"
+sethSend "$(eval echo "\$$token")" "approve(address,uint256)" "$(eval echo "\$MRS_JOIN_${token}_${ilk}")" "$(seth --to-uint256 "$(seth --to-wei 5 ETH)")"
 
-sethSend "$(eval echo "\$MCD_JOIN_${token}_${ilk}")" 'join(address,uint256)' "$URN" "$(seth --to-uint256 "$(seth --to-wei 5 ETH)")"
+sethSend "$(eval echo "\$MRS_JOIN_${token}_${ilk}")" 'join(address,uint256)' "$URN" "$(seth --to-uint256 "$(seth --to-wei 5 ETH)")"
 
 dink=$(seth --to-uint256 "$(mcd --to-hex "$(seth --to-wei 5 eth)")")
 mat=$(jq -r ".tokens.${token}.ilks.${ilk} | .mat" "$CONFIG_FILE")
@@ -34,12 +34,12 @@ dart=$(seth --to-uint256 "$(mcd --to-hex "$(seth --to-wei "$(echo "5 * $price * 
 
 "$LIBEXEC_DIR"/setters/set-price "$token" "$price"
 
-sethSend "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
+sethSend "$MRS_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
 
 sethSend "$CDP_MANAGER" 'frob(uint256,int256,int256)' "$ID" "$dink" "$dart"
 
 "$LIBEXEC_DIR"/setters/set-price "$token" "$(echo "$price - 1" | bc -l)"
-sethSend "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
+sethSend "$MRS_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
 
 # Bite CDP
-sethSend "$MCD_CAT" 'bite(bytes32,address)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$URN"
+sethSend "$MRS_CAT" 'bite(bytes32,address)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$URN"

@@ -1,32 +1,32 @@
 {
-  "name": "dss-deploy-scripts",
-  "description": "MCD deployment",
+  "name": "mrs-deploy-scripts",
+  "description": "MRS deployment",
   "scenarios": [
     {
       "name": "scenario0",
-      "description": "MCD - General deployment",
-      "run": "dss-deploy testchain",
+      "description": "MRS - General deployment",
+      "run": "mrs-deploy testchain",
       "configPath": "config/testchain.json",
       "outPath": "out/addresses.json"
     },
     {
       "name": "scenario1",
       "description": "Example 1",
-      "run": "dss-deploy testchain",
+      "run": "mrs-deploy testchain",
       "configPath": "config/testchain.json",
       "outPath": "out/addresses.json"
     },
     {
       "name": "scenario2",
       "description": "Example 2",
-      "run": "dss-deploy testchain",
+      "run": "mrs-deploy testchain",
       "configPath": "config/testchain.json",
       "outPath": "out/addresses.json"
     },
     {
       "name": "scenario3",
       "description": "Example 3",
-      "run": "dss-deploy testchain",
+      "run": "mrs-deploy testchain",
       "configPath": "config/testchain.json",
       "outPath": "out/addresses.json"
     }

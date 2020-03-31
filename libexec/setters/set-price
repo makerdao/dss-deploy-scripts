@@ -11,10 +11,10 @@ loadAddresses
 type=$(jq -r ".tokens.${1} | .pipDeploy | .type" "$CONFIG_FILE")
 if [[ "$type" == "value" ]]; then
     # Set DSValue price
-    sethSend "$(eval echo "\$VAL_${1}")" 'poke(bytes32)' "$(seth --to-uint256 "$(seth --to-wei "$2" ETH)")"
+    sethSend "$(eval echo "\$MEDIANIZER_${1}")" 'poke(bytes32)' "$(seth --to-uint256 "$(seth --to-wei "$2" ETH)")"
 fi
 
-if [[ "$(eval echo "\$PIP_${1}")" != "$(eval echo "\$VAL_${1}")" ]]; then
+if [[ "$(eval echo "\$ORACLE_SECURITY_MODULE_${1}")" != "$(eval echo "\$MEDIANIZER_${1}")" ]]; then
     # Poke OSM
-    sethSend "$(eval echo "\$PIP_${1}")" 'poke()'
+    sethSend "$(eval echo "\$ORACLE_SECURITY_MODULE_${1}")" 'poke()'
 fi

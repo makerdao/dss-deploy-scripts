@@ -39,22 +39,22 @@ let
       })
   ) deps);
 
-  dss-deploy-optimized = package (deps.dss-deploy // {
+  mrs-deploy-optimized = package (deps.mrs-deploy // {
     inherit doCheck;
-    name = "dss-deploy-optimized";
+    name = "mrs-deploy-optimized";
     solc = solc-versions.solc_0_5_12;
     solcFlags = "--optimize --metadata";
   });
-  
-  dss-proxy-actions-optimized = package (deps.dss-proxy-actions // {
+
+  mrs-proxy-actions-optimized = package (deps.mrs-proxy-actions // {
     inherit doCheck;
-    name = "dss-proxy-actions-optimized";
+    name = "mrs-proxy-actions-optimized";
     solc = solc-versions.solc_0_5_12;
     solcFlags = "--optimize --metadata";
   });
 
 in makerScriptPackage {
-  name = "dss-deploy-scripts";
+  name = "mrs-deploy-scripts";
 
   # Specify files to add to build environment
   src = lib.sourceByRegex ./. [
@@ -66,6 +66,6 @@ in makerScriptPackage {
 
   solidityPackages =
     (builtins.attrValues packages)
-    ++ [ dss-proxy-actions-optimized ]
-    ++ [ dss-deploy-optimized ];
+    ++ [ mrs-proxy-actions-optimized ]
+    ++ [ mrs-deploy-optimized ];
 }

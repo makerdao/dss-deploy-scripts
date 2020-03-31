@@ -16,6 +16,6 @@ if [[ "$base" != "" ]]; then
     base=$(bc -l <<< "scale=27; e( l(${base} / 100 + 1)/(60 * 60 * 24 * 365)) * 10^27")
     base=$(bc -l <<< "${base} - 10^27")
     base=$(seth --to-uint256 "${base%.*}")
-    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_JUG" "$(seth --to-bytes32 "$(seth --from-ascii "base")")" "$base")"
+    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MRS_PAUSE" "$MRS_GOV_ACTIONS" "$MRS_JUG" "$(seth --to-bytes32 "$(seth --from-ascii "base")")" "$base")"
     sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi

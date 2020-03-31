@@ -15,7 +15,7 @@ setLine() {
         local line
         line=$(echo "$2"*10^45 | bc)
         line=$(seth --to-uint256 "${line%.*}")
-        calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "$1")")" "$(seth --to-bytes32 "$(seth --from-ascii "line")")" "$line")"
+        calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MRS_PAUSE" "$MRS_GOV_ACTIONS" "$MRS_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "$1")")" "$(seth --to-bytes32 "$(seth --from-ascii "line")")" "$line")"
         sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
     fi
 }
@@ -28,7 +28,3 @@ for token in $tokens; do
         setLine "${token}-${ilk}" "$(jq -r ".tokens.${token}.ilks.${ilk} | .line" "$CONFIG_FILE")"
     done
 done
-
-if [[ -n "$MIGRATION" ]]; then
-    setLine "SAI" "$(jq -r ".migration | .line" "$CONFIG_FILE")"
-fi

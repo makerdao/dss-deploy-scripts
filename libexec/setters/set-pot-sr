@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# shellcheck source=lib/common.sh
+. "$LIB_DIR/common.sh"
+
+# Get config variables
+CONFIG_FILE="$OUT_DIR/config.json"
+# Get addresses
+loadAddresses
+
+log "SET POT SR:"
+
+# Set general debt ceiling (if defined)
+sr=$(jq -r ".pot_sr | values" "$CONFIG_FILE")
+if [[ "$sr" != "" ]]; then
+    sr=$(bc -l <<< "scale=27; e( l(${sr} / 100 + 1)/(60 * 60 * 24 * 365)) * 10^27")
+    sr=$(seth --to-uint256 "${sr%.*}")
+    calldata="$(seth calldata 'dripAndFile(address,address,address,bytes32,uint256)' "$MRS_PAUSE" "$MRS_GOV_ACTIONS" "$MRS_POT" "$(seth --to-bytes32 "$(seth --from-ascii "sr")")" "$sr")"
+    sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+fi

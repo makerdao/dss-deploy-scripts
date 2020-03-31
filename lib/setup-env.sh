@@ -30,7 +30,7 @@ export ETH_GAS=7000000
 
 export ETH_FROM="${ETH_FROM:-$(seth ls | head -n1 | awk '{print $1}')}"
 
-# For dai.js tests
+# For coin.js tests
 if command -v sethret > /dev/null 2>&1; then
   find_keyfile() {
     local address

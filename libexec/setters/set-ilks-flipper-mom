@@ -14,10 +14,10 @@ tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     for ilk in $ilks; do
-        calldata="$(seth calldata 'rely(address,address,address,address)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$(eval echo "\$MCD_FLIP_${token}_${ilk}")" "$FLIPPER_MOM")"
+        calldata="$(seth calldata 'rely(address,address,address,address)' "$MRS_PAUSE" "$MRS_GOV_ACTIONS" "$(eval echo "\$MRS_FLIP_${token}_${ilk}")" "$FLIPPER_MOM")"
         sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
     done
 done
 
-sethSend "$FLIPPER_MOM" 'setAuthority(address)' "$MCD_ADM"
-sethSend "$FLIPPER_MOM" 'setOwner(address)' "$MCD_PAUSE_PROXY"
+sethSend "$FLIPPER_MOM" 'setAuthority(address)' "$MRS_ADM"
+sethSend "$FLIPPER_MOM" 'setOwner(address)' "$MRS_PAUSE_PROXY"

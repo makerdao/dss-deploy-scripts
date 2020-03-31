@@ -15,6 +15,6 @@ sump=$(jq -r ".vow_sump" "$CONFIG_FILE")
 if [[ "$sump" != "" ]]; then
     sump=$(echo "$sump"*10^45 | bc)
     sump=$(seth --to-uint256 "${sump%.*}")
-    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VOW" "$(seth --to-bytes32 "$(seth --from-ascii "sump")")" "$sump")"
+    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MRS_PAUSE" "$MRS_GOV_ACTIONS" "$MRS_VOW" "$(seth --to-bytes32 "$(seth --from-ascii "sump")")" "$sump")"
     sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi

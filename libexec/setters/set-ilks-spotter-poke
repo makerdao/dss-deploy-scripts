@@ -12,21 +12,12 @@ log "SET SPOTTER POKE:"
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
-    # Check if MCD_SPOT is whitelisted or $PIP_${token} doesn't have a whitelist
-    set +e; WHITELISTED=$(seth call "$(eval echo "\$PIP_${token}")" 'bud(address)(uint256)' "$MCD_SPOT" 2>/dev/null); set -e
-
-    # "" : Doesn't have whitelist
-    # "0": Has whitelist and MCD_SPOT is not whitelisted
-    # "1": Has whitelist and MCD_SPOT is whitelisted
+    set +e; WHITELISTED=""
 
     if [[ "$WHITELISTED" == "" || "$WHITELISTED" == "1" ]]; then
         ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
         for ilk in $ilks; do
-            sethSend "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
+            sethSend "$MRS_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
         done
     fi
 done
-
-if [[ -n "$MIGRATION" ]]; then
-    sethSend "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "SAI")")"
-fi

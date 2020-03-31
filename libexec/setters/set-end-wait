@@ -13,6 +13,6 @@ log "SET END WAIT:"
 # Set general debt ceiling (if defined)
 wait=$(jq -r ".end_wait | values" "$CONFIG_FILE")
 if [[ "$wait" != "" ]]; then
-    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_END" "$(seth --to-bytes32 "$(seth --from-ascii "wait")")" "$wait")"
+    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MRS_PAUSE" "$MRS_GOV_ACTIONS" "$MRS_END" "$(seth --to-bytes32 "$(seth --from-ascii "wait")")" "$wait")"
     sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi

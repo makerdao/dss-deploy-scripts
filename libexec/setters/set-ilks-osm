@@ -17,22 +17,22 @@ for token in $tokens; do
         osmDelay=$(jq -r ".tokens.${token} | .pipDeploy | .osmDelay" "$CONFIG_FILE")
         if [[ "$osmDelay" -gt 0 ]]; then
             # Deploy OSM
-            contract=$(dappCreate osm OSM "$(eval echo "\$VAL_${token}")")
-            eval "export PIP_${token}=${contract}"
-            log "PIP_${token}=$(eval "echo ${contract}")"
+            contract=$(dappCreate osm OSM "$(eval echo "\$MEDIANIZER_${token}")")
+            eval "export ORACLE_SECURITY_MODULE_${token}=${contract}"
+            log "ORACLE_SECURITY_MODULE_${token}=$(eval "echo ${contract}")"
             # Set OSM delay
-            sethSend "$(eval echo "\$PIP_${token}")" 'step(uint16)' "$osmDelay"
+            sethSend "$(eval echo "\$ORACLE_SECURITY_MODULE_${token}")" 'step(uint16)' "$osmDelay"
             # Whitelist OSM in Medianizer (skip if source is DSValue)
             type=$(jq -r ".tokens.${token} | .pipDeploy | .type | values" "$CONFIG_FILE")
-            [[ "$type" == "median" ]] && sethSend "$(eval echo "\$VAL_${token}")" 'kiss(address)' "$(eval echo "\$PIP_${token}")"
+            [[ "$type" == "median" ]] && sethSend "$(eval echo "\$MEDIANIZER_${token}")" 'kiss(address)' "$(eval echo "\$ORACLE_SECURITY_MODULE_${token}")"
             # Whithelist Spotter in OSM
-            sethSend "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$MCD_SPOT"
+            sethSend "$(eval echo "\$ORACLE_SECURITY_MODULE_${token}")" 'kiss(address)' "$MRS_SPOT"
             # Whithelist End in OSM
-            sethSend "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$MCD_END"
+            sethSend "$(eval echo "\$ORACLE_SECURITY_MODULE_${token}")" 'kiss(address)' "$MRS_END"
             # Set osm in spotter ilks
             ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
             for ilk in $ilks; do
-                calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,address)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_SPOT" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "pip")")" "$(eval echo "\$PIP_${token}")")"
+                calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,address)' "$MRS_PAUSE" "$MRS_GOV_ACTIONS" "$MRS_SPOT" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "pip")")" "$(eval echo "\$ORACLE_SECURITY_MODULE_${token}")")"
                 sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
             done
         fi
@@ -42,7 +42,7 @@ done
 for token in $tokens; do
 addAddresses <<EOF
 {
-    "PIP_${token}": "$(eval echo "\$PIP_${token}")"
+    "ORACLE_SECURITY_MODULE_${token}": "$(eval echo "\$ORACLE_SECURITY_MODULE_${token}")"
 }
 EOF
 done

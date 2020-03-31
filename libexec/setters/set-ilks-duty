@@ -11,7 +11,7 @@ loadAddresses
 log "SET ILKS DUTY:"
 
 setDuty() {
-    calldata="$(seth calldata 'dripAndFile(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_JUG" "$(seth --to-bytes32 "$(seth --from-ascii "$1")")" "$(seth --to-bytes32 "$(seth --from-ascii "duty")")" "$2")"
+    calldata="$(seth calldata 'dripAndFile(address,address,address,bytes32,bytes32,uint256)' "$MRS_PAUSE" "$MRS_GOV_ACTIONS" "$MRS_JUG" "$(seth --to-bytes32 "$(seth --from-ascii "$1")")" "$(seth --to-bytes32 "$(seth --from-ascii "duty")")" "$2")"
     sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 }
 
@@ -25,7 +25,3 @@ for token in $tokens; do
         setDuty "${token}-${ilk}" "$duty"
     done
 done
-
-if [[ -n "$MIGRATION" ]]; then
-    setDuty "SAI" "$(seth --to-uint256 "1000000000000000000000000000")"
-fi

@@ -1,0 +1,247 @@
+#!/usr/bin/env bash
+
+# shellcheck source=lib/common.sh
+. "${LIB_DIR:-$(cd "${0%/*}/../lib"&&pwd)}/common.sh"
+
+# Get config variables
+CONFIG_FILE="$OUT_DIR/config.json"
+# Get addresses
+loadAddresses
+
+# shellcheck disable=SC2034
+AUTHED="0x0000000000000000000000000000000000000000000000000000000000000001"
+# shellcheck disable=SC2034
+NOT_AUTHED="0x0000000000000000000000000000000000000000000000000000000000000000"
+# shellcheck disable=SC2034
+ZERO_ADDR="0x0000000000000000000000000000000000000000"
+
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+ok() {
+    printf '%b\n' "${GREEN}✓ OK${NC}"
+}
+
+notok() {
+    printf '%b\n' "${RED}❌NOT OK${NC}"
+}
+
+checkRely() {
+    local CHECK
+    CHECK=$(seth call "${!1}" 'wards(address)' "${!2}")
+
+    printf "RELY: %s -> %s -> %s -> " "${1}" "${2}" "${3}"
+    if [[ $(toLower "${!3}") == $(toLower "${CHECK}") ]]; then
+        ok
+    else
+        notok
+    fi
+}
+
+checkAuthority() {
+    local CHECK
+    CHECK=$(seth call "${!1}" 'authority()(address)')
+
+    printf "AUTH: %s -> %s -> " "${1}" "${2}"
+    if [[ $(toLower "${!2}") == $(toLower "${CHECK}") ]]; then
+        ok
+    else
+        notok
+    fi
+}
+
+checkOwner() {
+    local CHECK
+    CHECK=$(seth call "${!1}" 'owner()(address)')
+
+    printf "OWN: %s -> %s -> " "${1}" "${2}"
+    if [[ $(toLower "${!2}") == $(toLower "${CHECK}") ]]; then
+        ok
+    else
+        notok
+    fi
+}
+
+checkRoot() {
+    local CHECK
+    CHECK=$(seth call "${!1}" 'root()(address)')
+
+    printf "OWN: %s -> %s -> " "${1}" "${2}"
+    if [[ $(toLower "${!2}") == $(toLower "${CHECK}") ]]; then
+        ok
+    else
+        notok
+    fi
+}
+
+canCall() {
+    local authority
+    local CHECK
+    authority=$(seth call "${!2}" 'authority()(address)')
+    CHECK=$(seth call "${authority}" 'canCall(address,address,bytes4)(bool)' "${!1}" "${!2}" "$(seth sig "$3")")
+
+    printf "CALL: %s -> %s -> %s -> " "${1}" "${2}" "${3}"
+    if [[ $CHECK == true ]]; then
+        ok
+    else
+        notok
+    fi
+}
+
+checkInOsmMom() {
+    local CHECK
+    CHECK=$(seth call "$OSM_MOM" 'osms(bytes32)(address)' "$(seth --to-bytes32 "$(seth --from-ascii "${1}")")")
+
+    printf "OSM-MOM: %s -> %s -> " "${1}" "${2}"
+    if [[ "$CHECK" == "${!2}" ]]; then
+        ok
+    else
+        notok
+    fi
+}
+
+tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
+
+# vat
+checkRely "MRS_VAT" "MRS_DEPLOY" "NOT_AUTHED"
+checkRely "MRS_VAT" "MRS_CAT" "AUTHED"
+checkRely "MRS_VAT" "MRS_JUG" "AUTHED"
+checkRely "MRS_VAT" "MRS_SPOT" "AUTHED"
+checkRely "MRS_VAT" "MRS_END" "AUTHED"
+checkRely "MRS_VAT" "MRS_PAUSE_PROXY" "AUTHED"
+for token in $tokens; do
+    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+    for ilk in $ilks; do
+        checkRely "MRS_VAT" "MRS_JOIN_${token}_${ilk}" "AUTHED"
+        checkRely "MRS_JOIN_${token}_${ilk}" "MRS_PAUSE_PROXY" "AUTHED"
+        checkRely "MRS_JOIN_${token}_${ilk}" "DEPLOYER" "NOT_AUTHED"
+    done
+done
+if [[ "COIN_TYPE" != "BOND" ]]; then
+  checkRely "MRS_VAT" "MRS_POT" "AUTHED"
+fi
+
+# cat
+checkRely "MRS_CAT" "MRS_DEPLOY" "NOT_AUTHED"
+checkRely "MRS_CAT" "MRS_END" "AUTHED"
+checkRely "MRS_CAT" "MRS_PAUSE_PROXY" "AUTHED"
+
+# vow
+checkRely "MRS_VOW" "MRS_DEPLOY" "NOT_AUTHED"
+checkRely "MRS_VOW" "MRS_CAT" "AUTHED"
+checkRely "MRS_VOW" "MRS_END" "AUTHED"
+checkRely "MRS_VOW" "MRS_PAUSE_PROXY" "AUTHED"
+
+# jug
+checkRely "MRS_JUG" "MRS_DEPLOY" "NOT_AUTHED"
+checkRely "MRS_JUG" "MRS_PAUSE_PROXY" "AUTHED"
+checkRely "MRS_JUG" "MRS_VOX1" "AUTHED"
+if [[ "COIN_TYPE" == "BOND" ]]; then
+  checkRely "MRS_JUG" "MRS_VOX" "AUTHED"
+fi
+
+# pot
+if [[ "COIN_TYPE" != "BOND" ]]; then
+  checkRely "MRS_POT" "MRS_DEPLOY" "NOT_AUTHED"
+  checkRely "MRS_POT" "MRS_PAUSE_PROXY" "AUTHED"
+fi
+
+# vox
+if [[ "COIN_TYPE" == "BOND" ]]; then
+  checkRely "MRS_VOX" "MRS_DEPLOY" "NOT_AUTHED"
+  checkRely "MRS_VOX" "MRS_PAUSE_PROXY" "AUTHED"
+fi
+
+# coin
+checkRely "MRS_COIN" "MRS_DEPLOY" "NOT_AUTHED"
+checkRely "MRS_COIN" "MRS_JOIN_COIN" "AUTHED"
+
+# spotter
+checkRely "MRS_SPOT" "MRS_DEPLOY" "NOT_AUTHED"
+checkRely "MRS_SPOT" "MRS_PAUSE_PROXY" "AUTHED"
+if [[ "COIN_TYPE" == "BOND" ]]; then
+  checkRely "MRS_SPOT" "MRS_VOX" "AUTHED"
+fi
+
+# flap
+checkRely "MRS_FLAP" "MRS_DEPLOY" "NOT_AUTHED"
+checkRely "MRS_FLAP" "MRS_VOW" "AUTHED"
+checkRely "MRS_FLAP" "MRS_PAUSE_PROXY" "AUTHED"
+
+# flop
+checkRely "MRS_FLOP" "MRS_DEPLOY" "NOT_AUTHED"
+checkRely "MRS_FLOP" "MRS_VOW" "AUTHED"
+checkRely "MRS_FLOP" "MRS_PAUSE_PROXY" "AUTHED"
+
+# end
+checkRely "MRS_END" "MRS_DEPLOY" "NOT_AUTHED"
+checkRely "MRS_END" "MRS_ESM" "AUTHED"
+checkRely "MRS_END" "MRS_PAUSE_PROXY" "AUTHED"
+
+# flips
+for token in $tokens; do
+    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+    for ilk in $ilks; do
+        checkRely "MRS_FLIP_${token}_${ilk}" "MRS_DEPLOY" "NOT_AUTHED"
+        checkRely "MRS_FLIP_${token}_${ilk}" "MRS_CAT" "AUTHED"
+        checkRely "MRS_FLIP_${token}_${ilk}" "MRS_END" "AUTHED"
+        checkRely "MRS_FLIP_${token}_${ilk}" "MRS_PAUSE_PROXY" "AUTHED"
+        checkRely "MRS_FLIP_${token}_${ilk}" "FLIPPER_MOM" "AUTHED"
+    done
+done
+
+# flipperMom
+checkOwner "FLIPPER_MOM" "MRS_PAUSE_PROXY"
+checkAuthority "FLIPPER_MOM" "MRS_ADM"
+
+# faucet
+faucet=$(jq -r ".import.faucet | values" "$CONFIG_FILE")
+if [[ -z "$faucet" ]]; then
+    checkRely "FAUCET" "DEPLOYER" "AUTHED"
+fi
+
+# pause
+checkOwner "MRS_PAUSE" "ZERO_ADDR"
+checkAuthority "MRS_PAUSE" "MRS_ADM"
+
+# chief
+checkOwner "MRS_ADM" "ZERO_ADDR"
+checkAuthority "MRS_ADM" "MRS_ADM"
+
+# gov guard
+if [[ -n "$GOV_GUARD" ]]; then
+    checkRoot "GOV_GUARD" "MRS_PAUSE_PROXY"
+fi
+
+# gov
+canCall "MRS_FLOP" "MRS_GOV" "mint(address,uint256)"
+canCall "MRS_FLAP" "MRS_GOV" "burn(address,uint256)"
+
+# iou
+if [[ -n "$MRS_IOU" ]]; then
+    checkOwner "MRS_IOU" "MRS_ADM"
+    checkAuthority "MRS_IOU" "ZERO_ADDR"
+fi
+
+# osms and medians whitelist
+for token in $tokens; do
+    pipAddr=$(jq -r ".tokens.${token} | .import.pip | values" "$CONFIG_FILE")
+    type=$(jq -r ".tokens.${token} | .pipDeploy | .type | values" "$CONFIG_FILE")
+    osmDelay=$(jq -r ".tokens.${token} | .pipDeploy | .osmDelay | values" "$CONFIG_FILE")
+
+    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+    for ilk in $ilks; do
+        # Workaround to see if there is a 'src()' method => assume is an OSM
+        set +e; src=$(seth call "$(eval echo "\$ORACLE_SECURITY_MODULE_${token}")" 'src()(address)' 2>/dev/null); set -e;
+        # if PIP is an OSM
+        if [[ ${#src} == 42 && "${src:0:2}" == "0x" ]]; then
+            checkInOsmMom "${token}-${ilk}" "ORACLE_SECURITY_MODULE_${token}"
+            checkRely "ORACLE_SECURITY_MODULE_${token}" "OSM_MOM" "AUTHED"
+        fi
+    done
+done
+
+# osmMom
+checkOwner "OSM_MOM" "MRS_PAUSE_PROXY"
+checkAuthority "OSM_MOM" "MRS_ADM"

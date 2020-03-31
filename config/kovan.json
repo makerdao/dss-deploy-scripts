@@ -1,17 +1,17 @@
 {
   "description": "Kovan deployment",
   "pauseDelay": "0",
-  "vat_line": "153000000",
-  "vow_wait": "0",
-  "vow_dump": "1",
-  "vow_sump": "10",
-  "vow_bump": "10",
-  "vow_hump": "250",
-  "jug_base": "0",
-  "pot_dsr": "2",
-  "end_wait": "262800",
-  "esm_pit": "0xbd747742B0F1f9791d3e6B85f8797A0cf4fbf10b",
+  "vat_line": "1000000000000000000000000000000",
+  "vow_wait": "172800",
+  "vow_dump": "250",
+  "vow_sump": "50000",
+  "vow_bump": "10000",
+  "vow_hump": "500000",
+  "jug_base": "1.5",
+  "pot_sr": "0.5",
+  "end_wait": "600",
   "esm_min": "50000",
+  "flip_cut": "0.65",
   "flap_beg": "3",
   "flap_ttl": "1800",
   "flap_tau": "259200",
@@ -19,69 +19,63 @@
   "flop_pad": "20",
   "flop_ttl": "600",
   "flop_tau": "259200",
-  "import": {
-    "gov": "0xAaF64BFCC32d0F15873a02163e7E500671a4ffcD",
-    "authority": "0xbBFFC76e94B34F72D96D054b31f6424249c1337d",
-    "proxyRegistry": "0x64A436ae831C1672AE81F674CAb8B6775df3475C",
-    "faucet": "0x94598157fcf0715C3bC9B4a35450cce82AC57B20"
+  "oracle_quorum": "1",
+  "multisig_owners": [],
+  "multisig_quorum": "0",
+  "vox": {
+    "version": "1",
+    "span": "2",
+    "trim": "0.008",
+    "go": "2",
+    "how": "0.00000005",
+    "dawn": "1000000000158153903837946258",
+    "dusk": "1000000000158153903837946258",
+    "up": "1000000000158153903837946258",
+    "down": "1000000000158153903837946258"
   },
-  "migration": {
-    "tub": "0xa71937147b55Deb8a530C7229C442Fd3F31b7db2",
-    "ethAdapterVarName": "MCD_JOIN_ETH_A",
-    "line": "100000000"
+  "gov_holders": {
+    "amounts": [
+      "1000000"
+    ],
+    "holders": []
+  },
+  "dex": {
+    "uniswap_one": "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+    "kyber": "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C"
+  },
+  "coin": {
+    "type": "BOND",
+    "name": "Mai Reflex Bond",
+    "symbol": "MAI",
+    "decimals": "18",
+    "pipDeploy": {
+      "osmDelay": "3600",
+      "type": "median",
+      "price": "1",
+      "signers": [
+        "0x5581364f1350B82Ed4E25874f3727395BF6Ce490"
+      ]
+    }
   },
   "tokens": {
     "ETH": {
-      "import": {
-        "gem": "0xd0A1E359811322d97991E03f863a0C30C2cF029C",
-        "pip": "0x75dD74e8afE8110C8320eD397CcCff3B8134d981"
+      "pipDeploy": {
+        "osmDelay": "3600",
+        "type": "median",
+        "price": "18",
+        "signers": [
+          "0x5581364f1350B82Ed4E25874f3727395BF6Ce490"
+        ]
       },
       "ilks": {
         "A": {
-          "mat": "150",
-          "line": "50000000",
-          "dust": "20",
-          "duty": "4",
+          "mat": "300",
+          "tam": "150",
+          "line": "1000000000",
+          "dust": "15",
+          "duty": "0",
           "chop": "13",
-          "lump": "1.5",
-          "beg": "3",
-          "ttl": "600",
-          "tau": "259200"
-        }
-      }
-    },
-    "BAT": {
-      "import": {
-        "gem": "0x9f8cFB61D3B2aF62864408DD703F9C3BEB55dff7",
-        "pip": "0x5C40C9Eb35c76069fA4C3A00EA59fAc6fFA9c113"
-      },
-      "ilks": {
-        "A": {
-          "mat": "150",
-          "line": "3000000",
-          "dust": "20",
-          "duty": "4",
-          "chop": "13",
-          "lump": "1550",
-          "beg": "3",
-          "ttl": "600",
-          "tau": "259200"
-        }
-      }
-    },
-    "USDC": {
-      "import": {
-        "gem": "0xBD84be3C303f6821ab297b840a99Bd0d4c4da6b5",
-        "pip": "0x4c51c2584309b7BF328F89609FDd03B3b95fC677"
-      },
-      "ilks": {
-        "A": {
-          "mat": "125",
-          "line": "20000000",
-          "dust": "20",
-          "duty": "20",
-          "chop": "13",
-          "lump": "50000",
+          "lump": "50",
           "beg": "3",
           "ttl": "600",
           "tau": "259200"

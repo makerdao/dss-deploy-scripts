@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+# shellcheck source=lib/common.sh
+. "$LIB_DIR/common.sh"
+
+{ test -z "$1" || test -z "$3" || test -z "$5"; } && exit 1
+
+tok=$1
+if [[ -n "$2" ]]; then
+    ilk="${1}-${2}"
+    ilkVar="${1}_${2}"
+else
+    ilk="${1}"
+    ilkVar="${1}"
+fi
+ilkJoin=$3 # adapter contract name
+decimals=$4
+cut=$5
+
+cut=$(echo "$cut"*10^27 | bc -l)
+cut=$(seth --to-uint256 "${cut%.*}")
+
+# Deploy ilk (adapter, spotter, flip and init variables)
+test -z "$MRS_DEPLOY" && exit 1
+
+MRS_VAT=$(seth call "$MRS_DEPLOY" "vat()(address)")
+if [[ "$decimals" != "" ]]; then
+    contract=$(dappCreate mrs-deploy "$ilkJoin" "$MRS_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")" "$(eval echo "\$${tok}")" "$decimals")
+else
+    contract=$(dappCreate mrs-deploy "$ilkJoin" "$MRS_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")" "$(eval echo "\$${tok}")")
+fi
+eval export "\MRS_JOIN_${ilkVar}=${contract}"
+log "MRS_JOIN_${ilkVar}=$(eval "echo ${contract}")"
+
+sethSend "$MRS_DEPLOY" "deployCollateral(bytes32,address,address,uint256)" "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")" "$(eval echo "\$MRS_JOIN_${ilkVar}")" "$(eval echo "\$ORACLE_SECURITY_MODULE_${tok}")" "$cut"
+while IFS=$'\n' read -r line; do data+=("$line"); done < <(seth call "$MRS_DEPLOY" "ilks(bytes32)(address,address)" "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")")
+eval export "\MRS_FLIP_${ilkVar}=${data[0]}"
+
+cat > "$OUT_DIR/load-ilk-addr-temp" << EOF
+#!/bin/bash
+export ORACLE_SECURITY_MODULE_${tok}=$(eval echo "\$ORACLE_SECURITY_MODULE_${tok}")
+export ${tok}=$(eval echo "\$${tok}")
+export MRS_JOIN_${ilkVar}=$(eval echo "\$MRS_JOIN_${ilkVar}")
+export MRS_FLIP_${ilkVar}=$(eval echo "\$MRS_FLIP_${ilkVar}")
+EOF

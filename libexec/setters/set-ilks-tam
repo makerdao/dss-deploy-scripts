@@ -8,16 +8,16 @@ CONFIG_FILE="$OUT_DIR/config.json"
 # Get addresses
 loadAddresses
 
-log "SET ILKS CHOP:"
+log "SET ILKS TAM:"
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     for ilk in $ilks; do
-        chop=$(jq -r ".tokens.${token}.ilks.${ilk} | .chop" "$CONFIG_FILE")
-        chop=$(echo "($chop+100)"*10^25 | bc -l)
-        chop=$(seth --to-uint256 "${chop%.*}")
-        calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MRS_PAUSE" "$MRS_GOV_ACTIONS" "$MRS_CAT" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "chop")")" "$chop")"
+        tam=$(jq -r ".tokens.${token}.ilks.${ilk} | .tam" "$CONFIG_FILE")
+        tam=$(echo "$tam"*10^25 | bc -l)
+        tam=$(seth --to-uint256 "${tam%.*}")
+        calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MRS_PAUSE" "$MRS_GOV_ACTIONS" "$MRS_SPOT" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "tam")")" "$tam")"
         sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
     done
 done

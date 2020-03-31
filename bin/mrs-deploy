@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 if [[ -z "$BIN_DIR" ]]; then
-    echo "Execute \"dss-deploy <NETWORK>\" via nix"
+    echo "Execute \"mrs-deploy <NETWORK>\" via nix"
     exit 1
 fi
 
 help() {
-  echo "Usage: dss-deploy <NETWORK> [ -f file ] [ -c CASE ]" 1>&2
+  echo "Usage: mrs-deploy <NETWORK> [ -f file ] [ -c CASE ]" 1>&2
   exit 1
 }
 
@@ -53,7 +53,7 @@ if [[ "$RPC_CHAIN" == "testchain" && -n "$OMNIA_ADDR" && -n "$OMNIA_AMT" ]]; the
     sethSend "$OMNIA_ADDR" --value "$(seth --to-wei "$OMNIA_AMT" eth)"
 fi
 
-"$LIBEXEC_DIR"/base-deploy |& tee "$OUT_DIR/dss-$1.log"
+"$LIBEXEC_DIR"/base-deploy |& tee "$OUT_DIR/mrs-$1.log"
 
 NETWORK=$(toUpper "$1")
 if [[ -f "$CASE" ]]; then

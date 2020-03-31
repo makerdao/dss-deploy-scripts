@@ -13,19 +13,19 @@ log "SET ILKS OSM-MOM:"
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     # Workaround to see if there is a 'src()' method => assume is an OSM
-    set +e; src=$(seth call "$(eval echo "\$PIP_${token}")" 'src()(address)' 2>/dev/null); set -e
+    set +e; src=$(seth call "$(eval echo "\$ORACLE_SECURITY_MODULE_${token}")" 'src()(address)' 2>/dev/null); set -e
     # if PIP is an OSM
     if [[ ${#src} == 42 && "${src:0:2}" == "0x" ]]; then
         ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
         for ilk in $ilks; do
-            sethSend "$OSM_MOM" 'setOsm(bytes32,address)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(eval echo "\$PIP_${token}")"
+            sethSend "$OSM_MOM" 'setOsm(bytes32,address)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(eval echo "\$ORACLE_SECURITY_MODULE_${token}")"
         done
         # Rely OsmMom in OSM only if DEPLOYER has permission to do it
-        if [[ "$(seth call "$(eval echo "\$PIP_${token}")" 'wards(address)(uint256)' "$ETH_FROM")" == 1 ]]; then
-            sethSend "$(eval echo "\$PIP_${token}")" 'rely(address)' "$OSM_MOM"
+        if [[ "$(seth call "$(eval echo "\$ORACLE_SECURITY_MODULE_${token}")" 'wards(address)(uint256)' "$ETH_FROM")" == 1 ]]; then
+            sethSend "$(eval echo "\$ORACLE_SECURITY_MODULE_${token}")" 'rely(address)' "$OSM_MOM"
         fi
     fi
 done
 
-sethSend "$OSM_MOM" 'setAuthority(address)' "$MCD_ADM"
-sethSend "$OSM_MOM" 'setOwner(address)' "$MCD_PAUSE_PROXY"
+sethSend "$OSM_MOM" 'setAuthority(address)' "$MRS_ADM"
+sethSend "$OSM_MOM" 'setOwner(address)' "$MRS_PAUSE_PROXY"

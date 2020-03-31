@@ -3,40 +3,132 @@
 # shellcheck source=lib/common.sh
 . "$LIB_DIR/common.sh"
 
-# Deploy Values or Medians
+# Read and export essential settings
+MULTISIG_QUORUM="$(jq -r ".multisig_quorum | values" "$CONFIG_FILE")"
+
+COIN_TYPE="$(jq -r ".coin | .type | values" "$CONFIG_FILE")"
+COIN_NAME="$(jq -r ".coin | .name | values" "$CONFIG_FILE")"
+COIN_SYMBOL="$(jq -r ".coin | .symbol | values" "$CONFIG_FILE")"
+COIN_DECIMALS="$(jq -r ".coin | .decimals | values" "$CONFIG_FILE")"
+COIN_PIP_TYPE="$(jq -r ".coin | .pipDeploy | .type | values" "$CONFIG_FILE")"
+COIN_PIP_DELAY="$(jq -r ".coin | .pipDeploy | .osmDelay | values" "$CONFIG_FILE")"
+COIN_PIP_PRICE="$(jq -r ".coin | .pipDeploy | .price | values" "$CONFIG_FILE")"
+COIN_PIP_SIGNERS="$(jq -r ".coin | .pipDeploy | .signers | values" "$CONFIG_FILE")"
+
+MRS_UNISWAP_ONE="$(jq -r ".dex | .uniswap_one | values" "$CONFIG_FILE")"
+MRS_KYBER="$(jq -r ".dex | .kyber | values" "$CONFIG_FILE")"
+
+VOX_VERSION="$(jq -r ".vox | .version | values" "$CONFIG_FILE")"
+VOX_SPAN="$(jq -r ".vox | .span | values" "$CONFIG_FILE")"
+VOX_TRIM="$(jq -r ".vox | .trim | values" "$CONFIG_FILE")"
+VOX_GO="$(jq -r ".vox | .go | values" "$CONFIG_FILE")"
+VOX_HOW="$(jq -r ".vox | .how | values" "$CONFIG_FILE")"
+VOX_DAWN="$(jq -r ".vox | .dawn | values" "$CONFIG_FILE")"
+VOX_DUSK="$(jq -r ".vox | .dusk | values" "$CONFIG_FILE")"
+VOX_UP="$(jq -r ".vox | .up | values" "$CONFIG_FILE")"
+VOX_DOWN="$(jq -r ".vox | .down | values" "$CONFIG_FILE")"
+
+MRS_ESM_MIN="$(seth --to-uint256 "$(seth --to-wei "$(jq -r ".esm_min | values" "$CONFIG_FILE")" "eth")")"
+
+export MULTISIG_QUORUM
+
+export COIN_TYPE
+export COIN_NAME
+export COIN_SYMBOL
+export COIN_DECIMALS
+export COIN_PIP_TYPE
+export COIN_PIP_DELAY
+export COIN_PIP_PRICE
+export COIN_PIP_SIGNERS
+
+export MRS_UNISWAP_ONE
+export MRS_KYBER
+
+export VOX_VERSION
+export VOX_SPAN
+export VOX_TRIM
+export VOX_GO
+export VOX_HOW
+export VOX_DAWN
+export VOX_DUSK
+export VOX_UP
+export VOX_DOWN
+
+export MRS_ESM_MIN
+
+# Deploy Medians and Values for Collaterals
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
-    pipAddr=$(jq -r ".tokens.${token} | .import.pip | values" "$CONFIG_FILE")
+    pipAddr=$(jq -r ".tokens.${token} | .pip | values" "$CONFIG_FILE")
     if [[ "$pipAddr" == "" ]]; then
         type=$(jq -r ".tokens.${token} | .pipDeploy | .type | values" "$CONFIG_FILE")
         # Deploy Medianizer as Feed
         if [[ "$type" == "median" ]]; then
             contract=$(dappCreate testchain-medians "Median${token}USD")
-            eval "export VAL_${token}=${contract}"
-            log "VAL_${token}=$(eval "echo ${contract}")"
+            eval "export ORACLE_SECURITY_MODULE_${token}=${contract}"
             signers=$(jq -r ".tokens.${token} | .pipDeploy | .signers | .[]" "$CONFIG_FILE")
             # Approve oracle price feed providers
             allsigners=()
             for signer in $signers; do
-                allsigners+=("\"${signer}\"")
+              allsigners+=("${signer#0x}")
             done
-            sethSend "$(eval echo "\$VAL_${token}")" 'lift(address[] memory)' "[$(join "${allsigners[@]}")]"
+            seth send "$(eval echo "\$ORACLE_SECURITY_MODULE_${token}")" 'lift(address[] memory)' "[$(join "${allsigners[@]}")]"
             # Set quorum for Medianizer
-            sethSend "$(eval echo "\$VAL_${token}")" 'setBar(uint256)' "$(seth --to-uint256 3)"
+            oracle_quorum="$(jq -r ".oracle_quorum | values" "$CONFIG_FILE")"
+            if [[ -z "$oracle_quorum" ]]; then
+              seth send "$(eval echo "\$ORACLE_SECURITY_MODULE_${token}")" 'setBar(uint256)' "$(seth --to-uint256 $oracle_quorum)"
+            else
+              seth send "$(eval echo "\$ORACLE_SECURITY_MODULE_${token}")" 'setBar(uint256)' "$(seth --to-uint256 1)"
+            fi
         fi
         # Deploy DSValue as Feed
         if [[ "${type}" == "value" ]]; then
             contract=$(dappCreate osm DSValue)
-            eval "export VAL_${token}=${contract}"
-            log "VAL_${token}=$(eval "echo ${contract}")"
+            eval "export ORACLE_SECURITY_MODULE_${token}=${contract}"
+            log "ORACLE_SECURITY_MODULE_${token}=$(eval "echo ${contract}")"
         fi
+        log "ORACLE_SECURITY_MODULE_${token} deployed"
     else
-        eval "export VAL_${token}=${pipAddr}"
+        eval "export ORACLE_SECURITY_MODULE_${token}=${pipAddr}"
         copy osm
         copy testchain-medians
     fi
-    eval "export PIP_${token}=\$VAL_${token}"
+    eval "export MEDIANIZER_${token}=\$ORACLE_SECURITY_MODULE_${token}"
 done
+
+# Deploy Median or Value for COIN
+if [ "$COIN_TYPE" == "BOND" ]; then
+  if [[ "$COIN_PIP_TYPE" == "median" ]]; then
+    ORACLE_SECURITY_MODULE_COIN=$(dappCreate testchain-medians "MedianCoinUSD")
+    eval "export ORACLE_SECURITY_MODULE_COIN=${ORACLE_SECURITY_MODULE_COIN}"
+    # Approve oracle price feed providers
+    allsigners=()
+    for signer in $COIN_PIP_SIGNERS; do
+      allsigners+=("${COIN_PIP_SIGNERS#0x}")
+    done
+    seth send "$(eval echo "\$ORACLE_SECURITY_MODULE_COIN")" 'lift(address[] memory)' "[$(join "${allsigners[@]}")]"
+    # Set quorum for Medianizer
+    oracle_quorum="$(jq -r ".oracle_quorum | values" "$CONFIG_FILE")"
+    if [[ -z "$oracle_quorum" ]]; then
+      seth send "$(eval echo "\$ORACLE_SECURITY_MODULE_COIN")" 'setBar(uint256)' "$(seth --to-uint256 $oracle_quorum)"
+    else
+      seth send "$(eval echo "\$ORACLE_SECURITY_MODULE_COIN")" 'setBar(uint256)' "$(seth --to-uint256 1)"
+    fi
+  else
+    ORACLE_SECURITY_MODULE_COIN=$(dappCreate osm DSValue)
+    eval "export ORACLE_SECURITY_MODULE_COIN=${ORACLE_SECURITY_MODULE_COIN}"
+    log "ORACLE_SECURITY_MODULE_COIN=$(eval "echo ${ORACLE_SECURITY_MODULE_COIN}")"
+  fi
+  eval "export MEDIANIZER_COIN=\$ORACLE_SECURITY_MODULE_COIN"
+fi
+
+# Deploy Pit
+MRS_ESM_PIT="$(jq -r ".esm_pit | values" "$CONFIG_FILE")"
+if [[ -z "$MRS_ESM_PIT" ]]; then
+  MRS_ESM_PIT=$(dappCreate mrs-pit GemPit)
+fi
+export MRS_ESM_PIT
+log "pit exported"
 
 # Deploy Multicall
 MULTICALL=$(dappCreate multicall Multicall)
@@ -57,9 +149,9 @@ fi
 # Deploy ProxyRegistry
 PROXY_REGISTRY=$(jq -r ".import.proxyRegistry | values" "$CONFIG_FILE")
 if [[ -z "$PROXY_REGISTRY" ]]; then
-    PROXY_FACTORY=$(dappCreate dss-proxy-actions DSProxyFactory)
+    PROXY_FACTORY=$(dappCreate mrs-proxy-actions DSProxyFactory)
     log "PROXY_FACTORY=$PROXY_FACTORY"
-    PROXY_REGISTRY=$(dappCreate dss-proxy-actions ProxyRegistry "$PROXY_FACTORY")
+    PROXY_REGISTRY=$(dappCreate mrs-proxy-actions ProxyRegistry "$PROXY_FACTORY")
     log "PROXY_REGISTRY=$PROXY_REGISTRY"
 else
     PROXY_FACTORY=$(seth storage "$PROXY_REGISTRY" 1)
@@ -67,345 +159,291 @@ else
 fi
 
 # Deploy Fabs
-"$LIBEXEC_DIR/dss/deploy-fab"
+"$LIBEXEC_DIR/mrs/deploy-fab"
 # shellcheck source=/dev/null
 . "$OUT_DIR/load-fabs-addr-temp"
 rm "$OUT_DIR/load-fabs-addr-temp"
 
 # Set the pause delay to 0 in order to make the needed initial configurations
-export MCD_PAUSE_DELAY=0
+export MRS_PAUSE_DELAY=0
 
-# Make sure there is not $MCD_ADM set, so a temporary roles is created as authority (to handle variables set up easier)
-unset MCD_ADM
+# Make sure there is not $MRS_ADM set, so a temporary roles is created as authority (to handle variables set up easier)
+unset MRS_ADM
 
-MCD_GOV=$(jq -r ".import.gov | values" "$CONFIG_FILE")
-if [[ -z "$MCD_GOV" ]]; then
+MRS_GOV=$(jq -r ".import.gov | values" "$CONFIG_FILE")
+if [[ -z "$MRS_GOV" ]]; then
     # It means the GOV token will be created now in the next deployment script call, then we can send funds to the Faucet and set permissions to FLOP
     newGovToken=true
 else
     newGovToken=false
-    export MCD_GOV
+    export MRS_GOV
 fi
 
-MCD_ESM_MIN="$(seth --to-uint256 "$(seth --to-wei "$(jq -r ".esm_min | values" "$CONFIG_FILE")" "eth")")"
-export MCD_ESM_MIN
-MCD_ESM_PIT="$(jq -r ".esm_pit | values" "$CONFIG_FILE")"
-export MCD_ESM_PIT
-
-# Deploy MCD Core Contratcs
-"$LIBEXEC_DIR/dss/deploy-core"
-# shellcheck source=/dev/null
-. "$OUT_DIR/load-core-addr-temp"
-rm "$OUT_DIR/load-core-addr-temp"
-
-# Mint Gov Token, send to the Faucet and set permissions if a new token
-if [[ "$newGovToken" == true ]]; then
-    sethSend "$MCD_GOV" 'mint(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
-    sethSend "$FAUCET" 'gulp(address)' "$MCD_GOV"
-
-    # Use custom authority for the new GOV token
-    GOV_GUARD=$(dappCreate mkr-authority MkrAuthority)
-    log "GOV_GUARD=$GOV_GUARD"
-
-    # Set GOV_GUARD as authority of MCD_GOV
-    sethSend "$MCD_GOV" 'setAuthority(address)' "$GOV_GUARD"
-
-    # Allow Flop to mint Gov token
-    sethSend "$GOV_GUARD" 'rely(address)' "$MCD_FLOP"
-fi
-
-# Deploy Collaterals
-for token in $tokens; do
-    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
-
-    gemAddr=$(jq -r ".tokens.${token} | .import.gem | values" "$CONFIG_FILE")
-    eval "export ${token}=${gemAddr}"
-
-    for ilk in $ilks; do
-        "$LIBEXEC_DIR/dss/deploy-ilk-$(echo "$token" | tr '[:upper:]' '[:lower:]')" "$ilk"
-        # shellcheck source=/dev/null
-        . "$OUT_DIR/load-ilk-addr-temp"
-        rm "$OUT_DIR/load-ilk-addr-temp"
-
-        # If the ilk token was created by the previous deployment script call (new token) and it is not ETH, then we can send funds to the Faucet
-        if [[ "$token" != "ETH" && "$gemAddr" == "" ]]; then
-            sethSend "$(eval echo "\$$token")" 'transfer(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 999000 ETH)")"
-        fi
-    done
-done
-
-if [[ "$newFaucet" == true ]]; then
-    for token in $tokens; do
-        sethSend "$FAUCET" 'setAmt(address,uint256)' "$(eval echo "\$${token}")" "$(seth --to-uint256 "$(seth --to-wei 50 ETH)")"
-    done
-fi
-
-# Deploy Proxy Actions
-PROXY_ACTIONS=$(dappCreate dss-proxy-actions-optimized DssProxyActions)
-log "PROXY_ACTIONS=$PROXY_ACTIONS"
-PROXY_ACTIONS_END=$(dappCreate dss-proxy-actions-optimized DssProxyActionsEnd)
-log "PROXY_ACTIONS_END=$PROXY_ACTIONS_END"
-PROXY_ACTIONS_DSR=$(dappCreate dss-proxy-actions-optimized DssProxyActionsDsr)
-log "PROXY_ACTIONS_DSR=$PROXY_ACTIONS_DSR"
-
-# Deploy CdpManager
-CDP_MANAGER=$(dappCreate dss-proxy-actions DssCdpManager "$MCD_VAT")
-log "CDP_MANAGER=$CDP_MANAGER"
-GET_CDPS=$(dappCreate dss-proxy-actions GetCdps)
-log "GET_CDPS=$GET_CDPS"
-
-# Deploy OsmMom
-OSM_MOM=$(dappCreate osm-mom OsmMom)
-log "OSM_MOM=$OSM_MOM"
-
-# Deploy Flipper
-FLIPPER_MOM=$(dappCreate flipper-mom FlipperMom "$MCD_CAT")
-log "FLIPPER_MOM=$FLIPPER_MOM"
-
-SAI_TUB=$(jq -r ".migration.tub | values" "$CONFIG_FILE")
-ethAdapterAddr="$(eval echo "\$$(jq -r ".migration.ethAdapterVarName | values" "$CONFIG_FILE")")"
-if [[ -n "$SAI_TUB" && -n "$ethAdapterAddr" ]]; then
-    SAI_TUB=$(seth --to-checksum-address "$SAI_TUB")
-    SAI="$(seth call "$SAI_TUB" 'sai()(address)')"
-    export SAI
-    PIP_SAI=$(dappCreate osm DSValue)
-    log "PIP_SAI=$PIP_SAI"
-    export PIP_SAI
-
-    "$LIBEXEC_DIR/dss/deploy-ilk-sai"
-    # shellcheck source=/dev/null
-    . "$OUT_DIR/load-ilk-addr-temp"
-    rm "$OUT_DIR/load-ilk-addr-temp"
-
-    # Set SAI price = 1 USD
-    sethSend "$PIP_SAI" 'poke(bytes32)' "$(seth --to-uint256 "$(seth --to-wei 1 ETH)")"
-
-    # Set SAI pip authority to Proxy Pause
-    sethSend "$PIP_SAI" 'setOwner(address)' "$MCD_PAUSE_PROXY"
-
-    # Deploy ScdMcdMigration
-    MIGRATION=$(dappCreate scd-mcd-migration ScdMcdMigration "$SAI_TUB" "$CDP_MANAGER" "$MCD_JOIN_SAI" "$ethAdapterAddr" "$MCD_JOIN_DAI")
-    log "MIGRATION=$MIGRATION"
-
-    # Rely Migration contract to access the SAI Adapter
-    sethSend "$MCD_JOIN_SAI" 'rely(address)' "$MIGRATION"
-    # Rely Pause Proxy contract to access the SAI Adapter
-    sethSend "$MCD_JOIN_SAI" 'rely(address)' "$MCD_PAUSE_PROXY"
-    # Deny deployer to access the SAI Adapter
-    sethSend "$MCD_JOIN_SAI" 'deny(address)' "$ETH_FROM"
-
-    sethSend "$MCD_DEPLOY" 'releaseAuthFlip(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "SAI")")"
-
-    # Deploy MigrationProxyActions to use migrate function through DSProxy
-    MIGRATION_PROXY_ACTIONS=$(dappCreate scd-mcd-migration MigrationProxyActions)
-    log "MIGRATION_PROXY_ACTIONS=$MIGRATION_PROXY_ACTIONS"
-fi
-
-# As all initial collaterals were deployed, we can remove authority of the deployment contract from the core contracts
-sethSend "$MCD_DEPLOY" 'releaseAuth()'
-for token in $tokens; do
-    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
-    for ilk in $ilks; do
-        # Rely Pause Proxy contract to access the Adapter
-        sethSend "$(eval echo "\$MCD_JOIN_${token}_${ilk}")" 'rely(address)' "$MCD_PAUSE_PROXY"
-        # Deny deployer to access the Adapter
-        sethSend "$(eval echo "\$MCD_JOIN_${token}_${ilk}")" 'deny(address)' "$ETH_FROM"
-
-        sethSend "$MCD_DEPLOY" 'releaseAuthFlip(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
-    done
-done
-
-# Deploy GovActions - Library functions for the Pause
-MCD_GOV_ACTIONS=$(dappCreate dss-deploy GovActions)
-log "MCD_GOV_ACTIONS=$MCD_GOV_ACTIONS"
-
-# Deploy Pause Proxy Actions (support contract for executing initial set up of the dss system)
-PROXY_PAUSE_ACTIONS=$(dappCreate dss-deploy-pause-proxy-actions DssDeployPauseProxyActions)
-log "PROXY_PAUSE_ACTIONS=$PROXY_PAUSE_ACTIONS"
-
-# Get a proxy for the deployer address (create if didn't previously exist)
-PROXY_DEPLOYER=$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$ETH_FROM")
-if [[ "$PROXY_DEPLOYER" == "0x0000000000000000000000000000000000000000" ]]; then
-    sethSend "$PROXY_REGISTRY" 'build()'
-    PROXY_DEPLOYER="$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$ETH_FROM")"
-    log "PROXY_DEPLOYER=$PROXY_DEPLOYER"
-fi
-
-# Set the proxy address as root of the roles (in order to be able to do all the variables set up)
-sethSend "$MCD_ADM" 'setRootUser(address,bool)' "$PROXY_DEPLOYER" true
-
-# Deploy chief as new $MCD_ADM if there isn't an authority in the config file
-MCD_ADM=$(jq -r ".import.authority | values" "$CONFIG_FILE")
-if [[ -z "$MCD_ADM" ]]; then
-    MCD_IOU=$(dappCreate vote-proxy DSToken "$(seth --to-bytes32 "$(seth --from-ascii "IOU")")")
-    log "MCD_IOU=$MCD_IOU"
-
-    MCD_ADM=$(dappCreate vote-proxy DSChief "$MCD_GOV" "$MCD_IOU" 5)
-    log "MCD_ADM=$MCD_ADM"
-    sethSend "$MCD_IOU" 'setOwner(address)' "${MCD_ADM}"
-
-    # Deploy Vote Proxy Factory
-    VOTE_PROXY_FACTORY=$(dappCreate vote-proxy VoteProxyFactory "$MCD_ADM")
-    log "VOTE_PROXY_FACTORY=$VOTE_PROXY_FACTORY"
-else
-    copy vote-proxy
-fi
-
-if [[ -n "$GOV_GUARD" ]]; then
-    sethSend "$GOV_GUARD" 'setRoot(address)' "$MCD_PAUSE_PROXY"
-fi
-
-for token in $tokens; do
-    ILKS_VARS+=",
-    \"${token}\": \"$(seth --to-checksum-address "$(eval echo "\$${token}")")\""
-    if [[ "$(eval echo "\$VAL_${token}")" != "" ]]; then
-    ILKS_VARS+=",
-    \"VAL_${token}\": \"$(seth --to-checksum-address "$(eval echo "\$VAL_${token}")")\""
-    fi
-    ILKS_VARS+=",
-    \"PIP_${token}\": \"$(seth --to-checksum-address "$(eval echo "\$PIP_${token}")")\""
-    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
-    for ilk in $ilks; do
-    ILKS_VARS+=",
-    \"MCD_JOIN_${token}_${ilk}\": \"$(eval echo "\$MCD_JOIN_${token}_${ilk}")\""
-    ILKS_VARS+=",
-    \"MCD_FLIP_${token}_${ilk}\": \"$(seth --to-checksum-address "$(eval echo "\$MCD_FLIP_${token}_${ilk}")")\""
-    done
-done
-
-if [[ -n "$MIGRATION" ]]; then
-    ILKS_VARS+=",
-    \"SAI\": \"$(seth --to-checksum-address "$SAI")\""
-    ILKS_VARS+=",
-    \"PIP_SAI\": \"$PIP_SAI\""
-    ILKS_VARS+=",
-    \"MCD_JOIN_SAI\": \"$MCD_JOIN_SAI\""
-    ILKS_VARS+=",
-    \"MCD_FLIP_SAI\": \"$(seth --to-checksum-address "$MCD_FLIP_SAI")\""
-
-    MIGRATION_VARS=",
-    \"SAI_TUB\": \"$SAI_TUB\""
-    MIGRATION_VARS+=",
-    \"MIGRATION\": \"$MIGRATION\""
-    MIGRATION_VARS+=",
-    \"MIGRATION_PROXY_ACTIONS\": \"$MIGRATION_PROXY_ACTIONS\""
-fi
-
-if [[ -n $GOV_GUARD ]]; then
-    GOV_GUARD_VAR=",
-    \"GOV_GUARD\": \"$GOV_GUARD\""
-fi
-if [[ -n $MCD_IOU ]]; then
-    MCD_IOU_VAR=",
-    \"MCD_IOU\": \"$MCD_IOU\""
-fi
-if [[ -n $VOTE_PROXY_FACTORY ]]; then
-    VOTE_PROXY_FACTORY_VAR=",
-    \"VOTE_PROXY_FACTORY\": \"$VOTE_PROXY_FACTORY\""
-fi
-
-# Generate addresses.json file
-cat > "$OUT_DIR"/addresses.json <<EOF
-{
-    "DEPLOYER": "$(seth --to-checksum-address "$ETH_FROM")",
-    "MULTICALL": "$MULTICALL",
-    "FAUCET": "$(seth --to-checksum-address "$FAUCET")",
-    "MCD_DEPLOY": "$MCD_DEPLOY",
-    "MCD_GOV": "$(seth --to-checksum-address "$MCD_GOV")"$GOV_GUARD_VAR$MCD_IOU_VAR,
-    "MCD_ADM": "$(seth --to-checksum-address "$MCD_ADM")"$VOTE_PROXY_FACTORY_VAR,
-    "MCD_VAT": "$(seth --to-checksum-address "$MCD_VAT")",
-    "MCD_JUG": "$(seth --to-checksum-address "$MCD_JUG")",
-    "MCD_CAT": "$(seth --to-checksum-address "$MCD_CAT")",
-    "MCD_VOW": "$(seth --to-checksum-address "$MCD_VOW")",
-    "MCD_JOIN_DAI": "$(seth --to-checksum-address "$MCD_JOIN_DAI")",
-    "MCD_FLAP": "$(seth --to-checksum-address "$MCD_FLAP")",
-    "MCD_FLOP": "$(seth --to-checksum-address "$MCD_FLOP")",
-    "MCD_PAUSE": "$(seth --to-checksum-address "$MCD_PAUSE")",
-    "MCD_PAUSE_PROXY": "$(seth --to-checksum-address "$MCD_PAUSE_PROXY")",
-    "MCD_GOV_ACTIONS": "$MCD_GOV_ACTIONS",
-    "MCD_DAI": "$(seth --to-checksum-address "$MCD_DAI")",
-    "MCD_SPOT": "$(seth --to-checksum-address "$MCD_SPOT")",
-    "MCD_POT": "$(seth --to-checksum-address "$MCD_POT")",
-    "MCD_END": "$(seth --to-checksum-address "$MCD_END")",
-    "MCD_ESM": "$(seth --to-checksum-address "$MCD_ESM")",
-    "PROXY_ACTIONS": "$PROXY_ACTIONS",
-    "PROXY_ACTIONS_END": "$PROXY_ACTIONS_END",
-    "PROXY_ACTIONS_DSR": "$PROXY_ACTIONS_DSR",
-    "CDP_MANAGER": "$CDP_MANAGER",
-    "GET_CDPS": "$GET_CDPS",
-    "OSM_MOM": "$OSM_MOM",
-    "FLIPPER_MOM": "$FLIPPER_MOM",
-    "PROXY_FACTORY": "$(seth --to-checksum-address "$PROXY_FACTORY")",
-    "PROXY_REGISTRY": "$(seth --to-checksum-address "$PROXY_REGISTRY")"$ILKS_VARS,
-    "PROXY_PAUSE_ACTIONS": "$PROXY_PAUSE_ACTIONS",
-    "PROXY_DEPLOYER": "$(seth --to-checksum-address "$PROXY_DEPLOYER")"$MIGRATION_VARS
-}
-EOF
-
-"$LIBEXEC_DIR"/setters/set-vat-line
-
-"$LIBEXEC_DIR"/setters/set-vow-wait
-
-"$LIBEXEC_DIR"/setters/set-vow-bump
-
-"$LIBEXEC_DIR"/setters/set-vow-dump
-
-"$LIBEXEC_DIR"/setters/set-vow-sump
-
-"$LIBEXEC_DIR"/setters/set-vow-hump
-
-"$LIBEXEC_DIR"/setters/set-jug-base
-
-"$LIBEXEC_DIR"/setters/set-pot-dsr
-
-"$LIBEXEC_DIR"/setters/set-end-wait
-
-"$LIBEXEC_DIR"/setters/set-beg "flap"
-
-"$LIBEXEC_DIR"/setters/set-ttl "flap"
-
-"$LIBEXEC_DIR"/setters/set-tau "flap"
-
-"$LIBEXEC_DIR"/setters/set-beg "flop"
-
-"$LIBEXEC_DIR"/setters/set-flop-pad
-
-"$LIBEXEC_DIR"/setters/set-ttl "flop"
-
-"$LIBEXEC_DIR"/setters/set-tau "flop"
-
-"$LIBEXEC_DIR"/setters/set-ilks-price
-
-"$LIBEXEC_DIR"/setters/set-ilks-pip-whitelist
-
-"$LIBEXEC_DIR"/setters/set-ilks-mat
-
-"$LIBEXEC_DIR"/setters/set-ilks-line
-
-"$LIBEXEC_DIR"/setters/set-ilks-dust
-
-"$LIBEXEC_DIR"/setters/set-ilks-duty
-
-"$LIBEXEC_DIR"/setters/set-ilks-spotter-poke
-
-"$LIBEXEC_DIR"/setters/set-ilks-chop
-
-"$LIBEXEC_DIR"/setters/set-ilks-lump
-
-"$LIBEXEC_DIR"/setters/set-ilks-beg
-
-"$LIBEXEC_DIR"/setters/set-ilks-ttl
-
-"$LIBEXEC_DIR"/setters/set-ilks-tau
-
-if [[ -f "$CASE" ]]; then
-    "$CASE"
-fi
-
-"$LIBEXEC_DIR"/setters/set-ilks-osm
-
-"$LIBEXEC_DIR"/setters/set-ilks-osm-mom
-
-"$LIBEXEC_DIR"/setters/set-ilks-flipper-mom
-
-"$LIBEXEC_DIR"/setters/set-pause-auth-delay
+# # Deploy MRS Core Contratcs
+# "$LIBEXEC_DIR/mrs/deploy-core"
+# # shellcheck source=/dev/null
+# . "$OUT_DIR/load-core-addr-temp"
+# rm "$OUT_DIR/load-core-addr-temp"
+#
+# # Mint Gov Token, send to the Faucet and set permissions if a new token
+# if [[ "$newGovToken" == true ]]; then
+#     sethSend "$MRS_GOV" 'mint(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
+#     sethSend "$FAUCET" 'gulp(address)' "$MRS_GOV"
+#
+#     # Use custom authority for the new GOV token
+#     GOV_GUARD=$(dappCreate meta-authority MetaAuthority)
+#     log "GOV_GUARD=$GOV_GUARD"
+#
+#     # Set GOV_GUARD as authority of MRS_GOV
+#     sethSend "$MRS_GOV" 'setAuthority(address)' "$GOV_GUARD"
+#
+#     # Allow Flop to mint Gov token
+#     sethSend "$GOV_GUARD" 'rely(address)' "$MRS_FLOP"
+# fi
+#
+# # Deploy Collaterals
+# for token in $tokens; do
+#     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+#
+#     gemAddr=$(jq -r ".tokens.${token} | .import.gem | values" "$CONFIG_FILE")
+#     eval "export ${token}=${gemAddr}"
+#
+#     for ilk in $ilks; do
+#         "$LIBEXEC_DIR/mrs/deploy-ilk-$(echo "$token" | tr '[:upper:]' '[:lower:]')" "$ilk"
+#         # shellcheck source=/dev/null
+#         . "$OUT_DIR/load-ilk-addr-temp"
+#         rm "$OUT_DIR/load-ilk-addr-temp"
+#
+#         # If the ilk token was created by the previous deployment script call (new token) and it is not ETH, then we can send funds to the Faucet
+#         if [[ "$token" != "ETH" && "$gemAddr" == "" ]]; then
+#             sethSend "$(eval echo "\$$token")" 'transfer(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 999000 ETH)")"
+#         fi
+#     done
+# done
+#
+# if [[ "$newFaucet" == true ]]; then
+#     for token in $tokens; do
+#         sethSend "$FAUCET" 'setAmt(address,uint256)' "$(eval echo "\$${token}")" "$(seth --to-uint256 "$(seth --to-wei 50 ETH)")"
+#     done
+# fi
+#
+# # Deploy Proxy Actions
+# PROXY_ACTIONS=$(dappCreate mrs-proxy-actions-optimized MrsProxyActions)
+# log "PROXY_ACTIONS=$PROXY_ACTIONS"
+# PROXY_ACTIONS_END=$(dappCreate mrs-proxy-actions-optimized MrsProxyActionsEnd)
+# log "PROXY_ACTIONS_END=$PROXY_ACTIONS_END"
+# PROXY_ACTIONS_SR=$(dappCreate mrs-proxy-actions-optimized MrsProxyActionsSr)
+# log "PROXY_ACTIONS_SR=$PROXY_ACTIONS_SR"
+#
+# # Deploy CdpManager
+# CDP_MANAGER=$(dappCreate mrs-proxy-actions MrsCdpManager "$MRS_VAT")
+# log "CDP_MANAGER=$CDP_MANAGER"
+# GET_CDPS=$(dappCreate mrs-proxy-actions GetCdps)
+# log "GET_CDPS=$GET_CDPS"
+#
+# # Deploy OsmMom
+# OSM_MOM=$(dappCreate osm-mom OsmMom)
+# log "OSM_MOM=$OSM_MOM"
+#
+# # Deploy Flipper
+# FLIPPER_MOM=$(dappCreate flipper-mom FlipperMom "$MRS_CAT")
+# log "FLIPPER_MOM=$FLIPPER_MOM"
+#
+# # As all initial collaterals were deployed, we can remove authority of the deployment contract from the core contracts
+# sethSend "$MRS_DEPLOY" 'releaseAuth()'
+# for token in $tokens; do
+#     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+#     for ilk in $ilks; do
+#         # Rely Pause Proxy contract to access the Adapter
+#         sethSend "$(eval echo "\$MRS_JOIN_${token}_${ilk}")" 'rely(address)' "$MRS_PAUSE_PROXY"
+#         # Deny deployer to access the Adapter
+#         sethSend "$(eval echo "\$MRS_JOIN_${token}_${ilk}")" 'deny(address)' "$ETH_FROM"
+#
+#         sethSend "$MRS_DEPLOY" 'releaseAuthFlip(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
+#     done
+# done
+#
+# # Deploy GovActions - Library functions for the Pause
+# MRS_GOV_ACTIONS=$(dappCreate mrs-deploy GovActions)
+# log "MRS_GOV_ACTIONS=$MRS_GOV_ACTIONS"
+#
+# # Deploy Pause Proxy Actions (support contract for executing initial set up of the dss system)
+# PROXY_PAUSE_ACTIONS=$(dappCreate mrs-deploy-pause-proxy-actions MrsDeployPauseProxyActions)
+# log "PROXY_PAUSE_ACTIONS=$PROXY_PAUSE_ACTIONS"
+#
+# # Get a proxy for the deployer address (create if didn't previously exist)
+# PROXY_DEPLOYER=$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$ETH_FROM")
+# if [[ "$PROXY_DEPLOYER" == "0x0000000000000000000000000000000000000000" ]]; then
+#     sethSend "$PROXY_REGISTRY" 'build()'
+#     PROXY_DEPLOYER="$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$ETH_FROM")"
+#     log "PROXY_DEPLOYER=$PROXY_DEPLOYER"
+# fi
+#
+# # Set the proxy address as root of the roles (in order to be able to do all the variables set up)
+# sethSend "$MRS_ADM" 'setRootUser(address,bool)' "$PROXY_DEPLOYER" true
+#
+# # Deploy chief as new $MRS_ADM if there isn't an authority in the config file
+# MRS_ADM=$(jq -r ".import.authority | values" "$CONFIG_FILE")
+# if [[ -z "$MRS_ADM" ]]; then
+#     MRS_IOU=$(dappCreate vote-proxy DSToken "$(seth --to-bytes32 "$(seth --from-ascii "IOU")")")
+#     log "MRS_IOU=$MRS_IOU"
+#
+#     MRS_ADM=$(dappCreate vote-proxy DSChief "$MRS_GOV" "$MRS_IOU" 5)
+#     log "MRS_ADM=$MRS_ADM"
+#     sethSend "$MRS_IOU" 'setOwner(address)' "${MRS_ADM}"
+#
+#     # Deploy Vote Proxy Factory
+#     VOTE_PROXY_FACTORY=$(dappCreate vote-proxy VoteProxyFactory "$MRS_ADM")
+#     log "VOTE_PROXY_FACTORY=$VOTE_PROXY_FACTORY"
+# else
+#     copy vote-proxy
+# fi
+#
+# if [[ -n "$GOV_GUARD" ]]; then
+#     sethSend "$GOV_GUARD" 'setRoot(address)' "$MRS_PAUSE_PROXY"
+# fi
+#
+# for token in $tokens; do
+#     ILKS_VARS+=",
+#     \"${token}\": \"$(seth --to-checksum-address "$(eval echo "\$${token}")")\""
+#     if [[ "$(eval echo "\$MEDIANIZER_${token}")" != "" ]]; then
+#     ILKS_VARS+=",
+#     \"MEDIANIZER_${token}\": \"$(seth --to-checksum-address "$(eval echo "\$MEDIANIZER_${token}")")\""
+#     fi
+#     ILKS_VARS+=",
+#     \"ORACLE_SECURITY_MODULE_${token}\": \"$(seth --to-checksum-address "$(eval echo "\$ORACLE_SECURITY_MODULE_${token}")")\""
+#     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+#     for ilk in $ilks; do
+#     ILKS_VARS+=",
+#     \"MRS_JOIN_${token}_${ilk}\": \"$(eval echo "\$MRS_JOIN_${token}_${ilk}")\""
+#     ILKS_VARS+=",
+#     \"MRS_FLIP_${token}_${ilk}\": \"$(seth --to-checksum-address "$(eval echo "\$MRS_FLIP_${token}_${ilk}")")\""
+#     done
+# done
+#
+# if [[ -n $GOV_GUARD ]]; then
+#     GOV_GUARD_VAR=",
+#     \"GOV_GUARD\": \"$GOV_GUARD\""
+# fi
+# if [[ -n $MRS_IOU ]]; then
+#     MRS_IOU_VAR=",
+#     \"MRS_IOU\": \"$MRS_IOU\""
+# fi
+# if [[ -n $VOTE_PROXY_FACTORY ]]; then
+#     VOTE_PROXY_FACTORY_VAR=",
+#     \"VOTE_PROXY_FACTORY\": \"$VOTE_PROXY_FACTORY\""
+# fi
+#
+# if [[ "$COIN_TYPE" == "BOND" ]]; then
+#   MRS_VOX=",
+#   \"MRS_VOX\": \"$MRS_VOX\""
+# else
+#   MRS_POT=",
+#   \"MRS_POT\": \"$MRS_POT\""
+# fi
+#
+# # Generate addresses.json file
+# cat > "$OUT_DIR"/addresses.json <<EOF
+# {
+#     "COIN_TYPE": "$COIN_TYPE",
+#     "DEPLOYER": "$(seth --to-checksum-address "$ETH_FROM")",
+#     "MULTICALL": "$MULTICALL",
+#     "FAUCET": "$(seth --to-checksum-address "$FAUCET")",
+#     "MRS_DEPLOY": "$MRS_DEPLOY",
+#     "MRS_GOV": "$(seth --to-checksum-address "$MRS_GOV")"$GOV_GUARD_VAR$MRS_IOU_VAR,
+#     "MRS_ADM": "$(seth --to-checksum-address "$MRS_ADM")"$VOTE_PROXY_FACTORY_VAR,
+#     "MRS_VAT": "$(seth --to-checksum-address "$MRS_VAT")",
+#     "MRS_JUG": "$(seth --to-checksum-address "$MRS_JUG")",
+#     "MRS_CAT": "$(seth --to-checksum-address "$MRS_CAT")",
+#     "MRS_VOW": "$(seth --to-checksum-address "$MRS_VOW")",
+#     "MRS_JOIN_COIN": "$(seth --to-checksum-address "$MRS_JOIN_COIN")",
+#     "MRS_FLAP": "$(seth --to-checksum-address "$MRS_FLAP")",
+#     "MRS_FLOP": "$(seth --to-checksum-address "$MRS_FLOP")",
+#     "MRS_PAUSE": "$(seth --to-checksum-address "$MRS_PAUSE")",
+#     "MRS_PAUSE_PROXY": "$(seth --to-checksum-address "$MRS_PAUSE_PROXY")",
+#     "MRS_GOV_ACTIONS": "$MRS_GOV_ACTIONS",
+#     "MRS_COIN": "$(seth --to-checksum-address "$MRS_COIN")",
+#     "MRS_SPOT": "$(seth --to-checksum-address "$MRS_SPOT")",
+#     "MRS_END": "$(seth --to-checksum-address "$MRS_END")",
+#     "MRS_ESM": "$(seth --to-checksum-address "$MRS_ESM")",
+#     "MRS_PIT": "$(seth --to-checksum-address "$MRS_PIT")",
+#     "PROXY_ACTIONS": "$PROXY_ACTIONS",
+#     "PROXY_ACTIONS_END": "$PROXY_ACTIONS_END",
+#     "PROXY_ACTIONS_SR": "$PROXY_ACTIONS_SR",
+#     "CDP_MANAGER": "$CDP_MANAGER",
+#     "GET_CDPS": "$GET_CDPS",
+#     "OSM_MOM": "$OSM_MOM",
+#     "FLIPPER_MOM": "$FLIPPER_MOM",
+#     "PROXY_FACTORY": "$(seth --to-checksum-address "$PROXY_FACTORY")",
+#     "PROXY_REGISTRY": "$(seth --to-checksum-address "$PROXY_REGISTRY")"$ILKS_VARS,
+#     "PROXY_PAUSE_ACTIONS": "$PROXY_PAUSE_ACTIONS",
+#     "PROXY_DEPLOYER": "$(seth --to-checksum-address "$PROXY_DEPLOYER")"
+# }
+# EOF
+#
+# "$LIBEXEC_DIR"/setters/set-vat-line
+#
+# "$LIBEXEC_DIR"/setters/set-vow-wait
+#
+# "$LIBEXEC_DIR"/setters/set-vow-bump
+#
+# "$LIBEXEC_DIR"/setters/set-vow-dump
+#
+# "$LIBEXEC_DIR"/setters/set-vow-sump
+#
+# "$LIBEXEC_DIR"/setters/set-vow-hump
+#
+# "$LIBEXEC_DIR"/setters/set-jug-base
+#
+# if [ "$COIN_TYPE" == "STABLE" ]; then
+#   "$LIBEXEC_DIR"/setters/set-pot-sr
+# fi
+#
+# "$LIBEXEC_DIR"/setters/set-end-wait
+#
+# "$LIBEXEC_DIR"/setters/set-beg "flop"
+#
+# "$LIBEXEC_DIR"/setters/set-flop-pad
+#
+# "$LIBEXEC_DIR"/setters/set-ttl "flop"
+#
+# "$LIBEXEC_DIR"/setters/set-tau "flop"
+#
+# "$LIBEXEC_DIR"/setters/set-ilks-price
+#
+# "$LIBEXEC_DIR"/setters/set-ilks-tam
+#
+# "$LIBEXEC_DIR"/setters/set-ilks-mat
+#
+# "$LIBEXEC_DIR"/setters/set-ilks-line
+#
+# "$LIBEXEC_DIR"/setters/set-ilks-dust
+#
+# "$LIBEXEC_DIR"/setters/set-ilks-duty
+#
+# "$LIBEXEC_DIR"/setters/set-ilks-spotter-poke
+#
+# "$LIBEXEC_DIR"/setters/set-ilks-chop
+#
+# "$LIBEXEC_DIR"/setters/set-ilks-lump
+#
+# "$LIBEXEC_DIR"/setters/set-ilks-beg
+#
+# "$LIBEXEC_DIR"/setters/set-ilks-ttl
+#
+# "$LIBEXEC_DIR"/setters/set-ilks-tau
+#
+# if [[ -f "$CASE" ]]; then
+#     "$CASE"
+# fi
+#
+# "$LIBEXEC_DIR"/setters/set-ilks-osm
+#
+# "$LIBEXEC_DIR"/setters/set-ilks-osm-mom
+#
+# "$LIBEXEC_DIR"/setters/set-ilks-flipper-mom
+#
+# "$LIBEXEC_DIR"/setters/set-pause-auth-delay
+#
+# # Check deployment
+# "$LIBEXEC_DIR"/auth-checker

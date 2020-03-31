@@ -1,0 +1,112 @@
+#!/usr/bin/env bash
+
+# shellcheck source=lib/common.sh
+. "$LIB_DIR/common.sh"
+
+# Check that all fabs are defined
+{ test -z "$VAT_FAB"    || test -z "$JUG_FAB"     || test -z "$VOW_FAB" || \
+  test -z "$CAT_FAB"    || test -z "$COIN_FAB"    || test -z "$MRS_JOIN_FAB" || \
+  test -z "$FLAP_FAB"   || test -z "$FLOP_FAB"    || test -z "$FLIP_FAB" || \
+  test -z "$SPOT_FAB"   || test -z "$POT_FAB"     || test -z "$END_FAB"  || \
+  test -z "$ESM_FAB"    || test -z "$PAUSE_FAB"   || test -z "$VOX1_FAB"; } && \
+  exit 1
+
+# If no Governance token is defined, create one
+if [ -z "$MRS_GOV" ]
+then
+    MRS_GOV=$(dappCreate mrs-deploy DSToken "$(seth --to-bytes32 "$(seth --from-ascii "META")")")
+    log "MRS_GOV=$MRS_GOV"
+fi
+
+# Create deploy contract
+MRS_DEPLOY=$(dappCreate mrs-deploy-optimized MrsDeploy)
+log "MRS_DEPLOY=$MRS_DEPLOY"
+
+# Set fab batches
+seth send "$MRS_DEPLOY" "setFirstFabBatch(address,address,address,address,address,address,address)" "$VAT_FAB" "$JUG_FAB" "$VOW_FAB" "$CAT_FAB" "$COIN_FAB" "$MRS_JOIN_FAB" "$POT_FAB"
+seth send "$MRS_DEPLOY" "setSecondFabBatch(address,address,address,address,address,address,address,address)" "$FLAP_FAB" "$FLOP_FAB" "$FLIP_FAB" "$SPOT_FAB" "$VOX1_FAB" "$END_FAB" "$ESM_FAB" "$PAUSE_FAB"
+
+# Check if we need to create a multisig
+if [[ -z "$MULTISIG_QUORUM" && "$MULTISIG_QUORUM" -gt 0 ]]; then
+  multisig_owners=$(jq -r ".multisig_owners | .[]" "$CONFIG_FILE")
+
+  allowners=()
+  for owner in $multisig_owners; do
+      allowners+=("${owner#0x}")
+  done
+  allowners+=("${ETH_FROM#0x}")
+
+  MRS_MULTISIG=$(dappCreate mrs-deploy-optimized MultiSigWallet "[$(join "${allowners[@]}")]" "$(seth --to-uint256 "1")")
+
+  # Create a proxy for the multisig
+  seth send "$PROXY_REGISTRY" 'build(address)' "$MRS_MULTISIG"
+  MULTISIG_PROXY=0x"$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$MRS_MULTISIG")"
+fi
+
+# If no Authority is defined, create one
+if [ -z "$MRS_ADM" ]
+then
+    MRS_ADM=$(dappCreate mrs-deploy DSRoles)
+    log "MRS_ADM=$MRS_ADM"
+    sethSend "$MRS_ADM" 'setRootUser(address,bool)' "$ETH_FROM" true
+fi
+
+# Deploy VAT
+sethSend "$MRS_DEPLOY" "deployVat()"
+
+# Deploy COIN
+sethSend "$MRS_DEPLOY" "deployCoin(string memory,string memory,uint8,uint256)" "$COIN_NAME" "$COIN_SYMBOL" "$(seth --to-uint256 "$COIN_DECIMALS")" "$(seth rpc net_version)"
+
+# Deploy Taxation
+SAVE="true"
+if [ "$COIN_TYPE" != "STABLE" ]; then
+  SAVE="false"
+fi
+sethSend "$MRS_DEPLOY" "deployTaxation(bool)" "$SAVE"
+
+# Deploy Rate Setter
+if [ "$SAVE" == "false" ]; then
+  sethSend "$MRS_DEPLOY" "deployRateSetter(uint256,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256)" "$VOX_VERSION" "$ORACLE_SECURITY_MODULE_COIN" "$VOX_SPAN" "$VOX_TRIM" "$VOX_DAWN" "$VOX_DUSK" "$VOX_HOW" "$VOX_UP" "$VOX_DOWN" "$VOX_GO"
+fi
+
+# Deploy DEX aggregator
+MRS_BIN=$(sethSend mrs-deploy Bin "$MRS_UNISWAP_ONE" "$MRS_KYBER")
+
+# Deploy Auctions
+sethSend "$MRS_DEPLOY" "deployAuctions(address,address)" "$MRS_GOV" "$MRS_BIN"
+
+# Deploy Liquidation
+sethSend "$MRS_DEPLOY" "deployLiquidator()"
+
+# Deploy End
+MRS_ESM_PIT=${MRS_ESM_PIT:-"0x0000000000000000000000000000000000000000"}
+MRS_ESM_MIN=${MRS_ESM_MIN:-"$(seth --to-uint256 "$(seth --to-wei 50000 "eth")")"}
+sethSend "$MRS_DEPLOY" "deployShutdown(address,address,uint256)" "$MRS_GOV" "$MRS_ESM_PIT" "$MRS_ESM_MIN"
+
+# Deploy pause
+MRS_PAUSE_DELAY=${MRS_PAUSE_DELAY:-"3600"}
+sethSend "$MRS_DEPLOY" "deployPause(uint256,address)" "$(seth --to-uint256 "$MRS_PAUSE_DELAY")" "$MRS_ADM"
+
+cat > "$OUT_DIR/load-core-addr-temp" << EOF
+#!/bin/bash
+export MRS_DEPLOY=$MRS_DEPLOY
+export MRS_GOV=$MRS_GOV
+export MRS_ADM=$MRS_ADM
+export MRS_BIN=$MRS_BIN
+export MRS_MULTISIG=$MRS_MULTISIG
+export MRS_VAT=$(seth call "$MRS_DEPLOY" "vat()(address)")
+export MRS_JUG=$(seth call "$MRS_DEPLOY" "jug()(address)")
+export MRS_CAT=$(seth call "$MRS_DEPLOY" "cat()(address)")
+export MRS_VOW=$(seth call "$MRS_DEPLOY" "vow()(address)")
+export MRS_JOIN_COIN=$(seth call "$MRS_DEPLOY" "coinJoin()(address)")
+export MRS_FLAP=$(seth call "$MRS_DEPLOY" "flap()(address)")
+export MRS_FLOP=$(seth call "$MRS_DEPLOY" "flop()(address)")
+export MRS_SPOT=$(seth call "$MRS_DEPLOY" "spotter()(address)")
+export MRS_POT=$(seth call "$MRS_DEPLOY" "pot()(address)")
+export MRS_VOX=$(seth call "$MRS_DEPLOY" "vox1()(address)")
+export MRS_END=$(seth call "$MRS_DEPLOY" "end()(address)")
+export MRS_ESM=$(seth call "$MRS_DEPLOY" "esm()(address)")
+export MRS_PAUSE=$(seth call "$MRS_DEPLOY" "pause()(address)")
+export MRS_PAUSE_PROXY=$(seth call "$(seth call "$MRS_DEPLOY" "pause()(address)")" "proxy()(address)")
+export MRS_COIN=$(seth call "$MRS_DEPLOY" "coin()(address)")
+EOF

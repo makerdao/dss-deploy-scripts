@@ -5,20 +5,21 @@
 
 export SETH_ASYNC=yes
 
-VAT_FABtx=$(dappCreate dss-deploy VatFab)
-JUG_FABtx=$(dappCreate dss-deploy JugFab)
-VOW_FABtx=$(dappCreate dss-deploy VowFab)
-CAT_FABtx=$(dappCreate dss-deploy CatFab)
-DAI_FABtx=$(dappCreate dss-deploy DaiFab)
-MCD_JOIN_FABtx=$(dappCreate dss-deploy DaiJoinFab)
-FLAP_FABtx=$(dappCreate dss-deploy FlapFab)
-FLOP_FABtx=$(dappCreate dss-deploy FlopFab)
-FLIP_FABtx=$(dappCreate dss-deploy FlipFab)
-SPOT_FABtx=$(dappCreate dss-deploy SpotFab)
-POT_FABtx=$(dappCreate dss-deploy PotFab)
-END_FABtx=$(dappCreate dss-deploy EndFab)
-ESM_FABtx=$(dappCreate dss-deploy ESMFab)
-PAUSE_FABtx=$(dappCreate dss-deploy PauseFab)
+VAT_FABtx=$(dappCreate mrs-deploy VatFab)
+JUG_FABtx=$(dappCreate mrs-deploy JugFab)
+VOW_FABtx=$(dappCreate mrs-deploy VowFab)
+CAT_FABtx=$(dappCreate mrs-deploy CatFab)
+COIN_FABtx=$(dappCreate mrs-deploy CoinFab)
+MRS_JOIN_FABtx=$(dappCreate mrs-deploy CoinJoinFab)
+FLAP_FABtx=$(dappCreate mrs-deploy FlapFab)
+FLOP_FABtx=$(dappCreate mrs-deploy FlopFab)
+FLIP_FABtx=$(dappCreate mrs-deploy FlipFab)
+SPOT_FABtx=$(dappCreate mrs-deploy SpotFab)
+POT_FABtx=$(dappCreate mrs-deploy PotFab)
+END_FABtx=$(dappCreate mrs-deploy EndFab)
+ESM_FABtx=$(dappCreate mrs-deploy ESMFab)
+PAUSE_FABtx=$(dappCreate mrs-deploy PauseFab)
+VOX1_FABtx=$(dappCreate mrs-deploy Vox1Fab)
 
 export SETH_ASYNC=no
 
@@ -26,8 +27,8 @@ test "$(seth receipt "$VAT_FABtx" status)" -eq 0 && exit 1
 test "$(seth receipt "$JUG_FABtx" status)" -eq 0 && exit 1
 test "$(seth receipt "$VOW_FABtx" status)" -eq 0 && exit 1
 test "$(seth receipt "$CAT_FABtx" status)" -eq 0 && exit 1
-test "$(seth receipt "$DAI_FABtx" status)" -eq 0 && exit 1
-test "$(seth receipt "$MCD_JOIN_FABtx" status)" -eq 0 && exit 1
+test "$(seth receipt "$COIN_FABtx" status)" -eq 0 && exit 1
+test "$(seth receipt "$MRS_JOIN_FABtx" status)" -eq 0 && exit 1
 test "$(seth receipt "$FLAP_FABtx" status)" -eq 0 && exit 1
 test "$(seth receipt "$FLOP_FABtx" status)" -eq 0 && exit 1
 test "$(seth receipt "$FLIP_FABtx" status)" -eq 0 && exit 1
@@ -36,13 +37,14 @@ test "$(seth receipt "$POT_FABtx" status)" -eq 0 && exit 1
 test "$(seth receipt "$END_FABtx" status)" -eq 0 && exit 1
 test "$(seth receipt "$ESM_FABtx" status)" -eq 0 && exit 1
 test "$(seth receipt "$PAUSE_FABtx" status)" -eq 0 && exit 1
+test "$(seth receipt "$VOX1_FABtx" status)" -eq 0 && exit 1
 
 VAT_FAB=$(seth receipt "$VAT_FABtx" contractAddress)
 JUG_FAB=$(seth receipt "$JUG_FABtx" contractAddress)
 VOW_FAB=$(seth receipt "$VOW_FABtx" contractAddress)
 CAT_FAB=$(seth receipt "$CAT_FABtx" contractAddress)
-DAI_FAB=$(seth receipt "$DAI_FABtx" contractAddress)
-MCD_JOIN_FAB=$(seth receipt "$MCD_JOIN_FABtx" contractAddress)
+COIN_FAB=$(seth receipt "$COIN_FABtx" contractAddress)
+MRS_JOIN_FAB=$(seth receipt "$MRS_JOIN_FABtx" contractAddress)
 FLAP_FAB=$(seth receipt "$FLAP_FABtx" contractAddress)
 FLOP_FAB=$(seth receipt "$FLOP_FABtx" contractAddress)
 FLIP_FAB=$(seth receipt "$FLIP_FABtx" contractAddress)
@@ -51,13 +53,14 @@ POT_FAB=$(seth receipt "$POT_FABtx" contractAddress)
 END_FAB=$(seth receipt "$END_FABtx" contractAddress)
 ESM_FAB=$(seth receipt "$ESM_FABtx" contractAddress)
 PAUSE_FAB=$(seth receipt "$PAUSE_FABtx" contractAddress)
+VOX1_FAB=$(seth receipt "$VOX1_FABtx" contractAddress)
 
 log "VAT_FAB=$VAT_FAB"
 log "JUG_FAB=$JUG_FAB"
 log "VOW_FAB=$VOW_FAB"
 log "CAT_FAB=$CAT_FAB"
-log "DAI_FAB=$DAI_FAB"
-log "MCD_JOIN_FAB=$MCD_JOIN_FAB"
+log "COIN_FAB=$COIN_FAB"
+log "MRS_JOIN_FAB=$MRS_JOIN_FAB"
 log "FLAP_FAB=$FLAP_FAB"
 log "FLOP_FAB=$FLOP_FAB"
 log "FLIP_FAB=$FLIP_FAB"
@@ -66,6 +69,7 @@ log "POT_FAB=$POT_FAB"
 log "END_FAB=$END_FAB"
 log "ESM_FAB=$ESM_FAB"
 log "PAUSE_FAB=$VAT_FAB"
+log "VOX1_FAB=$VOX1_FAB"
 
 cat > "$OUT_DIR/load-fabs-addr-temp" <<EOF
 #!/bin/bash
@@ -73,8 +77,8 @@ export VAT_FAB=$VAT_FAB
 export JUG_FAB=$JUG_FAB
 export VOW_FAB=$VOW_FAB
 export CAT_FAB=$CAT_FAB
-export DAI_FAB=$DAI_FAB
-export MCD_JOIN_FAB=$MCD_JOIN_FAB
+export COIN_FAB=$COIN_FAB
+export MRS_JOIN_FAB=$MRS_JOIN_FAB
 export FLAP_FAB=$FLAP_FAB
 export FLOP_FAB=$FLOP_FAB
 export FLIP_FAB=$FLIP_FAB
@@ -83,4 +87,5 @@ export POT_FAB=$POT_FAB
 export END_FAB=$END_FAB
 export ESM_FAB=$ESM_FAB
 export PAUSE_FAB=$PAUSE_FAB
+export VOX1_FAB=$VOX1_FAB
 EOF

@@ -1,15 +1,17 @@
 {
-  "description": "Mainnet deployment",
+  "description": "Testchain deployment",
+  "omniaFromAddr": "0xdc9A20F5a46AFE0802b361076BeFC51f787B2e58",
+  "omniaAmount": "10000",
   "pauseDelay": "0",
-  "vat_line": "50000000",
+  "vat_line": "1000000000000000000000000000000",
   "vow_wait": "172800",
   "vow_dump": "250",
   "vow_sump": "50000",
   "vow_bump": "10000",
   "vow_hump": "500000",
   "jug_base": "1.5",
-  "pot_sr": "0",
-  "end_wait": "262800",
+  "pot_sr": "0.5",
+  "end_wait": "0",
   "esm_min": "50000",
   "flip_cut": "0.65",
   "flap_beg": "3",
@@ -19,7 +21,6 @@
   "flop_pad": "20",
   "flop_ttl": "600",
   "flop_tau": "259200",
-  "faucet": "0x0000000000000000000000000000000000000000",
   "oracle_quorum": "1",
   "multisig_owners": [],
   "multisig_quorum": "1",
@@ -29,10 +30,10 @@
     "trim": "0.008",
     "go": "2",
     "how": "0.00000005",
-    "dawn": "1000000000158153903837946258",
-    "dusk": "1000000000158153903837946258",
-    "up": "1000000000158153903837946258",
-    "down": "1000000000158153903837946258"
+    "dawn": "0.5",
+    "dusk": "0.5",
+    "up": "0.5",
+    "down": "0.5"
   },
   "gov_holders": {
     "amounts": [
@@ -54,7 +55,7 @@
       "type": "median",
       "price": "1",
       "signers": [
-        "0x5581364f1350B82Ed4E25874f3727395BF6Ce490"
+        "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968"
       ]
     }
   },
@@ -65,14 +66,14 @@
         "type": "median",
         "price": "18",
         "signers": [
-          "0x5581364f1350B82Ed4E25874f3727395BF6Ce490"
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968"
         ]
       },
       "ilks": {
         "A": {
-          "mat": "400",
-          "tam": "200",
-          "line": "50000000",
+          "mat": "300",
+          "tam": "150",
+          "line": "1000000000",
           "dust": "15",
           "duty": "0",
           "chop": "13",
@@ -80,6 +81,30 @@
           "beg": "3",
           "ttl": "600",
           "tau": "259200"
+        },
+        "B": {
+          "mat": "400",
+          "tam": "200",
+          "line": "100000",
+          "dust": "0",
+          "duty": "0",
+          "chop": "5",
+          "lump": "1.5",
+          "beg": "1",
+          "ttl": "3600",
+          "tau": "172800"
+        },
+        "C": {
+          "mat": "240",
+          "tam": "120",
+          "line": "100000",
+          "dust": "0",
+          "duty": "0",
+          "chop": "5",
+          "lump": "1.5",
+          "beg": "1",
+          "ttl": "3600",
+          "tau": "172800"
         }
       }
     }
