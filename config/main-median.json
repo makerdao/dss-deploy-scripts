@@ -23,22 +23,16 @@
   "oracle_quorum": "1",
   "multisig_owners": [],
   "multisig_quorum": "1",
-  "import": {
-    "gov": "",
-    "authority": "",
-    "proxyRegistry": "",
-    "faucet": ""
-  },
   "vox": {
     "version": "1",
     "span": "2",
     "trim": "0.008",
     "go": "2",
     "how": "0.00000005",
-    "dawn": "1000000000158153903837946258",
-    "dusk": "1000000000158153903837946258",
-    "up": "1000000000158153903837946258",
-    "down": "1000000000158153903837946258"
+    "dawn": "0.5",
+    "dusk": "0.5",
+    "up": "0.5",
+    "down": "0.5"
   },
   "gov_holders": {
     "amounts": [
@@ -77,7 +71,7 @@
       "ilks": {
         "A": {
           "mat": "400",
-          "tam": "200",
+          "tam": "400",
           "line": "50000000",
           "dust": "15",
           "duty": "0",

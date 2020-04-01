@@ -213,51 +213,51 @@
         "url": "https://github.com/sweatdao/ds-weth"
       }
     },
-    "mrs-cdp-manager_32104da": {
+    "mrs-cdp-manager_d6a303d": {
       "deps": {
-        "mrs-deploy": "mrs-deploy_21a7d33"
+        "mrs-deploy": "mrs-deploy_c35aa53"
       },
       "name": "mrs-cdp-manager",
       "repo": {
-        "name": "mrs-cdp-manager-32104da",
+        "name": "mrs-cdp-manager-d6a303d",
         "ref": "HEAD",
-        "rev": "32104dabbbcda6c3f157781ee5f57d3d0143e4b6",
+        "rev": "d6a303dfe14ac2e7a7bcfd3dc6971dc240753351",
         "url": "https://github.com/sweatdao/mrs-cdp-manager"
       }
     },
-    "mrs-deploy-pause-proxy-actions_37c9120": {
+    "mrs-deploy-pause-proxy-actions_c38481a": {
       "deps": {
-        "mrs-deploy": "mrs-deploy_21a7d33"
+        "mrs-deploy": "mrs-deploy_c35aa53"
       },
       "name": "mrs-deploy-pause-proxy-actions",
       "repo": {
-        "name": "mrs-deploy-pause-proxy-actions-37c9120",
+        "name": "mrs-deploy-pause-proxy-actions-c38481a",
         "ref": "HEAD",
-        "rev": "37c9120de3753bebc9b597a4b2124c95de7139c2",
+        "rev": "c38481a8c085096838943b6c54bc62c40edad50b",
         "url": "https://github.com/sweatdao/mrs-deploy-pause-proxy-actions"
       }
     },
-    "mrs-deploy_21a7d33": {
+    "mrs-deploy_c35aa53": {
       "deps": {
         "mrs": "mrs_cdd05ab"
       },
       "name": "mrs-deploy",
       "repo": {
-        "name": "mrs-deploy-21a7d33",
+        "name": "mrs-deploy-c35aa53",
         "ref": "HEAD",
-        "rev": "21a7d3371e7b79af1592affb19fb295272f92aba",
+        "rev": "c35aa5387f1691b10af036be8c8e6e72e0180891",
         "url": "https://github.com/sweatdao/mrs-deploy"
       }
     },
-    "mrs-proxy-actions_66a554c": {
+    "mrs-proxy-actions_98ab552": {
       "deps": {
-        "mrs-cdp-manager": "mrs-cdp-manager_32104da"
+        "mrs-cdp-manager": "mrs-cdp-manager_d6a303d"
       },
       "name": "mrs-proxy-actions",
       "repo": {
-        "name": "mrs-proxy-actions-66a554c",
+        "name": "mrs-proxy-actions-98ab552",
         "ref": "HEAD",
-        "rev": "66a554ce4388e6d8d635ca969ceb1d9a892dc975",
+        "rev": "98ab5528c2266e4f4648f731e4e598eb3e7ed353",
         "url": "https://github.com/sweatdao/mrs-proxy-actions"
       }
     },
@@ -435,9 +435,9 @@
   "this": {
     "deps": {
       "mrs": "mrs_cdd05ab",
-      "mrs-deploy": "mrs-deploy_21a7d33",
-      "mrs-deploy-pause-proxy-actions": "mrs-deploy-pause-proxy-actions_37c9120",
-      "mrs-proxy-actions": "mrs-proxy-actions_66a554c",
+      "mrs-deploy": "mrs-deploy_c35aa53",
+      "mrs-deploy-pause-proxy-actions": "mrs-deploy-pause-proxy-actions_c38481a",
+      "mrs-proxy-actions": "mrs-proxy-actions_98ab552",
       "flipper-mom": "flipper-mom_a448599",
       "meta-authority": "meta-authority_19d842f",
       "multicall": "multicall_df1e59d",

@@ -5,7 +5,6 @@
 
 # Read and export essential settings
 MULTISIG_QUORUM="$(jq -r ".multisig_quorum | values" "$CONFIG_FILE")"
-
 COIN_TYPE="$(jq -r ".coin | .type | values" "$CONFIG_FILE")"
 COIN_NAME="$(jq -r ".coin | .name | values" "$CONFIG_FILE")"
 COIN_SYMBOL="$(jq -r ".coin | .symbol | values" "$CONFIG_FILE")"
@@ -13,11 +12,9 @@ COIN_DECIMALS="$(jq -r ".coin | .decimals | values" "$CONFIG_FILE")"
 COIN_PIP_TYPE="$(jq -r ".coin | .pipDeploy | .type | values" "$CONFIG_FILE")"
 COIN_PIP_DELAY="$(jq -r ".coin | .pipDeploy | .osmDelay | values" "$CONFIG_FILE")"
 COIN_PIP_PRICE="$(jq -r ".coin | .pipDeploy | .price | values" "$CONFIG_FILE")"
-COIN_PIP_SIGNERS="$(jq -r ".coin | .pipDeploy | .signers | values" "$CONFIG_FILE")"
-
+COIN_PIP_SIGNERS="$(jq -r ".coin | .pipDeploy | .signers | .[]" "$CONFIG_FILE")"
 MRS_UNISWAP_ONE="$(jq -r ".dex | .uniswap_one | values" "$CONFIG_FILE")"
 MRS_KYBER="$(jq -r ".dex | .kyber | values" "$CONFIG_FILE")"
-
 VOX_VERSION="$(jq -r ".vox | .version | values" "$CONFIG_FILE")"
 VOX_SPAN="$(jq -r ".vox | .span | values" "$CONFIG_FILE")"
 VOX_TRIM="$(jq -r ".vox | .trim | values" "$CONFIG_FILE")"
@@ -27,13 +24,10 @@ VOX_DAWN="$(jq -r ".vox | .dawn | values" "$CONFIG_FILE")"
 VOX_DUSK="$(jq -r ".vox | .dusk | values" "$CONFIG_FILE")"
 VOX_UP="$(jq -r ".vox | .up | values" "$CONFIG_FILE")"
 VOX_DOWN="$(jq -r ".vox | .down | values" "$CONFIG_FILE")"
-
 MRS_ESM_MIN="$(seth --to-uint256 "$(seth --to-wei "$(jq -r ".esm_min | values" "$CONFIG_FILE")" "eth")")"
-
 FLIPPER_CUT="$(jq -r ".flip_cut | values" "$CONFIG_FILE")"
 
 export MULTISIG_QUORUM
-
 export COIN_TYPE
 export COIN_NAME
 export COIN_SYMBOL
@@ -42,10 +36,8 @@ export COIN_PIP_TYPE
 export COIN_PIP_DELAY
 export COIN_PIP_PRICE
 export COIN_PIP_SIGNERS
-
 export MRS_UNISWAP_ONE
 export MRS_KYBER
-
 export VOX_VERSION
 export VOX_SPAN
 export VOX_TRIM
@@ -55,10 +47,13 @@ export VOX_DAWN
 export VOX_DUSK
 export VOX_UP
 export VOX_DOWN
-
 export MRS_ESM_MIN
-
 export FLIPPER_CUT
+
+# Deploy GovActions
+MRS_GOV_ACTIONS=$(dappCreate mrs-deploy GovActions)
+log "MRS_GOV_ACTIONS=$MRS_GOV_ACTIONS"
+copy mrs-deploy
 
 # Deploy Medians and Values for Collaterals
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
@@ -107,7 +102,7 @@ if [ "$COIN_TYPE" == "BOND" ]; then
     eval "export ORACLE_SECURITY_MODULE_COIN=${ORACLE_SECURITY_MODULE_COIN}"
     # Approve oracle price feed providers
     allsigners=()
-    for signer in $signers; do
+    for signer in $COIN_PIP_SIGNERS; do
         allsigners+=("\"${signer}\"")
     done
     sethSend "$(eval echo "\$ORACLE_SECURITY_MODULE_COIN")" 'lift(address[] memory)' "[$(join "${allsigners[@]}")]"
@@ -232,6 +227,19 @@ if [[ "$newFaucet" == true ]]; then
     done
 fi
 
+# Deploy Flipper Mom
+FLIPPER_MOM=$(dappCreate flipper-mom FlipperMom "$MRS_CAT")
+log "FLIPPER_MOM=$FLIPPER_MOM"
+
+# Rely all flippers on flipper mom and pause proxy
+for token in $tokens; do
+    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+    for ilk in $ilks; do
+        sethSend "$MRS_DEPLOY" "addAuthToFlip(bytes32,address)" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$MRS_PAUSE_PROXY"
+        sethSend "$MRS_DEPLOY" "addAuthToFlip(bytes32,address)" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$FLIPPER_MOM"
+    done
+done
+
 # Deploy Proxy Actions
 PROXY_ACTIONS=$(dappCreate mrs-proxy-actions-optimized MrsProxyActions)
 log "PROXY_ACTIONS=$PROXY_ACTIONS"
@@ -250,10 +258,6 @@ log "GET_CDPS=$GET_CDPS"
 OSM_MOM=$(dappCreate osm-mom OsmMom)
 log "OSM_MOM=$OSM_MOM"
 
-# Deploy Flipper
-FLIPPER_MOM=$(dappCreate flipper-mom FlipperMom "$MRS_CAT")
-log "FLIPPER_MOM=$FLIPPER_MOM"
-
 # As all initial collaterals were deployed, we can remove authority of the deployment contract from the core contracts
 sethSend "$MRS_DEPLOY" 'releaseAuth()'
 for token in $tokens; do
@@ -268,11 +272,7 @@ for token in $tokens; do
     done
 done
 
-# Deploy GovActions - Library functions for the Pause
-MRS_GOV_ACTIONS=$(dappCreate mrs-deploy GovActions)
-log "MRS_GOV_ACTIONS=$MRS_GOV_ACTIONS"
-
-# Deploy Pause Proxy Actions (support contract for executing initial set up of the dss system)
+# Deploy Pause Proxy Actions (support contract for executing initial set up of the mrs system)
 PROXY_PAUSE_ACTIONS=$(dappCreate mrs-deploy-pause-proxy-actions MrsDeployPauseProxyActions)
 log "PROXY_PAUSE_ACTIONS=$PROXY_PAUSE_ACTIONS"
 
@@ -339,14 +339,6 @@ if [[ -n $VOTE_PROXY_FACTORY ]]; then
     \"VOTE_PROXY_FACTORY\": \"$VOTE_PROXY_FACTORY\""
 fi
 
-if [[ "$COIN_TYPE" == "BOND" ]]; then
-  MRS_VOX=",
-  \"MRS_VOX\": \"$MRS_VOX\""
-else
-  MRS_POT=",
-  \"MRS_POT\": \"$MRS_POT\""
-fi
-
 # Generate addresses.json file
 cat > "$OUT_DIR"/addresses.json <<EOF
 {
@@ -366,10 +358,12 @@ cat > "$OUT_DIR"/addresses.json <<EOF
     "MRS_FLOP": "$(seth --to-checksum-address "$MRS_FLOP")",
     "MRS_PAUSE": "$(seth --to-checksum-address "$MRS_PAUSE")",
     "MRS_PAUSE_PROXY": "$(seth --to-checksum-address "$MRS_PAUSE_PROXY")",
-    "MRS_GOV_ACTIONS": "$MRS_GOV_ACTIONS",
+    "MRS_GOV_ACTIONS": "$(seth --to-checksum-address "$MRS_GOV_ACTIONS")",
     "MRS_COIN": "$(seth --to-checksum-address "$MRS_COIN")",
     "MRS_SPOT": "$(seth --to-checksum-address "$MRS_SPOT")",
     "MRS_END": "$(seth --to-checksum-address "$MRS_END")",
+    "MRS_VOX": "$(seth --to-checksum-address "$MRS_VOX")",
+    "MRS_POT": "$(seth --to-checksum-address "$MRS_POT")",
     "MRS_ESM": "$(seth --to-checksum-address "$MRS_ESM")",
     "MRS_ESM_PIT": "$(seth --to-checksum-address "$MRS_ESM_PIT")",
     "PROXY_ACTIONS": "$PROXY_ACTIONS",
@@ -400,55 +394,55 @@ EOF
 
 "$LIBEXEC_DIR"/setters/set-jug-base
 
-# if [ "$COIN_TYPE" == "STABLE" ]; then
-#   "$LIBEXEC_DIR"/setters/set-pot-sr
-# fi
-#
-# "$LIBEXEC_DIR"/setters/set-end-wait
-#
-# "$LIBEXEC_DIR"/setters/set-beg "flop"
-#
-# "$LIBEXEC_DIR"/setters/set-flop-pad
-#
-# "$LIBEXEC_DIR"/setters/set-ttl "flop"
-#
-# "$LIBEXEC_DIR"/setters/set-tau "flop"
-#
-# "$LIBEXEC_DIR"/setters/set-ilks-price
-#
-# "$LIBEXEC_DIR"/setters/set-ilks-tam
-#
-# "$LIBEXEC_DIR"/setters/set-ilks-mat
-#
-# "$LIBEXEC_DIR"/setters/set-ilks-line
-#
-# "$LIBEXEC_DIR"/setters/set-ilks-dust
-#
-# "$LIBEXEC_DIR"/setters/set-ilks-duty
-#
-# "$LIBEXEC_DIR"/setters/set-ilks-spotter-poke
-#
-# "$LIBEXEC_DIR"/setters/set-ilks-chop
-#
-# "$LIBEXEC_DIR"/setters/set-ilks-lump
-#
-# "$LIBEXEC_DIR"/setters/set-ilks-beg
-#
-# "$LIBEXEC_DIR"/setters/set-ilks-ttl
-#
-# "$LIBEXEC_DIR"/setters/set-ilks-tau
-#
-# if [[ -f "$CASE" ]]; then
-#     "$CASE"
-# fi
-#
-# "$LIBEXEC_DIR"/setters/set-ilks-osm
-#
-# "$LIBEXEC_DIR"/setters/set-ilks-osm-mom
-#
-# "$LIBEXEC_DIR"/setters/set-ilks-flipper-mom
-#
-# "$LIBEXEC_DIR"/setters/set-pause-auth-delay
-#
-# # Check deployment
-# "$LIBEXEC_DIR"/auth-checker
+if [ "$COIN_TYPE" == "STABLE" ]; then
+  "$LIBEXEC_DIR"/setters/set-pot-sr
+fi
+
+"$LIBEXEC_DIR"/setters/set-end-wait
+
+"$LIBEXEC_DIR"/setters/set-beg "flop"
+
+"$LIBEXEC_DIR"/setters/set-flop-pad
+
+"$LIBEXEC_DIR"/setters/set-ttl "flop"
+
+"$LIBEXEC_DIR"/setters/set-tau "flop"
+
+"$LIBEXEC_DIR"/setters/set-ilks-price
+
+"$LIBEXEC_DIR"/setters/set-ilks-tam
+
+"$LIBEXEC_DIR"/setters/set-ilks-mat
+
+"$LIBEXEC_DIR"/setters/set-ilks-line
+
+"$LIBEXEC_DIR"/setters/set-ilks-dust
+
+"$LIBEXEC_DIR"/setters/set-ilks-duty
+
+"$LIBEXEC_DIR"/setters/set-ilks-spotter-poke
+
+"$LIBEXEC_DIR"/setters/set-ilks-chop
+
+"$LIBEXEC_DIR"/setters/set-ilks-lump
+
+"$LIBEXEC_DIR"/setters/set-ilks-beg
+
+"$LIBEXEC_DIR"/setters/set-ilks-ttl
+
+"$LIBEXEC_DIR"/setters/set-ilks-tau
+
+if [[ -f "$CASE" ]]; then
+    "$CASE"
+fi
+
+"$LIBEXEC_DIR"/setters/set-ilks-osm
+
+"$LIBEXEC_DIR"/setters/set-ilks-osm-mom
+
+"$LIBEXEC_DIR"/setters/set-ilks-flipper-mom
+
+"$LIBEXEC_DIR"/setters/set-pause-auth-delay
+
+# Check deployment
+"$LIBEXEC_DIR"/auth-checker

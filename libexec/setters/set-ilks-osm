@@ -22,13 +22,6 @@ for token in $tokens; do
             log "ORACLE_SECURITY_MODULE_${token}=$(eval "echo ${contract}")"
             # Set OSM delay
             sethSend "$(eval echo "\$ORACLE_SECURITY_MODULE_${token}")" 'step(uint16)' "$osmDelay"
-            # Whitelist OSM in Medianizer (skip if source is DSValue)
-            type=$(jq -r ".tokens.${token} | .pipDeploy | .type | values" "$CONFIG_FILE")
-            [[ "$type" == "median" ]] && sethSend "$(eval echo "\$MEDIANIZER_${token}")" 'kiss(address)' "$(eval echo "\$ORACLE_SECURITY_MODULE_${token}")"
-            # Whithelist Spotter in OSM
-            sethSend "$(eval echo "\$ORACLE_SECURITY_MODULE_${token}")" 'kiss(address)' "$MRS_SPOT"
-            # Whithelist End in OSM
-            sethSend "$(eval echo "\$ORACLE_SECURITY_MODULE_${token}")" 'kiss(address)' "$MRS_END"
             # Set osm in spotter ilks
             ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
             for ilk in $ilks; do

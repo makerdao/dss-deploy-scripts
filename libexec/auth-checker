@@ -103,6 +103,8 @@ checkInOsmMom() {
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 
+log "$COIN_TYPE"
+
 # vat
 checkRely "MRS_VAT" "MRS_DEPLOY" "NOT_AUTHED"
 checkRely "MRS_VAT" "MRS_CAT" "AUTHED"
@@ -118,7 +120,7 @@ for token in $tokens; do
         checkRely "MRS_JOIN_${token}_${ilk}" "DEPLOYER" "NOT_AUTHED"
     done
 done
-if [[ "COIN_TYPE" != "BOND" ]]; then
+if [[ "$COIN_TYPE" != "BOND" ]]; then
   checkRely "MRS_VAT" "MRS_POT" "AUTHED"
 fi
 
@@ -136,19 +138,19 @@ checkRely "MRS_VOW" "MRS_PAUSE_PROXY" "AUTHED"
 # jug
 checkRely "MRS_JUG" "MRS_DEPLOY" "NOT_AUTHED"
 checkRely "MRS_JUG" "MRS_PAUSE_PROXY" "AUTHED"
-checkRely "MRS_JUG" "MRS_VOX1" "AUTHED"
-if [[ "COIN_TYPE" == "BOND" ]]; then
+checkRely "MRS_JUG" "MRS_VOX" "AUTHED"
+if [[ "$COIN_TYPE" == "BOND" ]]; then
   checkRely "MRS_JUG" "MRS_VOX" "AUTHED"
 fi
 
 # pot
-if [[ "COIN_TYPE" != "BOND" ]]; then
+if [[ "$COIN_TYPE" != "BOND" ]]; then
   checkRely "MRS_POT" "MRS_DEPLOY" "NOT_AUTHED"
   checkRely "MRS_POT" "MRS_PAUSE_PROXY" "AUTHED"
 fi
 
 # vox
-if [[ "COIN_TYPE" == "BOND" ]]; then
+if [[ "$COIN_TYPE" == "BOND" ]]; then
   checkRely "MRS_VOX" "MRS_DEPLOY" "NOT_AUTHED"
   checkRely "MRS_VOX" "MRS_PAUSE_PROXY" "AUTHED"
 fi

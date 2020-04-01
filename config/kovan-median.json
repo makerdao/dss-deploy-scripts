@@ -22,22 +22,16 @@
   "oracle_quorum": "1",
   "multisig_owners": [],
   "multisig_quorum": "0",
-  "import": {
-    "gov": "",
-    "authority": "",
-    "proxyRegistry": "",
-    "faucet": ""
-  },
   "vox": {
     "version": "1",
     "span": "2",
     "trim": "0.008",
     "go": "2",
     "how": "0.00000005",
-    "dawn": "1000000000158153903837946258",
-    "dusk": "1000000000158153903837946258",
-    "up": "1000000000158153903837946258",
-    "down": "1000000000158153903837946258"
+    "dawn": "0.5",
+    "dusk": "0.5",
+    "up": "0.5",
+    "down": "0.5"
   },
   "gov_holders": {
     "amounts": [
@@ -56,8 +50,8 @@
     "decimals": "18",
     "pipDeploy": {
       "osmDelay": "3600",
-      "type": "median",
-      "price": "1",
+      "type": "value",
+      "price": "0.995",
       "signers": [
         "0x5581364f1350B82Ed4E25874f3727395BF6Ce490"
       ]
@@ -76,7 +70,7 @@
       "ilks": {
         "A": {
           "mat": "300",
-          "tam": "150",
+          "tam": "300",
           "line": "1000000000",
           "dust": "15",
           "duty": "0",

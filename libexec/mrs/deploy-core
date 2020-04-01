@@ -113,6 +113,10 @@ sethSend "$MRS_DEPLOY" "deployShutdown(address,address,uint256)" "$MRS_GOV" "$MR
 MRS_PAUSE_DELAY=${MRS_PAUSE_DELAY:-"3600"}
 sethSend "$MRS_DEPLOY" "deployPause(uint256,address)" "$(seth --to-uint256 "$MRS_PAUSE_DELAY")" "$MRS_ADM"
 
+# Give pause proxy authority over the system
+MRS_PAUSE_PROXY=$(seth call "$(seth call "$MRS_DEPLOY" "pause()(address)")" "proxy()(address)")
+sethSend "$MRS_DEPLOY" "giveControl(address)" "$MRS_PAUSE_PROXY"
+
 cat > "$OUT_DIR/load-core-addr-temp" << EOF
 #!/bin/bash
 export MRS_DEPLOY=$MRS_DEPLOY
@@ -120,6 +124,7 @@ export MRS_GOV=$MRS_GOV
 export MRS_ADM=$MRS_ADM
 export MRS_BIN=$MRS_BIN
 export MRS_MULTISIG=$MRS_MULTISIG
+export MRS_PAUSE_PROXY=$MRS_PAUSE_PROXY
 export MRS_VAT=$(seth call "$MRS_DEPLOY" "vat()(address)")
 export MRS_JUG=$(seth call "$MRS_DEPLOY" "jug()(address)")
 export MRS_CAT=$(seth call "$MRS_DEPLOY" "cat()(address)")
@@ -133,6 +138,5 @@ export MRS_VOX=$(seth call "$MRS_DEPLOY" "vox1()(address)")
 export MRS_END=$(seth call "$MRS_DEPLOY" "end()(address)")
 export MRS_ESM=$(seth call "$MRS_DEPLOY" "esm()(address)")
 export MRS_PAUSE=$(seth call "$MRS_DEPLOY" "pause()(address)")
-export MRS_PAUSE_PROXY=$(seth call "$(seth call "$MRS_DEPLOY" "pause()(address)")" "proxy()(address)")
 export MRS_COIN=$(seth call "$MRS_DEPLOY" "coin()(address)")
 EOF

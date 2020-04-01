@@ -237,7 +237,9 @@ dapp2nix clone-recursive contracts
 ## Latest Kovan deployment
 ```
 # mrs kovan deployment
-# TODO
+# 1st April 2020
+
+
 ```
 
 ## LICENSE
