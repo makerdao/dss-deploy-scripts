@@ -1,5 +1,6 @@
-{ pkgsSrc ? (import ./nix/pkgs.nix {}).pkgsSrc
-, pkgs ? (import ./nix/pkgs.nix { inherit pkgsSrc dapptoolsOverrides; }).pkgs
+let srcs = import ./nix/srcs.nix; in
+
+{ pkgs ? import srcs.makerpkgs { inherit dapptoolsOverrides; }
 , dapptoolsOverrides ? {}
 , doCheck ? false
 , githubAuthToken ? null
@@ -7,11 +8,6 @@
 
 let
   dds = import ./. args;
-  dapp2nix = import (fetchGit {
-    url = "https://github.com/icetan/dapp2nix";
-    ref = "v2.0.1";
-    rev = "0ecfc2f1086c8068a5abec8827997c8ee303e6d5";
-  }) {};
 in mkShell {
   buildInputs = dds.bins ++ [
     dds
