@@ -1,6 +1,6 @@
-# Default import pinned pkgs
-{ pkgsSrc ? (import ./nix/pkgs.nix {}).pkgsSrc
-, pkgs ? (import ./nix/pkgs.nix { inherit pkgsSrc dapptoolsOverrides; }).pkgs
+let srcs = import ./nix/srcs.nix; in
+
+{ pkgs ? import srcs.makerpkgs { inherit dapptoolsOverrides; }
 , dapptoolsOverrides ? {}
 , doCheck ? false
 , githubAuthToken ? null
