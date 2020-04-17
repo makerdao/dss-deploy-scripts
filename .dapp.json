@@ -213,33 +213,33 @@
         "url": "https://github.com/dapphub/ds-weth"
       }
     },
-    "dss-cdp-manager_041baab": {
+    "dss-cdp-manager_cad80f2": {
       "deps": {
         "ds-test": "ds-test_a4e4005",
-        "dss-deploy": "dss-deploy_4aead83"
+        "dss-deploy": "dss-deploy_5d3ece1"
       },
       "name": "dss-cdp-manager",
       "repo": {
-        "name": "dss-cdp-manager-041baab",
+        "name": "dss-cdp-manager-cad80f2",
         "ref": "HEAD",
-        "rev": "041baabd530669363f3926704c67ac96e2cda022",
+        "rev": "cad80f2014995fa401f7fba842944b2889543403",
         "url": "https://github.com/makerdao/dss-cdp-manager"
       }
     },
-    "dss-deploy-pause-proxy-actions_ca2c0f2": {
+    "dss-deploy-pause-proxy-actions_2db5484": {
       "deps": {
         "ds-test": "ds-test_a4e4005",
-        "dss-deploy": "dss-deploy_4aead83"
+        "dss-deploy": "dss-deploy_5d3ece1"
       },
       "name": "dss-deploy-pause-proxy-actions",
       "repo": {
-        "name": "dss-deploy-pause-proxy-actions-ca2c0f2",
+        "name": "dss-deploy-pause-proxy-actions-2db5484",
         "ref": "HEAD",
-        "rev": "ca2c0f255b5533e8c0cc3abf09d61bd48b2a69cf",
+        "rev": "2db54844a5759b141502ed78515cbb4df5207b8c",
         "url": "https://github.com/makerdao/dss-deploy-pause-proxy-actions"
       }
     },
-    "dss-deploy_4aead83": {
+    "dss-deploy_5d3ece1": {
       "deps": {
         "ds-auth": "ds-auth_f783169",
         "ds-guard": "ds-guard_4678e1c",
@@ -248,32 +248,32 @@
         "ds-test": "ds-test_a4e4005",
         "ds-token": "ds-token_cee36a1",
         "ds-weth": "ds-weth_dfada5b",
-        "dss": "dss_4433006",
+        "dss": "dss_aaf92a6",
         "esm": "esm_8e2d767"
       },
       "name": "dss-deploy",
       "repo": {
-        "name": "dss-deploy-4aead83",
+        "name": "dss-deploy-5d3ece1",
         "ref": "HEAD",
-        "rev": "4aead838a6e17dcc3e825add8b668506cef21963",
+        "rev": "5d3ece104a4ca77999b8afb9e56196f0ab3e877d",
         "url": "https://github.com/makerdao/dss-deploy"
       }
     },
-    "dss-proxy-actions_968b503": {
+    "dss-proxy-actions_23c3cc5": {
       "deps": {
         "ds-test": "ds-test_a4e4005",
-        "dss-cdp-manager": "dss-cdp-manager_041baab",
+        "dss-cdp-manager": "dss-cdp-manager_cad80f2",
         "proxy-registry": "proxy-registry_59e077f"
       },
       "name": "dss-proxy-actions",
       "repo": {
-        "name": "dss-proxy-actions-968b503",
+        "name": "dss-proxy-actions-23c3cc5",
         "ref": "HEAD",
-        "rev": "968b5030523af74d786520a9a664b31fa811c05c",
+        "rev": "23c3cc5fc996ab9f1a5a1d48f1c05905aab87547",
         "url": "https://github.com/makerdao/dss-proxy-actions"
       }
     },
-    "dss_4433006": {
+    "dss_aaf92a6": {
       "deps": {
         "ds-test": "ds-test_a4e4005",
         "ds-token": "ds-token_cee36a1",
@@ -281,9 +281,9 @@
       },
       "name": "dss",
       "repo": {
-        "name": "dss-4433006",
+        "name": "dss-aaf92a6",
         "ref": "HEAD",
-        "rev": "44330065999621834b08de1edf3b962f6bbd74c6",
+        "rev": "aaf92a67d60795372cc7cac0ed6436c3ba3e9024",
         "url": "https://github.com/makerdao/dss"
       }
     },
@@ -417,17 +417,17 @@
         "url": "https://github.com/makerdao/sai"
       }
     },
-    "scd-mcd-migration_7c19247": {
+    "scd-mcd-migration_0b3038e": {
       "deps": {
         "ds-test": "ds-test_a4e4005",
-        "dss-cdp-manager": "dss-cdp-manager_041baab",
+        "dss-cdp-manager": "dss-cdp-manager_cad80f2",
         "sai": "sai_fe18033"
       },
       "name": "scd-mcd-migration",
       "repo": {
-        "name": "scd-mcd-migration-7c19247",
+        "name": "scd-mcd-migration-0b3038e",
         "ref": "HEAD",
-        "rev": "7c19247b484206d9bf9bebc63bd86eff674eb445",
+        "rev": "0b3038e5e46fe911e618a0c520993e7769781f14",
         "url": "https://github.com/makerdao/scd-mcd-migration"
       }
     },
@@ -474,15 +474,15 @@
   },
   "this": {
     "deps": {
-      "dss-deploy": "dss-deploy_4aead83",
-      "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_ca2c0f2",
-      "dss-proxy-actions": "dss-proxy-actions_968b503",
+      "dss-deploy": "dss-deploy_5d3ece1",
+      "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_2db5484",
+      "dss-proxy-actions": "dss-proxy-actions_23c3cc5",
       "flipper-mom": "flipper-mom_a448599",
       "mkr-authority": "mkr-authority_3625950",
       "multicall": "multicall_df1e59d",
       "osm": "osm_0399d52",
       "osm-mom": "osm-mom_cca3967",
-      "scd-mcd-migration": "scd-mcd-migration_7c19247",
+      "scd-mcd-migration": "scd-mcd-migration_0b3038e",
       "testchain-medians": "testchain-medians_0ec9873",
       "token-faucet": "token-faucet_34a44c5",
       "vote-proxy": "vote-proxy_3c4f8dd"
