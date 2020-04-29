@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# shellcheck source=lib/common.sh
+. "$LIB_DIR/common.sh"
+
+if [[ -z "$WBTC" ]]; then
+    WBTC=$(dappCreate dss-deploy WBTC "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")")
+    log "WBTC=$WBTC"
+    export WBTC
+fi
+
+# shellcheck source=libexec/dss/deploy-ilk
+. "$LIBEXEC_DIR/dss/deploy-ilk" "WBTC" "${1:-"A"}" "GemJoin5"

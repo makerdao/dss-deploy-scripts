@@ -213,33 +213,33 @@
         "url": "https://github.com/dapphub/ds-weth"
       }
     },
-    "dss-cdp-manager_cad80f2": {
+    "dss-cdp-manager_5d6396e": {
       "deps": {
         "ds-test": "ds-test_a4e4005",
-        "dss-deploy": "dss-deploy_5d3ece1"
+        "dss-deploy": "dss-deploy_b8e59b9"
       },
       "name": "dss-cdp-manager",
       "repo": {
-        "name": "dss-cdp-manager-cad80f2",
+        "name": "dss-cdp-manager-5d6396e",
         "ref": "HEAD",
-        "rev": "cad80f2014995fa401f7fba842944b2889543403",
+        "rev": "5d6396eb4f48228544176a95961209b191e71636",
         "url": "https://github.com/makerdao/dss-cdp-manager"
       }
     },
-    "dss-deploy-pause-proxy-actions_2db5484": {
+    "dss-deploy-pause-proxy-actions_b28af91": {
       "deps": {
         "ds-test": "ds-test_a4e4005",
-        "dss-deploy": "dss-deploy_5d3ece1"
+        "dss-deploy": "dss-deploy_b8e59b9"
       },
       "name": "dss-deploy-pause-proxy-actions",
       "repo": {
-        "name": "dss-deploy-pause-proxy-actions-2db5484",
+        "name": "dss-deploy-pause-proxy-actions-b28af91",
         "ref": "HEAD",
-        "rev": "2db54844a5759b141502ed78515cbb4df5207b8c",
+        "rev": "b28af9138b7de656e51b45ef0ddd176392d62fe7",
         "url": "https://github.com/makerdao/dss-deploy-pause-proxy-actions"
       }
     },
-    "dss-deploy_5d3ece1": {
+    "dss-deploy_b8e59b9": {
       "deps": {
         "ds-auth": "ds-auth_f783169",
         "ds-guard": "ds-guard_4678e1c",
@@ -253,23 +253,23 @@
       },
       "name": "dss-deploy",
       "repo": {
-        "name": "dss-deploy-5d3ece1",
+        "name": "dss-deploy-b8e59b9",
         "ref": "HEAD",
-        "rev": "5d3ece104a4ca77999b8afb9e56196f0ab3e877d",
+        "rev": "b8e59b9fe93ff7b48897057bece4fee47456a6cd",
         "url": "https://github.com/makerdao/dss-deploy"
       }
     },
-    "dss-proxy-actions_23c3cc5": {
+    "dss-proxy-actions_44bbcaf": {
       "deps": {
         "ds-test": "ds-test_a4e4005",
-        "dss-cdp-manager": "dss-cdp-manager_cad80f2",
+        "dss-cdp-manager": "dss-cdp-manager_5d6396e",
         "proxy-registry": "proxy-registry_59e077f"
       },
       "name": "dss-proxy-actions",
       "repo": {
-        "name": "dss-proxy-actions-23c3cc5",
+        "name": "dss-proxy-actions-44bbcaf",
         "ref": "HEAD",
-        "rev": "23c3cc5fc996ab9f1a5a1d48f1c05905aab87547",
+        "rev": "44bbcaf92dce545d39e844811373701b25c1cab4",
         "url": "https://github.com/makerdao/dss-proxy-actions"
       }
     },
@@ -417,17 +417,17 @@
         "url": "https://github.com/makerdao/sai"
       }
     },
-    "scd-mcd-migration_0b3038e": {
+    "scd-mcd-migration_7077d78": {
       "deps": {
         "ds-test": "ds-test_a4e4005",
-        "dss-cdp-manager": "dss-cdp-manager_cad80f2",
+        "dss-cdp-manager": "dss-cdp-manager_5d6396e",
         "sai": "sai_fe18033"
       },
       "name": "scd-mcd-migration",
       "repo": {
-        "name": "scd-mcd-migration-0b3038e",
+        "name": "scd-mcd-migration-7077d78",
         "ref": "HEAD",
-        "rev": "0b3038e5e46fe911e618a0c520993e7769781f14",
+        "rev": "7077d78fd6e6aec11de658d87b25a5f64b0d79cc",
         "url": "https://github.com/makerdao/scd-mcd-migration"
       }
     },
@@ -474,15 +474,15 @@
   },
   "this": {
     "deps": {
-      "dss-deploy": "dss-deploy_5d3ece1",
-      "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_2db5484",
-      "dss-proxy-actions": "dss-proxy-actions_23c3cc5",
+      "dss-deploy": "dss-deploy_b8e59b9",
+      "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_b28af91",
+      "dss-proxy-actions": "dss-proxy-actions_44bbcaf",
       "flipper-mom": "flipper-mom_a448599",
       "mkr-authority": "mkr-authority_3625950",
       "multicall": "multicall_df1e59d",
       "osm": "osm_0399d52",
       "osm-mom": "osm-mom_cca3967",
-      "scd-mcd-migration": "scd-mcd-migration_0b3038e",
+      "scd-mcd-migration": "scd-mcd-migration_7077d78",
       "testchain-medians": "testchain-medians_0ec9873",
       "token-faucet": "token-faucet_34a44c5",
       "vote-proxy": "vote-proxy_3c4f8dd"
