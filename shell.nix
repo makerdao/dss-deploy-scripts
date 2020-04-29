@@ -17,6 +17,7 @@ in mkShell {
 
   shellHook = ''
     export NIX_SSL_CERT_FILE=${cacert}/etc/ssl/certs/ca-bundle.crt
+    unset SSL_CERT_FILE
 
     setup-env() {
       . ${dds}/lib/setup-env.sh
