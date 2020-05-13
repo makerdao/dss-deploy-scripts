@@ -41,6 +41,3 @@ for token in $tokens; do
     done
 done
 
-if [[ -n "$MIGRATION" ]]; then
-    setDuty "SAI" "$(seth --to-uint256 "1000000000000000000000000000")"
-fi

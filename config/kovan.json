@@ -25,11 +25,6 @@
     "proxyRegistry": "0x64A436ae831C1672AE81F674CAb8B6775df3475C",
     "faucet": "0x94598157fcf0715C3bC9B4a35450cce82AC57B20"
   },
-  "migration": {
-    "tub": "0xa71937147b55Deb8a530C7229C442Fd3F31b7db2",
-    "ethAdapterVarName": "MCD_JOIN_ETH_A",
-    "line": "100000000"
-  },
   "tokens": {
     "ETH": {
       "import": {

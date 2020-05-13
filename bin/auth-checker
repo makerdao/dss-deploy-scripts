@@ -146,12 +146,6 @@ for token in $tokens; do
         checkRely "MCD_JOIN_${token}_${ilk}" "DEPLOYER" "NOT_AUTHED"
     done
 done
-if [[ -n "$MIGRATION" ]]; then
-    checkRely "MCD_VAT" "MCD_JOIN_SAI" "AUTHED"
-    checkRely "MCD_JOIN_SAI" "MCD_PAUSE_PROXY" "AUTHED"
-    checkRely "MCD_JOIN_SAI" "MIGRATION" "AUTHED"
-    checkRely "MCD_JOIN_SAI" "DEPLOYER" "NOT_AUTHED"
-fi
 
 # cat
 checkRely "MCD_CAT" "MCD_DEPLOY" "NOT_AUTHED"
@@ -206,11 +200,6 @@ for token in $tokens; do
         checkRely "MCD_FLIP_${token}_${ilk}" "FLIPPER_MOM" "AUTHED"
     done
 done
-if [[ -n "$MIGRATION" ]]; then
-    checkRely "MCD_FLIP_SAI" "MCD_DEPLOY" "NOT_AUTHED"
-    checkRely "MCD_FLIP_SAI" "MCD_END" "AUTHED"
-    checkRely "MCD_FLIP_SAI" "MCD_PAUSE_PROXY" "AUTHED"
-fi
 
 # flipperMom
 checkOwner "FLIPPER_MOM" "MCD_PAUSE_PROXY"
@@ -229,12 +218,6 @@ checkAuthority "MCD_PAUSE" "MCD_ADM"
 # chief
 checkOwner "MCD_ADM" "ZERO_ADDR"
 checkAuthority "MCD_ADM" "MCD_ADM"
-
-# pip SAI
-if [[ -n "$MIGRATION" ]]; then
-    checkOwner "PIP_SAI" "MCD_PAUSE_PROXY"
-    checkAuthority "PIP_SAI" "ZERO_ADDR"
-fi
 
 # gov guard
 if [[ -n "$GOV_GUARD" ]]; then

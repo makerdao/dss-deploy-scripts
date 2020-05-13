@@ -35,9 +35,4 @@ for token in $tokens; do
         calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_SPOT" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "mat")")" "$mat")"
         sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
     done
-
-    if [[ -n "$MIGRATION" ]]; then
-        calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_SPOT" "$(seth --to-bytes32 "$(seth --from-ascii "SAI")")" "$(seth --to-bytes32 "$(seth --from-ascii "mat")")" "10000")"
-        sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
-    fi
 done

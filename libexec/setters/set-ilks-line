@@ -44,6 +44,3 @@ for token in $tokens; do
     done
 done
 
-if [[ -n "$MIGRATION" ]]; then
-    setLine "SAI" "$(jq -r ".migration | .line" "$CONFIG_FILE")"
-fi

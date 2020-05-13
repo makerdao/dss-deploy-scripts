@@ -25,11 +25,6 @@
     "proxyRegistry": "0x4678f0a6958e4D2Bc4F1BAF7Bc52E8F3564f3fE4",
     "faucet": "0x0000000000000000000000000000000000000000"
   },
-  "migration": {
-    "tub": "0x448a5065aeBB8E423F0896E6c5D525C040f59af3",
-    "ethAdapterVarName": "MCD_JOIN_ETH_A",
-    "line": "0"
-  },
   "tokens": {
     "ETH": {
       "import": {
@@ -82,6 +77,25 @@
           "duty": "20",
           "chop": "13",
           "lump": "50000",
+          "beg": "3",
+          "ttl": "600",
+          "tau": "259200"
+        }
+      }
+    },
+    "WBTC": {
+      "import": {
+        "gem": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+        "pip": "0xf185d0682d50819263941e5f4EacC763CC5C6C42"
+      },
+      "ilks": {
+        "A": {
+          "mat": "150",
+          "line": "10000000",
+          "dust": "20",
+          "duty": "1",
+          "chop": "13",
+          "lump": "1",
           "beg": "3",
           "ttl": "600",
           "tau": "259200"

@@ -398,39 +398,6 @@
         "url": "https://github.com/makerdao/proxy-registry"
       }
     },
-    "sai_fe18033": {
-      "deps": {
-        "ds-chief": "ds-chief_ea05ee0",
-        "ds-guard": "ds-guard_4678e1c",
-        "ds-roles": "ds-roles_0138372",
-        "ds-spell": "ds-spell_c908b78",
-        "ds-test": "ds-test_a4e4005",
-        "ds-thing": "ds-thing_5e49fcb",
-        "ds-token": "ds-token_cee36a1",
-        "ds-value": "ds-value_f307171"
-      },
-      "name": "sai",
-      "repo": {
-        "name": "sai-fe18033",
-        "ref": "solc-0.5",
-        "rev": "fe1803370e89cc192e24e50bed833ba0a6c9f4f7",
-        "url": "https://github.com/makerdao/sai"
-      }
-    },
-    "scd-mcd-migration_37e0784": {
-      "deps": {
-        "ds-test": "ds-test_a4e4005",
-        "dss-cdp-manager": "dss-cdp-manager_4b10279",
-        "sai": "sai_fe18033"
-      },
-      "name": "scd-mcd-migration",
-      "repo": {
-        "name": "scd-mcd-migration-37e0784",
-        "ref": "HEAD",
-        "rev": "37e0784c8cccfe1c844e5447adeee6d16626fd91",
-        "url": "https://github.com/makerdao/scd-mcd-migration"
-      }
-    },
     "testchain-medians_ee69734": {
       "deps": {
         "ds-test": "ds-test_a4e4005",
@@ -482,7 +449,6 @@
       "multicall": "multicall_df1e59d",
       "osm": "osm_faed2b3",
       "osm-mom": "osm-mom_f3c5e48",
-      "scd-mcd-migration": "scd-mcd-migration_37e0784",
       "testchain-medians": "testchain-medians_ee69734",
       "token-faucet": "token-faucet_8fb6c2c",
       "vote-proxy": "vote-proxy_ec73d47"

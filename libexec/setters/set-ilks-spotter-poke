@@ -41,7 +41,3 @@ for token in $tokens; do
         done
     fi
 done
-
-if [[ -n "$MIGRATION" ]]; then
-    sethSend "$MCD_SPOT" 'poke(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "SAI")")"
-fi
