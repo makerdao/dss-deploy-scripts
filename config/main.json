@@ -83,6 +83,21 @@
         }
       }
     },
+    "TUSD": {
+      "ilks": {
+        "A": {
+          "mat": "125",
+          "line": "0",
+          "dust": "20",
+          "duty": "20",
+          "chop": "13",
+          "lump": "50000",
+          "beg": "3",
+          "ttl": "600",
+          "tau": "259200"
+        }
+      }
+    },
     "WBTC": {
       "import": {
         "gem": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
