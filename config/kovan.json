@@ -85,7 +85,7 @@
     },
     "TUSD": {
       "import": {
-        "gem": "0x47de58e030553d73cd195663cd20d484d7825102",
+        "gem": "0xD6CE59F06Ff2070Dd5DcAd0866A7D8cd9270041a",
         "pip": "0xE4bAECdba7A8Ff791E14c6BF7e8089Dfdf75C7E7"
       },
       "ilks": {
