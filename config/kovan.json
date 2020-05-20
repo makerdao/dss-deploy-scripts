@@ -83,6 +83,25 @@
         }
       }
     },
+    "TUSD": {
+      "import": {
+        "gem": "0xD6CE59F06Ff2070Dd5DcAd0866A7D8cd9270041a",
+        "pip": "0xE4bAECdba7A8Ff791E14c6BF7e8089Dfdf75C7E7"
+      },
+      "ilks": {
+        "A": {
+          "mat": "120",
+          "line": "2000000",
+          "dust": "20",
+          "duty": "0",
+          "chop": "13",
+          "lump": "50000",
+          "beg": "3",
+          "ttl": "600",
+          "tau": "259200"
+        }
+      }
+    },
     "WBTC": {
       "import": {
         "gem": "0x7419f744bBF35956020C1687fF68911cD777f865",
