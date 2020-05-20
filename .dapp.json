@@ -259,6 +259,26 @@
         "url": "https://github.com/makerdao/dss-deploy"
       }
     },
+    "dss-deploy_d7aaded": {
+      "deps": {
+        "ds-auth": "ds-auth_f783169",
+        "ds-guard": "ds-guard_4678e1c",
+        "ds-pause": "ds-pause_f43edc1",
+        "ds-roles": "ds-roles_0138372",
+        "ds-test": "ds-test_a4e4005",
+        "ds-token": "ds-token_cee36a1",
+        "ds-weth": "ds-weth_dfada5b",
+        "dss": "dss_aaf92a6",
+        "esm": "esm_8e2d767"
+      },
+      "name": "dss-deploy",
+      "repo": {
+        "name": "dss-deploy-d7aaded",
+        "ref": "GemJoin6",
+        "rev": "d7aaded34ef1b99d9ef1b5b408ae688526187a5d",
+        "url": "https://github.com/makerdao/dss-deploy"
+      }
+    },
     "dss-proxy-actions_7ae69af": {
       "deps": {
         "ds-test": "ds-test_a4e4005",
@@ -441,7 +461,7 @@
   },
   "this": {
     "deps": {
-      "dss-deploy": "dss-deploy_6c48a5a",
+      "dss-deploy": "dss-deploy_d7aaded",
       "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_b5b080a",
       "dss-proxy-actions": "dss-proxy-actions_7ae69af",
       "flipper-mom": "flipper-mom_a448599",
