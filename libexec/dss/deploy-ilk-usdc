@@ -26,4 +26,3 @@ fi
 
 # shellcheck source=libexec/dss/deploy-ilk
 . "$LIBEXEC_DIR/dss/deploy-ilk" "USDC" "${1:-"A"}" "GemJoin5"
-. "$LIBEXEC_DIR/dss/deploy-ilk" "USDC" "${1:-"B"}" "GemJoin5"
