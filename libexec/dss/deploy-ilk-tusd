@@ -25,4 +25,4 @@ if [[ -z "$TUSD" ]]; then
 fi
 
 # shellcheck source=libexec/dss/deploy-ilk
-. "$LIBEXEC_DIR/dss/deploy-ilk" "TUSD" "${1:-"A"}" "GemJoin"
+. "$LIBEXEC_DIR/dss/deploy-ilk" "TUSD" "${1:-"A"}" "GemJoin6"
