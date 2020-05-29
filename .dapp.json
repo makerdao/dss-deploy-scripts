@@ -213,6 +213,19 @@
         "url": "https://github.com/dapphub/ds-weth"
       }
     },
+    "dsr-manager_9867bbd": {
+      "deps": {
+        "ds-test": "ds-test_a4e4005",
+        "dss-deploy": "dss-deploy_cf040a2"
+      },
+      "name": "dsr-manager",
+      "repo": {
+        "name": "dsr-manager-9867bbd",
+        "ref": "HEAD",
+        "rev": "9867bbdc4bd518e14308c8821b871beffc1c50d1",
+        "url": "https://github.com/makerdao/dsr-manager"
+      }
+    },
     "dss-cdp-manager_3924635": {
       "deps": {
         "ds-test": "ds-test_a4e4005",
@@ -441,6 +454,7 @@
   },
   "this": {
     "deps": {
+      "dsr-manager": "dsr-manager_9867bbd",
       "dss-deploy": "dss-deploy_cf040a2",
       "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_788b5e9",
       "dss-proxy-actions": "dss-proxy-actions_23d95db",

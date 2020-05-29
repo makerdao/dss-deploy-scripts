@@ -169,11 +169,15 @@ log "CDP_MANAGER=$CDP_MANAGER"
 GET_CDPS=$(dappCreate dss-proxy-actions GetCdps)
 log "GET_CDPS=$GET_CDPS"
 
+# Deploy DsrManager
+DSR_MANAGER=$(dappCreate dsr-manager DsrManager "$MCD_POT" "$MCD_JOIN_DAI")
+log "DSR_MANAGER=$DSR_MANAGER"
+
 # Deploy OsmMom
 OSM_MOM=$(dappCreate osm-mom OsmMom)
 log "OSM_MOM=$OSM_MOM"
 
-# Deploy Flipper
+# Deploy FlipperMom
 FLIPPER_MOM=$(dappCreate flipper-mom FlipperMom "$MCD_CAT")
 log "FLIPPER_MOM=$FLIPPER_MOM"
 
@@ -290,6 +294,7 @@ cat > "$OUT_DIR"/addresses.json <<EOF
     "PROXY_ACTIONS_END": "$PROXY_ACTIONS_END",
     "PROXY_ACTIONS_DSR": "$PROXY_ACTIONS_DSR",
     "CDP_MANAGER": "$CDP_MANAGER",
+    "DSR_MANAGER": "$DSR_MANAGER",
     "GET_CDPS": "$GET_CDPS",
     "OSM_MOM": "$OSM_MOM",
     "FLIPPER_MOM": "$FLIPPER_MOM",
