@@ -141,12 +141,12 @@ for token in $tokens; do
         # shellcheck source=/dev/null
         . "$OUT_DIR/load-ilk-addr-temp"
         rm "$OUT_DIR/load-ilk-addr-temp"
-
-        # If the ilk token was created by the previous deployment script call (new token) and it is not ETH, then we can send funds to the Faucet
-        if [[ "$token" != "ETH" && "$gemAddr" == "" ]]; then
-            sethSend "$(eval echo "\$$token")" 'transfer(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 999000 ETH)")"
-        fi
     done
+
+    # If the ilk token was created by the previous deployment script call (new token) and it is not ETH, then we can send funds to the Faucet
+    if [[ "$token" != "ETH" && "$gemAddr" == "" ]]; then
+        sethSend "$(eval echo "\$$token")" 'transfer(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 999000 ETH)")"
+    fi
 done
 
 if [[ "$newFaucet" == true ]]; then
