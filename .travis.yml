@@ -1,6 +1,7 @@
 os:
   - linux
 language: nix
+nix: 2.3.6
 sudo: required
 git:
   depth: 1
