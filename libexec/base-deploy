@@ -41,7 +41,7 @@ for token in $tokens; do
         fi
         # Deploy DSValue as Feed
         if [[ "${type}" == "value" ]]; then
-            contract=$(dappCreate osm DSValue)
+            contract=$(dappCreate ds-value DSValue)
             eval "export VAL_${token}=${contract}"
             log "VAL_${token}=$(eval "echo ${contract}")"
         fi
@@ -72,9 +72,9 @@ fi
 # Deploy ProxyRegistry
 PROXY_REGISTRY=$(jq -r ".import.proxyRegistry | values" "$CONFIG_FILE")
 if [[ -z "$PROXY_REGISTRY" ]]; then
-    PROXY_FACTORY=$(dappCreate dss-proxy-actions DSProxyFactory)
+    PROXY_FACTORY=$(dappCreate ds-proxy DSProxyFactory)
     log "PROXY_FACTORY=$PROXY_FACTORY"
-    PROXY_REGISTRY=$(dappCreate dss-proxy-actions ProxyRegistry "$PROXY_FACTORY")
+    PROXY_REGISTRY=$(dappCreate proxy-registry ProxyRegistry "$PROXY_FACTORY")
     log "PROXY_REGISTRY=$PROXY_REGISTRY"
 else
     PROXY_FACTORY=$(seth storage "$PROXY_REGISTRY" 1)
@@ -164,9 +164,9 @@ PROXY_ACTIONS_DSR=$(dappCreate dss-proxy-actions-optimized DssProxyActionsDsr)
 log "PROXY_ACTIONS_DSR=$PROXY_ACTIONS_DSR"
 
 # Deploy CdpManager
-CDP_MANAGER=$(dappCreate dss-proxy-actions DssCdpManager "$MCD_VAT")
+CDP_MANAGER=$(dappCreate dss-cdp-manager DssCdpManager "$MCD_VAT")
 log "CDP_MANAGER=$CDP_MANAGER"
-GET_CDPS=$(dappCreate dss-proxy-actions GetCdps)
+GET_CDPS=$(dappCreate dss-cdp-manager GetCdps)
 log "GET_CDPS=$GET_CDPS"
 
 # Deploy DsrManager
@@ -217,10 +217,10 @@ sethSend "$MCD_ADM" 'setRootUser(address,bool)' "$PROXY_DEPLOYER" true
 # Deploy chief as new $MCD_ADM if there isn't an authority in the config file
 MCD_ADM=$(jq -r ".import.authority | values" "$CONFIG_FILE")
 if [[ -z "$MCD_ADM" ]]; then
-    MCD_IOU=$(dappCreate vote-proxy DSToken "$(seth --to-bytes32 "$(seth --from-ascii "IOU")")")
+    MCD_IOU=$(dappCreate ds-token DSToken "$(seth --to-bytes32 "$(seth --from-ascii "IOU")")")
     log "MCD_IOU=$MCD_IOU"
 
-    MCD_ADM=$(dappCreate vote-proxy DSChief "$MCD_GOV" "$MCD_IOU" 5)
+    MCD_ADM=$(dappCreate ds-chief DSChief "$MCD_GOV" "$MCD_IOU" 5)
     log "MCD_ADM=$MCD_ADM"
     sethSend "$MCD_IOU" 'setOwner(address)' "${MCD_ADM}"
 
