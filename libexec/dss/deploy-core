@@ -21,7 +21,7 @@
 # If no Governance token is defined, create one
 if [ -z "$MCD_GOV" ]
 then
-    MCD_GOV=$(dappCreate dss-deploy DSToken "$(seth --to-bytes32 "$(seth --from-ascii "MKR")")")
+    MCD_GOV=$(dappCreate ds-token DSToken "$(seth --to-bytes32 "$(seth --from-ascii "MKR")")")
     log "MCD_GOV=$MCD_GOV"
 fi
 
@@ -32,7 +32,7 @@ log "MCD_DEPLOY=$MCD_DEPLOY"
 # If no Authority is defined, create one
 if [ -z "$MCD_ADM" ]
 then
-    MCD_ADM=$(dappCreate dss-deploy DSRoles)
+    MCD_ADM=$(dappCreate ds-roles DSRoles)
     log "MCD_ADM=$MCD_ADM"
     sethSend "$MCD_ADM" 'setRootUser(address,bool)' "$ETH_FROM" true
 fi

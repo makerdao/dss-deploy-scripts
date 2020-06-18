@@ -454,7 +454,13 @@
   },
   "this": {
     "deps": {
+      "ds-chief": "ds-chief_73e6889",
+      "ds-proxy": "ds-proxy_4299be4",
+      "ds-roles": "ds-roles_dbd4c1a",
+      "ds-token": "ds-token_8943920",
+      "ds-value": "ds-value_0bc3c89",
       "dsr-manager": "dsr-manager_4e897cf",
+      "dss-cdp-manager": "dss-cdp-manager_85fbf70",
       "dss-deploy": "dss-deploy_6a4e63d",
       "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_7a78bfe",
       "dss-proxy-actions": "dss-proxy-actions_b376af8",
@@ -463,6 +469,7 @@
       "multicall": "multicall_57967fc",
       "osm": "osm_583fdc6",
       "osm-mom": "osm-mom_0a806ab",
+      "proxy-registry": "proxy-registry_acc9b3c",
       "testchain-medians": "testchain-medians_1950220",
       "token-faucet": "token-faucet_a9f6a40",
       "vote-proxy": "vote-proxy_2018680"
