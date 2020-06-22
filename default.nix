@@ -35,7 +35,6 @@ let
       (spec // {
         inherit doCheck;
         solc = solc-versions.solc_0_5_12;
-        solcFlags = "--metadata";
       })
   ) deps);
 
@@ -43,14 +42,14 @@ let
     inherit doCheck;
     name = "dss-deploy-optimized";
     solc = solc-versions.solc_0_5_12;
-    solcFlags = "--optimize --metadata";
+    solcFlags = "--optimize";
   });
   
   dss-proxy-actions-optimized = package (deps.dss-proxy-actions // {
     inherit doCheck;
     name = "dss-proxy-actions-optimized";
     solc = solc-versions.solc_0_5_12;
-    solcFlags = "--optimize --metadata";
+    solcFlags = "--optimize";
   });
 
 in makerScriptPackage {

@@ -97,7 +97,7 @@ copyMeta() {
 
     mkdir -p "$DIR"
     find "$DAPP_LIB/$lib/out" \
-        -name "*_meta.json" ! -name "*Test_meta.json" ! -name "*Like_meta.json" ! -name "*DSNote_meta.json" ! -name "*FakeUser_meta.json" ! -name "*Hevm_meta.json" \
+        -name "*.metadata" ! -name "*Test.metadata" ! -name "*Like.metadata" ! -name "*DSNote.metadata" ! -name "*FakeUser.metadata" ! -name "*Hevm.metadata"  \
         -exec cp -f {} "$DIR" \;
 }
 
