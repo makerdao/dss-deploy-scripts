@@ -131,6 +131,44 @@
           "tau": "259200"
         }
       }
+    },
+    "ZRX": {
+      "import": {
+        "gem": "0x8d30A2E1Fb98E87ada72e86b22817d684E95bddd",
+        "pip": "0x218037a42947E634191A231fcBAEAE8b16a39b3f"
+      },
+      "ilks": {
+        "A": {
+          "mat": "150",
+          "line": "10000000",
+          "dust": "20",
+          "duty": "20",
+          "chop": "13",
+          "lump": "1",
+          "beg": "3",
+          "ttl": "600",
+          "tau": "259200"
+        }
+      }
+    },
+    "KNC": {
+      "import": {
+        "gem": "0x51faa3a085C56F8dCAAfacA3d6a710BF61761c1e",
+        "pip": "0x10799280EF9d7e2d037614F5165eFF2cB8522651"
+      },
+      "ilks": {
+        "A": {
+          "mat": "150",
+          "line": "10000000",
+          "dust": "20",
+          "duty": "20",
+          "chop": "13",
+          "lump": "1",
+          "beg": "3",
+          "ttl": "600",
+          "tau": "259200"
+        }
+      }
     }
   }
 }
