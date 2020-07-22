@@ -19,7 +19,7 @@
 . "$LIB_DIR/common.sh"
 
 if [[ -z "$ETH" ]]; then
-    ETH=$(dappCreate dss-deploy WETH9_)
+    ETH=$(dappCreate ds-weth WETH9_)
     log "ETH=$ETH"
     export ETH
 fi
