@@ -23,6 +23,7 @@
     "gov": "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2",
     "authority": "0x9eF05f7F6deB616fd37aC3c959a2dDD25A54E4F5",
     "proxyRegistry": "0x4678f0a6958e4D2Bc4F1BAF7Bc52E8F3564f3fE4",
+    "ilkRegistry": "0xbe4f921cdfef2cf5080f9cf00cc2c14f1f96bd07",
     "faucet": "0x0000000000000000000000000000000000000000"
   },
   "tokens": {
