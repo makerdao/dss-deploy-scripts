@@ -290,6 +290,18 @@
         "url": "https://github.com/makerdao/flipper-mom"
       }
     },
+    "ilk-registry_765415b": {
+      "deps": {
+        "ds-test": "ds-test_eb7148d"
+      },
+      "name": "ilk-registry",
+      "repo": {
+        "name": "ilk-registry-765415b",
+        "ref": "HEAD",
+        "rev": "765415b18a21c2398127ac92e28417afa32b3c37",
+        "url": "https://github.com/makerdao/ilk-registry"
+      }
+    },
     "median_1964dc0": {
       "deps": {
         "ds-test": "ds-test_eb7148d"
@@ -420,6 +432,7 @@
       "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_2c53220",
       "dss-proxy-actions": "dss-proxy-actions_f28dbc0",
       "flipper-mom": "flipper-mom_9ba73a4",
+      "ilk-registry": "ilk-registry_765415b",
       "mkr-authority": "mkr-authority_62380ee",
       "multicall": "multicall_57967fc",
       "osm": "osm_ec26fd0",
