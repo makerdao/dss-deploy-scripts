@@ -181,6 +181,12 @@ log "OSM_MOM=$OSM_MOM"
 FLIPPER_MOM=$(dappCreate flipper-mom FlipperMom "$MCD_CAT")
 log "FLIPPER_MOM=$FLIPPER_MOM"
 
+# Deploy IlkRegistry
+"$LIBEXEC_DIR/dss/deploy-ilk-registry"
+# shellcheck source=/dev/null
+. "$OUT_DIR/load-ilk-registry-addr-temp"
+rm "$OUT_DIR/load-ilk-registry-addr-temp"
+
 # As all initial collaterals were deployed, we can remove authority of the deployment contract from the core contracts
 sethSend "$MCD_DEPLOY" 'releaseAuth()'
 for token in $tokens; do

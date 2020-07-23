@@ -26,3 +26,8 @@ fi
 
 # TODO test output
 # TODO populate existing collateral types
+
+cat > "$OUT_DIR/load-ilk-registry-addr-temp" << EOF
+#!/bin/bash
+export ILK_REGISTRY=$ILK_REGISTRY
+EOF
