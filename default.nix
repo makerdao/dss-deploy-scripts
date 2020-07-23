@@ -44,7 +44,14 @@ let
     solc = solc-versions.solc_0_5_12;
     solcFlags = "--optimize";
   });
-  
+
+  dss-deploy-0_6_7-optimized = package (deps.ilk-registry // {
+    inherit doCheck;
+    name = "dss-deploy-0_6_7-optimized";
+    solc = solc-versions.solc_0_6_7;
+    solcFlags = "--optimize";
+  });
+
   dss-proxy-actions-optimized = package (deps.dss-proxy-actions // {
     inherit doCheck;
     name = "dss-proxy-actions-optimized";
