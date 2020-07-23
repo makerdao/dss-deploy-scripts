@@ -301,7 +301,8 @@ cat > "$OUT_DIR"/addresses.json <<EOF
     "PROXY_FACTORY": "$(seth --to-checksum-address "$PROXY_FACTORY")",
     "PROXY_REGISTRY": "$(seth --to-checksum-address "$PROXY_REGISTRY")"$ILKS_VARS,
     "PROXY_PAUSE_ACTIONS": "$PROXY_PAUSE_ACTIONS",
-    "PROXY_DEPLOYER": "$(seth --to-checksum-address "$PROXY_DEPLOYER")"
+    "PROXY_DEPLOYER": "$(seth --to-checksum-address "$PROXY_DEPLOYER")",
+    "ILK_REGISTRY": "$(seth --to-checksum-address "$ILK_REGISTRY")
 }
 EOF
 
