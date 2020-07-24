@@ -182,10 +182,15 @@ FLIPPER_MOM=$(dappCreate flipper-mom FlipperMom "$MCD_CAT")
 log "FLIPPER_MOM=$FLIPPER_MOM"
 
 # Deploy IlkRegistry
-"$LIBEXEC_DIR/dss/deploy-ilk-registry"
-# shellcheck source=/dev/null
-. "$OUT_DIR/load-ilk-registry-addr-temp"
-rm "$OUT_DIR/load-ilk-registry-addr-temp"
+ILK_REGISTRY=$(dappCreate ilk-registry-0_6_7-optimized IlkRegistry "$(seth --to-checksum-address "$MCD_END")")
+log "ILK_REGISTRY=$ILK_REGISTRY"
+
+for token in $tokens; do
+    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+    for ilk in $ilks; do
+        sethSend "$ILK_REGISTRY" 'add(address)' "$(eval echo "\$MCD_JOIN_${token}_${ilk}")"
+    done
+done
 
 # As all initial collaterals were deployed, we can remove authority of the deployment contract from the core contracts
 sethSend "$MCD_DEPLOY" 'releaseAuth()'
@@ -302,13 +307,13 @@ cat > "$OUT_DIR"/addresses.json <<EOF
     "CDP_MANAGER": "$CDP_MANAGER",
     "DSR_MANAGER": "$DSR_MANAGER",
     "GET_CDPS": "$GET_CDPS",
+    "ILK_REGISTRY": "$(seth --to-checksum-address "$ILK_REGISTRY"),
     "OSM_MOM": "$OSM_MOM",
     "FLIPPER_MOM": "$FLIPPER_MOM",
     "PROXY_FACTORY": "$(seth --to-checksum-address "$PROXY_FACTORY")",
     "PROXY_REGISTRY": "$(seth --to-checksum-address "$PROXY_REGISTRY")"$ILKS_VARS,
     "PROXY_PAUSE_ACTIONS": "$PROXY_PAUSE_ACTIONS",
-    "PROXY_DEPLOYER": "$(seth --to-checksum-address "$PROXY_DEPLOYER")",
-    "ILK_REGISTRY": "$(seth --to-checksum-address "$ILK_REGISTRY")
+    "PROXY_DEPLOYER": "$(seth --to-checksum-address "$PROXY_DEPLOYER")"
 }
 EOF
 

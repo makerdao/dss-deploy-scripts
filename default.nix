@@ -45,9 +45,9 @@ let
     solcFlags = "--optimize";
   });
 
-  dss-deploy-0_6_7-optimized = package (deps.ilk-registry // {
+  ilk-registry-0_6_7-optimized = package (deps.ilk-registry // {
     inherit doCheck;
-    name = "dss-deploy-0_6_7-optimized";
+    name = "ilk-registry-0_6_7-optimized";
     solc = solc-versions.solc_0_6_7;
     solcFlags = "--optimize";
   });
@@ -73,5 +73,6 @@ in makerScriptPackage {
   solidityPackages =
     (builtins.attrValues packages)
     ++ [ dss-proxy-actions-optimized ]
-    ++ [ dss-deploy-optimized ];
+    ++ [ dss-deploy-optimized ]
+    ++ [ ilk-registry-0_6_7-optimized ];
 }
