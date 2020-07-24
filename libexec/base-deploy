@@ -307,7 +307,7 @@ cat > "$OUT_DIR"/addresses.json <<EOF
     "CDP_MANAGER": "$CDP_MANAGER",
     "DSR_MANAGER": "$DSR_MANAGER",
     "GET_CDPS": "$GET_CDPS",
-    "ILK_REGISTRY": "$(seth --to-checksum-address "$ILK_REGISTRY"),
+    "ILK_REGISTRY": "$ILK_REGISTRY",
     "OSM_MOM": "$OSM_MOM",
     "FLIPPER_MOM": "$FLIPPER_MOM",
     "PROXY_FACTORY": "$(seth --to-checksum-address "$PROXY_FACTORY")",
