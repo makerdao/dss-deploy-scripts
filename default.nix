@@ -32,40 +32,16 @@ let
   # Create derivations from lock file data
   packages = packageSpecs (mapAttrs (_: spec:
     (optinalFunc (! isNull githubAuthToken) recAddGithubToken)
-    (
-      if spec == deps.ilk-registry
-      then
-        (spec // {
-          inherit doCheck;
-          name = "ilk-registry-0_6_7-optimized";
-          solc = solc-versions.solc_0_6_7;
-          solcFlags = "--optimize";
-        })
-      else
-        (
-          if spec == deps.dss-proxy-actions
-          then
-            (spec // {
-              inherit doCheck;
-              solc = solc-versions.solc_0_5_12;
-              name = "dss-proxy-actions-optimized";
-              solcFlags = "--optimize";
-            })
-          else
-            (spec // {
-              inherit doCheck;
-              solc = solc-versions.solc_0_5_12;
-            })
-        )
-    )
-  ) deps);
-
-  dss-deploy-optimized = package (deps.dss-deploy // {
-    inherit doCheck;
-    name = "dss-deploy-optimized";
-    solc = solc-versions.solc_0_5_12;
-    solcFlags = "--optimize";
-  });
+      (spec // {
+        inherit doCheck;
+        solc = solc-versions.solc_0_5_12;
+      })
+  ) deps) // {
+    ilk-registry = package (deps.ilk-registry                       // { inherit doCheck; name = "ilk-registry"; solc = solc-versions.solc_0_6_7; });
+    ilk-registry-optimized = package (deps.ilk-registry             // { inherit doCheck; name = "ilk-registry-optimized"; solc = solc-versions.solc_0_6_7; solcFlags = "--optimize"; });
+    dss-proxy-actions-optimized = package (deps.dss-proxy-actions   // { inherit doCheck; name = "dss-proxy-actions-optimized";  solc = solc-versions.solc_0_5_12; solcFlags = "--optimize"; });
+    dss-deploy-optimized = package (deps.dss-deploy                 // { inherit doCheck; name = "dss-deploy-optimized";  solc = solc-versions.solc_0_5_12; solcFlags = "--optimize"; });
+  };
 
 in makerScriptPackage {
   name = "dss-deploy-scripts";
@@ -78,7 +54,5 @@ in makerScriptPackage {
     "config" "config/.*"
   ];
 
-  solidityPackages =
-    (builtins.attrValues packages)
-    ++ [ dss-deploy-optimized ];
+  solidityPackages = builtins.attrValues packages;
 }
