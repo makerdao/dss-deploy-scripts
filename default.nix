@@ -29,19 +29,23 @@ let
     deps = mapAttrs (_: recAddGithubToken) spec.deps;
   });
 
-  # Create derivations from lock file data
-  packages = packageSpecs (mapAttrs (_: spec:
+  # Update dependency specs with default values
+  deps' = (mapAttrs (_: spec:
     (optinalFunc (! isNull githubAuthToken) recAddGithubToken)
       (spec // {
         inherit doCheck;
         solc = solc-versions.solc_0_5_12;
       })
-  ) deps) // {
-    ilk-registry = package (deps.ilk-registry                       // { inherit doCheck; name = "ilk-registry"; solc = solc-versions.solc_0_6_7; });
-    ilk-registry-optimized = package (deps.ilk-registry             // { inherit doCheck; name = "ilk-registry-optimized"; solc = solc-versions.solc_0_6_7; solcFlags = "--optimize"; });
-    dss-proxy-actions-optimized = package (deps.dss-proxy-actions   // { inherit doCheck; name = "dss-proxy-actions-optimized";  solc = solc-versions.solc_0_5_12; solcFlags = "--optimize"; });
-    dss-deploy-optimized = package (deps.dss-deploy                 // { inherit doCheck; name = "dss-deploy-optimized";  solc = solc-versions.solc_0_5_12; solcFlags = "--optimize"; });
-  };
+  ) deps);
+
+  # Create derivations from lock file data
+  packages = packageSpecs (deps' // {
+    # Package overrides
+    ilk-registry = deps'.ilk-registry                     // { solc = solc-versions.solc_0_6_7; };
+    ilk-registry-optimized = deps'.ilk-registry           // { name = "ilk-registry-optimized";      solcFlags = "--optimize"; solc = solc-versions.solc_0_6_7; };
+    dss-proxy-actions-optimized = deps'.dss-proxy-actions // { name = "dss-proxy-actions-optimized"; solcFlags = "--optimize"; };
+    dss-deploy-optimized = deps'.dss-deploy               // { name = "dss-deploy-optimized";        solcFlags = "--optimize"; };
+  });
 
 in makerScriptPackage {
   name = "dss-deploy-scripts";
