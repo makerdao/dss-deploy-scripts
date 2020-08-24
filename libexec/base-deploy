@@ -329,6 +329,8 @@ EOF
 
 "$LIBEXEC_DIR"/setters/set-vow-hump
 
+"$LIBEXEC_DIR"/setters/set-cat-box
+
 "$LIBEXEC_DIR"/setters/set-jug-base
 
 "$LIBEXEC_DIR"/setters/set-pot-dsr
@@ -365,7 +367,7 @@ EOF
 
 "$LIBEXEC_DIR"/setters/set-ilks-chop
 
-"$LIBEXEC_DIR"/setters/set-ilks-lump
+"$LIBEXEC_DIR"/setters/set-ilks-dunk
 
 "$LIBEXEC_DIR"/setters/set-ilks-beg
 

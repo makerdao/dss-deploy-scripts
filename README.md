@@ -71,6 +71,7 @@ Below is the expected structure of such a config file:
   "vow_dump": "<Flop initial lot size in MKR unit>",
   "vow_bump": "<Flap fixed lot size in DAI unit>",
   "vow_hump": "<Flap Surplus buffer in DAI unit>",
+  "cat_box": "<Max total DAI needed to cover all debt plus penalty fees on active auctions in DAI units",
   "jug_base": "<Base component of stability fee in percentage per year (e.g. 2.5)>",
   "pot_dsr": "<Dai Savings Rate in percentage per year (e.g. 2.5)>",
   "end_wait": "<Global Settlement cooldown period in seconds>",
@@ -110,7 +111,7 @@ Below is the expected structure of such a config file:
           "dust": "<Min amount of debt a CDP can hold in DAI unit>"
           "duty": "<Collateral component of stability fee in percentage per year (e.g. 2.5)>",
           "chop": "<Liquidation penalty value in percentage (e.g. 12.5)>",
-          "lump": "<Liquidation Quantity in Collateral Unit>",
+          "dunk": "<Liquidation Quantity in DAI Unit>",
           "beg": "<Minimum bid increase in percentage (e.g. 5.5)>",
           "ttl": "<Max time between bids in seconds>",
           "tau": "<Max auction duration in seconds>"
