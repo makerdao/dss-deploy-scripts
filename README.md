@@ -71,7 +71,7 @@ Below is the expected structure of such a config file:
   "vow_dump": "<Flop initial lot size in MKR unit>",
   "vow_bump": "<Flap fixed lot size in DAI unit>",
   "vow_hump": "<Flap Surplus buffer in DAI unit>",
-  "cat_box": "<Max total DAI needed to cover all debt plus penalty fees on active auctions in DAI units",
+  "cat_box": "<Max total DAI needed to cover all debt plus penalty fees on active auctions in DAI unit>",
   "jug_base": "<Base component of stability fee in percentage per year (e.g. 2.5)>",
   "pot_dsr": "<Dai Savings Rate in percentage per year (e.g. 2.5)>",
   "end_wait": "<Global Settlement cooldown period in seconds>",
