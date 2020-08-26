@@ -2,7 +2,7 @@ rec {
   # Default import pinned pkgs
   makerpkgs = fetchGit {
     url = "https://github.com/makerdao/makerpkgs";
-    rev = "281209b12e9e6eba42355f8b9037d0dfcc9089b2";
+    rev = "2d3b57351735de0d36c8c20ce307a5ad2e4f4708";
     ref = "master";
   };
 }
