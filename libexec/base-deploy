@@ -182,7 +182,7 @@ FLIPPER_MOM=$(dappCreate flipper-mom FlipperMom "$MCD_CAT")
 log "FLIPPER_MOM=$FLIPPER_MOM"
 
 # Deploy IlkRegistry
-ILK_REGISTRY=$(dappCreate ilk-registry-optimized IlkRegistry "$(seth --to-checksum-address "$MCD_END")")
+ILK_REGISTRY=$(dappCreate ilk-registry-optimized IlkRegistry "$MCD_VAT" "$MCD_CAT" "$MCD_SPOT")
 log "ILK_REGISTRY=$ILK_REGISTRY"
 
 for token in $tokens; do
