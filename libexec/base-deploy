@@ -33,7 +33,7 @@ for token in $tokens; do
             # Approve oracle price feed providers
             allsigners=()
             for signer in $signers; do
-                allsigners+=("\"${signer}\"")
+                allsigners+=("${signer}")
             done
             sethSend "$(eval echo "\$VAL_${token}")" 'lift(address[] memory)' "[$(join "${allsigners[@]}")]"
             # Set quorum for Medianizer
