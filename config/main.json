@@ -1,7 +1,7 @@
 {
   "description": "Mainnet deployment",
   "pauseDelay": "0",
-  "vat_line": "763000000",
+  "vat_line": "778000000",
   "vow_wait": "561600",
   "vow_dump": "250",
   "vow_sump": "50000",
@@ -216,6 +216,63 @@
       "ilks": {
         "A": {
           "mat": "120",
+          "line": "5000000",
+          "dust": "100",
+          "duty": "2",
+          "chop": "13",
+          "dunk": "50000",
+          "beg": "3",
+          "ttl": "21600",
+          "tau": "21600"
+        }
+      }
+    },
+    "COMP": {
+      "import": {
+        "gem": "0xc00e94Cb662C3520282E6f5717214004A7f26888",
+        "pip": "0xBED0879953E633135a48a157718Aa791AC0108E4"
+      },
+      "ilks": {
+        "A": {
+          "mat": "175",
+          "line": "7000000",
+          "dust": "100",
+          "duty": "3",
+          "chop": "13",
+          "dunk": "50000",
+          "beg": "3",
+          "ttl": "21600",
+          "tau": "21600"
+        }
+      }
+    },
+    "LRC": {
+      "import": {
+        "gem": "0xBBbbCA6A901c926F240b89EacB641d8Aec7AEafD",
+        "pip": "0x9eb923339c24c40Bef2f4AF4961742AA7C23EF3a"
+      },
+      "ilks": {
+        "A": {
+          "mat": "175",
+          "line": "3000000",
+          "dust": "100",
+          "duty": "3",
+          "chop": "13",
+          "dunk": "50000",
+          "beg": "3",
+          "ttl": "21600",
+          "tau": "21600"
+        }
+      }
+    },
+    "LINK": {
+      "import": {
+        "gem": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
+        "pip": "0x9B0C694C6939b5EA9584e9b61C7815E8d97D9cC7"
+      },
+      "ilks": {
+        "A": {
+          "mat": "175",
           "line": "5000000",
           "dust": "100",
           "duty": "2",
