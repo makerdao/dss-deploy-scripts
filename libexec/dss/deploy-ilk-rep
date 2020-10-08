@@ -19,7 +19,7 @@
 . "$LIB_DIR/common.sh"
 
 if [[ -z "$REP" ]]; then
-    REP=$(dappCreate dss-deploy REP "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")")
+    REP=$(dappCreate dss-gem-joins REP "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")")
     log "REP=$REP"
     export REP
 fi

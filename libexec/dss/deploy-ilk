@@ -36,9 +36,9 @@ test -z "$MCD_DEPLOY" && exit 1
 
 MCD_VAT=$(seth call "$MCD_DEPLOY" "vat()(address)")
 if [[ "$decimals" != "" ]]; then
-    contract=$(dappCreate dss-deploy "$ilkJoin" "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")" "$(eval echo "\$${tok}")" "$decimals")
+    contract=$(dappCreate dss-gem-joins "$ilkJoin" "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")" "$(eval echo "\$${tok}")" "$decimals")
 else
-    contract=$(dappCreate dss-deploy "$ilkJoin" "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")" "$(eval echo "\$${tok}")")
+    contract=$(dappCreate dss-gem-joins "$ilkJoin" "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")" "$(eval echo "\$${tok}")")
 fi
 eval export "\MCD_JOIN_${ilkVar}=${contract}"
 log "MCD_JOIN_${ilkVar}=$(eval "echo ${contract}")"

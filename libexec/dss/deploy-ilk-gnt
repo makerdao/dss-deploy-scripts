@@ -19,7 +19,7 @@
 . "$LIB_DIR/common.sh"
 
 if [[ -z "$GNT" ]]; then
-    GNT=$(dappCreate dss-deploy GNT "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")")
+    GNT=$(dappCreate dss-gem-joins GNT "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")")
     log "GNT=$GNT"
     export GNT
 fi

@@ -19,7 +19,7 @@
 . "$LIB_DIR/common.sh"
 
 if [[ -z "$KNC" ]]; then
-    KNC=$(dappCreate dss-deploy KNC "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")")
+    KNC=$(dappCreate dss-gem-joins KNC "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")")
     log "KNC=$KNC"
     export KNC
 fi

@@ -19,7 +19,7 @@
 . "$LIB_DIR/common.sh"
 
 if [[ -z "$BAT" ]]; then
-    BAT=$(dappCreate dss-deploy BAT "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")")
+    BAT=$(dappCreate dss-gem-joins BAT "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")")
     log "BAT=$BAT"
     export BAT
 fi

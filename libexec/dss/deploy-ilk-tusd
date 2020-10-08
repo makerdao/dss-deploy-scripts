@@ -19,7 +19,7 @@
 . "$LIB_DIR/common.sh"
 
 if [[ -z "$TUSD" ]]; then
-    TUSD=$(dappCreate dss-deploy TUSD "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")")
+    TUSD=$(dappCreate dss-gem-joins TUSD "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")")
     log "TUSD=$TUSD"
     export TUSD
 fi

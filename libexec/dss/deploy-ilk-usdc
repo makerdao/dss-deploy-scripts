@@ -19,7 +19,7 @@
 . "$LIB_DIR/common.sh"
 
 if [[ -z "$USDC" ]]; then
-    USDC=$(dappCreate dss-deploy USDC "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")")
+    USDC=$(dappCreate dss-gem-joins USDC "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")")
     log "USDC=$USDC"
     export USDC
 fi

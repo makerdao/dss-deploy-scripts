@@ -19,7 +19,7 @@
 . "$LIB_DIR/common.sh"
 
 if [[ -z "$OMG" ]]; then
-    OMG=$(dappCreate dss-deploy OMG "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")")
+    OMG=$(dappCreate dss-gem-joins OMG "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")")
     log "OMG=$OMG"
     export OMG
 fi
