@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+#  Copyright (C) 2019-2020 Maker Ecosystem Growth Holdings, INC.
+
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+# shellcheck source=lib/common.sh
+. "$LIB_DIR/common.sh"
+
+# Get config variables
+CONFIG_FILE="$OUT_DIR/config.json"
+# Get addresses
+loadAddresses
+
+log "SET ILKS CUSP:"
+
+tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
+for token in $tokens; do
+    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+    for ilk in $ilks; do
+        cusp=$(jq -r ".tokens.${token}.ilks.${ilk} | .cusp" "$CONFIG_FILE")
+        cusp=$(echo "($cusp)"*10^27 | bc -l)
+        cusp=$(seth --to-uint256 "${cusp%.*}")
+        calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$(eval echo "\$MCD_CLIP_${token}_${ilk}")" "$(seth --to-bytes32 "$(seth --from-ascii "cusp")")" "$cusp")"
+        sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+    done
+done
