@@ -60,7 +60,11 @@
           "dunk": "500",
           "beg": "1",
           "ttl": "3600",
-          "tau": "3600"
+          "tau": "3600",
+	  "calc": {
+            "type": "LinearDecrease",
+	    "tau":  "3600"
+	  }
         },
         "B": {
           "mat": "200",
@@ -74,7 +78,11 @@
           "dunk": "500",
           "beg": "1",
           "ttl": "3600",
-          "tau": "3600"
+          "tau": "3600",
+	  "calc": {
+            "type": "LinearDecrease",
+	    "tau":  "3600"
+	  }
         },
         "C": {
           "mat": "120",
@@ -88,7 +96,11 @@
           "dunk": "500",
           "beg": "1",
           "ttl": "3600",
-          "tau": "3600"
+          "tau": "3600",
+	  "calc": {
+            "type": "LinearDecrease",
+	    "tau":  "3600"
+	  }
         }
       }
     },
@@ -130,7 +142,11 @@
           "dunk": "500",
           "beg": "1",
           "ttl": "3600",
-          "tau": "3600"
+          "tau": "3600",
+	  "calc": {
+            "type": "LinearDecrease",
+	    "tau":  "3600"
+	  }
         }
       }
     },
@@ -172,7 +188,11 @@
           "dunk": "500",
           "beg": "1",
           "ttl": "3600",
-          "tau": "3600"
+          "tau": "3600",
+	  "calc": {
+            "type": "LinearDecrease",
+	    "tau":  "3600"
+	  }
         }
       }
     },
@@ -214,7 +234,11 @@
           "dunk": "500",
           "beg": "1",
           "ttl": "3600",
-          "tau": "3600"
+          "tau": "3600",
+	  "calc": {
+            "type": "LinearDecrease",
+	    "tau":  "3600"
+	  }
         }
       }
     },
@@ -256,7 +280,11 @@
           "dunk": "500",
           "beg": "1",
           "ttl": "3600",
-          "tau": "3600"
+          "tau": "3600",
+	  "calc": {
+            "type": "LinearDecrease",
+	    "tau":  "3600"
+	  }
         }
       }
     },
@@ -298,7 +326,11 @@
           "dunk": "500",
           "beg": "1",
           "ttl": "3600",
-          "tau": "3600"
+          "tau": "3600",
+	  "calc": {
+            "type": "LinearDecrease",
+	    "tau":  "3600"
+	  }
         }
       }
     },
@@ -340,7 +372,11 @@
           "dunk": "500",
           "beg": "1",
           "ttl": "3600",
-          "tau": "3600"
+          "tau": "3600",
+	  "calc": {
+            "type": "LinearDecrease",
+	    "tau":  "3600"
+	  }
         },
         "B": {
           "mat": "125",
@@ -354,7 +390,11 @@
           "dunk": "500",
           "beg": "1",
           "ttl": "3600",
-          "tau": "3600"
+          "tau": "3600",
+	  "calc": {
+            "type": "LinearDecrease",
+	    "tau":  "3600"
+	  }
         }
       }
     },
@@ -396,7 +436,11 @@
           "dunk": "500",
           "beg": "1",
           "ttl": "3600",
-          "tau": "3600"
+          "tau": "3600",
+	  "calc": {
+            "type": "LinearDecrease",
+	    "tau":  "3600"
+	  }
         }
       }
     },
@@ -438,7 +482,11 @@
           "dunk": "500",
           "beg": "1",
           "ttl": "3600",
-          "tau": "3600"
+          "tau": "3600",
+	  "calc": {
+            "type": "LinearDecrease",
+	    "tau":  "3600"
+	  }
         }
       }
     },
@@ -480,7 +528,11 @@
           "dunk": "500",
           "beg": "1",
           "ttl": "3600",
-          "tau": "3600"
+          "tau": "3600",
+	  "calc": {
+            "type": "LinearDecrease",
+	    "tau":  "3600"
+	  }
         }
       }
     },
@@ -522,7 +574,11 @@
           "dunk": "500",
           "beg": "1",
           "ttl": "3600",
-          "tau": "3600"
+          "tau": "3600",
+	  "calc": {
+            "type": "LinearDecrease",
+	    "tau":  "3600"
+	  }
         }
       }
     },
@@ -564,7 +620,11 @@
           "dunk": "500",
           "beg": "3",
           "ttl": "3600",
-          "tau": "3600"
+          "tau": "3600",
+	  "calc": {
+            "type": "LinearDecrease",
+	    "tau":  "3600"
+	  }
         }
       }
     },
@@ -606,7 +666,11 @@
           "dunk": "500",
           "beg": "3",
           "ttl": "3600",
-          "tau": "3600"
+          "tau": "3600",
+	  "calc": {
+            "type": "LinearDecrease",
+	    "tau":  "3600"
+	  }
         }
       }
     },
@@ -648,7 +712,11 @@
           "dunk": "500",
           "beg": "3",
           "ttl": "3600",
-          "tau": "3600"
+          "tau": "3600",
+	  "calc": {
+            "type": "LinearDecrease",
+	    "tau":  "3600"
+	  }
         }
       }
     },
@@ -690,7 +758,11 @@
           "dunk": "500",
           "beg": "3",
           "ttl": "3600",
-          "tau": "3600"
+          "tau": "3600",
+	  "calc": {
+            "type": "LinearDecrease",
+	    "tau":  "3600"
+	  }
         }
       }
     },
@@ -732,7 +804,11 @@
           "dunk": "500",
           "beg": "3",
           "ttl": "3600",
-          "tau": "3600"
+          "tau": "3600",
+	  "calc": {
+            "type": "LinearDecrease",
+	    "tau":  "3600"
+	  }
         }
       }
     },
@@ -774,7 +850,11 @@
           "dunk": "500",
           "beg": "3",
           "ttl": "3600",
-          "tau": "3600"
+          "tau": "3600",
+	  "calc": {
+            "type": "LinearDecrease",
+	    "tau":  "3600"
+	  }
         }
       }
     },

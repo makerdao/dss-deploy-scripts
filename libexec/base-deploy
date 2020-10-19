@@ -181,6 +181,7 @@ for token in $tokens; do
         sethSend "$(eval echo "\$MCD_JOIN_${token}_${ilk}")" 'deny(address)' "$ETH_FROM"
 
         sethSend "$MCD_DEPLOY" 'releaseAuthFlip(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
+        sethSend "$MCD_DEPLOY" 'releaseAuthClip(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
     done
 done
 
@@ -239,6 +240,10 @@ for token in $tokens; do
     \"MCD_JOIN_${token}_${ilk}\": \"$(eval echo "\$MCD_JOIN_${token}_${ilk}")\""
     ILKS_VARS+=",
     \"MCD_FLIP_${token}_${ilk}\": \"$(seth --to-checksum-address "$(eval echo "\$MCD_FLIP_${token}_${ilk}")")\""
+    ILKS_VARS+=",
+    \"MCD_CLIP_${token}_${ilk}\": \"$(seth --to-checksum-address "$(eval echo "\$MCD_CLIP_${token}_${ilk}")")\""
+    ILKS_VARS+=",
+    \"MCD_CLIP_CALC_${token}_${ilk}\": \"$(seth --to-checksum-address "$(eval echo "\$MCD_CLIP_CALC_${token}_${ilk}")")\""
     done
 done
 
@@ -274,6 +279,7 @@ cat > "$OUT_DIR"/addresses.json <<EOF
     "MCD_VAT": "$(seth --to-checksum-address "$MCD_VAT")",
     "MCD_JUG": "$(seth --to-checksum-address "$MCD_JUG")",
     "MCD_CAT": "$(seth --to-checksum-address "$MCD_CAT")",
+    "MCD_DOG": "$(seth --to-checksum-address "$MCD_DOG")",
     "MCD_VOW": "$(seth --to-checksum-address "$MCD_VOW")",
     "MCD_JOIN_DAI": "$(seth --to-checksum-address "$MCD_JOIN_DAI")",
     "MCD_FLAP": "$(seth --to-checksum-address "$MCD_FLAP")",

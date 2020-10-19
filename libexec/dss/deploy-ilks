@@ -41,13 +41,31 @@ for token in $tokens; do
         joinAddr=$(dappCreate dss-gem-joins "$joinSrc" "$MCD_VAT" "$ilkName" "$gemAddr" "${joinExtraParams[@]}")
         log "MCD_JOIN_${ilkEnvVar}=$(eval "echo ${joinAddr}")"
 
-        sethSend "$MCD_DEPLOY" "deployCollateral(bytes32,address,address)" "$ilkName" "$joinAddr" "$(eval echo "\$PIP_${token}")"
-        while IFS=$'\n' read -r line; do data+=("$line"); done < <(seth call "$MCD_DEPLOY" "ilks(bytes32)(address,address)" "$ilkName")
+        sethSend "$MCD_DEPLOY" "deployCollateralFlip(bytes32,address,address)" \
+            "$ilkName"                                                         \
+            "$joinAddr"                                                        \
+            "$(eval echo "\$PIP_${token}")"
+
+        calcType=$(jq -r ".tokens.{$token}.ilks.{$ilk}.calc.type | values" "$CONFIG_FILE")
+        calc=$(dappCreate dss-deploy-liq-2-0 "$calcType")
+        log "MCD_CLIP_CALC_${ilkEnvVar}=${calc}"
+
+        sethSend "$MCD_DEPLOY" "deployCollateralClip(bytes32,address,address,address)" \
+            "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")"                       \
+            "$(eval echo "\$MCD_JOIN_${ilkEnvVar}")"                                   \
+            "$(eval echo "\$PIP_${token}")"                                            \
+            "$(eval echo "\$MCD_CLIP_CALC_${ilkEnvVar}")"
+
+        while IFS=$'\n' read -r line; do data+=("$line"); done < <(seth call "$MCD_DEPLOY" "ilks(bytes32)(address,address,address)" "$ilkName")
         log "MCD_FLIP_${ilkEnvVar}=${data[0]}"
+        log "MCD_CLIP_${ilkEnvVar}=${data[1]}"
+
         exports+="
         export ${token}=\"${gemAddr}\"
         export MCD_JOIN_${ilkEnvVar}=\"${joinAddr}\"
         export MCD_FLIP_${ilkEnvVar}=\"${data[0]}\"
+        export MCD_CLIP_${ilkEnvVar}=\"${data[1]}\"
+        export MCD_CLIP_CALC_${ilkEnvVar}=\"${calc}\"
         "
     done
 done
