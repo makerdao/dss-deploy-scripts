@@ -26,7 +26,7 @@ then
 fi
 
 # Create deploy contract
-MCD_DEPLOY=$(dappCreate dss-deploy-optimized DssDeploy "$VAT_FAB" "$JUG_FAB" "$VOW_FAB" "$CAT_FAB" "$DAI_FAB" "$MCD_JOIN_FAB" "$FLAP_FAB" "$FLOP_FAB" "$FLIP_FAB" "$SPOT_FAB" "$POT_FAB" "$END_FAB" "$ESM_FAB" "$PAUSE_FAB")
+MCD_DEPLOY=$(dappCreate dss-deploy-optimized DssDeploy "$VAT_FAB" "$JUG_FAB" "$VOW_FAB" "$CAT_FAB" "$DOG_FAB" "$DAI_FAB" "$MCD_JOIN_FAB" "$FLAP_FAB" "$FLOP_FAB" "$FLIP_FAB" "$CLIP_FAB" "$SPOT_FAB" "$POT_FAB" "$END_FAB" "$ESM_FAB" "$PAUSE_FAB")
 log "MCD_DEPLOY=$MCD_DEPLOY"
 
 # If no Authority is defined, create one
@@ -69,6 +69,7 @@ export MCD_ADM=$MCD_ADM
 export MCD_VAT=$(seth call "$MCD_DEPLOY" "vat()(address)")
 export MCD_JUG=$(seth call "$MCD_DEPLOY" "jug()(address)")
 export MCD_CAT=$(seth call "$MCD_DEPLOY" "cat()(address)")
+export MCD_DOG=$(seth call "$MCD_DEPLOY" "dog()(address)")
 export MCD_VOW=$(seth call "$MCD_DEPLOY" "vow()(address)")
 export MCD_JOIN_DAI=$(seth call "$MCD_DEPLOY" "daiJoin()(address)")
 export MCD_FLAP=$(seth call "$MCD_DEPLOY" "flap()(address)")
