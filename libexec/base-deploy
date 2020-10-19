@@ -367,6 +367,8 @@ EOF
 
 "$LIBEXEC_DIR"/setters/set-ilks-tau
 
+"$LIBEXEC_DIR"/setters/set-ilks-buf
+
 "$LIBEXEC_DIR"/setters/set-ilks-faucet
 
 if [[ -f "$CASE" ]]; then

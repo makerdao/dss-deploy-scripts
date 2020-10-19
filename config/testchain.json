@@ -61,6 +61,7 @@
           "beg": "1",
           "ttl": "3600",
           "tau": "3600",
+	  "buf": "50",
 	  "calc": {
             "type": "LinearDecrease",
 	    "tau":  "3600"
@@ -79,6 +80,7 @@
           "beg": "1",
           "ttl": "3600",
           "tau": "3600",
+	  "buf": "50",
 	  "calc": {
             "type": "LinearDecrease",
 	    "tau":  "3600"
@@ -97,6 +99,7 @@
           "beg": "1",
           "ttl": "3600",
           "tau": "3600",
+	  "buf": "50",
 	  "calc": {
             "type": "LinearDecrease",
 	    "tau":  "3600"
@@ -143,6 +146,7 @@
           "beg": "1",
           "ttl": "3600",
           "tau": "3600",
+	  "buf": "50",
 	  "calc": {
             "type": "LinearDecrease",
 	    "tau":  "3600"
@@ -189,6 +193,7 @@
           "beg": "1",
           "ttl": "3600",
           "tau": "3600",
+	  "buf": "50",
 	  "calc": {
             "type": "LinearDecrease",
 	    "tau":  "3600"
@@ -235,6 +240,7 @@
           "beg": "1",
           "ttl": "3600",
           "tau": "3600",
+	  "buf": "50",
 	  "calc": {
             "type": "LinearDecrease",
 	    "tau":  "3600"
@@ -281,6 +287,7 @@
           "beg": "1",
           "ttl": "3600",
           "tau": "3600",
+	  "buf": "50",
 	  "calc": {
             "type": "LinearDecrease",
 	    "tau":  "3600"
@@ -327,6 +334,7 @@
           "beg": "1",
           "ttl": "3600",
           "tau": "3600",
+	  "buf": "50",
 	  "calc": {
             "type": "LinearDecrease",
 	    "tau":  "3600"
@@ -373,6 +381,7 @@
           "beg": "1",
           "ttl": "3600",
           "tau": "3600",
+	  "buf": "50",
 	  "calc": {
             "type": "LinearDecrease",
 	    "tau":  "3600"
@@ -391,6 +400,7 @@
           "beg": "1",
           "ttl": "3600",
           "tau": "3600",
+	  "buf": "50",
 	  "calc": {
             "type": "LinearDecrease",
 	    "tau":  "3600"
@@ -437,6 +447,7 @@
           "beg": "1",
           "ttl": "3600",
           "tau": "3600",
+	  "buf": "50",
 	  "calc": {
             "type": "LinearDecrease",
 	    "tau":  "3600"
@@ -483,6 +494,7 @@
           "beg": "1",
           "ttl": "3600",
           "tau": "3600",
+	  "buf": "50",
 	  "calc": {
             "type": "LinearDecrease",
 	    "tau":  "3600"
@@ -529,6 +541,7 @@
           "beg": "1",
           "ttl": "3600",
           "tau": "3600",
+	  "buf": "50",
 	  "calc": {
             "type": "LinearDecrease",
 	    "tau":  "3600"
@@ -575,6 +588,7 @@
           "beg": "1",
           "ttl": "3600",
           "tau": "3600",
+	  "buf": "50",
 	  "calc": {
             "type": "LinearDecrease",
 	    "tau":  "3600"
@@ -621,6 +635,7 @@
           "beg": "3",
           "ttl": "3600",
           "tau": "3600",
+	  "buf": "50",
 	  "calc": {
             "type": "LinearDecrease",
 	    "tau":  "3600"
@@ -667,6 +682,7 @@
           "beg": "3",
           "ttl": "3600",
           "tau": "3600",
+	  "buf": "50",
 	  "calc": {
             "type": "LinearDecrease",
 	    "tau":  "3600"
@@ -713,6 +729,7 @@
           "beg": "3",
           "ttl": "3600",
           "tau": "3600",
+	  "buf": "50",
 	  "calc": {
             "type": "LinearDecrease",
 	    "tau":  "3600"
@@ -759,6 +776,7 @@
           "beg": "3",
           "ttl": "3600",
           "tau": "3600",
+	  "buf": "50",
 	  "calc": {
             "type": "LinearDecrease",
 	    "tau":  "3600"
@@ -805,6 +823,7 @@
           "beg": "3",
           "ttl": "3600",
           "tau": "3600",
+	  "buf": "50",
 	  "calc": {
             "type": "LinearDecrease",
 	    "tau":  "3600"
@@ -851,6 +870,7 @@
           "beg": "3",
           "ttl": "3600",
           "tau": "3600",
+	  "buf": "50",
 	  "calc": {
             "type": "LinearDecrease",
 	    "tau":  "3600"
