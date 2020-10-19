@@ -50,6 +50,7 @@ for token in $tokens; do
         calc=$(dappCreate dss-deploy-liq-2-0 "$calcType")
         log "MCD_CLIP_CALC_${ilkEnvVar}=${calc}"
         sethSend "$calc" 'rely(address)' "$MCD_PAUSE_PROXY"
+        sethSend "$calc" 'deny(address)' "$ETH_FROM"
 
         sethSend "$MCD_DEPLOY" "deployCollateralClip(bytes32,address,address,address)" \
             "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")"                       \
