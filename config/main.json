@@ -298,7 +298,7 @@
     "BAL": {
       "import": {
         "gem": "0xba100000625a3754423978a60c9317c58a424e3D",
-        "pip": "0x0"   // TODO deploy
+        "pip": "0x3ff860c0F28D69F392543A16A397D0dAe85D16dE"
       },
       "ilks": {
         "A": {
