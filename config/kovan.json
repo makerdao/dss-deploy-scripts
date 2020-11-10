@@ -333,6 +333,25 @@
           "tau": "3600"
         }
       }
+    },
+    "GUSD": {
+      "import": {
+        "gem": "0x31D8EdbF6F33ef858c80d68D06Ec83f33c2aA150",
+        "pip": "0xb6630DE6Eda0f3f3d96Db4639914565d6b82CfEF"
+      },
+      "ilks": {
+        "A": {
+          "mat": "101",
+          "line": "5000000",
+          "dust": "100",
+          "duty": "4",
+          "chop": "13",
+          "dunk": "500",
+          "beg": "3",
+          "ttl": "3600",
+          "tau": "3600"
+        }
+      }
     }
   }
 }
