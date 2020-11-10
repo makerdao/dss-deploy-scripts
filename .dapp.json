@@ -394,16 +394,16 @@
         "url": "https://github.com/makerdao/proxy-registry"
       }
     },
-    "testchain-medians_a3c6764": {
+    "testchain-medians_688ada1": {
       "deps": {
         "ds-test": "ds-test_eb7148d",
         "median": "median_bc85f34"
       },
       "name": "testchain-medians",
       "repo": {
-        "name": "testchain-medians-a3c6764",
+        "name": "testchain-medians-688ada1",
         "ref": "HEAD",
-        "rev": "a3c6764d3cc8784c2b1dcb9e735847b65b2860a1",
+        "rev": "688ada16a3bb74b3677b6faf716345bdadee9671",
         "url": "https://github.com/makerdao/testchain-medians"
       }
     },
@@ -455,7 +455,7 @@
       "osm": "osm_caf83f1",
       "osm-mom": "osm-mom_c128bbf",
       "proxy-registry": "proxy-registry_788fa52",
-      "testchain-medians": "testchain-medians_a3c6764",
+      "testchain-medians": "testchain-medians_688ada1",
       "token-faucet": "token-faucet_4d1323f",
       "vote-proxy": "vote-proxy_957fba1"
     },
