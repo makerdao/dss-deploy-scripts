@@ -336,7 +336,7 @@
     "GUSD": {
       "import": {
         "gem": "0x056Fd409E1d7A124BD7017459dFEa2F387b6d5Cd",
-        "pip": ""   // TODO
+        "pip": "0xf45Ae69CcA1b9B043dAE2C83A5B65Bc605BEc5F5"
       },
       "ilks": {
         "A": {
