@@ -12,7 +12,7 @@
         "url": "https://github.com/dapphub/ds-auth"
       }
     },
-    "ds-chief_f2fb4ff": {
+    "ds-chief_d42f10f": {
       "deps": {
         "ds-roles": "ds-roles_dbd4c1a",
         "ds-test": "ds-test_eb7148d",
@@ -21,9 +21,9 @@
       },
       "name": "ds-chief",
       "repo": {
-        "name": "ds-chief-f2fb4ff",
+        "name": "ds-chief-d42f10f",
         "ref": "HEAD",
-        "rev": "f2fb4ff57d1129c39fe7ab78ba27923cff88d55f",
+        "rev": "d42f10fdf922bbc7636817961a85f540b285d0e6",
         "url": "https://github.com/makerdao/ds-chief"
       }
     },
@@ -420,23 +420,23 @@
         "url": "https://github.com/makerdao/token-faucet"
       }
     },
-    "vote-proxy_957fba1": {
+    "vote-proxy_119c056": {
       "deps": {
-        "ds-chief": "ds-chief_f2fb4ff",
+        "ds-chief": "ds-chief_d42f10f",
         "ds-test": "ds-test_eb7148d"
       },
       "name": "vote-proxy",
       "repo": {
-        "name": "vote-proxy-957fba1",
+        "name": "vote-proxy-119c056",
         "ref": "HEAD",
-        "rev": "957fba1d166abb9d85c9128ac2af3b35ce46487c",
+        "rev": "119c056668a0b532ac09303376302daabda26849",
         "url": "https://github.com/makerdao/vote-proxy"
       }
     }
   },
   "this": {
     "deps": {
-      "ds-chief": "ds-chief_f2fb4ff",
+      "ds-chief": "ds-chief_d42f10f",
       "ds-proxy": "ds-proxy_4299be4",
       "ds-roles": "ds-roles_dbd4c1a",
       "ds-token": "ds-token_ae74f6d",
@@ -457,7 +457,7 @@
       "proxy-registry": "proxy-registry_788fa52",
       "testchain-medians": "testchain-medians_688ada1",
       "token-faucet": "token-faucet_4d1323f",
-      "vote-proxy": "vote-proxy_957fba1"
+      "vote-proxy": "vote-proxy_119c056"
     },
     "name": "dss-deploy-scripts"
   },
