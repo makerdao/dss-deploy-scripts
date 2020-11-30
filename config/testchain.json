@@ -23,6 +23,16 @@
   "flop_tau": "172800",
   "tokens": {
     "ETH": {
+      "gemDeploy": {
+        "src": "ds-weth/WETH9_",
+        "params": [],
+        "faucetSupply": "0",
+        "faucetAmount": "0"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
       "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
@@ -74,6 +84,16 @@
       }
     },
     "REP": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/REP",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
       "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
@@ -103,6 +123,16 @@
       }
     },
     "OMG": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/OMG",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin2",
+        "extraParams": []
+      },
       "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
@@ -132,6 +162,16 @@
       }
     },
     "BAT": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/BAT",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
       "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
@@ -161,6 +201,16 @@
       }
     },
     "DGD": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/DGD",
+        "params": ["1000000000000000"],
+        "faucetSupply": "990000000000000",
+        "faucetAmount": "50000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin3",
+        "extraParams": ["9"]
+      },
       "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
@@ -190,6 +240,16 @@
       }
     },
     "GNT": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/GNT",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin4",
+        "extraParams": []
+      },
       "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
@@ -219,6 +279,16 @@
       }
     },
     "USDC": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/USDC",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin5",
+        "extraParams": []
+      },
       "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
@@ -259,6 +329,16 @@
       }
     },
     "TUSD": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/TUSD",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin6",
+        "extraParams": []
+      },
       "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
@@ -288,6 +368,16 @@
       }
     },
     "WBTC": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/WBTC",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin5",
+        "extraParams": []
+      },
       "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
@@ -317,6 +407,16 @@
       }
     },
     "ZRX": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/ZRX",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
       "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
@@ -346,6 +446,16 @@
       }
     },
     "KNC": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/KNC",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
       "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
@@ -375,6 +485,16 @@
       }
     },
     "MANA": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/MANA",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
       "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
@@ -404,6 +524,16 @@
       }
     },
     "USDT": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/USDT",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin7",
+        "extraParams": []
+      },
       "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
@@ -433,6 +563,16 @@
       }
     },
     "PAXUSD": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/PAXUSD",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
       "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
@@ -462,6 +602,16 @@
       }
     },
     "COMP": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/COMP",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
       "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
@@ -491,6 +641,16 @@
       }
     },
     "LRC": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/LRC",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
       "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
@@ -520,6 +680,16 @@
       }
     },
     "LINK": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/LINK",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
       "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
@@ -549,6 +719,16 @@
       }
     },
     "BAL": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/BAL",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
       "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
@@ -578,6 +758,16 @@
       }
     },
     "YFI": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/YFI",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
       "pipDeploy": {
         "osmDelay": "0",
         "type": "value",
@@ -607,6 +797,16 @@
       }
     },
     "GUSD": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/GUSD",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin8",
+        "extraParams": []
+      },
       "pipDeploy": {
         "osmDelay": "0",
         "type": "value",

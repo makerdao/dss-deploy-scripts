@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+#  Copyright (C) 2019-2020 Maker Ecosystem Growth Holdings, INC.
+
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+# shellcheck source=lib/common.sh
+. "$LIB_DIR/common.sh"
+
+
+tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
+
+for token in $tokens; do
+    gemAddr=$(jq -r ".tokens.${token} | .import.gem | values" "$CONFIG_FILE")
+    
+    if [[ "$gemAddr" == "" ]]; then
+        IFS='/' read -ra gemSrc <<< "$(jq -r ".tokens.${token} | .gemDeploy.src | values" "$CONFIG_FILE")"
+        IFS=' ' read -ra gemParams <<< "$(jq -r ".tokens.${token} | .gemDeploy.params[]" "$CONFIG_FILE" | tr '\r\n' ' ')"
+        gemAddr=$(dappCreate "${gemSrc[@]}" "${gemParams[@]}")
+        log "${token}=${gemAddr}"
+    fi
+
+    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+    joinSrc="$(jq -r ".tokens.${token} | .joinDeploy.src | values" "$CONFIG_FILE")"
+    IFS=' ' read -ra joinExtraParams <<< "$(jq -r ".tokens.${token} | .joinDeploy.extraParams[]" "$CONFIG_FILE" | tr '\r\n' ' ')"
+    for ilk in $ilks; do
+        ilkName=$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")
+        ilkEnvVar="${token}_${ilk}"
+
+        joinAddr=$(dappCreate dss-gem-joins "$joinSrc" "$MCD_VAT" "$ilkName" "$gemAddr" "${joinExtraParams[@]}")
+        log "MCD_JOIN_${ilkEnvVar}=$(eval "echo ${joinAddr}")"
+
+        sethSend "$MCD_DEPLOY" "deployCollateral(bytes32,address,address)" "$ilkName" "$joinAddr" "$(eval echo "\$PIP_${token}")"
+        while IFS=$'\n' read -r line; do data+=("$line"); done < <(seth call "$MCD_DEPLOY" "ilks(bytes32)(address,address)" "$ilkName")
+        log "MCD_FLIP_${ilkEnvVar}=${data[0]}"
+        exports+="
+        export ${token}=\"${gemAddr}\"
+        export MCD_JOIN_${ilkEnvVar}=\"${joinAddr}\"
+        export MCD_FLIP_${ilkEnvVar}=\"${data[0]}\"
+        "
+    done
+done
+
+cat > "$OUT_DIR/load-ilks-addr-temp" << EOF
+#!/bin/bash
+${exports}
+EOF

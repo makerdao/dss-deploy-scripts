@@ -32,6 +32,10 @@
         "gem": "0xd0A1E359811322d97991E03f863a0C30C2cF029C",
         "pip": "0x75dD74e8afE8110C8320eD397CcCff3B8134d981"
       },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
       "ilks": {
         "A": {
           "mat": "150",
@@ -62,6 +66,10 @@
         "gem": "0x9f8cFB61D3B2aF62864408DD703F9C3BEB55dff7",
         "pip": "0x5C40C9Eb35c76069fA4C3A00EA59fAc6fFA9c113"
       },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
       "ilks": {
         "A": {
           "mat": "150",
@@ -80,6 +88,10 @@
       "import": {
         "gem": "0xBD84be3C303f6821ab297b840a99Bd0d4c4da6b5",
         "pip": "0x4c51c2584309b7BF328F89609FDd03B3b95fC677"
+      },
+      "joinDeploy": {
+        "src": "GemJoin5",
+        "extraParams": []
       },
       "ilks": {
         "A": {
@@ -111,6 +123,10 @@
         "gem": "0xD6CE59F06Ff2070Dd5DcAd0866A7D8cd9270041a",
         "pip": "0xE4bAECdba7A8Ff791E14c6BF7e8089Dfdf75C7E7"
       },
+      "joinDeploy": {
+        "src": "GemJoin6",
+        "extraParams": []
+      },
       "ilks": {
         "A": {
           "mat": "120",
@@ -129,6 +145,10 @@
       "import": {
         "gem": "0x7419f744bBF35956020C1687fF68911cD777f865",
         "pip": "0x2f38a1bD385A9B395D01f2Cbf767b4527663edDB"
+      },
+      "joinDeploy": {
+        "src": "GemJoin5",
+        "extraParams": []
       },
       "ilks": {
         "A": {
@@ -149,6 +169,10 @@
         "gem": "0x8d30A2E1Fb98E87ada72e86b22817d684E95bddd",
         "pip": "0x218037a42947E634191A231fcBAEAE8b16a39b3f"
       },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
       "ilks": {
         "A": {
           "mat": "175",
@@ -167,6 +191,10 @@
       "import": {
         "gem": "0x51faa3a085C56F8dCAAfacA3d6a710BF61761c1e",
         "pip": "0x10799280EF9d7e2d037614F5165eFF2cB8522651"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
       },
       "ilks": {
         "A": {
@@ -187,6 +215,10 @@
         "gem": "0x221F4D62636b7B51b99e36444ea47Dc7831c2B2f",
         "pip": "0xE97D2b077Fe19c80929718d377981d9F754BF36e"
       },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
       "ilks": {
         "A": {
           "mat": "175",
@@ -205,6 +237,10 @@
       "import": {
         "gem": "0x9245BD36FA20fcD292F4765c4b5dF83Dc3fD5e86",
         "pip": "0x3588A7973D41AaeA7B203549553C991C4311951e"
+      },
+      "joinDeploy": {
+        "src": "GemJoin7",
+        "extraParams": []
       },
       "ilks": {
         "A": {
@@ -225,6 +261,10 @@
         "gem": "0xa6383AF46c36219a472b9549d70E4768dfA8894c",
         "pip": "0xD01fefed46eb21cd057bAa14Ff466842C31a0Cd9"
       },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
       "ilks": {
         "A": {
           "mat": "120",
@@ -243,6 +283,10 @@
       "import": {
         "gem": "0x1dDe24ACE93F9F638Bfd6fCE1B38b842703Ea1Aa",
         "pip": "0xcc10b1C53f4BFFEE19d0Ad00C40D7E36a454D5c4"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
       },
       "ilks": {
         "A": {
@@ -263,6 +307,10 @@
         "gem": "0xF070662e48843934b5415f150a18C250d4D7B8aB",
         "pip": "0xcEE47Bb8989f625b5005bC8b9f9A0B0892339721"
       },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
       "ilks": {
         "A": {
           "mat": "175",
@@ -281,6 +329,10 @@
       "import": {
         "gem": "0xa36085F69e2889c224210F603D836748e7dC0088",
         "pip": "0x20D5A457e49D05fac9729983d9701E0C3079Efac"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
       },
       "ilks": {
         "A": {
@@ -301,6 +353,10 @@
         "gem": "0x827AF2d4FdCA030db96d2e208b98fdE663280D13",
         "pip": "0x4fd34872F3AbC07ea6C45c7907f87041C0801DdE"
       },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
       "ilks": {
         "A": {
           "mat": "175",
@@ -320,6 +376,10 @@
         "gem": "0x251F1c3077FEd1770cB248fB897100aaE1269FFC",
         "pip": "0x9D8255dc4e25bB85e49c65B21D8e749F2293862a"
       },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
       "ilks": {
         "A": {
           "mat": "175",
@@ -338,6 +398,10 @@
       "import": {
         "gem": "0x31D8EdbF6F33ef858c80d68D06Ec83f33c2aA150",
         "pip": "0xb6630DE6Eda0f3f3d96Db4639914565d6b82CfEF"
+      },
+      "joinDeploy": {
+        "src": "GemJoin8",
+        "extraParams": []
       },
       "ilks": {
         "A": {
