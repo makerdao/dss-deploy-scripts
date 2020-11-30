@@ -255,6 +255,13 @@ if [[ -n $VOTE_PROXY_FACTORY ]]; then
     \"VOTE_PROXY_FACTORY\": \"$VOTE_PROXY_FACTORY\""
 fi
 
+# Deploy DssAutoLine
+MCD_IAM_AUTO_LINE=$(dappCreate dss-auto-line-optimized DssAutoLine "$MCD_VAT")
+log "MCD_IAM_AUTO_LINE=$MCD_IAM_AUTO_LINE"
+# Rely DssAutoLine in the Vat
+calldata="$(seth calldata 'rely(address,address,address,address)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VAT" "$MCD_IAM_AUTO_LINE")"
+sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+
 # Generate addresses.json file
 cat > "$OUT_DIR"/addresses.json <<EOF
 {
@@ -288,6 +295,7 @@ cat > "$OUT_DIR"/addresses.json <<EOF
     "ILK_REGISTRY": "$ILK_REGISTRY",
     "OSM_MOM": "$OSM_MOM",
     "FLIPPER_MOM": "$FLIPPER_MOM",
+    "MCD_IAM_AUTO_LINE": "$MCD_IAM_AUTO_LINE",
     "PROXY_FACTORY": "$(seth --to-checksum-address "$PROXY_FACTORY")",
     "PROXY_REGISTRY": "$(seth --to-checksum-address "$PROXY_REGISTRY")"$ILKS_VARS,
     "PROXY_PAUSE_ACTIONS": "$PROXY_PAUSE_ACTIONS",
