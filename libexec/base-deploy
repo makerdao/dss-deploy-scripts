@@ -59,11 +59,9 @@ log "MULTICALL=$MULTICALL"
 
 # Deploy Token Faucet
 FAUCET=$(jq -r ".import.faucet | values" "$CONFIG_FILE")
-newFaucet=false
 if [[ -z "$FAUCET" ]]; then
     FAUCET=$(dappCreate token-faucet RestrictedTokenFaucet)
     log "FAUCET=$FAUCET"
-    newFaucet=true
     if [[ "$DEPLOY_RESTRICTED_FAUCET" == "no" ]]; then
         sethSend "$FAUCET" 'hope(address)' "0x0000000000000000000000000000000000000000"
     fi
@@ -130,30 +128,10 @@ if [[ "$newGovToken" == true ]]; then
 fi
 
 # Deploy Collaterals
-for token in $tokens; do
-    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
-
-    gemAddr=$(jq -r ".tokens.${token} | .import.gem | values" "$CONFIG_FILE")
-    eval "export ${token}=${gemAddr}"
-
-    for ilk in $ilks; do
-        "$LIBEXEC_DIR/dss/deploy-ilk-$(echo "$token" | tr '[:upper:]' '[:lower:]')" "$ilk"
-        # shellcheck source=/dev/null
-        . "$OUT_DIR/load-ilk-addr-temp"
-        rm "$OUT_DIR/load-ilk-addr-temp"
-    done
-
-    # If the ilk token was created by the previous deployment script call (new token) and it is not ETH, then we can send funds to the Faucet
-    if [[ "$token" != "ETH" && "$gemAddr" == "" ]]; then
-        sethSend "$(eval echo "\$$token")" 'transfer(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 999000 ETH)")"
-    fi
-done
-
-if [[ "$newFaucet" == true ]]; then
-    for token in $tokens; do
-        sethSend "$FAUCET" 'setAmt(address,uint256)' "$(eval echo "\$${token}")" "$(seth --to-uint256 "$(seth --to-wei 50 ETH)")"
-    done
-fi
+"$LIBEXEC_DIR/dss/deploy-ilks"
+# shellcheck source=/dev/null
+. "$OUT_DIR/load-ilks-addr-temp"
+rm "$OUT_DIR/load-ilks-addr-temp"
 
 # Deploy Proxy Actions
 PROXY_ACTIONS=$(dappCreate dss-proxy-actions-optimized DssProxyActions)
@@ -374,6 +352,8 @@ EOF
 "$LIBEXEC_DIR"/setters/set-ilks-ttl
 
 "$LIBEXEC_DIR"/setters/set-ilks-tau
+
+"$LIBEXEC_DIR"/setters/set-ilks-faucet
 
 if [[ -f "$CASE" ]]; then
     "$CASE"

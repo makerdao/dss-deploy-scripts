@@ -23,23 +23,27 @@ CONFIG_FILE="$OUT_DIR/config.json"
 # Get addresses
 loadAddresses
 
-log "SET ILKS LINE:"
+log "SET ILKS FAUCET:"
 
-setLine() {
-    if [[ "$2" != "" && "$2" != "0" ]]; then
-        local line
-        line=$(echo "$2"*10^45 | bc)
-        line=$(seth --to-uint256 "${line%.*}")
-        calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "$1")")" "$(seth --to-bytes32 "$(seth --from-ascii "line")")" "$line")"
-        sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
-    fi
-}
+f=$(jq -r ".import.faucet | values" "$CONFIG_FILE")
+newFaucet=false
+if [[ -z "$f" ]]; then
+    newFaucet=true
+fi
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
-
+# Send funds to the Faucet
 for token in $tokens; do
-    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
-    for ilk in $ilks; do
-        setLine "${token}-${ilk}" "$(jq -r ".tokens.${token}.ilks.${ilk} | .line" "$CONFIG_FILE")"
-    done
+    supply=$(jq -r ".tokens.${token} | .gemDeploy.faucetSupply | values" "$CONFIG_FILE")
+    if [[ "$supply" != "" && "$supply" != 0 ]]; then
+        sethSend "$(eval echo "\$$token")" 'transfer(address,uint256)' "$FAUCET" "$supply"
+    fi
+
+    if [[ "$newFaucet" == true ]]; then
+        # If the faucet was created in this deployment run, then we can set amount into it for the token
+        amount=$(jq -r ".tokens.${token} | .gemDeploy.faucetAmount | values" "$CONFIG_FILE")
+        if [[ "$amount" != "" && "$amount" != 0 ]]; then
+            sethSend "$FAUCET" 'setAmt(address,uint256)' "$(eval echo "\$${token}")" "$amount"
+        fi
+    fi
 done

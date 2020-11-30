@@ -96,6 +96,16 @@ Below is the expected structure of such a config file:
         "gem": "<Gem token address (if there is an existing one to import)>",
         "pip": "<Price feed address (if there is an existing one to import)>"
       },
+      "gemDeploy": { // Only used if there is not a gem imported
+        "src": "<REPO/CONTRACT (e.g. dss-gem-joins/GemJoin2)>",
+        "params": [<Any params to be passed to the constructor of the token in its native form (e.g. amounts in wei or strings in hex encoding)>],
+        "faucetSupply": "<Amount of token to be transferred to the faucet>",
+        "faucetAmount": "<Amount of token to be obtained in each faucet gulp (only if a new faucet is deployed)>"
+      },
+      "joinDeploy": { // Mandatory always
+        "src": "<GemJoin/GemJoin2/GemJoinX>",
+        "extraParams": [<Any extra params to be passed to the constructor of the join in its native form (e.g. amounts in wei or strings in hex encoding)>]
+      },
       "pipDeploy": { // Only used if there is not a pip imported
         "osmDelay": "<Time in seconds for the OSM delay>",
         "type": "<median|value>",
