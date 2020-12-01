@@ -22,7 +22,7 @@
   "flop_tau": "3600",
   "import": {
     "gov": "0xAaF64BFCC32d0F15873a02163e7E500671a4ffcD",
-    "authority": "0xbBFFC76e94B34F72D96D054b31f6424249c1337d",
+    "authority": "0x27E0c9567729Ea6e3241DE74B3dE499b7ddd3fe6",
     "proxyRegistry": "0x64A436ae831C1672AE81F674CAb8B6775df3475C",
     "faucet": "0x94598157fcf0715C3bC9B4a35450cce82AC57B20"
   },
