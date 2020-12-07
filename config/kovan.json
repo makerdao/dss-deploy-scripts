@@ -40,6 +40,9 @@
         "A": {
           "mat": "150",
           "line": "540000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
           "dust": "100",
           "duty": "0",
           "chop": "13",
@@ -50,7 +53,10 @@
         },
         "B": {
           "mat": "130",
-          "line": "20000000",
+          "line": "0",
+          "autoLine": "50000000",
+          "autoLineGap": "5000000",
+          "autoLineTtl": "43200",
           "dust": "100",
           "duty": "6",
           "chop": "13",
@@ -74,6 +80,9 @@
         "A": {
           "mat": "150",
           "line": "5000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
           "dust": "100",
           "duty": "0",
           "chop": "13",
@@ -97,6 +106,9 @@
         "A": {
           "mat": "110",
           "line": "40000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
           "dust": "100",
           "duty": "0",
           "chop": "13",
@@ -108,6 +120,9 @@
         "B": {
           "mat": "120",
           "line": "30000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
           "dust": "100",
           "duty": "46",
           "chop": "13",
@@ -131,6 +146,9 @@
         "A": {
           "mat": "120",
           "line": "2000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
           "dust": "100",
           "duty": "0",
           "chop": "13",
@@ -154,6 +172,9 @@
         "A": {
           "mat": "150",
           "line": "120000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
           "dust": "100",
           "duty": "0",
           "chop": "13",
@@ -177,6 +198,9 @@
         "A": {
           "mat": "175",
           "line": "5000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
           "dust": "100",
           "duty": "0",
           "chop": "13",
@@ -200,6 +224,9 @@
         "A": {
           "mat": "175",
           "line": "5000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
           "dust": "20",
           "duty": "0",
           "chop": "13",
@@ -223,6 +250,9 @@
         "A": {
           "mat": "175",
           "line": "1000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
           "dust": "20",
           "duty": "8",
           "chop": "13",
@@ -246,6 +276,9 @@
         "A": {
           "mat": "150",
           "line": "10000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
           "dust": "100",
           "duty": "6",
           "chop": "13",
@@ -269,6 +302,9 @@
         "A": {
           "mat": "120",
           "line": "5000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
           "dust": "100",
           "duty": "2",
           "chop": "13",
@@ -292,6 +328,9 @@
         "A": {
           "mat": "175",
           "line": "7000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
           "dust": "100",
           "duty": "1",
           "chop": "13",
@@ -315,6 +354,9 @@
         "A": {
           "mat": "175",
           "line": "3000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
           "dust": "100",
           "duty": "3",
           "chop": "13",
@@ -338,6 +380,9 @@
         "A": {
           "mat": "175",
           "line": "5000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
           "dust": "100",
           "duty": "3",
           "chop": "13",
@@ -361,6 +406,9 @@
         "A": {
           "mat": "175",
           "line": "4000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
           "dust": "100",
           "duty": "5",
           "chop": "13",
@@ -384,6 +432,9 @@
         "A": {
           "mat": "175",
           "line": "7000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
           "dust": "100",
           "duty": "4",
           "chop": "13",
@@ -407,6 +458,9 @@
         "A": {
           "mat": "101",
           "line": "5000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
           "dust": "100",
           "duty": "4",
           "chop": "13",

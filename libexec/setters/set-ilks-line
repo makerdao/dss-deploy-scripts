@@ -25,32 +25,34 @@ loadAddresses
 
 log "SET ILKS LINE:"
 
-# setLine() {
-#     if [[ "$2" != "" && "$2" != "0" ]]; then
-#         local line
-#         line=$(echo "$2"*10^45 | bc)
-#         line=$(seth --to-uint256 "${line%.*}")
-#         calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "$1")")" "$(seth --to-bytes32 "$(seth --from-ascii "line")")" "$line")"
-#         sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
-#     fi
-# }
-
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
-
 for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     for ilk in $ilks; do
+        ilkBytes32="$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
+
         line="$(jq -r ".tokens.${token}.ilks.${ilk} | .line" "$CONFIG_FILE")"
         line=$(echo "$line"*10^45 | bc)
-        gap="$(jq -r ".tokens.${token}.ilks.${ilk} | .lineGap" "$CONFIG_FILE")"
-        gap=$(echo "$gap"*10^45 | bc)
-        ttl="$(jq -r ".tokens.${token}.ilks.${ilk} | .lineTtl" "$CONFIG_FILE")"
 
-        ilkBytes32="$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
-        sethSend "$MCD_IAM_AUTO_LINE" 'setIlk(bytes32,uint256,uint256,uint256)' "$ilkBytes32" "$line" "$gap" "$ttl"
-        sethSend "$MCD_IAM_AUTO_LINE" 'exec(bytes32)' "$ilkBytes32"
+        autoLine="$(jq -r ".tokens.${token}.ilks.${ilk} | .autoLine" "$CONFIG_FILE")"
+        autoLine=$(echo "$autoLine"*10^45 | bc)
 
-        # setLine "${token}-${ilk}" "$(jq -r ".tokens.${token}.ilks.${ilk} | .line" "$CONFIG_FILE")"
+        # Only set the line if the auto line module is not active for this collateral
+        if [[ "$line" -gt 0 && "$autoLine" -eq 0 ]]; then
+            calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VAT" "$ilkBytes32" "$(seth --to-bytes32 "$(seth --from-ascii "line")")" "$line")"
+            sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+        fi
+
+        if [[ "$autoLine" -gt 0 ]]; then
+            autoLineGap="$(jq -r ".tokens.${token}.ilks.${ilk} | .autoLineGap" "$CONFIG_FILE")"
+            autoLineGap=$(echo "$autoLineGap"*10^45 | bc)
+            autoLineTtl="$(jq -r ".tokens.${token}.ilks.${ilk} | .autoLineTtl" "$CONFIG_FILE")"
+
+            # Set the auto line module
+            sethSend "$MCD_IAM_AUTO_LINE" 'setIlk(bytes32,uint256,uint256,uint256)' "$ilkBytes32" "$autoLine" "$autoLineGap" "$autoLineTtl"
+            # Set the initial debt ceiling to the gap value
+            sethSend "$MCD_IAM_AUTO_LINE" 'exec(bytes32)' "$ilkBytes32"
+        fi
     done
 done
 
