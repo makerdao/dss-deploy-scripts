@@ -183,15 +183,15 @@
         "url": "https://github.com/makerdao/dsr-manager"
       }
     },
-    "dss-auto-line_cddabdb": {
+    "dss-auto-line_fe92906": {
       "deps": {
         "ds-test": "ds-test_eb7148d"
       },
       "name": "dss-auto-line",
       "repo": {
-        "name": "dss-auto-line-cddabdb",
+        "name": "dss-auto-line-fe92906",
         "ref": "HEAD",
-        "rev": "cddabdbb896e9900d85e92cc08795461fe96ea93",
+        "rev": "fe92906f9befc164e28af866b2acbd72608becec",
         "url": "https://github.com/makerdao/dss-auto-line"
       }
     },
@@ -455,7 +455,7 @@
       "ds-value": "ds-value_f3dc6c8",
       "ds-weth": "ds-weth_b5819d1",
       "dsr-manager": "dsr-manager_363912d",
-      "dss-auto-line": "dss-auto-line_cddabdb",
+      "dss-auto-line": "dss-auto-line_fe92906",
       "dss-cdp-manager": "dss-cdp-manager_ef77eee",
       "dss-deploy": "dss-deploy_cc14f7d",
       "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_0eb7ba0",
