@@ -42,6 +42,7 @@ let
   packages = packageSpecs (deps' // {
     # Package overrides
     ilk-registry = deps'.ilk-registry           // { name = "ilk-registry-optimized";      solcFlags = "--optimize --optimize-runs 1000000"; solc = solc-versions.solc_0_6_7; };
+    dss-auto-line = deps'.dss-auto-line         // { name = "dss-auto-line-optimized";     solcFlags = "--optimize --optimize-runs 1000000"; solc = solc-static-versions.solc_0_6_11; };
     dss-proxy-actions = deps'.dss-proxy-actions // { name = "dss-proxy-actions-optimized"; solcFlags = "--optimize"; };
     dss-deploy-optimized = deps'.dss-deploy     // { name = "dss-deploy-optimized";        solcFlags = "--optimize"; };
   });

@@ -117,7 +117,10 @@ Below is the expected structure of such a config file:
       "ilks": {
         "A": {
           "mat": "<Liquidation ratio value in percentage (e.g. 150)>",
-          "line": "<Debt ceiling value in DAI unit>",
+          "line": "<Debt ceiling value in DAI unit (won't be used if autoLine is > 0)>",
+          "autoLine": "<Max debt ceiling value in DAI unit (for DssAutoLine IAM)>",
+          "autoLineGap": "<Value to set the ceiling over the current ilk debt in DAI unit (for DssAutoLine IAM)>",
+          "autoLineTtl": "<Time between debt ceiling increments (for DssAutoLine IAM)>",
           "dust": "<Min amount of debt a CDP can hold in DAI unit>"
           "duty": "<Collateral component of stability fee in percentage per year (e.g. 2.5)>",
           "chop": "<Liquidation penalty value in percentage (e.g. 12.5)>",

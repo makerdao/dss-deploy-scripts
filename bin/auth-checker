@@ -137,6 +137,7 @@ checkRely "MCD_VAT" "MCD_JUG" "AUTHED"
 checkRely "MCD_VAT" "MCD_POT" "AUTHED"
 checkRely "MCD_VAT" "MCD_SPOT" "AUTHED"
 checkRely "MCD_VAT" "MCD_END" "AUTHED"
+checkRely "MCD_VAT" "MCD_IAM_AUTO_LINE" "AUTHED"
 checkRely "MCD_VAT" "MCD_PAUSE_PROXY" "AUTHED"
 for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
