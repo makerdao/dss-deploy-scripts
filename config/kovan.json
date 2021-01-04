@@ -522,6 +522,32 @@
           "tau": "3600"
         }
       }
+    },
+    "AAVE": {
+      "import": {
+        "gem": "0x7B339a530Eed72683F56868deDa87BbC64fD9a12",
+        "pip": "0xd2d9B1355Ea96567E7D6C7A6945f5c7ec8150Cc9"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "ilks": {
+        "A": {
+          "mat": "175",
+          "line": "10000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "6",
+          "chop": "13",
+          "dunk": "500",
+          "beg": "3",
+          "ttl": "3600",
+          "tau": "3600"
+        }
+      }
     }
   }
 }
