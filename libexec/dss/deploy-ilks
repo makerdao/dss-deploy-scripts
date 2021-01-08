@@ -62,6 +62,7 @@ for token in $tokens; do
                 "$calc"
         fi
 
+        data=()
         while IFS=$'\n' read -r line; do data+=("$line"); done < <(seth call "$MCD_DEPLOY" "ilks(bytes32)(address,address,address)" "$ilkName")
 
         exports+="
