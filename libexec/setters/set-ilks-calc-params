@@ -23,7 +23,7 @@ CONFIG_FILE="$OUT_DIR/config.json"
 # Get addresses
 loadAddresses
 
-log "SET ILKS BUF:"
+log "SET ILKS CALC PARAMS:"
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
@@ -33,7 +33,7 @@ for token in $tokens; do
             set -e
             local  name;  name=$1
             local value; value=$2
-            calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$(eval echo "\$MCD_CLIP_${token}_${ilk}")" "$(seth --to-bytes32 "$(seth --from-ascii "${name}")")" "${value}")"
+            calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$(eval echo "\$MCD_CLIP_CALC_${token}_${ilk}")" "$(seth --to-bytes32 "$(seth --from-ascii "${name}")")" "${value}")"
             sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
         }
 
@@ -41,7 +41,7 @@ for token in $tokens; do
         if [[ "$flipDeploy" == false ]]; then
             type=$(jq -r ".tokens.${token}.ilks.${ilk} | .clipDeploy.calc.type" "$CONFIG_FILE")
             if [[ "$type" == "LinearDecrease" ]]; then
-                tau=$(jq -r ".tokens.${token}.ilks.${ilk} | clipDeploy.calc.tau" "$CONFIG_FILE")
+                tau=$(jq -r ".tokens.${token}.ilks.${ilk} | .clipDeploy.calc.tau" "$CONFIG_FILE")
                 setUint256Param "tau" "${tau}"
             fi
         fi
