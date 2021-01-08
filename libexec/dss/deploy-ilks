@@ -42,6 +42,7 @@ for token in $tokens; do
         log "MCD_JOIN_${ilkEnvVar}=$(eval "echo ${joinAddr}")"
 
         sethSend "$MCD_DEPLOY" "deployCollateral(bytes32,address,address)" "$ilkName" "$joinAddr" "$(eval echo "\$PIP_${token}")"
+        data=()
         while IFS=$'\n' read -r line; do data+=("$line"); done < <(seth call "$MCD_DEPLOY" "ilks(bytes32)(address,address)" "$ilkName")
         log "MCD_FLIP_${ilkEnvVar}=${data[0]}"
         exports+="
