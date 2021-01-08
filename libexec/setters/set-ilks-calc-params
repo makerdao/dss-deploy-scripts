@@ -25,26 +25,25 @@ loadAddresses
 
 log "SET ILKS BUF:"
 
-setUint256Param() {
-    set -e
-    local  name;  name=$1
-    local value; value=$2
-    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$(eval echo "\$MCD_CLIP_${token}_${ilk}")" "$(seth --to-bytes32 "$(seth --from-ascii "${name}")")" "${value}")"
-    sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
-}
-
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     for ilk in $ilks; do
-        _type=$(jq -r ".tokens.${token}.ilks.${ilk}.calc.type" "$CONFIG_FILE")
-        case "${_type}"
-            LinearDecrease)
-                tau=$(jq -r ".tokens.${token}.ilks.${ilk}.calc.tau" "$CONFIG_FILE")
+        setUint256Param() {
+            set -e
+            local  name;  name=$1
+            local value; value=$2
+            calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$(eval echo "\$MCD_CLIP_${token}_${ilk}")" "$(seth --to-bytes32 "$(seth --from-ascii "${name}")")" "${value}")"
+            sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+        }
+
+        flipDeploy="$(jq ".tokens.${token}.ilks.${ilk} | .flipDeploy!=null" "$CONFIG_FILE")"
+        if [[ "$flipDeploy" == false ]]; then
+            type=$(jq -r ".tokens.${token}.ilks.${ilk} | .clipDeploy.calc.type" "$CONFIG_FILE")
+            if [[ "$type" == "LinearDecrease" ]]; then
+                tau=$(jq -r ".tokens.${token}.ilks.${ilk} | clipDeploy.calc.tau" "$CONFIG_FILE")
                 setUint256Param "tau" "${tau}"
-                ;;
-            *)
-                ;;
-        esac
+            fi
+        fi
     done
 done

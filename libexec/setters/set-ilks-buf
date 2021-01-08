@@ -29,10 +29,13 @@ tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     for ilk in $ilks; do
-        buf=$(jq -r ".tokens.${token}.ilks.${ilk} | .buf" "$CONFIG_FILE")
-        buf=$(echo "($buf+100)"*10^25 | bc -l)
-        buf=$(seth --to-uint256 "${buf%.*}")
-        calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$(eval echo "\$MCD_CLIP_${token}_${ilk}")" "$(seth --to-bytes32 "$(seth --from-ascii "buf")")" "$buf")"
-        sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+        flipDeploy="$(jq ".tokens.${token}.ilks.${ilk} | .flipDeploy!=null" "$CONFIG_FILE")"
+        if [[ "$flipDeploy" == false ]]; then
+            buf=$(jq -r ".tokens.${token}.ilks.${ilk} | .clipDeploy.buf" "$CONFIG_FILE")
+            buf=$(echo "($buf+100)"*10^25 | bc -l)
+            buf=$(seth --to-uint256 "${buf%.*}")
+            calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$(eval echo "\$MCD_CLIP_${token}_${ilk}")" "$(seth --to-bytes32 "$(seth --from-ascii "buf")")" "$buf")"
+            sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+        fi
     done
 done

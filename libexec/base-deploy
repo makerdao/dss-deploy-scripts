@@ -163,12 +163,13 @@ log "FLIPPER_MOM=$FLIPPER_MOM"
 ILK_REGISTRY=$(dappCreate ilk-registry-optimized IlkRegistry "$MCD_VAT" "$MCD_CAT" "$MCD_SPOT")
 log "ILK_REGISTRY=$ILK_REGISTRY"
 
-for token in $tokens; do
-    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
-    for ilk in $ilks; do
-        sethSend "$ILK_REGISTRY" 'add(address)' "$(eval echo "\$MCD_JOIN_${token}_${ilk}")"
-    done
-done
+# TODO: Reactivate it when the ilk registry can handle collaterals with liq-2.0 
+# for token in $tokens; do
+#     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+#     for ilk in $ilks; do
+#         sethSend "$ILK_REGISTRY" 'add(address)' "$(eval echo "\$MCD_JOIN_${token}_${ilk}")"
+#     done
+# done
 
 # As all initial collaterals were deployed, we can remove authority of the deployment contract from the core contracts
 sethSend "$MCD_DEPLOY" 'releaseAuth()'
@@ -180,8 +181,12 @@ for token in $tokens; do
         # Deny deployer to access the Adapter
         sethSend "$(eval echo "\$MCD_JOIN_${token}_${ilk}")" 'deny(address)' "$ETH_FROM"
 
-        sethSend "$MCD_DEPLOY" 'releaseAuthFlip(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
-        sethSend "$MCD_DEPLOY" 'releaseAuthClip(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
+        flipDeploy="$(jq ".tokens.${token}.ilks.${ilk} | .flipDeploy!=null" "$CONFIG_FILE")"
+        if [[ "$flipDeploy" == true ]]; then
+            sethSend "$MCD_DEPLOY" 'releaseAuthFlip(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
+        else
+            sethSend "$MCD_DEPLOY" 'releaseAuthClip(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
+        fi
     done
 done
 
@@ -238,12 +243,17 @@ for token in $tokens; do
     for ilk in $ilks; do
     ILKS_VARS+=",
     \"MCD_JOIN_${token}_${ilk}\": \"$(eval echo "\$MCD_JOIN_${token}_${ilk}")\""
+
+    flipDeploy="$(jq ".tokens.${token}.ilks.${ilk} | .flipDeploy!=null" "$CONFIG_FILE")"
+    if [[ "$flipDeploy" == true ]]; then
     ILKS_VARS+=",
     \"MCD_FLIP_${token}_${ilk}\": \"$(seth --to-checksum-address "$(eval echo "\$MCD_FLIP_${token}_${ilk}")")\""
+    else
     ILKS_VARS+=",
     \"MCD_CLIP_${token}_${ilk}\": \"$(seth --to-checksum-address "$(eval echo "\$MCD_CLIP_${token}_${ilk}")")\""
     ILKS_VARS+=",
     \"MCD_CLIP_CALC_${token}_${ilk}\": \"$(seth --to-checksum-address "$(eval echo "\$MCD_CLIP_CALC_${token}_${ilk}")")\""
+    fi
     done
 done
 

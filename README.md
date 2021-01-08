@@ -123,11 +123,23 @@ Below is the expected structure of such a config file:
           "autoLineTtl": "<Time between debt ceiling increments (for DssAutoLine IAM)>",
           "dust": "<Min amount of debt a CDP can hold in DAI unit>"
           "duty": "<Collateral component of stability fee in percentage per year (e.g. 2.5)>",
-          "chop": "<Liquidation penalty value in percentage (e.g. 12.5)>",
-          "dunk": "<Liquidation Quantity in DAI Unit>",
-          "beg": "<Minimum bid increase in percentage (e.g. 5.5)>",
-          "ttl": "<Max time between bids in seconds>",
-          "tau": "<Max auction duration in seconds>"
+          "flipDeploy": {
+            "chop": "<Liquidation penalty value in percentage (e.g. 12.5)>",
+            "dunk": "<Liquidation Quantity in DAI Unit>",
+            "beg": "<Minimum bid increase in percentage (e.g. 5.5)>",
+            "ttl": "<Max time between bids in seconds>",
+            "tau": "<Max auction duration in seconds>"
+          },
+          "clipDeploy": { // Will be used only if there isn't a flipDeploy
+           "chop": "<Liquidation penalty value in percentage (e.g. 12.5)>",
+            "buf": "<>",
+            "tail": "<>",
+            "cusp": "<>",
+            "calc": {
+              "type": "<>",
+              "tau":  "<>"
+            }
+          }
         }
       }
     }

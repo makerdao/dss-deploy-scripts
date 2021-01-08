@@ -41,34 +41,46 @@ for token in $tokens; do
         joinAddr=$(dappCreate dss-gem-joins "$joinSrc" "$MCD_VAT" "$ilkName" "$gemAddr" "${joinExtraParams[@]}")
         log "MCD_JOIN_${ilkEnvVar}=$(eval "echo ${joinAddr}")"
 
-        sethSend "$MCD_DEPLOY" "deployCollateralFlip(bytes32,address,address)" \
-            "$ilkName"                                                         \
-            "$joinAddr"                                                        \
-            "$(eval echo "\$PIP_${token}")"
+        flipDeploy="$(jq ".tokens.${token}.ilks.${ilk} | .flipDeploy!=null" "$CONFIG_FILE")"
 
-        calcType=$(jq -r ".tokens.{$token}.ilks.{$ilk}.calc.type | values" "$CONFIG_FILE")
-        calc=$(dappCreate dss-deploy-liq-2-0 "$calcType")
-        log "MCD_CLIP_CALC_${ilkEnvVar}=${calc}"
-        sethSend "$calc" 'rely(address)' "$MCD_PAUSE_PROXY"
-        sethSend "$calc" 'deny(address)' "$ETH_FROM"
+        if [[ "$flipDeploy" == true ]]; then
+            sethSend "$MCD_DEPLOY" "deployCollateralFlip(bytes32,address,address)" \
+                "$ilkName"                                                         \
+                "$joinAddr"                                                        \
+                "$(eval echo "\$PIP_${token}")"
+        else
+            calcType=$(jq -r ".tokens.${token}.ilks.${ilk}.clipDeploy.calc.type | values" "$CONFIG_FILE")
+            calc=$(dappCreate dss-deploy-liq-2-0 "$calcType")
+            log "MCD_CLIP_CALC_${ilkEnvVar}=${calc}"
+            sethSend "$calc" 'rely(address)' "$MCD_PAUSE_PROXY"
+            sethSend "$calc" 'deny(address)' "$ETH_FROM"
 
-        sethSend "$MCD_DEPLOY" "deployCollateralClip(bytes32,address,address,address)" \
-            "$(seth --to-bytes32 "$(seth --from-ascii "$ilk")")"                       \
-            "$(eval echo "\$MCD_JOIN_${ilkEnvVar}")"                                   \
-            "$(eval echo "\$PIP_${token}")"                                            \
-            "$(eval echo "\$MCD_CLIP_CALC_${ilkEnvVar}")"
+            sethSend "$MCD_DEPLOY" "deployCollateralClip(bytes32,address,address,address)" \
+                "$ilkName"                                                                 \
+                "$joinAddr"                                   \
+                "$(eval echo "\$PIP_${token}")"                                            \
+                "$calc"
+        fi
 
         while IFS=$'\n' read -r line; do data+=("$line"); done < <(seth call "$MCD_DEPLOY" "ilks(bytes32)(address,address,address)" "$ilkName")
-        log "MCD_FLIP_${ilkEnvVar}=${data[0]}"
-        log "MCD_CLIP_${ilkEnvVar}=${data[1]}"
 
         exports+="
         export ${token}=\"${gemAddr}\"
         export MCD_JOIN_${ilkEnvVar}=\"${joinAddr}\"
-        export MCD_FLIP_${ilkEnvVar}=\"${data[0]}\"
-        export MCD_CLIP_${ilkEnvVar}=\"${data[1]}\"
-        export MCD_CLIP_CALC_${ilkEnvVar}=\"${calc}\"
         "
+
+        if [[ "$flipDeploy" == true ]]; then
+            log "MCD_FLIP_${ilkEnvVar}=${data[0]}"
+            exports+="
+            export MCD_FLIP_${ilkEnvVar}=\"${data[0]}\"
+            "
+        else
+            log "MCD_CLIP_${ilkEnvVar}=${data[1]}"
+            exports+="
+            export MCD_CLIP_${ilkEnvVar}=\"${data[1]}\"
+            export MCD_CLIP_CALC_${ilkEnvVar}=\"${calc}\"
+            "
+        fi
     done
 done
 
