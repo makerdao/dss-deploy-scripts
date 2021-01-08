@@ -574,6 +574,32 @@
           "tau": "3600"
         }
       }
+    },
+    "UNIV2USDCETH": {
+      "import": {
+        "gem": "0x44892ab8F7aFfB7e1AdA4Fb956CCE2a2f3049619",
+        "pip": "0x627969F6fe0651a703B2d0e3a5758F9fF9B7547A"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "ilks": {
+        "A": {
+          "mat": "125",
+          "line": "10000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "500",
+          "duty": "1",
+          "chop": "13",
+          "dunk": "50000",
+          "beg": "3",
+          "ttl": "21600",
+          "tau": "21600"
+        }
+      }
     }
   }
 }
