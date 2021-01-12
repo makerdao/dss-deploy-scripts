@@ -23,25 +23,22 @@ CONFIG_FILE="$OUT_DIR/config.json"
 # Get addresses
 loadAddresses
 
-log "SET ILKS CHOP:"
+log "SET ILKS HOLE:"
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     for ilk in $ilks; do
-        setChop() {
-            chop=$(echo "($1+100)"*10^16 | bc -l)
-            chop=${chop%.*}
-
-            calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$2" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "chop")")" "$chop")"
-            sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
-        }
+        ilkBytes32="$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
 
         flipDeploy="$(jq ".tokens.${token}.ilks.${ilk} | .flipDeploy!=null" "$CONFIG_FILE")"
-        if [[ "$flipDeploy" == true ]]; then
-            setChop "$(jq -r ".tokens.${token}.ilks.${ilk} | .flipDeploy.chop" "$CONFIG_FILE")" "$MCD_CAT"
-        else
-            setChop "$(jq -r ".tokens.${token}.ilks.${ilk} | .clipDeploy.chop" "$CONFIG_FILE")" "$MCD_DOG"
+        if [[ "$flipDeploy" == false ]]; then
+            hole="$(jq -r ".tokens.${token}.ilks.${ilk} | .clipDeploy.hole" "$CONFIG_FILE")"
+            hole=$(echo "$hole"*10^45 | bc)
+            hole=${hole%.*}
+
+            calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_DOG" "$ilkBytes32" "$(seth --to-bytes32 "$(seth --from-ascii "hole")")" "$hole")"
+            sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
         fi
     done
 done

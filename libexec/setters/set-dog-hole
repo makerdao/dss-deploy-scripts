@@ -23,20 +23,12 @@ CONFIG_FILE="$OUT_DIR/config.json"
 # Get addresses
 loadAddresses
 
-log "SET ILKS BUF:"
+log "SET DOG HOLE:"
 
-tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
-for token in $tokens; do
-    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
-    for ilk in $ilks; do
-        flipDeploy="$(jq ".tokens.${token}.ilks.${ilk} | .flipDeploy!=null" "$CONFIG_FILE")"
-        if [[ "$flipDeploy" == false ]]; then
-            buf=$(jq -r ".tokens.${token}.ilks.${ilk} | .clipDeploy.buf" "$CONFIG_FILE")
-            buf=$(echo "($buf+100)"*10^25 | bc -l)
-            buf=${buf%.*}
-
-            calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$(eval echo "\$MCD_CLIP_${token}_${ilk}")" "$(seth --to-bytes32 "$(seth --from-ascii "buf")")" "$buf")"
-            sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
-        fi
-    done
-done
+Hole=$(jq -r ".dog_hole | values" "$CONFIG_FILE")
+if [[ "$Hole" != "" && "$Hole" != "0" ]]; then
+    Hole=$(echo "$Hole"*10^45 | bc)
+    Hole=$(seth --to-uint256 "${Hole%.*}")
+    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_DOG" "$(seth --to-bytes32 "$(seth --from-ascii "Hole")")" "$Hole")"
+    sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+fi

@@ -333,6 +333,8 @@ EOF
 
 "$LIBEXEC_DIR"/setters/set-cat-box
 
+"$LIBEXEC_DIR"/setters/set-dog-hole
+
 "$LIBEXEC_DIR"/setters/set-jug-base
 
 "$LIBEXEC_DIR"/setters/set-pot-dsr
@@ -376,6 +378,12 @@ EOF
 "$LIBEXEC_DIR"/setters/set-ilks-ttl
 
 "$LIBEXEC_DIR"/setters/set-ilks-tau
+
+"$LIBEXEC_DIR"/setters/set-ilks-hole
+
+"$LIBEXEC_DIR"/setters/set-ilks-chip
+
+"$LIBEXEC_DIR"/setters/set-ilks-tip
 
 "$LIBEXEC_DIR"/setters/set-ilks-buf
 

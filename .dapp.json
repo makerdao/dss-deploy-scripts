@@ -222,19 +222,19 @@
         "url": "https://github.com/makerdao/dss-deploy-pause-proxy-actions"
       }
     },
-    "dss-deploy_3bae372": {
+    "dss-deploy_faa96e7": {
       "deps": {
         "ds-auth": "ds-auth_434bf46",
         "ds-pause": "ds-pause_2db7e84",
         "ds-test": "ds-test_eb7148d",
-        "dss": "dss_4a155f4",
+        "dss": "dss_c9e4ec4",
         "esm": "esm_b168bb9"
       },
       "name": "dss-deploy",
       "repo": {
-        "name": "dss-deploy-3bae372",
-        "ref": "liq-2-0",
-        "rev": "3bae3722b4a817d240f1d303b70faa96cb717c52",
+        "name": "dss-deploy-faa96e7",
+        "ref": "liq-2.0",
+        "rev": "faa96e72ea0d57aed652ba14a6c77d319266cd7a",
         "url": "https://github.com/makerdao/dss-deploy"
       }
     },
@@ -297,7 +297,7 @@
         "url": "https://github.com/makerdao/dss"
       }
     },
-    "dss_4a155f4": {
+    "dss_c9e4ec4": {
       "deps": {
         "ds-test": "ds-test_eb7148d",
         "ds-token": "ds-token_ae74f6d",
@@ -305,9 +305,9 @@
       },
       "name": "dss",
       "repo": {
-        "name": "dss-4a155f4",
-        "ref": "liq-2-0",
-        "rev": "4a155f446ec636968248f1318ea7e0ac434f4cf4",
+        "name": "dss-c9e4ec4",
+        "ref": "liq-2.0",
+        "rev": "c9e4ec4835a51dc2e27720ea8136e9b1c3bcf2ac",
         "url": "https://github.com/makerdao/dss"
       }
     },
@@ -487,7 +487,7 @@
       "dsr-manager": "dsr-manager_363912d",
       "dss-auto-line": "dss-auto-line_fe92906",
       "dss-cdp-manager": "dss-cdp-manager_ef77eee",
-      "dss-deploy-liq-2-0": "dss-deploy_3bae372",
+      "dss-deploy-liq-2-0": "dss-deploy_faa96e7",
       "dss-deploy": "dss-deploy_cc14f7d",
       "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_0eb7ba0",
       "dss-gem-joins": "dss-gem-joins_c2ba746",

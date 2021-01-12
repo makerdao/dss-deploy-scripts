@@ -71,7 +71,8 @@ Below is the expected structure of such a config file:
   "vow_dump": "<Flop initial lot size in MKR unit>",
   "vow_bump": "<Flap fixed lot size in DAI unit>",
   "vow_hump": "<Flap Surplus buffer in DAI unit>",
-  "cat_box": "<Max total DAI needed to cover all debt plus penalty fees on active auctions in DAI unit>",
+  "cat_box": "<Max total DAI needed to cover all debt plus penalty fees on active Flip auctions in DAI unit>",
+  "dog_hole": "<Max total DAI needed to cover all debt plus penalty fees on active Clip auctions in DAI unit>",
   "jug_base": "<Base component of stability fee in percentage per year (e.g. 2.5)>",
   "pot_dsr": "<Dai Savings Rate in percentage per year (e.g. 2.5)>",
   "end_wait": "<Global Settlement cooldown period in seconds>",
@@ -131,13 +132,16 @@ Below is the expected structure of such a config file:
             "tau": "<Max auction duration in seconds>"
           },
           "clipDeploy": { // Will be used only if there isn't a flipDeploy
-           "chop": "<Liquidation penalty value in percentage (e.g. 12.5)>",
-            "buf": "<>",
-            "tail": "<>",
-            "cusp": "<>",
+            "chop": "<Liquidation penalty value in percentage (e.g. 12.5)>",
+            "hole": "<Max DAI needed to cover debt+fees of active auctions per ilk (e.g. 100,000 DAI)>",
+            "chip": "<Percentage of due to suck from vow to incentivize keepers (e.g. 2%)>",
+            "tip": "<Flat fee to suck from vow to incentivize keepers (e.g. 100 DAI)>",
+            "buf": "<Multiplicative factor to increase starting price (e.g. 25%)>",
+            "tail": "<Time elapsed before auction reset in seconds>",
+            "cusp": "<Percentage taken for the new price before auction reset (e.g. 30%)>",
             "calc": {
-              "type": "<>",
-              "tau":  "<>"
+              "type": "LinearDecrease",
+              "tau":  "<Time after auction start when the price reaches zero in seconds>"
             }
           }
         }
