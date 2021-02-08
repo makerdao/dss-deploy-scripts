@@ -39,10 +39,10 @@
       "ilks": {
         "A": {
           "mat": "150",
-          "line": "540000000",
-          "autoLine": "0",
-          "autoLineGap": "0",
-          "autoLineTtl": "0",
+          "line": "0",
+          "autoLine": "1500000000",
+          "autoLineGap": "30000000",
+          "autoLineTtl": "43200",
           "dust": "2000",
           "duty": "0",
           "chop": "13",
@@ -619,6 +619,58 @@
           "autoLineTtl": "0",
           "dust": "2000",
           "duty": "1",
+          "chop": "13",
+          "dunk": "50000",
+          "beg": "3",
+          "ttl": "21600",
+          "tau": "21600"
+        }
+      }
+    },
+    "UNIV2DAIUSDC": {
+      "import": {
+        "gem": "0xAE461cA67B15dc8dc81CE7615e0320dA1A9aB8D5",
+        "pip": "0x25CD858a00146961611b18441353603191f110A0"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "ilks": {
+        "A": {
+          "mat": "110",
+          "line": "3000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "2000",
+          "duty": "3",
+          "chop": "13",
+          "dunk": "50000",
+          "beg": "3",
+          "ttl": "21600",
+          "tau": "21600"
+        }
+      }
+    },
+    "UNIV2ETHUSDT": {
+      "import": {
+        "gem": "0x0d4a11d5EEaaC28EC3F61d100daF4d40471f1852",
+        "pip": "0x9b015AA3e4787dd0df8B43bF2FE6d90fa543E13B"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "ilks": {
+        "A": {
+          "mat": "140",
+          "line": "3000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "2000",
+          "duty": "4",
           "chop": "13",
           "dunk": "50000",
           "beg": "3",
