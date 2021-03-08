@@ -34,7 +34,7 @@ CLIP_FABtx=$(dappCreate dss-deploy-liq-2-0 ClipFab)
 SPOT_FABtx=$(dappCreate dss-deploy SpotFab)
 POT_FABtx=$(dappCreate dss-deploy PotFab)
 END_FABtx=$(dappCreate dss-deploy-liq-2-0 EndFab)
-ESM_FABtx=$(dappCreate dss-deploy ESMFab)
+ESM_FABtx=$(dappCreate dss-deploy-liq-2-0 ESMFab)
 PAUSE_FABtx=$(dappCreate dss-deploy PauseFab)
 
 export SETH_ASYNC=no
