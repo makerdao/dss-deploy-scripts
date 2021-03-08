@@ -39,11 +39,11 @@
       "ilks": {
         "A": {
           "mat": "150",
-          "line": "540000000",
-          "autoLine": "0",
-          "autoLineGap": "0",
-          "autoLineTtl": "0",
-          "dust": "500",
+          "line": "0",
+          "autoLine": "1500000000",
+          "autoLineGap": "30000000",
+          "autoLineTtl": "43200",
+          "dust": "2000",
           "duty": "0",
           "flipDeploy": {
             "chop": "13",
@@ -59,7 +59,7 @@
           "autoLine": "50000000",
           "autoLineGap": "5000000",
           "autoLineTtl": "43200",
-          "dust": "500",
+          "dust": "2000",
           "duty": "6",
           "flipDeploy": {
             "chop": "13",
@@ -87,7 +87,7 @@
           "autoLine": "0",
           "autoLineGap": "0",
           "autoLineTtl": "0",
-          "dust": "500",
+          "dust": "2000",
           "duty": "0",
           "flipDeploy": {
             "chop": "13",
@@ -115,7 +115,7 @@
           "autoLine": "0",
           "autoLineGap": "0",
           "autoLineTtl": "0",
-          "dust": "500",
+          "dust": "2000",
           "duty": "0",
           "flipDeploy": {
             "chop": "13",
@@ -131,7 +131,7 @@
           "autoLine": "0",
           "autoLineGap": "0",
           "autoLineTtl": "0",
-          "dust": "500",
+          "dust": "2000",
           "duty": "46",
           "flipDeploy": {
             "chop": "13",
@@ -159,7 +159,7 @@
           "autoLine": "0",
           "autoLineGap": "0",
           "autoLineTtl": "0",
-          "dust": "500",
+          "dust": "2000",
           "duty": "0",
           "flipDeploy": {
             "chop": "13",
@@ -187,7 +187,7 @@
           "autoLine": "0",
           "autoLineGap": "0",
           "autoLineTtl": "0",
-          "dust": "500",
+          "dust": "2000",
           "duty": "0",
           "flipDeploy": {
             "chop": "13",
@@ -215,7 +215,7 @@
           "autoLine": "0",
           "autoLineGap": "0",
           "autoLineTtl": "0",
-          "dust": "500",
+          "dust": "2000",
           "duty": "0",
           "flipDeploy": {
             "chop": "13",
@@ -243,7 +243,7 @@
           "autoLine": "0",
           "autoLineGap": "0",
           "autoLineTtl": "0",
-          "dust": "500",
+          "dust": "2000",
           "duty": "0",
           "flipDeploy": {
             "chop": "13",
@@ -271,7 +271,7 @@
           "autoLine": "0",
           "autoLineGap": "0",
           "autoLineTtl": "0",
-          "dust": "500",
+          "dust": "2000",
           "duty": "8",
           "flipDeploy": {
             "chop": "13",
@@ -299,7 +299,7 @@
           "autoLine": "0",
           "autoLineGap": "0",
           "autoLineTtl": "0",
-          "dust": "500",
+          "dust": "2000",
           "duty": "6",
           "flipDeploy": {
             "chop": "13",
@@ -327,7 +327,7 @@
           "autoLine": "0",
           "autoLineGap": "0",
           "autoLineTtl": "0",
-          "dust": "500",
+          "dust": "2000",
           "duty": "2",
           "flipDeploy": {
             "chop": "13",
@@ -355,7 +355,7 @@
           "autoLine": "0",
           "autoLineGap": "0",
           "autoLineTtl": "0",
-          "dust": "500",
+          "dust": "2000",
           "duty": "3",
           "flipDeploy": {
             "chop": "13",
@@ -383,7 +383,7 @@
           "autoLine": "0",
           "autoLineGap": "0",
           "autoLineTtl": "0",
-          "dust": "500",
+          "dust": "2000",
           "duty": "3",
           "flipDeploy": {
             "chop": "13",
@@ -411,7 +411,7 @@
           "autoLine": "0",
           "autoLineGap": "0",
           "autoLineTtl": "0",
-          "dust": "500",
+          "dust": "2000",
           "duty": "2",
           "flipDeploy": {
             "chop": "13",
@@ -439,7 +439,7 @@
           "autoLine": "0",
           "autoLineGap": "0",
           "autoLineTtl": "0",
-          "dust": "500",
+          "dust": "2000",
           "duty": "5",
           "flipDeploy": {
             "chop": "13",
@@ -467,7 +467,7 @@
           "autoLine": "0",
           "autoLineGap": "0",
           "autoLineTtl": "0",
-          "dust": "500",
+          "dust": "2000",
           "duty": "4",
           "flipDeploy": {
             "chop": "13",
@@ -495,7 +495,7 @@
           "autoLine": "0",
           "autoLineGap": "0",
           "autoLineTtl": "0",
-          "dust": "500",
+          "dust": "2000",
           "duty": "4",
           "flipDeploy": {
             "chop": "13",
@@ -523,7 +523,7 @@
           "autoLine": "0",
           "autoLineGap": "0",
           "autoLineTtl": "0",
-          "dust": "500",
+          "dust": "2000",
           "duty": "3",
           "flipDeploy": {
             "chop": "13",
@@ -551,7 +551,7 @@
           "autoLine": "0",
           "autoLineGap": "0",
           "autoLineTtl": "0",
-          "dust": "500",
+          "dust": "2000",
           "duty": "6",
           "flipDeploy": {
             "chop": "13",
@@ -579,7 +579,7 @@
           "autoLine": "0",
           "autoLineGap": "0",
           "autoLineTtl": "0",
-          "dust": "500",
+          "dust": "2000",
           "duty": "6",
           "flipDeploy": {
             "chop": "13",
@@ -607,7 +607,59 @@
           "autoLine": "0",
           "autoLineGap": "0",
           "autoLineTtl": "0",
-          "dust": "500",
+          "dust": "2000",
+          "duty": "1",
+          "chop": "13",
+          "dunk": "50000",
+          "beg": "3",
+          "ttl": "21600",
+          "tau": "21600"
+        }
+      }
+    },
+    "UNIV2WBTCETH": {
+      "import": {
+        "gem": "0xBb2b8038a1640196FbE3e38816F3e67Cba72D940",
+        "pip": "0x771338D5B31754b25D2eb03Cea676877562Dec26"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "ilks": {
+        "A": {
+          "mat": "150",
+          "line": "3000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "2000",
+          "duty": "1",
+          "chop": "13",
+          "dunk": "50000",
+          "beg": "3",
+          "ttl": "21600",
+          "tau": "21600"
+        }
+      }
+    },
+    "UNIV2USDCETH": {
+      "import": {
+        "gem": "0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc",
+        "pip": "0xECB03Fec701B93DC06d19B4639AA8b5a838472BE"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "ilks": {
+        "A": {
+          "mat": "125",
+          "line": "3000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "2000",
           "duty": "1",
           "flipDeploy": {
             "chop": "13",
@@ -616,6 +668,188 @@
             "ttl": "21600",
             "tau": "21600"
           }
+        }
+      }
+    },
+    "UNIV2DAIUSDC": {
+      "import": {
+        "gem": "0xAE461cA67B15dc8dc81CE7615e0320dA1A9aB8D5",
+        "pip": "0x25CD858a00146961611b18441353603191f110A0"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "ilks": {
+        "A": {
+          "mat": "110",
+          "line": "3000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "2000",
+          "duty": "3",
+          "chop": "13",
+          "dunk": "50000",
+          "beg": "3",
+          "ttl": "21600",
+          "tau": "21600"
+        }
+      }
+    },
+    "UNIV2ETHUSDT": {
+      "import": {
+        "gem": "0x0d4a11d5EEaaC28EC3F61d100daF4d40471f1852",
+        "pip": "0x9b015AA3e4787dd0df8B43bF2FE6d90fa543E13B"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "ilks": {
+        "A": {
+          "mat": "140",
+          "line": "3000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "2000",
+          "duty": "4",
+          "chop": "13",
+          "dunk": "50000",
+          "beg": "3",
+          "ttl": "21600",
+          "tau": "21600"
+        }
+      }
+    },
+    "UNIV2LINKETH": {
+      "import": {
+        "gem": "0xa2107FA5B38d9bbd2C461D6EDf11B11A50F6b974",
+        "pip": "0x628009F5F5029544AE84636Ef676D3Cc5755238b"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "ilks": {
+        "A": {
+          "mat": "165",
+          "line": "3000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "2000",
+          "duty": "4",
+          "chop": "13",
+          "dunk": "50000",
+          "beg": "3",
+          "ttl": "21600",
+          "tau": "21600"
+        }
+      }
+    },
+    "UNIV2UNIETH": {
+      "import": {
+        "gem": "0xd3d2E2692501A5c9Ca623199D38826e513033a17",
+        "pip": "0x8Ce9E9442F2791FC63CD6394cC12F2dE4fbc1D71"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "ilks": {
+        "A": {
+          "mat": "165",
+          "line": "3000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "2000",
+          "duty": "4",
+          "chop": "13",
+          "dunk": "50000",
+          "beg": "3",
+          "ttl": "21600",
+          "tau": "21600"
+        }
+      }
+    },
+    "UNIV2WBTCDAI": {
+      "import": {
+        "gem": "0x231B7589426Ffe1b75405526fC32aC09D44364c4",
+        "pip": "0x5FB5a346347ACf4FCD3AAb28f5eE518785FB0AD0"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "ilks": {
+        "A": {
+          "mat": "125",
+          "line": "3000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "2000",
+          "duty": "3",
+          "chop": "13",
+          "dunk": "50000",
+          "beg": "3",
+          "ttl": "21600",
+          "tau": "21600"
+        }
+      }
+    },
+    "UNIV2AAVEETH": {
+      "import": {
+        "gem": "0xDFC14d2Af169B0D36C4EFF567Ada9b2E0CAE044f",
+        "pip": "0x8D34DC2c33A6386E96cA562D8478Eaf82305b81a"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "ilks": {
+        "A": {
+          "mat": "165",
+          "line": "3000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "2000",
+          "duty": "4",
+          "chop": "13",
+          "dunk": "50000",
+          "beg": "3",
+          "ttl": "21600",
+          "tau": "21600"
+        }
+      }
+    },
+    "UNIV2DAIUSDT": {
+      "import": {
+        "gem": "0xB20bd5D04BE54f870D5C0d3cA85d82b34B836405",
+        "pip": "0x69562A7812830E6854Ffc50b992c2AA861D5C2d3"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "ilks": {
+        "A": {
+          "mat": "125",
+          "line": "3000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "2000",
+          "duty": "4",
+          "chop": "13",
+          "dunk": "50000",
+          "beg": "3",
+          "ttl": "21600",
+          "tau": "21600"
         }
       }
     }
