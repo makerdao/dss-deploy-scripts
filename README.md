@@ -140,8 +140,10 @@ Below is the expected structure of such a config file:
             "tail": "<Time elapsed before auction reset in seconds>",
             "cusp": "<Percentage taken for the new price before auction reset (e.g. 30%)>",
             "calc": {
-              "type": "LinearDecrease",
-              "tau":  "<Time after auction start when the price reaches zero in seconds>"
+              "type": "LinearDecrease/StairstepExponentialDecrease/ExponentialDecrease", // NOTE: ExponentialDecrease is still not available in the current dependencies (will be upgraded soon)
+              "tau":  "<Time after auction start when the price reaches zero in seconds (LinearDecrease)>",
+              "step": "<Length of time between price drops in seconds (StairstepExponentialDecrease)>",
+              "cut":  "<Percentage to decrease per step (e.g. 1) (StairstepExponentialDecrease/ExponentialDecrease)>"
             }
           }
         }

@@ -44,6 +44,16 @@ for token in $tokens; do
                 tau=$(jq -r ".tokens.${token}.ilks.${ilk} | .clipDeploy.calc.tau" "$CONFIG_FILE")
                 setUint256Param "tau" "${tau}"
             fi
+            if [[ "$type" == "StairstepExponentialDecrease" || "$type" == "ExponentialDecrease" ]]; then
+                cut=$(jq -r ".tokens.${token}.ilks.${ilk} | .clipDeploy.calc.cut" "$CONFIG_FILE")
+                cut=$(echo "(1 - $cut/100) * 10^27" | bc -l)
+                cut=${cut%.*}
+                setUint256Param "cut" "${cut}"
+            fi
+            if [[ "$type" == "StairstepExponentialDecrease" ]]; then
+                step=$(jq -r ".tokens.${token}.ilks.${ilk} | .clipDeploy.calc.step" "$CONFIG_FILE")
+                setUint256Param "step" "${step}"
+            fi
         fi
     done
 done

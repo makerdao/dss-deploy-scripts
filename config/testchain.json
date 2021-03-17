@@ -95,12 +95,19 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "10",
-          "flipDeploy": {
+          "clipDeploy": {
             "chop": "5",
-            "dunk": "500",
-            "beg": "1",
-            "ttl": "3600",
-            "tau": "3600"
+            "hole": "1000",
+            "chip": "2",
+            "tip": "100",
+            "buf": "50",
+            "tail": "10800",
+            "cusp": "33.33",
+            "calc": {
+              "type": "StairstepExponentialDecrease",
+              "step": "10",
+              "cut":  "1"
+            }
           }
         }
       }
