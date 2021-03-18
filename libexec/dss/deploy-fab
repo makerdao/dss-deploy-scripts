@@ -80,7 +80,7 @@ log "SPOT_FAB=$SPOT_FAB"
 log "POT_FAB=$POT_FAB"
 log "END_FAB=$END_FAB"
 log "ESM_FAB=$ESM_FAB"
-log "PAUSE_FAB=$VAT_FAB"
+log "PAUSE_FAB=$PAUSE_FAB"
 
 cat > "$OUT_DIR/load-fabs-addr-temp" <<EOF
 #!/bin/bash
