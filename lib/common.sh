@@ -158,7 +158,7 @@ toLower() {
 # set -x
 
 # Set exported variables
-export ETH_GAS=12000000
+export ETH_GAS=7000000
 unset SOLC_FLAGS
 
 export OUT_DIR=${OUT_DIR:-$PWD/out}

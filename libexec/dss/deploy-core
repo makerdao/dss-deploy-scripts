@@ -26,7 +26,7 @@ then
 fi
 
 # Create deploy contract
-MCD_DEPLOY=$(dappCreate dss-deploy-liq-2-0 DssDeploy)
+MCD_DEPLOY=$(dappCreate dss-deploy-liq-2-0-1-run DssDeploy)
 log "MCD_DEPLOY=$MCD_DEPLOY"
 
 sethSend "$MCD_DEPLOY" "addFabs1(address,address,address,address,address,address,address)" "$VAT_FAB" "$JUG_FAB" "$VOW_FAB" "$CAT_FAB" "$DOG_FAB" "$DAI_FAB" "$MCD_JOIN_FAB"
