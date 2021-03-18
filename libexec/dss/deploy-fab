@@ -27,19 +27,6 @@ CAT_FABtx=$(dappCreate dss-deploy CatFab)
 DAI_FABtx=$(dappCreate dss-deploy DaiFab)
 MCD_JOIN_FABtx=$(dappCreate dss-deploy DaiJoinFab)
 FLAP_FABtx=$(dappCreate dss-deploy FlapFab)
-
-export SETH_ASYNC=no
-
-test "$(seth receipt "$VAT_FABtx" status)" -eq 0 && exit 1
-test "$(seth receipt "$JUG_FABtx" status)" -eq 0 && exit 1
-test "$(seth receipt "$VOW_FABtx" status)" -eq 0 && exit 1
-test "$(seth receipt "$CAT_FABtx" status)" -eq 0 && exit 1
-test "$(seth receipt "$DAI_FABtx" status)" -eq 0 && exit 1
-test "$(seth receipt "$MCD_JOIN_FABtx" status)" -eq 0 && exit 1
-test "$(seth receipt "$FLAP_FABtx" status)" -eq 0 && exit 1
-
-export SETH_ASYNC=yes
-
 FLOP_FABtx=$(dappCreate dss-deploy FlopFab)
 FLIP_FABtx=$(dappCreate dss-deploy FlipFab)
 SPOT_FABtx=$(dappCreate dss-deploy SpotFab)
@@ -50,6 +37,13 @@ PAUSE_FABtx=$(dappCreate dss-deploy PauseFab)
 
 export SETH_ASYNC=no
 
+test "$(seth receipt "$VAT_FABtx" status)" -eq 0 && exit 1
+test "$(seth receipt "$JUG_FABtx" status)" -eq 0 && exit 1
+test "$(seth receipt "$VOW_FABtx" status)" -eq 0 && exit 1
+test "$(seth receipt "$CAT_FABtx" status)" -eq 0 && exit 1
+test "$(seth receipt "$DAI_FABtx" status)" -eq 0 && exit 1
+test "$(seth receipt "$MCD_JOIN_FABtx" status)" -eq 0 && exit 1
+test "$(seth receipt "$FLAP_FABtx" status)" -eq 0 && exit 1
 test "$(seth receipt "$FLOP_FABtx" status)" -eq 0 && exit 1
 test "$(seth receipt "$FLIP_FABtx" status)" -eq 0 && exit 1
 test "$(seth receipt "$SPOT_FABtx" status)" -eq 0 && exit 1
