@@ -46,7 +46,7 @@ let
     dss-proxy-actions = deps'.dss-proxy-actions         // { name = "dss-proxy-actions-optimized"; solcFlags = "--optimize"; };
     dss-deploy-optimized = deps'.dss-deploy             // { name = "dss-deploy-optimized";        solcFlags = "--optimize"; };
     dss-deploy-liq-2-0 = deps'.dss-deploy-liq-2-0       // { name = "dss-deploy-liq-2-0";          solcFlags = "--optimize --optimize-runs 1000000"; solc = solc-static-versions.solc_0_6_12; };
-    dss-deploy-liq-2-0 = deps'.dss-deploy-liq-2-0-1-run // { name = "dss-deploy-liq-2-0";          solcFlags = "--optimize --optimize-runs 1"; solc = solc-static-versions.solc_0_6_12; };
+    dss-deploy-liq-2-0-1-run = deps'.dss-deploy-liq-2-0 // { name = "dss-deploy-liq-2-0";          solcFlags = "--optimize --optimize-runs 1"; solc = solc-static-versions.solc_0_6_12; };
   });
 
 in makerScriptPackage {
