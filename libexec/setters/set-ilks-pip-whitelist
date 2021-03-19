@@ -38,5 +38,12 @@ for token in $tokens; do
         # Whitelist Spotter in PIP (OSM or Median)
         sethSend "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$MCD_SPOT"
         sethSend "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$MCD_END"
+        ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+        for ilk in $ilks; do
+            flipDeploy="$(jq ".tokens.${token}.ilks.${ilk} | .flipDeploy!=null" "$CONFIG_FILE")"
+            if [[ "$flipDeploy" == false ]]; then
+                sethSend "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$(eval echo "\$MCD_CLIP_${token}_${ilk}")"
+            fi
+        done
     fi
 done
