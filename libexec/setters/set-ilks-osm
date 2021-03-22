@@ -33,6 +33,7 @@ for token in $tokens; do
         if [[ "$osmDelay" -gt 0 ]]; then
             # Deploy OSM
             osm=$(dappCreate osm OSM "$(eval echo "\$VAL_${token}")")
+            eval "export PIP_${token}=${osm}"
             log "PIP_${token}=$osm"
             # Set OSM delay
             sethSend "$osm" 'step(uint16)' "$osmDelay"
@@ -61,7 +62,7 @@ done
 for token in $tokens; do
 addAddresses <<EOF
 {
-    "PIP_${token}": "$osm"
+    "PIP_${token}": "$(eval echo "\$PIP_${token}")"
 }
 EOF
 done
