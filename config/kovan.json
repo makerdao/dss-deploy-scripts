@@ -45,7 +45,7 @@
           "autoLineGap": "0",
           "autoLineTtl": "0",
           "dust": "100",
-          "duty": "0",
+          "duty": "5",
           "flipDeploy": {
             "chop": "13",
             "dunk": "500",
@@ -62,6 +62,22 @@
           "autoLineTtl": "43200",
           "dust": "100",
           "duty": "6",
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "3",
+            "ttl": "3600",
+            "tau": "3600"
+          }
+        },
+        "C": {
+          "mat": "175",
+          "line": "0",
+          "autoLine": "5000000",
+          "autoLineGap": "200000",
+          "autoLineTtl": "43200",
+          "dust": "100",
+          "duty": "3",
           "flipDeploy": {
             "chop": "13",
             "dunk": "500",
