@@ -12,7 +12,6 @@
   "jug_base": "0",
   "pot_dsr": "0",
   "end_wait": "262800",
-  "esm_pit": "0x69076e44a9C70a67D5b79d95795Aba299083c275",
   "esm_min": "50000",
   "flap_beg": "2",
   "flap_ttl": "1800",

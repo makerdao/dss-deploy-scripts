@@ -43,6 +43,7 @@ for token in $tokens; do
             flipDeploy="$(jq ".tokens.${token}.ilks.${ilk} | .flipDeploy!=null" "$CONFIG_FILE")"
             if [[ "$flipDeploy" == false ]]; then
                 sethSend "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$(eval echo "\$MCD_CLIP_${token}_${ilk}")"
+                sethSend "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$CLIPPER_MOM"
             fi
         done
     fi

@@ -66,19 +66,16 @@ addAddresses() {
 
 copyAbis() {
     local lib; lib=$1
-    mkdir -p "$OUT_DIR/abi"
+    local DIR; DIR="$OUT_DIR/abi/$lib"
+    mkdir -p "$DIR"
     find "$DAPP_LIB/$lib/out" \
         -name "*.abi" ! -name "*Test.abi" ! -name "*Like.abi" ! -name "*DSNote.abi" ! -name "*FakeUser.abi" ! -name "*Hevm.abi" \
-        -exec cp -f {} "$OUT_DIR/abi" \;
+        -exec cp -f {} "$DIR" \;
 }
 
 copyBins() {
     local lib; lib=$1
-    local DIR; DIR="$OUT_DIR/bin"
-    if [[ $(isOptimized "$1") == "optimized" ]]; then
-        DIR="$DIR/optimized"
-    fi
-
+    local DIR; DIR="$OUT_DIR/bin/$lib"
     mkdir -p "$DIR"
     find "$DAPP_LIB/$lib/out" \
         -name "*.bin" ! -name "*Test.bin" ! -name "*Like.bin" ! -name "*DSNote.bin" ! -name "*FakeUser.bin" ! -name "*Hevm.bin" \
@@ -90,11 +87,7 @@ copyBins() {
 
 copyMeta() {
     local lib; lib=$1
-    local DIR; DIR="$OUT_DIR/meta"
-    if [[ $(isOptimized "$1") == "optimized" ]]; then
-        DIR="$DIR/optimized"
-    fi
-
+    local DIR; DIR="$OUT_DIR/meta/$lib"
     mkdir -p "$DIR"
     find "$DAPP_LIB/$lib/out" \
         -name "*.metadata" ! -name "*Test.metadata" ! -name "*Like.metadata" ! -name "*DSNote.metadata" ! -name "*FakeUser.metadata" ! -name "*Hevm.metadata"  \
@@ -106,12 +99,6 @@ copy() {
     copyAbis "$lib"
     copyBins "$lib"
     copyMeta "$lib"
-}
-
-isOptimized() {
-    local val; val=$1
-    local i; i=$((${#val}-1))
-    echo "${val:$i-8:10}"
 }
 
 dappCreate() {

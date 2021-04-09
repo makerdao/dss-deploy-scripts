@@ -26,7 +26,7 @@ then
 fi
 
 # Create deploy contract
-MCD_DEPLOY=$(dappCreate dss-deploy-liq-2-0-runs-1 DssDeploy)
+MCD_DEPLOY=$(dappCreate dss-deploy-optimized-runs-1 DssDeploy)
 log "MCD_DEPLOY=$MCD_DEPLOY"
 
 sethSend "$MCD_DEPLOY" "addFabs1(address,address,address,address,address,address,address)" "$VAT_FAB" "$JUG_FAB" "$VOW_FAB" "$CAT_FAB" "$DOG_FAB" "$DAI_FAB" "$MCD_JOIN_FAB"
@@ -56,13 +56,15 @@ sethSend "$MCD_DEPLOY" "deployAuctions(address)" "$MCD_GOV"
 sethSend "$MCD_DEPLOY" "deployLiquidator()"
 
 # Deploy End
-MCD_ESM_PIT=${MCD_ESM_PIT:-"0x0000000000000000000000000000000000000000"}
-MCD_ESM_MIN=${MCD_ESM_MIN:-"$(seth --to-uint256 "$(seth --to-wei 50000 "eth")")"}
-sethSend "$MCD_DEPLOY" "deployShutdown(address,address,uint256)" "$MCD_GOV" "$MCD_ESM_PIT" "$MCD_ESM_MIN"
+sethSend "$MCD_DEPLOY" "deployEnd()"
 
 # Deploy pause
 MCD_PAUSE_DELAY=${MCD_PAUSE_DELAY:-"3600"}
 sethSend "$MCD_DEPLOY" "deployPause(uint256,address)" "$(seth --to-uint256 "$MCD_PAUSE_DELAY")" "$MCD_ADM"
+
+# Deploy ESM
+MCD_ESM_MIN=${MCD_ESM_MIN:-"$(seth --to-uint256 "$(seth --to-wei 50000 "eth")")"}
+sethSend "$MCD_DEPLOY" "deployShutdown(address,uint256)" "$MCD_GOV" "$MCD_ESM_MIN"
 
 cat > "$OUT_DIR/load-core-addr-temp" << EOF
 #!/bin/bash
@@ -80,7 +82,8 @@ export MCD_FLOP=$(seth call "$MCD_DEPLOY" "flop()(address)")
 export MCD_SPOT=$(seth call "$MCD_DEPLOY" "spotter()(address)")
 export MCD_POT=$(seth call "$MCD_DEPLOY" "pot()(address)")
 export MCD_END=$(seth call "$MCD_DEPLOY" "end()(address)")
-export MCD_ESM=$(seth call "$MCD_DEPLOY" "esm()(address)")
+export MCD_ESM_BUG=$(seth call "$MCD_DEPLOY" "esmBug()(address)")
+export MCD_ESM_ATTACK=$(seth call "$MCD_DEPLOY" "esmAttack()(address)")
 export MCD_PAUSE=$(seth call "$MCD_DEPLOY" "pause()(address)")
 export MCD_PAUSE_PROXY=$(seth call "$(seth call "$MCD_DEPLOY" "pause()(address)")" "proxy()(address)")
 export MCD_DAI=$(seth call "$MCD_DEPLOY" "dai()(address)")

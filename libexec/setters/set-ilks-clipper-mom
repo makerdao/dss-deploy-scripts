@@ -23,19 +23,19 @@ CONFIG_FILE="$OUT_DIR/config.json"
 # Get addresses
 loadAddresses
 
-log "SET ILKS FLIPPER-MOM:"
+log "SET ILKS CLIPPER-MOM:"
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     for ilk in $ilks; do
         flipDeploy="$(jq ".tokens.${token}.ilks.${ilk} | .flipDeploy!=null" "$CONFIG_FILE")"
-        if [[ "$flipDeploy" == true ]]; then
-            calldata="$(seth calldata 'rely(address,address,address,address)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$(eval echo "\$MCD_FLIP_${token}_${ilk}")" "$FLIPPER_MOM")"
+        if [[ "$flipDeploy" == false ]]; then
+            calldata="$(seth calldata 'rely(address,address,address,address)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$(eval echo "\$MCD_CLIP_${token}_${ilk}")" "$CLIPPER_MOM")"
             sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
         fi
     done
 done
 
-sethSend "$FLIPPER_MOM" 'setAuthority(address)' "$MCD_ADM"
-sethSend "$FLIPPER_MOM" 'setOwner(address)' "$MCD_PAUSE_PROXY"
+sethSend "$CLIPPER_MOM" 'setAuthority(address)' "$MCD_ADM"
+sethSend "$CLIPPER_MOM" 'setOwner(address)' "$MCD_PAUSE_PROXY"
