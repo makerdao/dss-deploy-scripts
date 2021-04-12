@@ -36,7 +36,7 @@ for token in $tokens; do
         sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
         flipDeploy="$(jq ".tokens.${token}.ilks.${ilk} | .flipDeploy!=null" "$CONFIG_FILE")"
         if [[ "$flipDeploy" == false ]]; then
-            sethSend "$(eval echo "\$MCD_CLIP_${token}_${ilk}")" 'updust()'
+            sethSend "$(eval echo "\$MCD_CLIP_${token}_${ilk}")" 'upchost()'
         fi
     done
 done

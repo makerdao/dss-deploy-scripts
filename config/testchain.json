@@ -155,6 +155,946 @@
           }
         }
       }
+    },
+    "OMG": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/OMG",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin2",
+        "extraParams": []
+      },
+      "pipDeploy": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "30",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0x18753d13f14b80eb3d8ea96d4367957bb588d410",
+          "0x5874f6a09271cdb4e1a13ef3d402df6912863244",
+          "0x62ccadc1187593d0553398fabfa7ba41eb435ad2"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "180",
+          "line": "1000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "11.5",
+          "flipDeploy": {
+            "chop": "8",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
+        }
+      }
+    },
+    "BAT": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/BAT",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "pipDeploy": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "40",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0x18753d13f14b80eb3d8ea96d4367957bb588d410",
+          "0x5874f6a09271cdb4e1a13ef3d402df6912863244",
+          "0x62ccadc1187593d0553398fabfa7ba41eb435ad2"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "200",
+          "line": "1000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "10.5",
+          "flipDeploy": {
+            "chop": "8",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
+        }
+      }
+    },
+    "DGD": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/DGD",
+        "params": ["1000000000000000"],
+        "faucetSupply": "990000000000000",
+        "faucetAmount": "50000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin3",
+        "extraParams": ["9"]
+      },
+      "pipDeploy": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "50",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0x18753d13f14b80eb3d8ea96d4367957bb588d410",
+          "0x5874f6a09271cdb4e1a13ef3d402df6912863244",
+          "0x62ccadc1187593d0553398fabfa7ba41eb435ad2"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "190",
+          "line": "1000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "9",
+          "flipDeploy": {
+            "chop": "8",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
+        }
+      }
+    },
+    "GNT": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/GNT",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin4",
+        "extraParams": []
+      },
+      "pipDeploy": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "50",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0x18753d13f14b80eb3d8ea96d4367957bb588d410",
+          "0x5874f6a09271cdb4e1a13ef3d402df6912863244",
+          "0x62ccadc1187593d0553398fabfa7ba41eb435ad2"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "180",
+          "line": "1000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "9",
+          "flipDeploy": {
+            "chop": "5",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
+        }
+      }
+    },
+    "USDC": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/USDC",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin5",
+        "extraParams": []
+      },
+      "pipDeploy": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "1",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0x18753d13f14b80eb3d8ea96d4367957bb588d410",
+          "0x5874f6a09271cdb4e1a13ef3d402df6912863244",
+          "0x62ccadc1187593d0553398fabfa7ba41eb435ad2"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "125",
+          "line": "1000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "20",
+          "flipDeploy": {
+            "chop": "8",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
+        },
+        "B": {
+          "mat": "125",
+          "line": "1000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "20",
+          "flipDeploy": {
+            "chop": "8",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
+        }
+      }
+    },
+    "TUSD": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/TUSD",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin6",
+        "extraParams": []
+      },
+      "pipDeploy": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "1",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0x18753d13f14b80eb3d8ea96d4367957bb588d410",
+          "0x5874f6a09271cdb4e1a13ef3d402df6912863244",
+          "0x62ccadc1187593d0553398fabfa7ba41eb435ad2"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "125",
+          "line": "1000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "20",
+          "flipDeploy": {
+            "chop": "8",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
+        }
+      }
+    },
+    "WBTC": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/WBTC",
+        "params": ["100000000000000"],
+        "faucetSupply": "99000000000000",
+        "faucetAmount": "100000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin5",
+        "extraParams": []
+      },
+      "pipDeploy": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "19000",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0x18753d13f14b80eb3d8ea96d4367957bb588d410",
+          "0x5874f6a09271cdb4e1a13ef3d402df6912863244",
+          "0x62ccadc1187593d0553398fabfa7ba41eb435ad2"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "150",
+          "line": "1000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "20",
+          "flipDeploy": {
+            "chop": "8",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
+        }
+      }
+    },
+    "ZRX": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/ZRX",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "pipDeploy": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "25",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0x18753d13f14b80eb3d8ea96d4367957bb588d410",
+          "0x5874f6a09271cdb4e1a13ef3d402df6912863244",
+          "0x62ccadc1187593d0553398fabfa7ba41eb435ad2"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "190",
+          "line": "1000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "9.5",
+          "flipDeploy": {
+            "chop": "8",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
+        }
+      }
+    },
+    "KNC": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/KNC",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "pipDeploy": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "1.21",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0x18753d13f14b80eb3d8ea96d4367957bb588d410",
+          "0x5874f6a09271cdb4e1a13ef3d402df6912863244",
+          "0x62ccadc1187593d0553398fabfa7ba41eb435ad2"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "150",
+          "line": "1000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "20",
+          "flipDeploy": {
+            "chop": "8",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
+        }
+      }
+    },
+    "MANA": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/MANA",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "pipDeploy": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "0.04",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0x18753d13f14b80eb3d8ea96d4367957bb588d410",
+          "0x5874f6a09271cdb4e1a13ef3d402df6912863244",
+          "0x62ccadc1187593d0553398fabfa7ba41eb435ad2"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "175",
+          "line": "1000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "12",
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
+        }
+      }
+    },
+    "USDT": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/USDT",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin7",
+        "extraParams": []
+      },
+      "pipDeploy": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "1",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0x18753d13f14b80eb3d8ea96d4367957bb588d410",
+          "0x5874f6a09271cdb4e1a13ef3d402df6912863244",
+          "0x62ccadc1187593d0553398fabfa7ba41eb435ad2"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "150",
+          "line": "1000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "6",
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
+        }
+      }
+    },
+    "PAXUSD": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/PAXUSD",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "pipDeploy": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "1",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0x18753d13f14b80eb3d8ea96d4367957bb588d410",
+          "0x5874f6a09271cdb4e1a13ef3d402df6912863244",
+          "0x62ccadc1187593d0553398fabfa7ba41eb435ad2"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "120",
+          "line": "1000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "2",
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
+        }
+      }
+    },
+    "COMP": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/COMP",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "pipDeploy": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "140",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0x18753d13f14b80eb3d8ea96d4367957bb588d410",
+          "0x5874f6a09271cdb4e1a13ef3d402df6912863244",
+          "0x62ccadc1187593d0553398fabfa7ba41eb435ad2"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "175",
+          "line": "1000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "1",
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
+        }
+      }
+    },
+    "LRC": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/LRC",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "pipDeploy": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "0.22",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0x18753d13f14b80eb3d8ea96d4367957bb588d410",
+          "0x5874f6a09271cdb4e1a13ef3d402df6912863244",
+          "0x62ccadc1187593d0553398fabfa7ba41eb435ad2"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "175",
+          "line": "1000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "3",
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
+        }
+      }
+    },
+    "LINK": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/LINK",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "pipDeploy": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "9",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0x18753d13f14b80eb3d8ea96d4367957bb588d410",
+          "0x5874f6a09271cdb4e1a13ef3d402df6912863244",
+          "0x62ccadc1187593d0553398fabfa7ba41eb435ad2"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "175",
+          "line": "1000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "3",
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
+        }
+      }
+    },
+    "BAL": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/BAL",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "pipDeploy": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "40",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0x18753d13f14b80eb3d8ea96d4367957bb588d410",
+          "0x5874f6a09271cdb4e1a13ef3d402df6912863244",
+          "0x62ccadc1187593d0553398fabfa7ba41eb435ad2"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "175",
+          "line": "1000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "5.0",
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
+        }
+      }
+    },
+    "YFI": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/YFI",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "pipDeploy": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "13000",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0x18753d13f14b80eb3d8ea96d4367957bb588d410",
+          "0x5874f6a09271cdb4e1a13ef3d402df6912863244",
+          "0x62ccadc1187593d0553398fabfa7ba41eb435ad2"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "175",
+          "line": "1000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "4",
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
+        }
+      }
+    },
+    "GUSD": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/GUSD",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin8",
+        "extraParams": []
+      },
+      "pipDeploy": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "1",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0x18753d13f14b80eb3d8ea96d4367957bb588d410",
+          "0x5874f6a09271cdb4e1a13ef3d402df6912863244",
+          "0x62ccadc1187593d0553398fabfa7ba41eb435ad2"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "101",
+          "line": "1000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "4",
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
+        }
+      }
+    },
+    "UNI": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/UNI",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "pipDeploy": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "3",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0x18753d13f14b80eb3d8ea96d4367957bb588d410",
+          "0x5874f6a09271cdb4e1a13ef3d402df6912863244",
+          "0x62ccadc1187593d0553398fabfa7ba41eb435ad2"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "175",
+          "line": "1000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "3",
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
+        }
+      }
+    },
+    "RENBTC": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/RENBTC",
+        "params": ["100000000000000"],
+        "faucetSupply": "99000000000000",
+        "faucetAmount": "100000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin5",
+        "extraParams": []
+      },
+      "pipDeploy": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "19000",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0x18753d13f14b80eb3d8ea96d4367957bb588d410",
+          "0x5874f6a09271cdb4e1a13ef3d402df6912863244",
+          "0x62ccadc1187593d0553398fabfa7ba41eb435ad2"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "175",
+          "line": "1000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "6",
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
+        }
+      }
+    },
+    "AAVE": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/AAVE",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "990000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "pipDeploy": {
+        "osmDelay": "0",
+        "type": "value",
+        "price": "100",
+        "signers": [
+          "0x005B903dAdfD96229CBa5EB0e5Aa75C578e8F968",
+          "0x25310bC78B9347F97DC664b46E5D4602a6De5f2C",
+          "0x74B12Eeb596831796Beb1B36FC96DCCa815523B8",
+          "0xe709290634dE56a55d9826d35A9e677Fea5422EC",
+          "0x18753d13f14b80eb3d8ea96d4367957bb588d410",
+          "0x5874f6a09271cdb4e1a13ef3d402df6912863244",
+          "0x62ccadc1187593d0553398fabfa7ba41eb435ad2"
+        ]
+      },
+      "ilks": {
+        "A": {
+          "mat": "175",
+          "line": "1000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "6",
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
+        }
+      }
     }
   }
 }
