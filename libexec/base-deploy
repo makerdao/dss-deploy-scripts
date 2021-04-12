@@ -162,7 +162,7 @@ CLIPPER_MOM=$(dappCreate clipper-mom-optimized ClipperMom "$MCD_SPOT")
 log "CLIPPER_MOM=$CLIPPER_MOM"
 
 # Deploy IlkRegistry
-ILK_REGISTRY=$(dappCreate ilk-registry-optimized IlkRegistry "$MCD_VAT" "$MCD_CAT" "$MCD_SPOT")
+ILK_REGISTRY=$(dappCreate ilk-registry-optimized IlkRegistry "$MCD_VAT" "$MCD_DOG" "$MCD_CAT" "$MCD_SPOT")
 log "ILK_REGISTRY=$ILK_REGISTRY"
 
 # TODO: Reactivate it when the ilk registry can handle collaterals with liq-2.0 
