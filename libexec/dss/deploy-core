@@ -64,7 +64,7 @@ sethSend "$MCD_DEPLOY" "deployPause(uint256,address)" "$(seth --to-uint256 "$MCD
 
 # Deploy ESM
 MCD_ESM_MIN=${MCD_ESM_MIN:-"$(seth --to-uint256 "$(seth --to-wei 50000 "eth")")"}
-sethSend "$MCD_DEPLOY" "deployShutdown(address,uint256)" "$MCD_GOV" "$MCD_ESM_MIN"
+sethSend "$MCD_DEPLOY" "deployESM(address,uint256)" "$MCD_GOV" "$MCD_ESM_MIN"
 
 cat > "$OUT_DIR/load-core-addr-temp" << EOF
 #!/bin/bash
