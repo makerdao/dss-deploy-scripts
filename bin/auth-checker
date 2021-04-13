@@ -279,7 +279,7 @@ for token in $tokens; do
             flipDeploy="$(jq ".tokens.${token}.ilks.${ilk} | .flipDeploy!=null" "$CONFIG_FILE")"
             if [[ "$flipDeploy" == false ]]; then
                 checkWhitelist "PIP_${token}" "MCD_CLIP_${token}_${ilk}"
-                checkWhitelist "PIP_${token}" "MCD_CLIPPER_MOM"
+                checkWhitelist "PIP_${token}" "CLIPPER_MOM"
             fi
         fi
     done
