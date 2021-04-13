@@ -62,9 +62,8 @@ FAUCET=$(jq -r ".import.faucet | values" "$CONFIG_FILE")
 if [[ -z "$FAUCET" ]]; then
     FAUCET=$(dappCreate token-faucet RestrictedTokenFaucet)
     log "FAUCET=$FAUCET"
-    if [[ "$DEPLOY_RESTRICTED_FAUCET" == "no" ]]; then
-        sethSend "$FAUCET" 'hope(address)' "0x0000000000000000000000000000000000000000"
-    fi
+    # Allow everyone to use the faucet
+    sethSend "$FAUCET" 'hope(address)' "0x0000000000000000000000000000000000000000"
 fi
 
 # Deploy ProxyRegistry
