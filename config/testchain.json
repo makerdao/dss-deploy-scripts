@@ -106,7 +106,7 @@
             "calc": {
               "type": "StairstepExponentialDecrease",
               "step": "10",
-              "cut":  "1"
+              "cut":  "99"
             }
           }
         }

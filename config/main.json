@@ -8,7 +8,7 @@
   "vow_bump": "10000",
   "vow_hump": "500000",
   "cat_box": "10000000",
-  "dog_hole": "10000000",
+  "dog_hole": "100000000",
   "jug_base": "0",
   "pot_dsr": "0",
   "end_wait": "262800",
@@ -429,12 +429,19 @@
           "autoLineTtl": "0",
           "dust": "2000",
           "duty": "2",
-          "flipDeploy": {
+          "clipDeploy": {
             "chop": "13",
-            "dunk": "50000",
-            "beg": "3",
-            "ttl": "14400",
-            "tau": "14400"
+            "hole": "6000000",
+            "chip": "0.1",
+            "tip": "0",
+            "buf": "30",
+            "tail": "8400",
+            "cusp": "40",
+            "calc": {
+              "type": "StairstepExponentialDecrease",
+              "step": "90",
+              "cut":  "99"
+            }
           }
         }
       }

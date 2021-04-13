@@ -46,7 +46,7 @@ for token in $tokens; do
             fi
             if [[ "$type" == "StairstepExponentialDecrease" || "$type" == "ExponentialDecrease" ]]; then
                 cut=$(jq -r ".tokens.${token}.ilks.${ilk} | .clipDeploy.calc.cut" "$CONFIG_FILE")
-                cut=$(echo "(1 - $cut/100) * 10^27" | bc -l)
+                cut=$(echo "($cut/100) * 10^27" | bc -l)
                 cut=${cut%.*}
                 setUint256Param "cut" "${cut}"
             fi

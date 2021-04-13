@@ -143,7 +143,7 @@ Below is the expected structure of such a config file:
               "type": "LinearDecrease/StairstepExponentialDecrease/ExponentialDecrease",
               "tau":  "<Time after auction start when the price reaches zero in seconds (LinearDecrease)>",
               "step": "<Length of time between price drops in seconds (StairstepExponentialDecrease)>",
-              "cut":  "<Percentage to decrease per step (e.g. 1) (StairstepExponentialDecrease/ExponentialDecrease)>"
+              "cut":  "<Percentage to be taken as new price per step (e.g. 99%, which is 1% drop) (StairstepExponentialDecrease/ExponentialDecrease)>"
             }
           }
         }
