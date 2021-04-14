@@ -58,7 +58,7 @@
             "calc": {
               "type": "StairstepExponentialDecrease",
               "step": "30",
-              "cut":  "2"
+              "cut":  "98"
             }
           }
         }
@@ -131,7 +131,7 @@
             "calc": {
               "type": "StairstepExponentialDecrease",
               "step": "30",
-              "cut":  "2"
+              "cut":  "98"
             }
           }
         }
@@ -171,7 +171,7 @@
             "calc": {
               "type": "StairstepExponentialDecrease",
               "step": "30",
-              "cut":  "2"
+              "cut":  "98"
             }
           }
         }
