@@ -34,9 +34,5 @@ for token in $tokens; do
         dust=$(seth --to-uint256 "${dust%.*}")
         calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VAT" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "dust")")" "$dust")"
         sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
-        flipDeploy="$(jq ".tokens.${token}.ilks.${ilk} | .flipDeploy!=null" "$CONFIG_FILE")"
-        if [[ "$flipDeploy" == false ]]; then
-            sethSend "$(eval echo "\$MCD_CLIP_${token}_${ilk}")" 'upchost()'
-        fi
     done
 done

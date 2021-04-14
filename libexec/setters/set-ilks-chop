@@ -42,6 +42,7 @@ for token in $tokens; do
             setChop "$(jq -r ".tokens.${token}.ilks.${ilk} | .flipDeploy.chop" "$CONFIG_FILE")" "$MCD_CAT"
         else
             setChop "$(jq -r ".tokens.${token}.ilks.${ilk} | .clipDeploy.chop" "$CONFIG_FILE")" "$MCD_DOG"
+            sethSend "$(eval echo "\$MCD_CLIP_${token}_${ilk}")" 'upchost()'
         fi
     done
 done
