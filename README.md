@@ -136,7 +136,7 @@ Below is the expected structure of such a config file:
             "hole": "<Max DAI needed to cover debt+fees of active auctions per ilk (e.g. 100,000 DAI)>",
             "chip": "<Percentage of due to suck from vow to incentivize keepers (e.g. 2%)>",
             "tip": "<Flat fee to suck from vow to incentivize keepers (e.g. 100 DAI)>",
-            "buf": "<Multiplicative factor to increase starting price (e.g. 25%)>",
+            "buf": "<Multiplicative factor to increase starting price (e.g. 125%)>",
             "tail": "<Time elapsed before auction reset in seconds>",
             "cusp": "<Percentage taken for the new price before auction reset (e.g. 30%)>",
             "calc": {
