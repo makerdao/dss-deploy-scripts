@@ -234,22 +234,6 @@
         "url": "https://github.com/makerdao/dss-deploy-pause-proxy-actions"
       }
     },
-    "dss-deploy_26e4e30": {
-      "deps": {
-        "ds-auth": "ds-auth_bd00871",
-        "ds-pause": "ds-pause_ec3a916",
-        "ds-test": "ds-test_c0b770c",
-        "dss": "dss_c8d4c80",
-        "esm": "esm_4191a85"
-      },
-      "name": "dss-deploy",
-      "repo": {
-        "name": "dss-deploy-26e4e30",
-        "ref": "HEAD",
-        "rev": "26e4e301ebe74408e5433f02aef24a20152a807d",
-        "url": "https://github.com/makerdao/dss-deploy"
-      }
-    },
     "dss-deploy_4f7d75e": {
       "deps": {
         "ds-auth": "ds-auth_bd00871",
@@ -263,6 +247,22 @@
         "name": "dss-deploy-4f7d75e",
         "ref": "v1.2",
         "rev": "4f7d75e3cf3f953d35c6980a714579a64a6928e6",
+        "url": "https://github.com/makerdao/dss-deploy"
+      }
+    },
+    "dss-deploy_dc7e6d2": {
+      "deps": {
+        "ds-auth": "ds-auth_bd00871",
+        "ds-pause": "ds-pause_ec3a916",
+        "ds-test": "ds-test_c0b770c",
+        "dss": "dss_3f30552",
+        "esm": "esm_a031251"
+      },
+      "name": "dss-deploy",
+      "repo": {
+        "name": "dss-deploy-dc7e6d2",
+        "ref": "HEAD",
+        "rev": "dc7e6d224665837f73f02979a71ac13ed0ce1705",
         "url": "https://github.com/makerdao/dss-deploy"
       }
     },
@@ -295,7 +295,7 @@
         "url": "https://github.com/makerdao/dss-proxy-actions"
       }
     },
-    "dss_c8d4c80": {
+    "dss_3f30552": {
       "deps": {
         "ds-test": "ds-test_c0b770c",
         "ds-token": "ds-token_c570f21",
@@ -303,9 +303,9 @@
       },
       "name": "dss",
       "repo": {
-        "name": "dss-c8d4c80",
+        "name": "dss-3f30552",
         "ref": "HEAD",
-        "rev": "c8d4c806691dacb903ff281b81f316bea974e4c7",
+        "rev": "3f30552a586264b32ebdb5bac94ba67020282e53",
         "url": "https://github.com/makerdao/dss"
       }
     },
@@ -333,19 +333,6 @@
         "url": "https://github.com/dapphub/erc20"
       }
     },
-    "esm_4191a85": {
-      "deps": {
-        "ds-test": "ds-test_c0b770c",
-        "ds-token": "ds-token_c570f21"
-      },
-      "name": "esm",
-      "repo": {
-        "name": "esm-4191a85",
-        "ref": "HEAD",
-        "rev": "4191a850c7f34b2d3a0c1d66c87676e1f48f5f53",
-        "url": "https://github.com/makerdao/esm"
-      }
-    },
     "esm_4f004c9": {
       "deps": {
         "ds-test": "ds-test_c0b770c",
@@ -356,6 +343,19 @@
         "name": "esm-4f004c9",
         "ref": "HEAD",
         "rev": "4f004c99946f3579efdc755ba68fc272a7fe561f",
+        "url": "https://github.com/makerdao/esm"
+      }
+    },
+    "esm_a031251": {
+      "deps": {
+        "ds-test": "ds-test_c0b770c",
+        "ds-token": "ds-token_c570f21"
+      },
+      "name": "esm",
+      "repo": {
+        "name": "esm-a031251",
+        "ref": "HEAD",
+        "rev": "a031251f8e435cf0ec6daa13f982f6ac7795d6f9",
         "url": "https://github.com/makerdao/esm"
       }
     },
@@ -371,17 +371,17 @@
         "url": "https://github.com/makerdao/flipper-mom"
       }
     },
-    "ilk-registry_6fd0fd7": {
+    "ilk-registry_9e4415e": {
       "deps": {
         "ds-test": "ds-test_c0b770c",
         "ds-value": "ds-value_0e4f94e",
-        "dss": "dss_c8d4c80"
+        "dss": "dss_3f30552"
       },
       "name": "ilk-registry",
       "repo": {
-        "name": "ilk-registry-6fd0fd7",
+        "name": "ilk-registry-9e4415e",
         "ref": "HEAD",
-        "rev": "6fd0fd7388dc788ebbc76d732764ef5e637f64b4",
+        "rev": "9e4415eacd7ade190dacbb06cc71f715994e145e",
         "url": "https://github.com/makerdao/ilk-registry"
       }
     },
@@ -513,13 +513,13 @@
       "dsr-manager": "dsr-manager_be17e4a",
       "dss-auto-line": "dss-auto-line_65c3da6",
       "dss-cdp-manager": "dss-cdp-manager_fa2af95",
-      "dss-deploy": "dss-deploy_26e4e30",
+      "dss-deploy": "dss-deploy_dc7e6d2",
       "dss-deploy-1_2": "dss-deploy_4f7d75e",
       "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_4ec2e84",
       "dss-gem-joins": "dss-gem-joins_76161c5",
       "dss-proxy-actions": "dss-proxy-actions_145aba2",
       "flipper-mom": "flipper-mom_7aa7faa",
-      "ilk-registry": "ilk-registry_6fd0fd7",
+      "ilk-registry": "ilk-registry_9e4415e",
       "mkr-authority": "mkr-authority_7b7a0d9",
       "multicall": "multicall_e0c7d96",
       "osm": "osm_48a9ad9",
