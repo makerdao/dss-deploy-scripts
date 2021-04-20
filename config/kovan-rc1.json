@@ -12,7 +12,6 @@
   "jug_base": "0",
   "pot_dsr": "0",
   "end_wait": "262800",
-  "esm_pit": "0xbd747742B0F1f9791d3e6B85f8797A0cf4fbf10b",
   "esm_min": "50000",
   "flap_beg": "2",
   "flap_ttl": "3600",
@@ -53,13 +52,13 @@
             "hole": "5000",
             "chip": "2",
             "tip": "100",
-            "buf": "10",
+            "buf": "110",
             "tail": "7200",
             "cusp": "50",
             "calc": {
               "type": "StairstepExponentialDecrease",
               "step": "30",
-              "cut":  "2"
+              "cut":  "98"
             }
           }
         }
@@ -126,13 +125,13 @@
             "hole": "5000",
             "chip": "2",
             "tip": "100",
-            "buf": "10",
+            "buf": "110",
             "tail": "7200",
             "cusp": "50",
             "calc": {
               "type": "StairstepExponentialDecrease",
               "step": "30",
-              "cut":  "2"
+              "cut":  "98"
             }
           }
         }
@@ -166,13 +165,13 @@
             "hole": "5000",
             "chip": "2",
             "tip": "100",
-            "buf": "10",
+            "buf": "110",
             "tail": "3600",
             "cusp": "1",
             "calc": {
               "type": "StairstepExponentialDecrease",
               "step": "30",
-              "cut":  "2"
+              "cut":  "98"
             }
           }
         }

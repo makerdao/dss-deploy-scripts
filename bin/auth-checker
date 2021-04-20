@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#  Copyright (C) 2019-2020 Maker Ecosystem Growth Holdings, INC.
+#  Copyright (C) 2019-2021 Maker Ecosystem Growth Holdings, INC.
 
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -137,6 +137,7 @@ checkRely "MCD_VAT" "MCD_JUG" "AUTHED"
 checkRely "MCD_VAT" "MCD_POT" "AUTHED"
 checkRely "MCD_VAT" "MCD_SPOT" "AUTHED"
 checkRely "MCD_VAT" "MCD_END" "AUTHED"
+checkRely "MCD_VAT" "MCD_ESM" "AUTHED"
 checkRely "MCD_VAT" "MCD_IAM_AUTO_LINE" "AUTHED"
 checkRely "MCD_VAT" "MCD_PAUSE_PROXY" "AUTHED"
 for token in $tokens; do
@@ -201,12 +202,14 @@ for token in $tokens; do
             checkRely "MCD_FLIP_${token}_${ilk}" "MCD_END" "AUTHED"
             checkRely "MCD_FLIP_${token}_${ilk}" "MCD_PAUSE_PROXY" "AUTHED"
             checkRely "MCD_FLIP_${token}_${ilk}" "FLIPPER_MOM" "AUTHED"
+            checkRely "MCD_FLIP_${token}_${ilk}" "MCD_ESM" "AUTHED"
         else
             checkRely "MCD_CLIP_${token}_${ilk}" "MCD_DEPLOY" "NOT_AUTHED"
             checkRely "MCD_CLIP_${token}_${ilk}" "MCD_DOG" "AUTHED"
             checkRely "MCD_CLIP_${token}_${ilk}" "MCD_END" "AUTHED"
             checkRely "MCD_CLIP_${token}_${ilk}" "MCD_PAUSE_PROXY" "AUTHED"
-            # checkRely "MCD_CLIP_${token}_${ilk}" "CLIPPER_MOM" "AUTHED"
+            checkRely "MCD_CLIP_${token}_${ilk}" "CLIPPER_MOM" "AUTHED"
+            checkRely "MCD_CLIP_${token}_${ilk}" "MCD_ESM" "AUTHED"
             checkRely "MCD_DOG" "MCD_CLIP_${token}_${ilk}" "AUTHED"
             checkRely "MCD_VAT" "MCD_CLIP_${token}_${ilk}" "AUTHED"
         fi
@@ -275,6 +278,7 @@ for token in $tokens; do
             flipDeploy="$(jq ".tokens.${token}.ilks.${ilk} | .flipDeploy!=null" "$CONFIG_FILE")"
             if [[ "$flipDeploy" == false ]]; then
                 checkWhitelist "PIP_${token}" "MCD_CLIP_${token}_${ilk}"
+                checkWhitelist "PIP_${token}" "CLIPPER_MOM"
             fi
         fi
     done

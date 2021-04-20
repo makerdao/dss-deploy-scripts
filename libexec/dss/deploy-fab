@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#  Copyright (C) 2019-2020 Maker Ecosystem Growth Holdings, INC.
+#  Copyright (C) 2019-2021 Maker Ecosystem Growth Holdings, INC.
 
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -20,22 +20,22 @@
 
 export SETH_ASYNC=yes
 
-VAT_FABtx=$(dappCreate dss-deploy VatFab)
-JUG_FABtx=$(dappCreate dss-deploy JugFab)
-VOW_FABtx=$(dappCreate dss-deploy VowFab)
-CAT_FABtx=$(dappCreate dss-deploy CatFab)
-DOG_FABtx=$(dappCreate dss-deploy-liq-2-0 DogFab)
-DAI_FABtx=$(dappCreate dss-deploy DaiFab)
-MCD_JOIN_FABtx=$(dappCreate dss-deploy DaiJoinFab)
-FLAP_FABtx=$(dappCreate dss-deploy FlapFab)
-FLOP_FABtx=$(dappCreate dss-deploy FlopFab)
-FLIP_FABtx=$(dappCreate dss-deploy FlipFab)
-CLIP_FABtx=$(dappCreate dss-deploy-liq-2-0 ClipFab)
-SPOT_FABtx=$(dappCreate dss-deploy SpotFab)
-POT_FABtx=$(dappCreate dss-deploy PotFab)
-END_FABtx=$(dappCreate dss-deploy-liq-2-0 EndFab)
-ESM_FABtx=$(dappCreate dss-deploy-liq-2-0 ESMFab)
-PAUSE_FABtx=$(dappCreate dss-deploy PauseFab)
+VAT_FABtx=$(dappCreate dss-deploy-1_2 VatFab)
+JUG_FABtx=$(dappCreate dss-deploy-1_2 JugFab)
+VOW_FABtx=$(dappCreate dss-deploy-1_2 VowFab)
+CAT_FABtx=$(dappCreate dss-deploy-1_2 CatFab)
+DOG_FABtx=$(dappCreate dss-deploy DogFab)
+DAI_FABtx=$(dappCreate dss-deploy-1_2 DaiFab)
+MCD_JOIN_FABtx=$(dappCreate dss-deploy-1_2 DaiJoinFab)
+FLAP_FABtx=$(dappCreate dss-deploy-1_2 FlapFab)
+FLOP_FABtx=$(dappCreate dss-deploy-1_2 FlopFab)
+FLIP_FABtx=$(dappCreate dss-deploy-1_2 FlipFab)
+CLIP_FABtx=$(dappCreate dss-deploy ClipFab)
+SPOT_FABtx=$(dappCreate dss-deploy-1_2 SpotFab)
+POT_FABtx=$(dappCreate dss-deploy-1_2 PotFab)
+END_FABtx=$(dappCreate dss-deploy EndFab)
+ESM_FABtx=$(dappCreate dss-deploy ESMFab)
+PAUSE_FABtx=$(dappCreate dss-deploy-1_2 PauseFab)
 
 export SETH_ASYNC=no
 

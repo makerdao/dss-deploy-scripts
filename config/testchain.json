@@ -78,7 +78,7 @@
             "hole": "1000",
             "chip": "2",
             "tip": "100",
-            "buf": "50",
+            "buf": "150",
             "tail": "10800",
             "cusp": "33.33",
             "calc": {
@@ -100,13 +100,13 @@
             "hole": "1000",
             "chip": "2",
             "tip": "100",
-            "buf": "50",
+            "buf": "150",
             "tail": "10800",
             "cusp": "33.33",
             "calc": {
               "type": "StairstepExponentialDecrease",
               "step": "10",
-              "cut":  "1"
+              "cut":  "99"
             }
           }
         }

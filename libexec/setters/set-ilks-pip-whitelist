@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#  Copyright (C) 2019-2020 Maker Ecosystem Growth Holdings, INC.
+#  Copyright (C) 2019-2021 Maker Ecosystem Growth Holdings, INC.
 
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -43,6 +43,7 @@ for token in $tokens; do
             flipDeploy="$(jq ".tokens.${token}.ilks.${ilk} | .flipDeploy!=null" "$CONFIG_FILE")"
             if [[ "$flipDeploy" == false ]]; then
                 sethSend "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$(eval echo "\$MCD_CLIP_${token}_${ilk}")"
+                sethSend "$(eval echo "\$PIP_${token}")" 'kiss(address)' "$CLIPPER_MOM"
             fi
         done
     fi
