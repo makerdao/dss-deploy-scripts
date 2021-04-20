@@ -23,13 +23,20 @@ CONFIG_FILE="$OUT_DIR/config.json"
 # Get addresses
 loadAddresses
 
-log "SET FLOP PAD:"
+log "SET ILKS TIP:"
 
-# Set flop pad
-pad=$(jq -r ".flop_pad | values" "$CONFIG_FILE")
-if [[ "$pad" != "" ]]; then
-    pad=$(echo "($pad+100)"*10^16 | bc -l)
-    pad=$(seth --to-uint256 "${pad%.*}")
-    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_FLOP" "$(seth --to-bytes32 "$(seth --from-ascii "pad")")" "$pad")"
-    sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
-fi
+tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
+for token in $tokens; do
+    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+    for ilk in $ilks; do
+        flipDeploy="$(jq ".tokens.${token}.ilks.${ilk} | .flipDeploy!=null" "$CONFIG_FILE")"
+        if [[ "$flipDeploy" == false ]]; then
+            tip="$(jq -r ".tokens.${token}.ilks.${ilk} | .clipDeploy.tip" "$CONFIG_FILE")"
+            tip=$(echo "$tip"*10^45 | bc)
+            tip=${tip%.*}
+
+            calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$(eval echo "\$MCD_CLIP_${token}_${ilk}")" "$(seth --to-bytes32 "$(seth --from-ascii "tip")")" "$tip")"
+            sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+        fi
+    done
+done

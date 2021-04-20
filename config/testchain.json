@@ -10,6 +10,7 @@
   "vow_bump": "0.1",
   "vow_hump": "0",
   "cat_box": "10000",
+  "dog_hole": "10000",
   "jug_base": "0",
   "pot_dsr": "1",
   "end_wait": "0",
@@ -56,11 +57,13 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "5",
-          "chop": "5",
-          "dunk": "500",
-          "beg": "1",
-          "ttl": "3600",
-          "tau": "3600"
+          "flipDeploy": {
+            "chop": "5",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
         },
         "B": {
           "mat": "200",
@@ -70,11 +73,19 @@
           "autoLineTtl": "43200",
           "dust": "100",
           "duty": "4",
-          "chop": "5",
-          "dunk": "500",
-          "beg": "1",
-          "ttl": "3600",
-          "tau": "3600"
+          "clipDeploy": {
+            "chop": "5",
+            "hole": "1000",
+            "chip": "2",
+            "tip": "100",
+            "buf": "150",
+            "tail": "10800",
+            "cusp": "33.33",
+            "calc": {
+              "type": "LinearDecrease",
+              "tau":  "3600"
+            }
+          }
         },
         "C": {
           "mat": "120",
@@ -84,11 +95,20 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "10",
-          "chop": "5",
-          "dunk": "500",
-          "beg": "1",
-          "ttl": "3600",
-          "tau": "3600"
+          "clipDeploy": {
+            "chop": "5",
+            "hole": "1000",
+            "chip": "2",
+            "tip": "100",
+            "buf": "150",
+            "tail": "10800",
+            "cusp": "33.33",
+            "calc": {
+              "type": "StairstepExponentialDecrease",
+              "step": "10",
+              "cut":  "99"
+            }
+          }
         }
       }
     },
@@ -126,11 +146,13 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "10",
-          "chop": "8",
-          "dunk": "500",
-          "beg": "1",
-          "ttl": "3600",
-          "tau": "3600"
+          "flipDeploy": {
+            "chop": "8",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
         }
       }
     },
@@ -168,11 +190,13 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "11.5",
-          "chop": "8",
-          "dunk": "500",
-          "beg": "1",
-          "ttl": "3600",
-          "tau": "3600"
+          "flipDeploy": {
+            "chop": "8",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
         }
       }
     },
@@ -210,11 +234,13 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "10.5",
-          "chop": "8",
-          "dunk": "500",
-          "beg": "1",
-          "ttl": "3600",
-          "tau": "3600"
+          "flipDeploy": {
+            "chop": "8",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
         }
       }
     },
@@ -252,11 +278,13 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "9",
-          "chop": "8",
-          "dunk": "500",
-          "beg": "1",
-          "ttl": "3600",
-          "tau": "3600"
+          "flipDeploy": {
+            "chop": "8",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
         }
       }
     },
@@ -294,11 +322,13 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "9",
-          "chop": "5",
-          "dunk": "500",
-          "beg": "1",
-          "ttl": "3600",
-          "tau": "3600"
+          "flipDeploy": {
+            "chop": "5",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
         }
       }
     },
@@ -336,11 +366,13 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "20",
-          "chop": "8",
-          "dunk": "500",
-          "beg": "1",
-          "ttl": "3600",
-          "tau": "3600"
+          "flipDeploy": {
+            "chop": "8",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
         },
         "B": {
           "mat": "125",
@@ -350,11 +382,13 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "20",
-          "chop": "8",
-          "dunk": "500",
-          "beg": "1",
-          "ttl": "3600",
-          "tau": "3600"
+          "flipDeploy": {
+            "chop": "8",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
         }
       }
     },
@@ -392,11 +426,13 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "20",
-          "chop": "8",
-          "dunk": "500",
-          "beg": "1",
-          "ttl": "3600",
-          "tau": "3600"
+          "flipDeploy": {
+            "chop": "8",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
         }
       }
     },
@@ -434,11 +470,13 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "20",
-          "chop": "8",
-          "dunk": "500",
-          "beg": "1",
-          "ttl": "3600",
-          "tau": "3600"
+          "flipDeploy": {
+            "chop": "8",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
         }
       }
     },
@@ -476,11 +514,13 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "9.5",
-          "chop": "8",
-          "dunk": "500",
-          "beg": "1",
-          "ttl": "3600",
-          "tau": "3600"
+          "flipDeploy": {
+            "chop": "8",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
         }
       }
     },
@@ -518,11 +558,13 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "20",
-          "chop": "8",
-          "dunk": "500",
-          "beg": "1",
-          "ttl": "3600",
-          "tau": "3600"
+          "flipDeploy": {
+            "chop": "8",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
         }
       }
     },
@@ -560,11 +602,13 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "12",
-          "chop": "13",
-          "dunk": "500",
-          "beg": "3",
-          "ttl": "3600",
-          "tau": "3600"
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
         }
       }
     },
@@ -602,11 +646,13 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "6",
-          "chop": "13",
-          "dunk": "500",
-          "beg": "3",
-          "ttl": "3600",
-          "tau": "3600"
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
         }
       }
     },
@@ -644,11 +690,13 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "2",
-          "chop": "13",
-          "dunk": "500",
-          "beg": "3",
-          "ttl": "3600",
-          "tau": "3600"
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
         }
       }
     },
@@ -686,11 +734,13 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "1",
-          "chop": "13",
-          "dunk": "500",
-          "beg": "3",
-          "ttl": "3600",
-          "tau": "3600"
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
         }
       }
     },
@@ -728,11 +778,13 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "3",
-          "chop": "13",
-          "dunk": "500",
-          "beg": "3",
-          "ttl": "3600",
-          "tau": "3600"
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
         }
       }
     },
@@ -770,11 +822,13 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "3",
-          "chop": "13",
-          "dunk": "500",
-          "beg": "3",
-          "ttl": "3600",
-          "tau": "3600"
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
         }
       }
     },
@@ -812,11 +866,13 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "5.0",
-          "chop": "13",
-          "dunk": "500",
-          "beg": "3",
-          "ttl": "3600",
-          "tau": "3600"
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
         }
       }
     },
@@ -854,11 +910,13 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "4",
-          "chop": "13",
-          "dunk": "500",
-          "beg": "3",
-          "ttl": "3600",
-          "tau": "3600"
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
         }
       }
     },
@@ -896,11 +954,13 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "4",
-          "chop": "13",
-          "dunk": "500",
-          "beg": "3",
-          "ttl": "3600",
-          "tau": "3600"
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
         }
       }
     },
@@ -938,11 +998,13 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "3",
-          "chop": "13",
-          "dunk": "500",
-          "beg": "3",
-          "ttl": "3600",
-          "tau": "3600"
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
         }
       }
     },
@@ -980,11 +1042,13 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "6",
-          "chop": "13",
-          "dunk": "500",
-          "beg": "3",
-          "ttl": "3600",
-          "tau": "3600"
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
         }
       }
     },
@@ -1022,11 +1086,13 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "6",
-          "chop": "13",
-          "dunk": "500",
-          "beg": "3",
-          "ttl": "3600",
-          "tau": "3600"
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
         }
       }
     }

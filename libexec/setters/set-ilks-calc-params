@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+#  Copyright (C) 2019-2021 Maker Ecosystem Growth Holdings, INC.
+
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+# shellcheck source=lib/common.sh
+. "$LIB_DIR/common.sh"
+
+# Get config variables
+CONFIG_FILE="$OUT_DIR/config.json"
+# Get addresses
+loadAddresses
+
+log "SET ILKS CALC PARAMS:"
+
+tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
+for token in $tokens; do
+    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+    for ilk in $ilks; do
+        setUint256Param() {
+            set -e
+            local  name;  name=$1
+            local value; value=$2
+            calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$(eval echo "\$MCD_CLIP_CALC_${token}_${ilk}")" "$(seth --to-bytes32 "$(seth --from-ascii "${name}")")" "${value}")"
+            sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+        }
+
+        flipDeploy="$(jq ".tokens.${token}.ilks.${ilk} | .flipDeploy!=null" "$CONFIG_FILE")"
+        if [[ "$flipDeploy" == false ]]; then
+            type=$(jq -r ".tokens.${token}.ilks.${ilk} | .clipDeploy.calc.type" "$CONFIG_FILE")
+            if [[ "$type" == "LinearDecrease" ]]; then
+                tau=$(jq -r ".tokens.${token}.ilks.${ilk} | .clipDeploy.calc.tau" "$CONFIG_FILE")
+                setUint256Param "tau" "${tau}"
+            fi
+            if [[ "$type" == "StairstepExponentialDecrease" || "$type" == "ExponentialDecrease" ]]; then
+                cut=$(jq -r ".tokens.${token}.ilks.${ilk} | .clipDeploy.calc.cut" "$CONFIG_FILE")
+                cut=$(echo "($cut/100) * 10^27" | bc -l)
+                cut=${cut%.*}
+                setUint256Param "cut" "${cut}"
+            fi
+            if [[ "$type" == "StairstepExponentialDecrease" ]]; then
+                step=$(jq -r ".tokens.${token}.ilks.${ilk} | .clipDeploy.calc.step" "$CONFIG_FILE")
+                setUint256Param "step" "${step}"
+            fi
+        fi
+    done
+done

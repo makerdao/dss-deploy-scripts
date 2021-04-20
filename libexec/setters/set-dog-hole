@@ -23,13 +23,12 @@ CONFIG_FILE="$OUT_DIR/config.json"
 # Get addresses
 loadAddresses
 
-log "SET FLOP PAD:"
+log "SET DOG HOLE:"
 
-# Set flop pad
-pad=$(jq -r ".flop_pad | values" "$CONFIG_FILE")
-if [[ "$pad" != "" ]]; then
-    pad=$(echo "($pad+100)"*10^16 | bc -l)
-    pad=$(seth --to-uint256 "${pad%.*}")
-    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_FLOP" "$(seth --to-bytes32 "$(seth --from-ascii "pad")")" "$pad")"
+Hole=$(jq -r ".dog_hole | values" "$CONFIG_FILE")
+if [[ "$Hole" != "" && "$Hole" != "0" ]]; then
+    Hole=$(echo "$Hole"*10^45 | bc)
+    Hole=$(seth --to-uint256 "${Hole%.*}")
+    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_DOG" "$(seth --to-bytes32 "$(seth --from-ascii "Hole")")" "$Hole")"
     sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi

@@ -23,16 +23,21 @@ CONFIG_FILE="$OUT_DIR/config.json"
 # Get addresses
 loadAddresses
 
-log "SET ILKS TAU:"
+log "SET ILKS HOLE:"
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     for ilk in $ilks; do
+        ilkBytes32="$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
+
         flipDeploy="$(jq ".tokens.${token}.ilks.${ilk} | .flipDeploy!=null" "$CONFIG_FILE")"
-        if [[ "$flipDeploy" == true ]]; then
-            tau=$(jq -r ".tokens.${token}.ilks.${ilk} | .flipDeploy.tau" "$CONFIG_FILE")
-            calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$(eval echo "\$MCD_FLIP_${token}_${ilk}")" "$(seth --to-bytes32 "$(seth --from-ascii "tau")")" "$tau")"
+        if [[ "$flipDeploy" == false ]]; then
+            hole="$(jq -r ".tokens.${token}.ilks.${ilk} | .clipDeploy.hole" "$CONFIG_FILE")"
+            hole=$(echo "$hole"*10^45 | bc)
+            hole=${hole%.*}
+
+            calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_DOG" "$ilkBytes32" "$(seth --to-bytes32 "$(seth --from-ascii "hole")")" "$hole")"
             sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
         fi
     done

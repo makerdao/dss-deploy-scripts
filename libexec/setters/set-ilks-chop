@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#  Copyright (C) 2019-2020 Maker Ecosystem Growth Holdings, INC.
+#  Copyright (C) 2019-2021 Maker Ecosystem Growth Holdings, INC.
 
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -29,10 +29,20 @@ tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     for ilk in $ilks; do
-        chop=$(jq -r ".tokens.${token}.ilks.${ilk} | .chop" "$CONFIG_FILE")
-        chop=$(echo "($chop+100)"*10^16 | bc -l)
-        chop=$(seth --to-uint256 "${chop%.*}")
-        calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_CAT" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "chop")")" "$chop")"
-        sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+        setChop() {
+            chop=$(echo "($1+100)"*10^16 | bc -l)
+            chop=${chop%.*}
+
+            calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$2" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "chop")")" "$chop")"
+            sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+        }
+
+        flipDeploy="$(jq ".tokens.${token}.ilks.${ilk} | .flipDeploy!=null" "$CONFIG_FILE")"
+        if [[ "$flipDeploy" == true ]]; then
+            setChop "$(jq -r ".tokens.${token}.ilks.${ilk} | .flipDeploy.chop" "$CONFIG_FILE")" "$MCD_CAT"
+        else
+            setChop "$(jq -r ".tokens.${token}.ilks.${ilk} | .clipDeploy.chop" "$CONFIG_FILE")" "$MCD_DOG"
+            sethSend "$(eval echo "\$MCD_CLIP_${token}_${ilk}")" 'upchost()'
+        fi
     done
 done

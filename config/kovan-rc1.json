@@ -1,0 +1,181 @@
+{
+  "description": "Kovan deployment RC1",
+  "pauseDelay": "0",
+  "vat_line": "778000000",
+  "vow_wait": "3600",
+  "vow_dump": "2",
+  "vow_sump": "50",
+  "vow_bump": "10",
+  "vow_hump": "500",
+  "cat_box": "10000",
+  "dog_hole": "10000",
+  "jug_base": "0",
+  "pot_dsr": "0",
+  "end_wait": "262800",
+  "esm_min": "50000",
+  "flap_beg": "2",
+  "flap_ttl": "3600",
+  "flap_tau": "3600",
+  "flop_beg": "3",
+  "flop_pad": "20",
+  "flop_ttl": "3600",
+  "flop_tau": "3600",
+  "import": {
+    "proxyRegistry": "0x64A436ae831C1672AE81F674CAb8B6775df3475C"
+  },
+  "tokens": {
+    "ETH": {
+      "gemDeploy": {
+        "src": "ds-weth/WETH9_",
+        "params": [],
+        "faucetSupply": "0",
+        "faucetAmount": "0"
+      },
+      "import": {
+        "pip": "0x75dD74e8afE8110C8320eD397CcCff3B8134d981"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "ilks": {
+        "A": {
+          "mat": "150",
+          "line": "540000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "5",
+          "clipDeploy": {
+            "chop": "5",
+            "hole": "5000",
+            "chip": "2",
+            "tip": "100",
+            "buf": "110",
+            "tail": "7200",
+            "cusp": "50",
+            "calc": {
+              "type": "StairstepExponentialDecrease",
+              "step": "30",
+              "cut":  "98"
+            }
+          }
+        }
+      }
+    },
+    "WBTC": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/WBTC",
+        "params": ["100000000000000"],
+        "faucetSupply": "100000000000000",
+        "faucetAmount": "1000000000"
+      },
+      "import": {
+        "pip": "0x2f38a1bD385A9B395D01f2Cbf767b4527663edDB"
+      },
+      "joinDeploy": {
+        "src": "GemJoin5",
+        "extraParams": []
+      },
+      "ilks": {
+        "A": {
+          "mat": "150",
+          "line": "120000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "4",
+          "flipDeploy": {
+            "chop": "13",
+            "dunk": "500",
+            "beg": "3",
+            "ttl": "3600",
+            "tau": "3600"
+          }
+        }
+      }
+    },
+    "LINK": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/LINK",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "1000000000000000000000000",
+        "faucetAmount": "500000000000000000000"
+      },
+      "import": {
+        "pip": "0x20D5A457e49D05fac9729983d9701E0C3079Efac"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "ilks": {
+        "A": {
+          "mat": "175",
+          "line": "5000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "3",
+          "clipDeploy": {
+            "chop": "5",
+            "hole": "5000",
+            "chip": "2",
+            "tip": "100",
+            "buf": "110",
+            "tail": "7200",
+            "cusp": "50",
+            "calc": {
+              "type": "StairstepExponentialDecrease",
+              "step": "30",
+              "cut":  "98"
+            }
+          }
+        }
+      }
+    },
+    "YFI": {
+      "gemDeploy": {
+        "src": "dss-gem-joins/YFI",
+        "params": ["1000000000000000000000000"],
+        "faucetSupply": "1000000000000000000000000",
+        "faucetAmount": "50000000000000000000"
+      },
+      "import": {
+        "pip": "0x9D8255dc4e25bB85e49c65B21D8e749F2293862a"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "ilks": {
+        "A": {
+          "mat": "175",
+          "line": "7000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "4",
+          "clipDeploy": {
+            "chop": "5",
+            "hole": "5000",
+            "chip": "2",
+            "tip": "100",
+            "buf": "110",
+            "tail": "3600",
+            "cusp": "1",
+            "calc": {
+              "type": "StairstepExponentialDecrease",
+              "step": "30",
+              "cut":  "98"
+            }
+          }
+        }
+      }
+    }
+  }
+}

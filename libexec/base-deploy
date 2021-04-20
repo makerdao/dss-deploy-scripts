@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#  Copyright (C) 2019-2020 Maker Ecosystem Growth Holdings, INC.
+#  Copyright (C) 2019-2021 Maker Ecosystem Growth Holdings, INC.
 
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Affero General Public License as published by
@@ -101,8 +101,6 @@ fi
 
 MCD_ESM_MIN="$(seth --to-uint256 "$(seth --to-wei "$(jq -r ".esm_min | values" "$CONFIG_FILE")" "eth")")"
 export MCD_ESM_MIN
-MCD_ESM_PIT="$(jq -r ".esm_pit | values" "$CONFIG_FILE")"
-export MCD_ESM_PIT
 
 # Deploy MCD Core Contratcs
 "$LIBEXEC_DIR/dss/deploy-core"
@@ -158,16 +156,21 @@ log "OSM_MOM=$OSM_MOM"
 FLIPPER_MOM=$(dappCreate flipper-mom FlipperMom "$MCD_CAT")
 log "FLIPPER_MOM=$FLIPPER_MOM"
 
+# Deploy ClipperMom
+CLIPPER_MOM=$(dappCreate clipper-mom-optimized ClipperMom "$MCD_SPOT")
+log "CLIPPER_MOM=$CLIPPER_MOM"
+
 # Deploy IlkRegistry
-ILK_REGISTRY=$(dappCreate ilk-registry-optimized IlkRegistry "$MCD_VAT" "$MCD_CAT" "$MCD_SPOT")
+ILK_REGISTRY=$(dappCreate ilk-registry-optimized IlkRegistry "$MCD_VAT" "$MCD_DOG" "$MCD_CAT" "$MCD_SPOT")
 log "ILK_REGISTRY=$ILK_REGISTRY"
 
-for token in $tokens; do
-    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
-    for ilk in $ilks; do
-        sethSend "$ILK_REGISTRY" 'add(address)' "$(eval echo "\$MCD_JOIN_${token}_${ilk}")"
-    done
-done
+# TODO: Reactivate it when the ilk registry can handle collaterals with liq-2.0 
+# for token in $tokens; do
+#     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
+#     for ilk in $ilks; do
+#         sethSend "$ILK_REGISTRY" 'add(address)' "$(eval echo "\$MCD_JOIN_${token}_${ilk}")"
+#     done
+# done
 
 # As all initial collaterals were deployed, we can remove authority of the deployment contract from the core contracts
 sethSend "$MCD_DEPLOY" 'releaseAuth()'
@@ -179,12 +182,17 @@ for token in $tokens; do
         # Deny deployer to access the Adapter
         sethSend "$(eval echo "\$MCD_JOIN_${token}_${ilk}")" 'deny(address)' "$ETH_FROM"
 
-        sethSend "$MCD_DEPLOY" 'releaseAuthFlip(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
+        flipDeploy="$(jq ".tokens.${token}.ilks.${ilk} | .flipDeploy!=null" "$CONFIG_FILE")"
+        if [[ "$flipDeploy" == true ]]; then
+            sethSend "$MCD_DEPLOY" 'releaseAuthFlip(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
+        else
+            sethSend "$MCD_DEPLOY" 'releaseAuthClip(bytes32)' "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")"
+        fi
     done
 done
 
 # Deploy GovActions - Library functions for the Pause
-MCD_GOV_ACTIONS=$(dappCreate dss-deploy GovActions)
+MCD_GOV_ACTIONS=$(dappCreate dss-deploy-1_2 GovActions)
 log "MCD_GOV_ACTIONS=$MCD_GOV_ACTIONS"
 
 # Deploy Pause Proxy Actions (support contract for executing initial set up of the dss system)
@@ -236,8 +244,17 @@ for token in $tokens; do
     for ilk in $ilks; do
     ILKS_VARS+=",
     \"MCD_JOIN_${token}_${ilk}\": \"$(eval echo "\$MCD_JOIN_${token}_${ilk}")\""
+
+    flipDeploy="$(jq ".tokens.${token}.ilks.${ilk} | .flipDeploy!=null" "$CONFIG_FILE")"
+    if [[ "$flipDeploy" == true ]]; then
     ILKS_VARS+=",
     \"MCD_FLIP_${token}_${ilk}\": \"$(seth --to-checksum-address "$(eval echo "\$MCD_FLIP_${token}_${ilk}")")\""
+    else
+    ILKS_VARS+=",
+    \"MCD_CLIP_${token}_${ilk}\": \"$(seth --to-checksum-address "$(eval echo "\$MCD_CLIP_${token}_${ilk}")")\""
+    ILKS_VARS+=",
+    \"MCD_CLIP_CALC_${token}_${ilk}\": \"$(seth --to-checksum-address "$(eval echo "\$MCD_CLIP_CALC_${token}_${ilk}")")\""
+    fi
     done
 done
 
@@ -273,6 +290,7 @@ cat > "$OUT_DIR"/addresses.json <<EOF
     "MCD_VAT": "$(seth --to-checksum-address "$MCD_VAT")",
     "MCD_JUG": "$(seth --to-checksum-address "$MCD_JUG")",
     "MCD_CAT": "$(seth --to-checksum-address "$MCD_CAT")",
+    "MCD_DOG": "$(seth --to-checksum-address "$MCD_DOG")",
     "MCD_VOW": "$(seth --to-checksum-address "$MCD_VOW")",
     "MCD_JOIN_DAI": "$(seth --to-checksum-address "$MCD_JOIN_DAI")",
     "MCD_FLAP": "$(seth --to-checksum-address "$MCD_FLAP")",
@@ -294,6 +312,7 @@ cat > "$OUT_DIR"/addresses.json <<EOF
     "ILK_REGISTRY": "$ILK_REGISTRY",
     "OSM_MOM": "$OSM_MOM",
     "FLIPPER_MOM": "$FLIPPER_MOM",
+    "CLIPPER_MOM": "$CLIPPER_MOM",
     "MCD_IAM_AUTO_LINE": "$MCD_IAM_AUTO_LINE",
     "PROXY_FACTORY": "$(seth --to-checksum-address "$PROXY_FACTORY")",
     "PROXY_REGISTRY": "$(seth --to-checksum-address "$PROXY_REGISTRY")"$ILKS_VARS,
@@ -315,6 +334,8 @@ EOF
 "$LIBEXEC_DIR"/setters/set-vow-hump
 
 "$LIBEXEC_DIR"/setters/set-cat-box
+
+"$LIBEXEC_DIR"/setters/set-dog-hole
 
 "$LIBEXEC_DIR"/setters/set-jug-base
 
@@ -350,6 +371,7 @@ EOF
 
 "$LIBEXEC_DIR"/setters/set-ilks-spotter-poke
 
+# set-ilks-chop calls upchost so needs to be done after setting dust:
 "$LIBEXEC_DIR"/setters/set-ilks-chop
 
 "$LIBEXEC_DIR"/setters/set-ilks-dunk
@@ -359,6 +381,20 @@ EOF
 "$LIBEXEC_DIR"/setters/set-ilks-ttl
 
 "$LIBEXEC_DIR"/setters/set-ilks-tau
+
+"$LIBEXEC_DIR"/setters/set-ilks-hole
+
+"$LIBEXEC_DIR"/setters/set-ilks-chip
+
+"$LIBEXEC_DIR"/setters/set-ilks-tip
+
+"$LIBEXEC_DIR"/setters/set-ilks-buf
+
+"$LIBEXEC_DIR"/setters/set-ilks-tail
+
+"$LIBEXEC_DIR"/setters/set-ilks-cusp
+
+"$LIBEXEC_DIR"/setters/set-ilks-calc-params
 
 "$LIBEXEC_DIR"/setters/set-ilks-faucet
 
@@ -371,5 +407,7 @@ fi
 "$LIBEXEC_DIR"/setters/set-ilks-osm-mom
 
 "$LIBEXEC_DIR"/setters/set-ilks-flipper-mom
+
+"$LIBEXEC_DIR"/setters/set-ilks-clipper-mom
 
 "$LIBEXEC_DIR"/setters/set-pause-auth-delay
