@@ -371,6 +371,7 @@ EOF
 
 "$LIBEXEC_DIR"/setters/set-ilks-spotter-poke
 
+# set-ilks-chop calls upchost so needs to be done after setting dust:
 "$LIBEXEC_DIR"/setters/set-ilks-chop
 
 "$LIBEXEC_DIR"/setters/set-ilks-dunk
