@@ -126,12 +126,19 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "0",
-          "flipDeploy": {
+          "clipDeploy": {
             "chop": "13",
-            "dunk": "500",
-            "beg": "3",
-            "ttl": "3600",
-            "tau": "3600"
+            "hole": "5000",
+            "chip": "0.1",
+            "tip": "0",
+            "buf": "130",
+            "tail": "8400",
+            "cusp": "40",
+            "calc": {
+              "type": "StairstepExponentialDecrease",
+              "step": "90",
+              "cut":  "99"
+            }
           }
         }
       }
@@ -261,12 +268,19 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "0",
-          "flipDeploy": {
+          "clipDeploy": {
             "chop": "13",
-            "dunk": "500",
-            "beg": "3",
-            "ttl": "3600",
-            "tau": "3600"
+            "hole": "5000",
+            "chip": "0.1",
+            "tip": "0",
+            "buf": "130",
+            "tail": "8400",
+            "cusp": "40",
+            "calc": {
+              "type": "StairstepExponentialDecrease",
+              "step": "90",
+              "cut":  "99"
+            }
           }
         }
       }
@@ -289,12 +303,19 @@
           "autoLineTtl": "0",
           "dust": "20",
           "duty": "0",
-          "flipDeploy": {
+          "clipDeploy": {
             "chop": "13",
-            "dunk": "500",
-            "beg": "3",
-            "ttl": "3600",
-            "tau": "3600"
+            "hole": "5000",
+            "chip": "0.1",
+            "tip": "0",
+            "buf": "130",
+            "tail": "8400",
+            "cusp": "40",
+            "calc": {
+              "type": "StairstepExponentialDecrease",
+              "step": "90",
+              "cut":  "99"
+            }
           }
         }
       }
@@ -317,12 +338,19 @@
           "autoLineTtl": "0",
           "dust": "20",
           "duty": "8",
-          "flipDeploy": {
+          "clipDeploy": {
             "chop": "13",
-            "dunk": "500",
-            "beg": "3",
-            "ttl": "3600",
-            "tau": "3600"
+            "hole": "5000",
+            "chip": "0.1",
+            "tip": "0",
+            "buf": "130",
+            "tail": "8400",
+            "cusp": "40",
+            "calc": {
+              "type": "StairstepExponentialDecrease",
+              "step": "90",
+              "cut":  "99"
+            }
           }
         }
       }
@@ -401,12 +429,19 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "1",
-          "flipDeploy": {
+          "clipDeploy": {
             "chop": "13",
-            "dunk": "500",
-            "beg": "3",
-            "ttl": "3600",
-            "tau": "3600"
+            "hole": "5000",
+            "chip": "0.1",
+            "tip": "0",
+            "buf": "130",
+            "tail": "8400",
+            "cusp": "40",
+            "calc": {
+              "type": "StairstepExponentialDecrease",
+              "step": "90",
+              "cut":  "99"
+            }
           }
         }
       }
@@ -429,12 +464,19 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "3",
-          "flipDeploy": {
+          "clipDeploy": {
             "chop": "13",
-            "dunk": "500",
-            "beg": "3",
-            "ttl": "3600",
-            "tau": "3600"
+            "hole": "5000",
+            "chip": "0.1",
+            "tip": "0",
+            "buf": "130",
+            "tail": "8400",
+            "cusp": "40",
+            "calc": {
+              "type": "StairstepExponentialDecrease",
+              "step": "90",
+              "cut":  "99"
+            }
           }
         }
       }
@@ -492,12 +534,19 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "5",
-          "flipDeploy": {
+          "clipDeploy": {
             "chop": "13",
-            "dunk": "500",
-            "beg": "3",
-            "ttl": "3600",
-            "tau": "3600"
+            "hole": "5000",
+            "chip": "0.1",
+            "tip": "0",
+            "buf": "130",
+            "tail": "8400",
+            "cusp": "40",
+            "calc": {
+              "type": "StairstepExponentialDecrease",
+              "step": "90",
+              "cut":  "99"
+            }
           }
         }
       }
@@ -583,12 +632,19 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "3",
-          "flipDeploy": {
+          "clipDeploy": {
             "chop": "13",
-            "dunk": "500",
-            "beg": "3",
-            "ttl": "3600",
-            "tau": "3600"
+            "hole": "5000",
+            "chip": "0.1",
+            "tip": "0",
+            "buf": "130",
+            "tail": "8400",
+            "cusp": "40",
+            "calc": {
+              "type": "StairstepExponentialDecrease",
+              "step": "90",
+              "cut":  "99"
+            }
           }
         }
       }
@@ -611,12 +667,19 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "6",
-          "flipDeploy": {
+          "clipDeploy": {
             "chop": "13",
-            "dunk": "500",
-            "beg": "3",
-            "ttl": "3600",
-            "tau": "3600"
+            "hole": "5000",
+            "chip": "0.1",
+            "tip": "0",
+            "buf": "130",
+            "tail": "8400",
+            "cusp": "40",
+            "calc": {
+              "type": "StairstepExponentialDecrease",
+              "step": "90",
+              "cut":  "99"
+            }
           }
         }
       }
@@ -639,12 +702,19 @@
           "autoLineTtl": "0",
           "dust": "100",
           "duty": "6",
-          "flipDeploy": {
+          "clipDeploy": {
             "chop": "13",
-            "dunk": "500",
-            "beg": "3",
-            "ttl": "3600",
-            "tau": "3600"
+            "hole": "5000",
+            "chip": "0.1",
+            "tip": "0",
+            "buf": "130",
+            "tail": "8400",
+            "cusp": "40",
+            "calc": {
+              "type": "StairstepExponentialDecrease",
+              "step": "90",
+              "cut":  "99"
+            }
           }
         }
       }
