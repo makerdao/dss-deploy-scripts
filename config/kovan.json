@@ -722,7 +722,7 @@
     "UNIV2DAIETH": {
       "import": {
         "gem": "0xB10cf58E08b94480fCb81d341A63295eBb2062C2",
-        "pip": "0x1AE7D6891a5fdAafAd2FE6D894bffEa48F8b2454"
+        "pip": "0xED9201cd545F1d2457D2D48981E7832C754959e9"
       },
       "joinDeploy": {
         "src": "GemJoin",

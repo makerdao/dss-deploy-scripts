@@ -722,7 +722,7 @@
     "UNIV2DAIETH": {
       "import": {
         "gem": "0xA478c2975Ab1Ea89e8196811F51A7B7Ade33eB11",
-        "pip": "0x87ecBd742cEB40928E6cDE77B2f0b5CFa3342A09"
+        "pip": "0xFc8137E1a45BAF0030563EC4F0F851bd36a85b7D"
       },
       "joinDeploy": {
         "src": "GemJoin",
@@ -750,7 +750,7 @@
     "UNIV2WBTCETH": {
       "import": {
         "gem": "0xBb2b8038a1640196FbE3e38816F3e67Cba72D940",
-        "pip": "0x771338D5B31754b25D2eb03Cea676877562Dec26"
+        "pip": "0x8400D2EDb8B97f780356Ef602b1BdBc082c2aD07"
       },
       "joinDeploy": {
         "src": "GemJoin",
@@ -778,7 +778,7 @@
     "UNIV2USDCETH": {
       "import": {
         "gem": "0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc",
-        "pip": "0xECB03Fec701B93DC06d19B4639AA8b5a838472BE"
+        "pip": "0xf751f24DD9cfAd885984D1bA68860F558D21E52A"
       },
       "joinDeploy": {
         "src": "GemJoin",
@@ -806,7 +806,7 @@
     "UNIV2DAIUSDC": {
       "import": {
         "gem": "0xAE461cA67B15dc8dc81CE7615e0320dA1A9aB8D5",
-        "pip": "0x25CD858a00146961611b18441353603191f110A0"
+        "pip": "0x25D03C2C928ADE19ff9f4FFECc07d991d0df054B"
       },
       "joinDeploy": {
         "src": "GemJoin",
@@ -834,7 +834,7 @@
     "UNIV2ETHUSDT": {
       "import": {
         "gem": "0x0d4a11d5EEaaC28EC3F61d100daF4d40471f1852",
-        "pip": "0x9b015AA3e4787dd0df8B43bF2FE6d90fa543E13B"
+        "pip": "0x5f6dD5B421B8d92c59dC6D907C9271b1DBFE3016"
       },
       "joinDeploy": {
         "src": "GemJoin",
@@ -862,7 +862,7 @@
     "UNIV2LINKETH": {
       "import": {
         "gem": "0xa2107FA5B38d9bbd2C461D6EDf11B11A50F6b974",
-        "pip": "0x628009F5F5029544AE84636Ef676D3Cc5755238b"
+        "pip": "0xd7d31e62AE5bfC3bfaa24Eda33e8c32D31a1746F"
       },
       "joinDeploy": {
         "src": "GemJoin",
@@ -890,7 +890,7 @@
     "UNIV2UNIETH": {
       "import": {
         "gem": "0xd3d2E2692501A5c9Ca623199D38826e513033a17",
-        "pip": "0x8Ce9E9442F2791FC63CD6394cC12F2dE4fbc1D71"
+        "pip": "0x8462A88f50122782Cc96108F476deDB12248f931"
       },
       "joinDeploy": {
         "src": "GemJoin",
@@ -918,7 +918,7 @@
     "UNIV2WBTCDAI": {
       "import": {
         "gem": "0x231B7589426Ffe1b75405526fC32aC09D44364c4",
-        "pip": "0x5FB5a346347ACf4FCD3AAb28f5eE518785FB0AD0"
+        "pip": "0x5bB72127a196392cf4aC00Cf57aB278394d24e55"
       },
       "joinDeploy": {
         "src": "GemJoin",
@@ -946,7 +946,7 @@
     "UNIV2AAVEETH": {
       "import": {
         "gem": "0xDFC14d2Af169B0D36C4EFF567Ada9b2E0CAE044f",
-        "pip": "0x8D34DC2c33A6386E96cA562D8478Eaf82305b81a"
+        "pip": "0x32d8416e8538Ac36272c44b0cd962cD7E0198489"
       },
       "joinDeploy": {
         "src": "GemJoin",
@@ -974,7 +974,7 @@
     "UNIV2DAIUSDT": {
       "import": {
         "gem": "0xB20bd5D04BE54f870D5C0d3cA85d82b34B836405",
-        "pip": "0x69562A7812830E6854Ffc50b992c2AA861D5C2d3"
+        "pip": "0x9A1CD705dc7ac64B50777BcEcA3529E58B1292F1"
       },
       "joinDeploy": {
         "src": "GemJoin",
