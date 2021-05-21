@@ -144,7 +144,8 @@ Below is the expected structure of such a config file:
               "tau":  "<Time after auction start when the price reaches zero in seconds (LinearDecrease)>",
               "step": "<Length of time between price drops in seconds (StairstepExponentialDecrease)>",
               "cut":  "<Percentage to be taken as new price per step (e.g. 99%, which is 1% drop) (StairstepExponentialDecrease/ExponentialDecrease)>"
-            }
+            },
+            "cm_tolerance": "<Percentage of previous price which a drop would enable anyone to be able to circuit break the liquidator via ClipperMom (e.g. 50%)>"
           }
         }
       }

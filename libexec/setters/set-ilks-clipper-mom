@@ -33,6 +33,10 @@ for token in $tokens; do
         if [[ "$flipDeploy" == false ]]; then
             calldata="$(seth calldata 'rely(address,address,address,address)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$(eval echo "\$MCD_CLIP_${token}_${ilk}")" "$CLIPPER_MOM")"
             sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+            cm_tolerance=$(jq -r ".tokens.${token}.ilks.${ilk} | .clipDeploy.cm_tolerance" "$CONFIG_FILE")
+            cm_tolerance=$(echo "${cm_tolerance}*10^25" | bc -l)
+            cm_tolerance=${cm_tolerance%.*}
+            sethSend "$CLIPPER_MOM" 'setPriceTolerance(address,uint256)' "$(eval echo "\$MCD_CLIP_${token}_${ilk}")" "$cm_tolerance"
         fi
     done
 done

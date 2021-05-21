@@ -84,7 +84,8 @@
             "calc": {
               "type": "LinearDecrease",
               "tau":  "3600"
-            }
+            },
+            "cm_tolerance": "50"
           }
         },
         "C": {
@@ -107,7 +108,8 @@
               "type": "StairstepExponentialDecrease",
               "step": "10",
               "cut":  "99"
-            }
+            },
+            "cm_tolerance": "50"
           }
         }
       }
