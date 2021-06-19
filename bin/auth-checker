@@ -191,7 +191,7 @@ checkRely "MCD_END" "MCD_DEPLOY" "NOT_AUTHED"
 checkRely "MCD_END" "MCD_ESM" "AUTHED"
 checkRely "MCD_END" "MCD_PAUSE_PROXY" "AUTHED"
 
-# flips
+# flips/clips
 for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     for ilk in $ilks; do
@@ -287,3 +287,7 @@ done
 # osmMom
 checkOwner "OSM_MOM" "MCD_PAUSE_PROXY"
 checkAuthority "OSM_MOM" "MCD_ADM"
+
+# autoLine
+checkRely "MCD_IAM_AUTO_LINE" "DEPLOYER" "NOT_AUTHED"
+checkRely "MCD_IAM_AUTO_LINE" "MCD_PAUSE_PROXY" "AUTHED"
