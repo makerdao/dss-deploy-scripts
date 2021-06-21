@@ -290,6 +290,7 @@ sethSend "$MCD_FLASH" 'rely(address)' "$MCD_PAUSE_PROXY"
 sethSend "$MCD_FLASH" 'deny(address)' "$ETH_FROM"
 
 # Generate addresses.json file
+# shellcheck disable=SC2153
 cat > "$OUT_DIR"/addresses.json <<EOF
 {
     "DEPLOYER": "$(seth --to-checksum-address "$ETH_FROM")",
