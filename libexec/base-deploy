@@ -278,6 +278,17 @@ log "MCD_IAM_AUTO_LINE=$MCD_IAM_AUTO_LINE"
 calldata="$(seth calldata 'rely(address,address,address,address)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VAT" "$MCD_IAM_AUTO_LINE")"
 sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 
+# Deploy DssFlash
+MCD_FLASH=$(dappCreate dss-flash DssFlash "$MCD_JOIN_DAI" "$MCD_VOW")
+log "MCD_FLASH=$MCD_FLASH"
+# Rely DssFlash in the Vat
+set -e
+calldata="$(seth calldata 'rely(address,address,address,address)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VAT" "$MCD_FLASH")"
+sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+# Rely PauseProxy in DssFlash and deny deployer
+sethSend "$MCD_FLASH" 'rely(address)' "$MCD_PAUSE_PROXY"
+sethSend "$MCD_FLASH" 'deny(address)' "$ETH_FROM"
+
 # Generate addresses.json file
 cat > "$OUT_DIR"/addresses.json <<EOF
 {
@@ -314,6 +325,7 @@ cat > "$OUT_DIR"/addresses.json <<EOF
     "FLIPPER_MOM": "$FLIPPER_MOM",
     "CLIPPER_MOM": "$CLIPPER_MOM",
     "MCD_IAM_AUTO_LINE": "$MCD_IAM_AUTO_LINE",
+    "MCD_FLASH": "$MCD_FLASH",
     "PROXY_FACTORY": "$(seth --to-checksum-address "$PROXY_FACTORY")",
     "PROXY_REGISTRY": "$(seth --to-checksum-address "$PROXY_REGISTRY")"$ILKS_VARS,
     "PROXY_PAUSE_ACTIONS": "$PROXY_PAUSE_ACTIONS",
@@ -356,6 +368,10 @@ EOF
 "$LIBEXEC_DIR"/setters/set-ttl "flop"
 
 "$LIBEXEC_DIR"/setters/set-tau "flop"
+
+"$LIBEXEC_DIR"/setters/set-flash-max
+
+"$LIBEXEC_DIR"/setters/set-flash-toll
 
 "$LIBEXEC_DIR"/setters/set-ilks-price
 

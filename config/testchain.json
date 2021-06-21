@@ -22,6 +22,8 @@
   "flop_pad": "50",
   "flop_ttl": "10800",
   "flop_tau": "172800",
+  "flash_max": "500000000",
+  "flash_toll": "0.05",
   "tokens": {
     "ETH": {
       "gemDeploy": {

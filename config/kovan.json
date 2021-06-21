@@ -20,6 +20,8 @@
   "flop_pad": "20",
   "flop_ttl": "3600",
   "flop_tau": "3600",
+  "flash_max": "500000000",
+  "flash_toll": "0.05",
   "import": {
     "gov": "0xAaF64BFCC32d0F15873a02163e7E500671a4ffcD",
     "authority": "0x27E0c9567729Ea6e3241DE74B3dE499b7ddd3fe6",

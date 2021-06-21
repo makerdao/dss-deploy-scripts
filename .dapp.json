@@ -266,6 +266,19 @@
         "url": "https://github.com/makerdao/dss-deploy"
       }
     },
+    "dss-flash_c27e1d7": {
+      "deps": {
+        "ds-test": "ds-test_c0b770c",
+        "dss": "dss_3f30552"
+      },
+      "name": "dss-flash",
+      "repo": {
+        "name": "dss-flash-c27e1d7",
+        "ref": "HEAD",
+        "rev": "c27e1d7ad4515379229feffc473c42bdba8e3ed3",
+        "url": "https://github.com/makerdao/dss-flash"
+      }
+    },
     "dss-gem-joins_76161c5": {
       "deps": {
         "ds-test": "ds-test_c0b770c",
@@ -516,6 +529,7 @@
       "dss-deploy": "dss-deploy_dc7e6d2",
       "dss-deploy-1_2": "dss-deploy_4f7d75e",
       "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_4ec2e84",
+      "dss-flash": "dss-flash_c27e1d7",
       "dss-gem-joins": "dss-gem-joins_76161c5",
       "dss-proxy-actions": "dss-proxy-actions_145aba2",
       "flipper-mom": "flipper-mom_7aa7faa",
