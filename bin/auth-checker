@@ -139,6 +139,7 @@ checkRely "MCD_VAT" "MCD_SPOT" "AUTHED"
 checkRely "MCD_VAT" "MCD_END" "AUTHED"
 checkRely "MCD_VAT" "MCD_ESM" "AUTHED"
 checkRely "MCD_VAT" "MCD_IAM_AUTO_LINE" "AUTHED"
+checkRely "MCD_VAT" "MCD_FLASH" "AUTHED"
 checkRely "MCD_VAT" "MCD_PAUSE_PROXY" "AUTHED"
 for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
@@ -291,3 +292,7 @@ checkAuthority "OSM_MOM" "MCD_ADM"
 # autoLine
 checkRely "MCD_IAM_AUTO_LINE" "DEPLOYER" "NOT_AUTHED"
 checkRely "MCD_IAM_AUTO_LINE" "MCD_PAUSE_PROXY" "AUTHED"
+
+# dssFlash
+checkRely "MCD_FLASH" "DEPLOYER" "NOT_AUTHED"
+checkRely "MCD_FLASH" "MCD_PAUSE_PROXY" "AUTHED"

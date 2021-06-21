@@ -20,6 +20,8 @@
   "flop_pad": "20",
   "flop_ttl": "3600",
   "flop_tau": "3600",
+  "flash_max": "500000000",
+  "flash_toll": "0.05",
   "import": {
     "proxyRegistry": "0x64A436ae831C1672AE81F674CAb8B6775df3475C"
   },

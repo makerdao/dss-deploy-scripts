@@ -44,6 +44,7 @@ let
     clipper-mom = deps'.clipper-mom                 // { name = "clipper-mom-optimized";       solcFlags = "--optimize --optimize-runs 200"; solc = solc-static-versions.solc_0_6_12; };
     ilk-registry = deps'.ilk-registry               // { name = "ilk-registry-optimized";      solcFlags = "--optimize --optimize-runs 1000000"; solc = solc-static-versions.solc_0_6_12; };
     dss-auto-line = deps'.dss-auto-line             // { name = "dss-auto-line-optimized";     solcFlags = "--optimize --optimize-runs 1000000"; solc = solc-static-versions.solc_0_6_11; };
+    dss-flash = deps'.dss-flash                     // { name = "dss-flash";                   solcFlags = ""; solc = solc-static-versions.solc_0_6_12; };
     dss-proxy-actions = deps'.dss-proxy-actions     // { name = "dss-proxy-actions-optimized"; solcFlags = "--optimize"; };
     dss-deploy-1_2 = deps'.dss-deploy-1_2           // { name = "dss-deploy-1_2";              solc = solc-versions.solc_0_5_12; };
     dss-deploy = deps'.dss-deploy                   // { name = "dss-deploy";                  solc = solc-static-versions.solc_0_6_12; };
