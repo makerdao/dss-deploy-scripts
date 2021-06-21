@@ -19,5 +19,5 @@ script:
   - nix-env -iA cachix -f https://cachix.org/api/v1/install
   - echo "trusted-users = root travis" | sudo tee -a /etc/nix/nix.conf && sudo pkill nix-daemon
   - cachix use maker
-  - cachix push maker --watch-store &
+  - cachix push maker --watch-store.unpacking
   - nix-build -j2 | cachix push maker
