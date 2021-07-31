@@ -62,8 +62,21 @@ for token in $tokens; do
                 "$calc"
         fi
 
-        data=()
-        while IFS=$'\n' read -r line; do data+=("$line"); done < <(seth call "$MCD_DEPLOY" "ilks(bytes32)(address,address,address)" "$ilkName")
+        # Just in case there is a reorg or the node is not up to date we keep checking until getting a result
+        keepChecking=true
+        export keepChecking
+        while [[ "$keepChecking" == true ]]
+        do
+            data=()
+            while IFS=$'\n' read -r line; do data+=("$line"); done < <(seth call "$MCD_DEPLOY" "ilks(bytes32)(address,address,address)" "$ilkName")
+
+            if [[ ${data[0]} != "0x0000000000000000000000000000000000000000" || ${data[1]} != "0x0000000000000000000000000000000000000000" ]]; then
+                keepChecking=false
+            else
+                echo "F/Clipper not found, checking again in five seconds..."
+                sleep 5
+            fi
+        done
 
         exports+="
         export ${token}=\"${gemAddr}\"
