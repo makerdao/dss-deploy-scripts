@@ -37,13 +37,16 @@ for token in $tokens; do
         autoLine="$(jq -r ".tokens.${token}.ilks.${ilk} | .autoLine" "$CONFIG_FILE")"
         autoLine=$(echo "$autoLine"*10^45 | bc)
 
+        lineGtZero=$(echo "$line > 0" | bc);
+        autoLineGtZero=$(echo "$autoLine > 0" | bc);
+
         # Only set the line if the auto line module is not active for this collateral
-        if [[ "$line" -gt 0 && "$autoLine" -eq 0 ]]; then
+        if [[ "$lineGtZero" == 1 && "$autoLineGtZero" == 0 ]]; then
             calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VAT" "$ilkBytes32" "$(seth --to-bytes32 "$(seth --from-ascii "line")")" "$line")"
             sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
         fi
 
-        if [[ "$autoLine" -gt 0 ]]; then
+        if [[ "$autoLineGtZero" == 1 ]]; then
             autoLineGap="$(jq -r ".tokens.${token}.ilks.${ilk} | .autoLineGap" "$CONFIG_FILE")"
             autoLineGap=$(echo "$autoLineGap"*10^45 | bc)
             autoLineTtl="$(jq -r ".tokens.${token}.ilks.${ilk} | .autoLineTtl" "$CONFIG_FILE")"
