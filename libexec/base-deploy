@@ -164,13 +164,6 @@ log "CLIPPER_MOM=$CLIPPER_MOM"
 ILK_REGISTRY=$(dappCreate ilk-registry-optimized IlkRegistry "$MCD_VAT" "$MCD_DOG" "$MCD_CAT" "$MCD_SPOT")
 log "ILK_REGISTRY=$ILK_REGISTRY"
 
-for token in $tokens; do
-    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
-    for ilk in $ilks; do
-        sethSend "$ILK_REGISTRY" 'add(address)' "$(eval echo "\$MCD_JOIN_${token}_${ilk}")"
-    done
-done
-
 # As all initial collaterals were deployed, we can remove authority of the deployment contract from the core contracts
 sethSend "$MCD_DEPLOY" 'releaseAuth()'
 for token in $tokens; do
@@ -425,5 +418,7 @@ fi
 "$LIBEXEC_DIR"/setters/set-ilks-flipper-mom
 
 "$LIBEXEC_DIR"/setters/set-ilks-clipper-mom
+
+"$LIBEXEC_DIR"/setters/set-ilks-registry
 
 "$LIBEXEC_DIR"/setters/set-pause-auth-delay
