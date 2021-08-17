@@ -23,15 +23,25 @@ CONFIG_FILE="$OUT_DIR/config.json"
 # Get addresses
 loadAddresses
 
-log "SET ILKS REGISTRY:"
+log "SET PIPS RIGHTS:"
 
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
-    ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
-    for ilk in $ilks; do
-        sethSend "$ILK_REGISTRY" 'add(address)' "$(eval echo "\$MCD_JOIN_${token}_${ilk}")"
-    done
-done
+    pipAddr=$(jq -r ".tokens.${token} | .import.pip | values" "$CONFIG_FILE")
+    if [[ "$pipAddr" == "" ]]; then
+        type=$(jq -r ".tokens.${token} | .pipDeploy | .type | values" "$CONFIG_FILE")
+        if [[ "$type" == "median" ]]; then
+            sethSend "$(eval echo "\$VAL_${token}")" 'rely(address)' "$MCD_PAUSE_PROXY"
+            sethSend "$(eval echo "\$VAL_${token}")" 'deny(address)' "$ETH_FROM"
+        fi
+        if [[ "${type}" == "value" ]]; then
+            sethSend "$(eval echo "\$VAL_${token}")" 'setOwner(address)' "$MCD_PAUSE_PROXY"
+        fi
 
-sethSend "$ILK_REGISTRY" 'rely(address)' "$MCD_PAUSE_PROXY"
-sethSend "$ILK_REGISTRY" 'deny(address)' "$ETH_FROM"
+        osmDelay=$(jq -r ".tokens.${token} | .pipDeploy | .osmDelay" "$CONFIG_FILE")
+        if [[ "$osmDelay" -gt 0 ]]; then
+            sethSend "$(eval echo "\$PIP_${token}")" 'rely(address)' "$MCD_PAUSE_PROXY"
+            sethSend "$(eval echo "\$PIP_${token}")" 'deny(address)' "$ETH_FROM"
+        fi
+    fi
+done

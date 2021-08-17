@@ -110,8 +110,8 @@ rm "$OUT_DIR/load-core-addr-temp"
 
 # Mint Gov Token, send to the Faucet and set permissions if a new token
 if [[ "$newGovToken" == true ]]; then
-    sethSend "$MCD_GOV" 'mint(address,uint256)' "$FAUCET" "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
-    sethSend "$FAUCET" 'gulp(address)' "$MCD_GOV"
+    sethSend "$MCD_GOV" 'mint(address,uint256)' "$ETH_FROM" "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
+    # sethSend "$FAUCET" 'gulp(address)' "$MCD_GOV"
 
     # Use custom authority for the new GOV token
     GOV_GUARD=$(dappCreate mkr-authority MkrAuthority)
@@ -120,8 +120,14 @@ if [[ "$newGovToken" == true ]]; then
     # Set GOV_GUARD as authority of MCD_GOV
     sethSend "$MCD_GOV" 'setAuthority(address)' "$GOV_GUARD"
 
+    # Set ownership to MCD_PAUSE_PROXY
+    sethSend "$MCD_GOV" 'setOwner(address)' "$MCD_PAUSE_PROXY"
+
     # Allow Flop to mint Gov token
     sethSend "$GOV_GUARD" 'rely(address)' "$MCD_FLOP"
+
+    # Set root to MCD_PAUSE_PROXY
+    sethSend "$GOV_GUARD" 'setRoot(address)' "$MCD_PAUSE_PROXY"
 fi
 
 # Deploy Collaterals
@@ -217,10 +223,6 @@ if [[ -z "$MCD_ADM" ]]; then
     log "VOTE_PROXY_FACTORY=$VOTE_PROXY_FACTORY"
 else
     copy vote-proxy
-fi
-
-if [[ -n "$GOV_GUARD" ]]; then
-    sethSend "$GOV_GUARD" 'setRoot(address)' "$MCD_PAUSE_PROXY"
 fi
 
 for token in $tokens; do
@@ -418,6 +420,8 @@ fi
 "$LIBEXEC_DIR"/setters/set-ilks-flipper-mom
 
 "$LIBEXEC_DIR"/setters/set-ilks-clipper-mom
+
+"$LIBEXEC_DIR"/setters/set-pips-rights
 
 "$LIBEXEC_DIR"/setters/set-ilks-registry
 
