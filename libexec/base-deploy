@@ -221,8 +221,19 @@ if [[ -z "$MCD_ADM" ]]; then
     # Deploy Vote Proxy Factory
     VOTE_PROXY_FACTORY=$(dappCreate vote-proxy VoteProxyFactory "$MCD_ADM")
     log "VOTE_PROXY_FACTORY=$VOTE_PROXY_FACTORY"
+
+    # Deploy PollingEmitter
+    MCD_POLLING_EMITTER=$(dappCreate symbolic-voting PollingEmitter)
+    log "MCD_POLLING_EMITTER=$MCD_POLLING_EMITTER"
+
+    # Deploy Vote Delegate Factory
+    VOTE_DELEGATE_PROXY_FACTORY=$(dappCreate vote-delegate-optimized VoteDelegateFactory "$MCD_ADM" "$MCD_POLLING_EMITTER")
+    log "VOTE_DELEGATE_PROXY_FACTORY=$VOTE_DELEGATE_PROXY_FACTORY"
 else
+    copy ds-chief
     copy vote-proxy
+    copy symbolic-voting
+    copy vote-delegate-optimized
 fi
 
 for token in $tokens; do
@@ -265,6 +276,11 @@ if [[ -n $VOTE_PROXY_FACTORY ]]; then
     \"VOTE_PROXY_FACTORY\": \"$VOTE_PROXY_FACTORY\""
 fi
 
+if [[ -n $VOTE_DELEGATE_PROXY_FACTORY ]]; then
+    VOTE_DELEGATE_PROXY_FACTORY_VAR=",
+    \"VOTE_DELEGATE_PROXY_FACTORY\": \"$VOTE_DELEGATE_PROXY_FACTORY\""
+fi
+
 # Deploy DssAutoLine
 MCD_IAM_AUTO_LINE=$(dappCreate dss-auto-line-optimized DssAutoLine "$MCD_VAT")
 log "MCD_IAM_AUTO_LINE=$MCD_IAM_AUTO_LINE"
@@ -292,7 +308,7 @@ cat > "$OUT_DIR"/addresses.json <<EOF
     "FAUCET": "$(seth --to-checksum-address "$FAUCET")",
     "MCD_DEPLOY": "$MCD_DEPLOY",
     "MCD_GOV": "$(seth --to-checksum-address "$MCD_GOV")"$GOV_GUARD_VAR$MCD_IOU_VAR,
-    "MCD_ADM": "$(seth --to-checksum-address "$MCD_ADM")"$VOTE_PROXY_FACTORY_VAR,
+    "MCD_ADM": "$(seth --to-checksum-address "$MCD_ADM")"$VOTE_PROXY_FACTORY_VAR$VOTE_DELEGATE_PROXY_FACTORY_VAR,
     "MCD_VAT": "$(seth --to-checksum-address "$MCD_VAT")",
     "MCD_JUG": "$(seth --to-checksum-address "$MCD_JUG")",
     "MCD_CAT": "$(seth --to-checksum-address "$MCD_CAT")",

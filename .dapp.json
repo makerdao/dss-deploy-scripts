@@ -474,6 +474,18 @@
         "url": "https://github.com/makerdao/proxy-registry"
       }
     },
+    "symbolic-voting_5f9c56f": {
+      "deps": {
+        "ds-test": "ds-test_0a5da56"
+      },
+      "name": "symbolic-voting",
+      "repo": {
+        "name": "symbolic-voting-5f9c56f",
+        "ref": "HEAD",
+        "rev": "5f9c56f0a2109b36cae14e66d78eadd7125fd1e3",
+        "url": "https://github.com/makerdao/symbolic-voting"
+      }
+    },
     "testchain-medians_8b07b03": {
       "deps": {
         "ds-test": "ds-test_0a5da56",
@@ -498,6 +510,18 @@
         "ref": "HEAD",
         "rev": "1b9ba21fe9c24a3d21979dd47ed75234b652cdc1",
         "url": "https://github.com/makerdao/token-faucet"
+      }
+    },
+    "vote-delegate_c2345b7": {
+      "deps": {
+        "ds-test": "ds-test_0a5da56"
+      },
+      "name": "vote-delegate",
+      "repo": {
+        "name": "vote-delegate-c2345b7",
+        "ref": "HEAD",
+        "rev": "c2345b78376d5b0bb24749a97f82fe9171b53394",
+        "url": "https://github.com/makerdao/vote-delegate"
       }
     },
     "vote-proxy_554c58d": {
@@ -539,8 +563,10 @@
       "osm": "osm_205724b",
       "osm-mom": "osm-mom_4be0ad1",
       "proxy-registry": "proxy-registry_aa269ec",
+      "symbolic-voting": "symbolic-voting_5f9c56f",
       "testchain-medians": "testchain-medians_8b07b03",
       "token-faucet": "token-faucet_1b9ba21",
+      "vote-delegate": "vote-delegate_c2345b7",
       "vote-proxy": "vote-proxy_554c58d"
     },
     "name": "dss-deploy-scripts"
