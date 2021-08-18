@@ -21,7 +21,7 @@
 # If no Governance token is defined, create one
 if [ -z "$MCD_GOV" ]
 then
-    MCD_GOV=$(dappCreate ds-token DSToken "$(seth --to-bytes32 "$(seth --from-ascii "MKR")")")
+    MCD_GOV=$(dappCreate ds-token DSToken '"MKR"')
     log "MCD_GOV=$MCD_GOV"
 fi
 

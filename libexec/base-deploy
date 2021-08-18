@@ -211,7 +211,7 @@ sethSend "$MCD_ADM" 'setRootUser(address,bool)' "$PROXY_DEPLOYER" true
 # Deploy chief as new $MCD_ADM if there isn't an authority in the config file
 MCD_ADM=$(jq -r ".import.authority | values" "$CONFIG_FILE")
 if [[ -z "$MCD_ADM" ]]; then
-    MCD_IOU=$(dappCreate ds-token DSToken "$(seth --to-bytes32 "$(seth --from-ascii "IOU")")")
+    MCD_IOU=$(dappCreate ds-token DSToken '"IOU"')
     log "MCD_IOU=$MCD_IOU"
 
     MCD_ADM=$(dappCreate ds-chief DSChief "$MCD_GOV" "$MCD_IOU" 5)
