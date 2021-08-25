@@ -1144,6 +1144,42 @@
           }
         }
       }
+    },
+    "MATIC": {
+      "import": {
+        "gem": "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0",
+        "pip": "0x8874964279302e6d4e523Fb1789981C39a1034Ba"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "ilks": {
+        "A": {
+          "mat": "175",
+          "line": "0",
+          "autoLine": "10000000",
+          "autoLineGap": "3000000",
+          "autoLineTtl": "28800",
+          "dust": "10000",
+          "duty": "3",
+          "clipDeploy": {
+            "chop": "13",
+            "hole": "3000000",
+            "chip": "0.1",
+            "tip": "300",
+            "buf": "130",
+            "tail": "8400",
+            "cusp": "40",
+            "calc": {
+              "type": "StairstepExponentialDecrease",
+              "step": "90",
+              "cut":  "99"
+            },
+            "cm_tolerance": "95"
+          }
+        }
+      }
     }
   }
 }

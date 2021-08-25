@@ -820,6 +820,42 @@
           }
         }
       }
+    },
+    "MATIC": {
+      "import": {
+        "gem": "0x688E1A8830Ea8dd8fe389FA2228997C663b3807A",
+        "pip": "0x13594bF4E0C61946936674217c415c6d555Fec50"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "ilks": {
+        "A": {
+          "mat": "175",
+          "line": "0",
+          "autoLine": "10000000",
+          "autoLineGap": "3000000",
+          "autoLineTtl": "28800",
+          "dust": "100",
+          "duty": "3",
+          "clipDeploy": {
+            "chop": "13",
+            "hole": "5000",
+            "chip": "0.1",
+            "tip": "300",
+            "buf": "130",
+            "tail": "8400",
+            "cusp": "40",
+            "calc": {
+              "type": "StairstepExponentialDecrease",
+              "step": "90",
+              "cut":  "99"
+            },
+            "cm_tolerance": "95"
+          }
+        }
+      }
     }
   }
 }
