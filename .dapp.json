@@ -215,7 +215,7 @@
       "name": "dss-cdp-manager",
       "repo": {
         "name": "dss-cdp-manager-342a1e6",
-        "ref": "dss-v1.2",
+        "ref": "HEAD",
         "rev": "342a1e6d8cdb323a536aa0155e0658ea1cad9a6a",
         "url": "https://github.com/makerdao/dss-cdp-manager"
       }
@@ -279,32 +279,32 @@
         "url": "https://github.com/makerdao/dss-flash"
       }
     },
-    "dss-gem-joins_5e19c46": {
+    "dss-gem-joins_266b43a": {
       "deps": {
         "ds-test": "ds-test_0a5da56",
         "dss-deploy": "dss-deploy_18e9d69"
       },
       "name": "dss-gem-joins",
       "repo": {
-        "name": "dss-gem-joins-5e19c46",
+        "name": "dss-gem-joins-266b43a",
         "ref": "dss-v1.2",
-        "rev": "5e19c46ba5d718ea966adc99dfd77bb126b15ad3",
+        "rev": "266b43a9cf9463b309af1bbf18ee56d5727f88a5",
         "url": "https://github.com/makerdao/dss-gem-joins"
       }
     },
-    "dss-proxy-actions_0b4371a": {
+    "dss-proxy-actions_228f2d5": {
       "deps": {
         "ds-test": "ds-test_0a5da56",
         "ds-weth": "ds-weth_95ff6de",
         "dss-cdp-manager": "dss-cdp-manager_342a1e6",
-        "dss-gem-joins": "dss-gem-joins_5e19c46",
+        "dss-gem-joins": "dss-gem-joins_266b43a",
         "proxy-registry": "proxy-registry_aa269ec"
       },
       "name": "dss-proxy-actions",
       "repo": {
-        "name": "dss-proxy-actions-0b4371a",
+        "name": "dss-proxy-actions-228f2d5",
         "ref": "HEAD",
-        "rev": "0b4371a9a29cc8d882b6e011b6da1ab77833f737",
+        "rev": "228f2d5e8f58cf51da2f70dba753241811b87eb3",
         "url": "https://github.com/makerdao/dss-proxy-actions"
       }
     },
@@ -554,8 +554,8 @@
       "dss-deploy-1_2": "dss-deploy_18e9d69",
       "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_3781fa8",
       "dss-flash": "dss-flash_e19d38a",
-      "dss-gem-joins": "dss-gem-joins_5e19c46",
-      "dss-proxy-actions": "dss-proxy-actions_0b4371a",
+      "dss-gem-joins": "dss-gem-joins_266b43a",
+      "dss-proxy-actions": "dss-proxy-actions_228f2d5",
       "flipper-mom": "flipper-mom_1e879f6",
       "ilk-registry": "ilk-registry_34a354f",
       "mkr-authority": "mkr-authority_990745c",
