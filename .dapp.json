@@ -250,7 +250,7 @@
         "url": "https://github.com/makerdao/dss-deploy"
       }
     },
-    "dss-deploy_d8817ac": {
+    "dss-deploy_898b76b": {
       "deps": {
         "ds-auth": "ds-auth_a51e7ca",
         "ds-pause": "ds-pause_5e798dd",
@@ -260,9 +260,9 @@
       },
       "name": "dss-deploy",
       "repo": {
-        "name": "dss-deploy-d8817ac",
+        "name": "dss-deploy-898b76b",
         "ref": "HEAD",
-        "rev": "d8817ac3ac042e5c9337ad7c7d7e3791ff23674e",
+        "rev": "898b76b63830b99ce410235066a11eac274c45ac",
         "url": "https://github.com/makerdao/dss-deploy"
       }
     },
@@ -550,7 +550,7 @@
       "dsr-manager": "dsr-manager_6d79bcb",
       "dss-auto-line": "dss-auto-line_26ad11b",
       "dss-cdp-manager": "dss-cdp-manager_342a1e6",
-      "dss-deploy": "dss-deploy_d8817ac",
+      "dss-deploy": "dss-deploy_898b76b",
       "dss-deploy-1_2": "dss-deploy_18e9d69",
       "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_3781fa8",
       "dss-flash": "dss-flash_e19d38a",

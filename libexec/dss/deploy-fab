@@ -31,6 +31,7 @@ FLAP_FABtx=$(dappCreate dss-deploy-1_2 FlapFab)
 FLOP_FABtx=$(dappCreate dss-deploy-1_2 FlopFab)
 FLIP_FABtx=$(dappCreate dss-deploy-1_2 FlipFab)
 CLIP_FABtx=$(dappCreate dss-deploy ClipFab)
+CALC_FABtx=$(dappCreate dss-deploy CalcFab)
 SPOT_FABtx=$(dappCreate dss-deploy-1_2 SpotFab)
 POT_FABtx=$(dappCreate dss-deploy-1_2 PotFab)
 END_FABtx=$(dappCreate dss-deploy EndFab)
@@ -50,6 +51,7 @@ test "$(seth receipt "$FLAP_FABtx" status)" -eq 0 && exit 1
 test "$(seth receipt "$FLOP_FABtx" status)" -eq 0 && exit 1
 test "$(seth receipt "$FLIP_FABtx" status)" -eq 0 && exit 1
 test "$(seth receipt "$CLIP_FABtx" status)" -eq 0 && exit 1
+test "$(seth receipt "$CALC_FABtx" status)" -eq 0 && exit 1
 test "$(seth receipt "$SPOT_FABtx" status)" -eq 0 && exit 1
 test "$(seth receipt "$POT_FABtx" status)" -eq 0 && exit 1
 test "$(seth receipt "$END_FABtx" status)" -eq 0 && exit 1
@@ -67,6 +69,7 @@ FLAP_FAB=$(seth receipt "$FLAP_FABtx" contractAddress)
 FLOP_FAB=$(seth receipt "$FLOP_FABtx" contractAddress)
 FLIP_FAB=$(seth receipt "$FLIP_FABtx" contractAddress)
 CLIP_FAB=$(seth receipt "$CLIP_FABtx" contractAddress)
+CALC_FAB=$(seth receipt "$CALC_FABtx" contractAddress)
 SPOT_FAB=$(seth receipt "$SPOT_FABtx" contractAddress)
 POT_FAB=$(seth receipt "$POT_FABtx" contractAddress)
 END_FAB=$(seth receipt "$END_FABtx" contractAddress)
@@ -84,6 +87,7 @@ log "FLAP_FAB=$FLAP_FAB"
 log "FLOP_FAB=$FLOP_FAB"
 log "FLIP_FAB=$FLIP_FAB"
 log "CLIP_FAB=$CLIP_FAB"
+log "CALC_FAB=$CALC_FAB"
 log "SPOT_FAB=$SPOT_FAB"
 log "POT_FAB=$POT_FAB"
 log "END_FAB=$END_FAB"
@@ -103,6 +107,7 @@ export FLAP_FAB=$FLAP_FAB
 export FLOP_FAB=$FLOP_FAB
 export FLIP_FAB=$FLIP_FAB
 export CLIP_FAB=$CLIP_FAB
+export CALC_FAB=$CALC_FAB
 export SPOT_FAB=$SPOT_FAB
 export POT_FAB=$POT_FAB
 export END_FAB=$END_FAB
