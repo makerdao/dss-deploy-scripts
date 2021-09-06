@@ -140,6 +140,7 @@ checkRely "MCD_VAT" "MCD_END" "AUTHED"
 checkRely "MCD_VAT" "MCD_ESM" "AUTHED"
 checkRely "MCD_VAT" "MCD_IAM_AUTO_LINE" "AUTHED"
 checkRely "MCD_VAT" "MCD_FLASH" "AUTHED"
+checkRely "MCD_VAT" "MCD_VEST_DAI" "AUTHED"
 checkRely "MCD_VAT" "MCD_PAUSE_PROXY" "AUTHED"
 for token in $tokens; do
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
@@ -239,13 +240,13 @@ checkAuthority "MCD_ADM" "MCD_ADM"
 checkOwner "MCD_GOV" "MCD_PAUSE_PROXY"
 canCall "MCD_FLOP" "MCD_GOV" "mint(address,uint256)"
 canCall "MCD_FLAP" "MCD_GOV" "burn(address,uint256)"
+canCall "MCD_VEST_MKR" "MCD_GOV" "mint(address,uint256)"
 
 # gov guard
 if [[ -n "$GOV_GUARD" ]]; then
     checkRoot "GOV_GUARD" "MCD_PAUSE_PROXY"
     checkAuthority "MCD_GOV" "GOV_GUARD"
 fi
-
 
 # iou
 if [[ -n "$MCD_IOU" ]]; then
@@ -355,3 +356,13 @@ checkRely "ILK_REGISTRY" "MCD_PAUSE_PROXY" "AUTHED"
 # dssFlash
 checkRely "MCD_FLASH" "DEPLOYER" "NOT_AUTHED"
 checkRely "MCD_FLASH" "MCD_PAUSE_PROXY" "AUTHED"
+
+# chainlog
+checkRely "CHANGELOG" "DEPLOYER" "NOT_AUTHED"
+checkRely "CHANGELOG" "MCD_PAUSE_PROXY" "AUTHED"
+
+# dssVest
+checkRely "MCD_VEST_DAI" "DEPLOYER" "NOT_AUTHED"
+checkRely "MCD_VEST_DAI" "MCD_PAUSE_PROXY" "AUTHED"
+checkRely "MCD_VEST_MKR" "DEPLOYER" "NOT_AUTHED"
+checkRely "MCD_VEST_MKR" "MCD_PAUSE_PROXY" "AUTHED"

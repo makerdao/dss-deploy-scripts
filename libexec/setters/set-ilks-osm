@@ -34,7 +34,7 @@ for token in $tokens; do
             # Deploy OSM
             osm=$(dappCreate osm OSM "$(eval echo "\$VAL_${token}")")
             eval "export PIP_${token}=${osm}"
-            log "PIP_${token}=$osm"
+            logAddr "PIP_${token}" "$osm"
             # Set OSM delay
             sethSend "$osm" 'step(uint16)' "$osmDelay"
             # Whitelist OSM in Medianizer (skip if source is DSValue)
@@ -56,6 +56,8 @@ for token in $tokens; do
                 calldata="$(seth calldata 'file(address,address,address,bytes32,bytes32,address)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_SPOT" "$(seth --to-bytes32 "$(seth --from-ascii "${token}-${ilk}")")" "$(seth --to-bytes32 "$(seth --from-ascii "pip")")" "$osm")"
                 sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
             done
+        else
+            logAddr "PIP_${token}" "$(eval echo "\$VAL_${token}")"
         fi
     fi
 done

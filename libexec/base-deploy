@@ -18,6 +18,18 @@
 # shellcheck source=lib/common.sh
 . "$LIB_DIR/common.sh"
 
+# Deploy Multicall
+newChangelog=false
+CHANGELOG=$(jq -r ".import.chainlog | values" "$CONFIG_FILE")
+if [[ -z "$CHANGELOG" ]]; then
+    CHANGELOG=$(dappCreate dss-chain-log-optimized ChainLog)
+    log "CHANGELOG=$CHANGELOG"
+    newChangelog=true
+else
+    copy dss-chain-log-optimized
+fi
+export CHANGELOG
+
 # Deploy Values or Medians
 tokens=$(jq -r ".tokens | keys_unsorted[]" "$CONFIG_FILE")
 for token in $tokens; do
@@ -28,7 +40,7 @@ for token in $tokens; do
         if [[ "$type" == "median" ]]; then
             contract=$(dappCreate testchain-medians "Median${token}USD")
             eval "export VAL_${token}=${contract}"
-            log "VAL_${token}=$(eval "echo ${contract}")"
+            logAddr "VAL_${token}" "$(eval "echo ${contract}")"
             signers=$(jq -r ".tokens.${token} | .pipDeploy | .signers | .[]" "$CONFIG_FILE")
             # Approve oracle price feed providers
             allsigners=()
@@ -43,25 +55,26 @@ for token in $tokens; do
         if [[ "${type}" == "value" ]]; then
             contract=$(dappCreate ds-value DSValue)
             eval "export VAL_${token}=${contract}"
-            log "VAL_${token}=$(eval "echo ${contract}")"
+            logAddr "VAL_${token}" "$(eval "echo ${contract}")"
         fi
     else
         eval "export VAL_${token}=${pipAddr}"
         copy osm
         copy testchain-medians
+        logAddr "VAL_${token}" "$pipAddr"
     fi
     eval "export PIP_${token}=\$VAL_${token}"
 done
 
 # Deploy Multicall
 MULTICALL=$(dappCreate multicall Multicall)
-log "MULTICALL=$MULTICALL"
+logAddr "MULTICALL" "$MULTICALL"
 
 # Deploy Token Faucet
 FAUCET=$(jq -r ".import.faucet | values" "$CONFIG_FILE")
 if [[ -z "$FAUCET" ]]; then
     FAUCET=$(dappCreate token-faucet RestrictedTokenFaucet)
-    log "FAUCET=$FAUCET"
+    logAddr "FAUCET" "$FAUCET"
     # Allow everyone to use the faucet
     sethSend "$FAUCET" 'hope(address)' "0x0000000000000000000000000000000000000000"
 fi
@@ -70,12 +83,16 @@ fi
 PROXY_REGISTRY=$(jq -r ".import.proxyRegistry | values" "$CONFIG_FILE")
 if [[ -z "$PROXY_REGISTRY" ]]; then
     PROXY_FACTORY=$(dappCreate ds-proxy DSProxyFactory)
-    log "PROXY_FACTORY=$PROXY_FACTORY"
+    logAddr "PROXY_FACTORY" "$PROXY_FACTORY"
     PROXY_REGISTRY=$(dappCreate proxy-registry ProxyRegistry "$PROXY_FACTORY")
-    log "PROXY_REGISTRY=$PROXY_REGISTRY"
+    logAddr "PROXY_REGISTRY" "$PROXY_REGISTRY"
 else
     PROXY_FACTORY=$(seth storage "$PROXY_REGISTRY" 1)
     PROXY_FACTORY=0x${PROXY_FACTORY:26:66}
+    logAddr "PROXY_FACTORY" "$PROXY_FACTORY"
+    logAddr "PROXY_REGISTRY" "$PROXY_REGISTRY"
+    copy ds-proxy
+    copy proxy-registry
 fi
 
 # Deploy Fabs
@@ -115,7 +132,7 @@ if [[ "$newGovToken" == true ]]; then
 
     # Use custom authority for the new GOV token
     GOV_GUARD=$(dappCreate mkr-authority MkrAuthority)
-    log "GOV_GUARD=$GOV_GUARD"
+    logAddr "GOV_GUARD" "$GOV_GUARD"
 
     # Set GOV_GUARD as authority of MCD_GOV
     sethSend "$MCD_GOV" 'setAuthority(address)' "$GOV_GUARD"
@@ -138,37 +155,37 @@ rm "$OUT_DIR/load-ilks-addr-temp"
 
 # Deploy Proxy Actions
 PROXY_ACTIONS=$(dappCreate dss-proxy-actions-optimized DssProxyActions)
-log "PROXY_ACTIONS=$PROXY_ACTIONS"
+logAddr "PROXY_ACTIONS" "$PROXY_ACTIONS"
 PROXY_ACTIONS_END=$(dappCreate dss-proxy-actions-optimized DssProxyActionsEnd)
-log "PROXY_ACTIONS_END=$PROXY_ACTIONS_END"
+logAddr "PROXY_ACTIONS_END" "$PROXY_ACTIONS_END"
 PROXY_ACTIONS_DSR=$(dappCreate dss-proxy-actions-optimized DssProxyActionsDsr)
-log "PROXY_ACTIONS_DSR=$PROXY_ACTIONS_DSR"
+logAddr "PROXY_ACTIONS_DSR" "$PROXY_ACTIONS_DSR"
 
 # Deploy CdpManager
 CDP_MANAGER=$(dappCreate dss-cdp-manager DssCdpManager "$MCD_VAT")
-log "CDP_MANAGER=$CDP_MANAGER"
+logAddr "CDP_MANAGER" "$CDP_MANAGER"
 GET_CDPS=$(dappCreate dss-cdp-manager GetCdps)
-log "GET_CDPS=$GET_CDPS"
+logAddr "GET_CDPS" "$GET_CDPS"
 
 # Deploy DsrManager
 DSR_MANAGER=$(dappCreate dsr-manager DsrManager "$MCD_POT" "$MCD_JOIN_DAI")
-log "DSR_MANAGER=$DSR_MANAGER"
+logAddr "DSR_MANAGER" "$DSR_MANAGER"
 
 # Deploy OsmMom
 OSM_MOM=$(dappCreate osm-mom OsmMom)
-log "OSM_MOM=$OSM_MOM"
+logAddr "OSM_MOM" "$OSM_MOM"
 
 # Deploy FlipperMom
 FLIPPER_MOM=$(dappCreate flipper-mom FlipperMom "$MCD_CAT")
-log "FLIPPER_MOM=$FLIPPER_MOM"
+logAddr "FLIPPER_MOM" "$FLIPPER_MOM"
 
 # Deploy ClipperMom
 CLIPPER_MOM=$(dappCreate clipper-mom-optimized ClipperMom "$MCD_SPOT")
-log "CLIPPER_MOM=$CLIPPER_MOM"
+logAddr "CLIPPER_MOM" "$CLIPPER_MOM"
 
 # Deploy IlkRegistry
 ILK_REGISTRY=$(dappCreate ilk-registry-optimized IlkRegistry "$MCD_VAT" "$MCD_DOG" "$MCD_CAT" "$MCD_SPOT")
-log "ILK_REGISTRY=$ILK_REGISTRY"
+logAddr "ILK_REGISTRY" "$ILK_REGISTRY"
 
 # As all initial collaterals were deployed, we can remove authority of the deployment contract from the core contracts
 sethSend "$MCD_DEPLOY" 'releaseAuth()'
@@ -191,11 +208,11 @@ done
 
 # Deploy GovActions - Library functions for the Pause
 MCD_GOV_ACTIONS=$(dappCreate dss-deploy-1_2 GovActions)
-log "MCD_GOV_ACTIONS=$MCD_GOV_ACTIONS"
+logAddr "MCD_GOV_ACTIONS" "$MCD_GOV_ACTIONS"
 
 # Deploy Pause Proxy Actions (support contract for executing initial set up of the dss system)
 PROXY_PAUSE_ACTIONS=$(dappCreate dss-deploy-pause-proxy-actions DssDeployPauseProxyActions)
-log "PROXY_PAUSE_ACTIONS=$PROXY_PAUSE_ACTIONS"
+logAddr "PROXY_PAUSE_ACTIONS" "$PROXY_PAUSE_ACTIONS"
 
 # Get a proxy for the deployer address (create if didn't previously exist)
 PROXY_DEPLOYER=$(seth call "$PROXY_REGISTRY" 'proxies(address)(address)' "$ETH_FROM")
@@ -212,24 +229,26 @@ sethSend "$MCD_ADM" 'setRootUser(address,bool)' "$PROXY_DEPLOYER" true
 MCD_ADM=$(jq -r ".import.authority | values" "$CONFIG_FILE")
 if [[ -z "$MCD_ADM" ]]; then
     MCD_IOU=$(dappCreate ds-token DSToken '"IOU"')
-    log "MCD_IOU=$MCD_IOU"
+    logAddr "MCD_IOU" "$MCD_IOU"
 
     MCD_ADM=$(dappCreate ds-chief DSChief "$MCD_GOV" "$MCD_IOU" 5)
-    log "MCD_ADM=$MCD_ADM"
+    logAddr "MCD_ADM" "$MCD_ADM"
     sethSend "$MCD_IOU" 'setOwner(address)' "${MCD_ADM}"
 
     # Deploy Vote Proxy Factory
     VOTE_PROXY_FACTORY=$(dappCreate vote-proxy VoteProxyFactory "$MCD_ADM")
-    log "VOTE_PROXY_FACTORY=$VOTE_PROXY_FACTORY"
+    logAddr "VOTE_PROXY_FACTORY" "$VOTE_PROXY_FACTORY"
 
     # Deploy PollingEmitter
     MCD_POLLING_EMITTER=$(dappCreate symbolic-voting PollingEmitter)
-    log "MCD_POLLING_EMITTER=$MCD_POLLING_EMITTER"
+    logAddr "MCD_POLLING_EMITTER" "$MCD_POLLING_EMITTER"
 
     # Deploy Vote Delegate Factory
     VOTE_DELEGATE_PROXY_FACTORY=$(dappCreate vote-delegate-optimized VoteDelegateFactory "$MCD_ADM" "$MCD_POLLING_EMITTER")
-    log "VOTE_DELEGATE_PROXY_FACTORY=$VOTE_DELEGATE_PROXY_FACTORY"
+    logAddr "VOTE_DELEGATE_PROXY_FACTORY" "$VOTE_DELEGATE_PROXY_FACTORY"
 else
+    logAddr "MCD_IOU" "$(seth call "$MCD_ADM" "IOU()(address)")"
+    logAddr "MCD_ADM" "$MCD_ADM"
     copy ds-chief
     copy vote-proxy
     copy symbolic-voting
@@ -283,14 +302,14 @@ fi
 
 # Deploy DssAutoLine
 MCD_IAM_AUTO_LINE=$(dappCreate dss-auto-line-optimized DssAutoLine "$MCD_VAT")
-log "MCD_IAM_AUTO_LINE=$MCD_IAM_AUTO_LINE"
+logAddr "MCD_IAM_AUTO_LINE" "$MCD_IAM_AUTO_LINE"
 # Rely DssAutoLine in the Vat
 calldata="$(seth calldata 'rely(address,address,address,address)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VAT" "$MCD_IAM_AUTO_LINE")"
 sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 
 # Deploy DssFlash
 MCD_FLASH=$(dappCreate dss-flash DssFlash "$MCD_JOIN_DAI" "$MCD_VOW")
-log "MCD_FLASH=$MCD_FLASH"
+logAddr "MCD_FLASH" "$MCD_FLASH"
 # Rely DssFlash in the Vat
 set -e
 calldata="$(seth calldata 'rely(address,address,address,address)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VAT" "$MCD_FLASH")"
@@ -299,11 +318,28 @@ sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS
 sethSend "$MCD_FLASH" 'rely(address)' "$MCD_PAUSE_PROXY"
 sethSend "$MCD_FLASH" 'deny(address)' "$ETH_FROM"
 
+# Deploy both DssVest
+MCD_VEST_DAI=$(dappCreate dss-vest-optimized DssVestSuckable "$CHANGELOG")
+logAddr "MCD_VEST_DAI" "$MCD_VEST_DAI"
+sethSend "$MCD_VEST_DAI" 'rely(address)' "$MCD_PAUSE_PROXY"
+sethSend "$MCD_VEST_DAI" 'deny(address)' "$ETH_FROM"
+calldata="$(seth calldata 'rely(address,address,address,address)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VAT" "$MCD_VEST_DAI")"
+sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+MCD_VEST_MKR=$(dappCreate dss-vest-optimized DssVestMintable "$MCD_GOV")
+logAddr "MCD_VEST_MKR" "$MCD_VEST_MKR"
+sethSend "$MCD_VEST_MKR" 'rely(address)' "$MCD_PAUSE_PROXY"
+sethSend "$MCD_VEST_MKR" 'deny(address)' "$ETH_FROM"
+if [[ "$newGovToken" == true ]]; then
+    calldata="$(seth calldata 'rely(address,address,address,address)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$GOV_GUARD" "$MCD_VEST_MKR")"
+    sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
+fi
+
 # Generate addresses.json file
 # shellcheck disable=SC2153
 cat > "$OUT_DIR"/addresses.json <<EOF
 {
     "DEPLOYER": "$(seth --to-checksum-address "$ETH_FROM")",
+    "CHANGELOG": "$CHANGELOG",
     "MULTICALL": "$MULTICALL",
     "FAUCET": "$(seth --to-checksum-address "$FAUCET")",
     "MCD_DEPLOY": "$MCD_DEPLOY",
@@ -340,6 +376,8 @@ cat > "$OUT_DIR"/addresses.json <<EOF
     "CLIPPER_MOM": "$CLIPPER_MOM",
     "MCD_IAM_AUTO_LINE": "$MCD_IAM_AUTO_LINE",
     "MCD_FLASH": "$MCD_FLASH",
+    "MCD_VEST_DAI": "$MCD_VEST_DAI",
+    "MCD_VEST_MKR": "$MCD_VEST_MKR",
     "PROXY_FACTORY": "$(seth --to-checksum-address "$PROXY_FACTORY")",
     "PROXY_REGISTRY": "$(seth --to-checksum-address "$PROXY_REGISTRY")"$ILKS_VARS,
     "PROXY_PAUSE_ACTIONS": "$PROXY_PAUSE_ACTIONS",
@@ -445,3 +483,8 @@ fi
 "$LIBEXEC_DIR"/setters/set-ilks-registry
 
 "$LIBEXEC_DIR"/setters/set-pause-auth-delay
+
+if [[ "$newChangelog" == true ]]; then
+    sethSend "$CHANGELOG" 'rely(address)' "$MCD_PAUSE_PROXY"
+    sethSend "$CHANGELOG" 'deny(address)' "$ETH_FROM"
+fi

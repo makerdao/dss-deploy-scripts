@@ -23,6 +23,7 @@
   "flash_max": "500000000",
   "flash_toll": "0.05",
   "import": {
+    "chainlog": "0xdA0Ab1e0017DEbCd72Be8599041a2aa3bA7e740F",
     "gov": "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2",
     "authority": "0x0a3f6849f78076aefaDf113F5BED87720274dDC0",
     "proxyRegistry": "0x4678f0a6958e4D2Bc4F1BAF7Bc52E8F3564f3fE4",

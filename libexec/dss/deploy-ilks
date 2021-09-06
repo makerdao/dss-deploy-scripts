@@ -28,8 +28,8 @@ for token in $tokens; do
         IFS='/' read -ra gemSrc <<< "$(jq -r ".tokens.${token} | .gemDeploy.src | values" "$CONFIG_FILE")"
         IFS=' ' read -ra gemParams <<< "$(jq -r ".tokens.${token} | .gemDeploy.params[]" "$CONFIG_FILE" | tr '\r\n' ' ')"
         gemAddr=$(dappCreate "${gemSrc[@]}" "${gemParams[@]}")
-        log "${token}=${gemAddr}"
     fi
+    logAddr "${token}" "${gemAddr}"
 
     ilks=$(jq -r ".tokens.${token}.ilks | keys_unsorted[]" "$CONFIG_FILE")
     joinSrc="$(jq -r ".tokens.${token} | .joinDeploy.src | values" "$CONFIG_FILE")"
@@ -39,7 +39,7 @@ for token in $tokens; do
         ilkEnvVar="${token}_${ilk}"
 
         joinAddr=$(dappCreate dss-gem-joins "$joinSrc" "$MCD_VAT" "$ilkName" "$gemAddr" "${joinExtraParams[@]}")
-        log "MCD_JOIN_${ilkEnvVar}=$(eval "echo ${joinAddr}")"
+        logAddr "MCD_JOIN_${ilkEnvVar}" "$(eval "echo ${joinAddr}")"
 
         flipDeploy="$(jq ".tokens.${token}.ilks.${ilk} | .flipDeploy!=null" "$CONFIG_FILE")"
 
@@ -51,7 +51,7 @@ for token in $tokens; do
         else
             calcType=$(jq -r ".tokens.${token}.ilks.${ilk}.clipDeploy.calc.type | values" "$CONFIG_FILE")
             calc=$(dappCreate dss-deploy "$calcType")
-            log "MCD_CLIP_CALC_${ilkEnvVar}=${calc}"
+            logAddr "MCD_CLIP_CALC_${ilkEnvVar}" "${calc}"
             sethSend "$calc" 'rely(address)' "$MCD_PAUSE_PROXY"
             sethSend "$calc" 'deny(address)' "$ETH_FROM"
 
@@ -84,12 +84,12 @@ for token in $tokens; do
         "
 
         if [[ "$flipDeploy" == true ]]; then
-            log "MCD_FLIP_${ilkEnvVar}=${data[0]}"
+            logAddr "MCD_FLIP_${ilkEnvVar}" "${data[0]}"
             exports+="
             export MCD_FLIP_${ilkEnvVar}=\"${data[0]}\"
             "
         else
-            log "MCD_CLIP_${ilkEnvVar}=${data[1]}"
+            logAddr "MCD_CLIP_${ilkEnvVar}" "${data[1]}"
             exports+="
             export MCD_CLIP_${ilkEnvVar}=\"${data[1]}\"
             export MCD_CLIP_CALC_${ilkEnvVar}=\"${calc}\"

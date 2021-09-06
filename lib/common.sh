@@ -133,6 +133,12 @@ log() {
     echo ""
 }
 
+logAddr() {
+    sethSend "$CHANGELOG" 'setAddress(bytes32,address)' "$(seth --to-bytes32 "$(seth --from-ascii "$1")")" "$2"
+    printf '%b\n' "${GREEN}${1}=${2}${NC}"
+    echo ""
+}
+
 toUpper() {
     echo "$1" | tr '[:lower:]' '[:upper:]'
 }

@@ -220,6 +220,18 @@
         "url": "https://github.com/makerdao/dss-cdp-manager"
       }
     },
+    "dss-chain-log_1a1131d": {
+      "deps": {
+        "ds-test": "ds-test_0a5da56"
+      },
+      "name": "dss-chain-log",
+      "repo": {
+        "name": "dss-chain-log-1a1131d",
+        "ref": "HEAD",
+        "rev": "1a1131d5a6334d2b6a5dbfb3495514462ed528a8",
+        "url": "https://github.com/makerdao/dss-chain-log"
+      }
+    },
     "dss-deploy-pause-proxy-actions_3781fa8": {
       "deps": {
         "ds-proxy": "ds-proxy_e17a252",
@@ -306,6 +318,18 @@
         "ref": "HEAD",
         "rev": "228f2d5e8f58cf51da2f70dba753241811b87eb3",
         "url": "https://github.com/makerdao/dss-proxy-actions"
+      }
+    },
+    "dss-vest_cbe7426": {
+      "deps": {
+        "ds-test": "ds-test_0a5da56"
+      },
+      "name": "dss-vest",
+      "repo": {
+        "name": "dss-vest-cbe7426",
+        "ref": "HEAD",
+        "rev": "cbe7426e6bb8c2ae81dd78da5f4be19c53071082",
+        "url": "https://github.com/makerdao/dss-vest"
       }
     },
     "dss_8144130": {
@@ -550,12 +574,14 @@
       "dsr-manager": "dsr-manager_6d79bcb",
       "dss-auto-line": "dss-auto-line_26ad11b",
       "dss-cdp-manager": "dss-cdp-manager_342a1e6",
+      "dss-chain-log": "dss-chain-log_1a1131d",
       "dss-deploy": "dss-deploy_898b76b",
       "dss-deploy-1_2": "dss-deploy_18e9d69",
       "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_3781fa8",
       "dss-flash": "dss-flash_e19d38a",
       "dss-gem-joins": "dss-gem-joins_266b43a",
       "dss-proxy-actions": "dss-proxy-actions_228f2d5",
+      "dss-vest": "dss-vest_cbe7426",
       "flipper-mom": "flipper-mom_1e879f6",
       "ilk-registry": "ilk-registry_34a354f",
       "mkr-authority": "mkr-authority_990745c",
