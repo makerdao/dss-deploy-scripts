@@ -215,7 +215,7 @@
       "name": "dss-cdp-manager",
       "repo": {
         "name": "dss-cdp-manager-342a1e6",
-        "ref": "HEAD",
+        "ref": "dss-v1.2",
         "rev": "342a1e6d8cdb323a536aa0155e0658ea1cad9a6a",
         "url": "https://github.com/makerdao/dss-cdp-manager"
       }
