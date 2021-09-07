@@ -29,7 +29,7 @@ fi
 MCD_DEPLOY=$(dappCreate dss-deploy-optimized-runs-1 DssDeploy)
 logAddr "MCD_DEPLOY" "$MCD_DEPLOY"
 
-sethSend "$MCD_DEPLOY" "addFabs1(address,address,address,address,address,address,address)" "$VAT_FAB" "$JUG_FAB" "$VOW_FAB" "$CAT_FAB" "$DOG_FAB" "$DAI_FAB" "$MCD_JOIN_FAB"
+sethSend "$MCD_DEPLOY" "addFabs1(address,address,address,address,address,address,address)" "$VAT_FAB" "$JUG_FAB" "$VOW_FAB" "$CAT_FAB" "$DOG_FAB" "$DAI_FAB" "$MCD_JOIN_DAI_FAB"
 sethSend "$MCD_DEPLOY" "addFabs2(address,address,address,address,address,address,address,address,address,address)" "$FLAP_FAB" "$FLOP_FAB" "$FLIP_FAB" "$CLIP_FAB" "$CALC_FAB" "$SPOT_FAB" "$POT_FAB" "$END_FAB" "$ESM_FAB" "$PAUSE_FAB"
 
 # If no Authority is defined, create one
