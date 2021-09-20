@@ -1181,6 +1181,42 @@
           }
         }
       }
+    },
+    "GUNIV3DAIUSDC1": {
+      "import": {
+        "gem": "0xAbDDAfB225e10B90D798bB8A886238Fb835e2053",
+        "pip": "0x7F6d78CC0040c87943a0e0c140De3F77a273bd58"
+      },
+      "joinDeploy": {
+        "src": "GemJoin",
+        "extraParams": []
+      },
+      "ilks": {
+        "A": {
+          "mat": "105",
+          "line": "0",
+          "autoLine": "10000000",
+          "autoLineGap": "10000000",
+          "autoLineTtl": "28800",
+          "dust": "10000",
+          "duty": "1",
+          "clipDeploy": {
+            "chop": "13",
+            "hole": "5000000",
+            "chip": "0.1",
+            "tip": "300",
+            "buf": "105",
+            "tail": "13200",
+            "cusp": "90",
+            "calc": {
+              "type": "StairstepExponentialDecrease",
+              "step": "120",
+              "cut":  "99.9"
+            },
+            "cm_tolerance": "95"
+          }
+        }
+      }
     }
   }
 }
