@@ -333,6 +333,9 @@ if [[ "$newGovToken" == true ]]; then
     calldata="$(seth calldata 'rely(address,address,address,address)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$GOV_GUARD" "$MCD_VEST_MKR")"
     sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi
+MCD_VEST_MKR_TREASURY=$(dappCreate dss-vest-optimized DssVestTransferrable "$MCD_PAUSE_PROXY" "$MCD_GOV")
+sethSend "$MCD_VEST_MKR_TREASURY" 'rely(address)' "$MCD_PAUSE_PROXY"
+sethSend "$MCD_VEST_MKR_TREASURY" 'deny(address)' "$ETH_FROM"
 
 # Generate addresses.json file
 # shellcheck disable=SC2153
@@ -378,6 +381,7 @@ cat > "$OUT_DIR"/addresses.json <<EOF
     "MCD_FLASH": "$MCD_FLASH",
     "MCD_VEST_DAI": "$MCD_VEST_DAI",
     "MCD_VEST_MKR": "$MCD_VEST_MKR",
+    "MCD_VEST_MKR_TREASURY": "$MCD_VEST_MKR_TREASURY",
     "PROXY_FACTORY": "$(seth --to-checksum-address "$PROXY_FACTORY")",
     "PROXY_REGISTRY": "$(seth --to-checksum-address "$PROXY_REGISTRY")"$ILKS_VARS,
     "PROXY_PAUSE_ACTIONS": "$PROXY_PAUSE_ACTIONS",
