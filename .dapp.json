@@ -291,44 +291,44 @@
         "url": "https://github.com/makerdao/dss-flash"
       }
     },
-    "dss-gem-joins_ca75095": {
+    "dss-gem-joins_404bfc8": {
       "deps": {
         "ds-test": "ds-test_0a5da56",
         "dss-deploy": "dss-deploy_a93cb6e"
       },
       "name": "dss-gem-joins",
       "repo": {
-        "name": "dss-gem-joins-ca75095",
+        "name": "dss-gem-joins-404bfc8",
         "ref": "v1.2",
-        "rev": "ca75095ec5e73b5d600c160eb05dc7a11b0cab3f",
+        "rev": "404bfc89b367cec183bafd6cc0dc34e76e618942",
         "url": "https://github.com/makerdao/dss-gem-joins"
       }
     },
-    "dss-proxy-actions_5ada06b": {
+    "dss-proxy-actions_0656578": {
       "deps": {
         "ds-test": "ds-test_0a5da56",
         "ds-weth": "ds-weth_b23b478",
         "dss-cdp-manager": "dss-cdp-manager_d88d488",
-        "dss-gem-joins": "dss-gem-joins_ca75095",
+        "dss-gem-joins": "dss-gem-joins_404bfc8",
         "proxy-registry": "proxy-registry_981715a"
       },
       "name": "dss-proxy-actions",
       "repo": {
-        "name": "dss-proxy-actions-5ada06b",
+        "name": "dss-proxy-actions-0656578",
         "ref": "HEAD",
-        "rev": "5ada06b7eda23229cd975c3e3576707d28d6fb55",
+        "rev": "06565787eed759d96549b496a3a4307f8fc82856",
         "url": "https://github.com/makerdao/dss-proxy-actions"
       }
     },
-    "dss-vest_cbe7426": {
+    "dss-vest_68dab07": {
       "deps": {
         "ds-test": "ds-test_0a5da56"
       },
       "name": "dss-vest",
       "repo": {
-        "name": "dss-vest-cbe7426",
+        "name": "dss-vest-68dab07",
         "ref": "HEAD",
-        "rev": "cbe7426e6bb8c2ae81dd78da5f4be19c53071082",
+        "rev": "68dab077117b92d278f6845150d6ae8335906120",
         "url": "https://github.com/makerdao/dss-vest"
       }
     },
@@ -579,9 +579,9 @@
       "dss-deploy-1_2": "dss-deploy_a93cb6e",
       "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_dedf657",
       "dss-flash": "dss-flash_637008d",
-      "dss-gem-joins": "dss-gem-joins_ca75095",
-      "dss-proxy-actions": "dss-proxy-actions_5ada06b",
-      "dss-vest": "dss-vest_cbe7426",
+      "dss-gem-joins": "dss-gem-joins_404bfc8",
+      "dss-proxy-actions": "dss-proxy-actions_0656578",
+      "dss-vest": "dss-vest_68dab07",
       "flipper-mom": "flipper-mom_3a57ea1",
       "ilk-registry": "ilk-registry_fc08245",
       "mkr-authority": "mkr-authority_fc19f8a",
