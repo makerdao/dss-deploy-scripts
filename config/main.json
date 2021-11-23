@@ -279,6 +279,30 @@
             },
             "cm_tolerance": "50"
           }
+        },
+        "B": {
+          "mat": "130",
+          "line": "0",
+          "autoLine": "500000000",
+          "autoLineGap": "30000000",
+          "autoLineTtl": "28800",
+          "dust": "30000",
+          "duty": "7",
+          "clipDeploy": {
+            "chop": "13",
+            "hole": "25000000",
+            "chip": "0.1",
+            "tip": "300",
+            "buf": "120",
+            "tail": "5400",
+            "cusp": "40",
+            "calc": {
+              "type": "StairstepExponentialDecrease",
+              "step": "60",
+              "cut":  "99"
+            },
+            "cm_tolerance": "50"
+          }
         }
       }
     },
