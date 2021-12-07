@@ -302,6 +302,30 @@
               "cut":  "99"
             },
             "cm_tolerance": "50"
+          },
+          "C": {
+            "mat": "175",
+            "line": "0",
+            "autoLine": "1000000000",
+            "autoLineGap": "100000000",
+            "autoLineTtl": "28800",
+            "dust": "7500",
+            "duty": "1.5",
+            "clipDeploy": {
+              "chop": "13",
+              "hole": "25000000",
+              "chip": "0.1",
+              "tip": "300",
+              "buf": "120",
+              "tail": "5400",
+              "cusp": "40",
+              "calc": {
+                "type": "StairstepExponentialDecrease",
+                "step": "90",
+                "cut":  "99"
+              },
+              "cm_tolerance": "50"
+            }
           }
         }
       }

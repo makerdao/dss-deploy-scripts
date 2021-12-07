@@ -497,6 +497,22 @@
             "ttl": "3600",
             "tau": "3600"
           }
+        },
+        "C": {
+          "mat": "175",
+          "line": "1000000",
+          "autoLine": "0",
+          "autoLineGap": "0",
+          "autoLineTtl": "0",
+          "dust": "100",
+          "duty": "20",
+          "flipDeploy": {
+            "chop": "8",
+            "dunk": "500",
+            "beg": "1",
+            "ttl": "3600",
+            "tau": "3600"
+          }
         }
       }
     },
