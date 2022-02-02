@@ -12,7 +12,7 @@
   "jug_base": "0",
   "pot_dsr": "0.01",
   "end_wait": "262800",
-  "esm_min": "50000",
+  "esm_min": "100000",
   "flap_beg": "4",
   "flap_ttl": "1800",
   "flap_tau": "259200",
