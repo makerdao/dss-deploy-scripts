@@ -235,6 +235,11 @@ if [[ -z "$MCD_ADM" ]]; then
     logAddr "MCD_ADM" "$MCD_ADM"
     sethSend "$MCD_IOU" 'setOwner(address)' "${MCD_ADM}"
 
+    # lock more then threshold (8k MKR)
+    sethSend "$MCD_ADM" "lock(uint256)" "$(seth --to-uint256 "$(seth --to-wei 8001 ETH)")"
+    sethSend "$MCD_ADM" "vote(address[])" "[0x0000000000000000000000000000000000000000]"
+    sethSend "$MCD_ADM" "launch()"
+
     # Deploy Vote Proxy Factory
     VOTE_PROXY_FACTORY=$(dappCreate vote-proxy VoteProxyFactory "$MCD_ADM")
     logAddr "VOTE_PROXY_FACTORY" "$VOTE_PROXY_FACTORY"
