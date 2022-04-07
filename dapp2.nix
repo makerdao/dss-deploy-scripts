@@ -1,4 +1,4 @@
-{ solidityPackage, solc, dapp2 }:
+{ solidityPackage, solc }:
 
 let
   inherit (builtins) map listToAttrs attrNames attrValues length fromJSON readFile;
@@ -11,14 +11,13 @@ let
 
   defaults = {
     inherit solc;
-    test-hevm = dapp2.test-hevm;
-    doCheck = true;
+    doCheck = false;
   };
 
   package = spec: let
     spec' = defaults // (removeAttrs spec [ "repo" "repo'" "src'" ]);
     deps = map (spec:
-      package (spec // { inherit (spec') solc test-hevm doCheck; })
+      package (spec // { inherit (spec') solc doCheck; })
     ) (attrValues spec'.deps);
   in solidityPackage (spec' // { inherit deps; });
 

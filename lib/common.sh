@@ -101,12 +101,16 @@ copy() {
     copyMeta "$lib"
 }
 
+# shellcheck disable=SC2001
+dapp0_31_1="$(echo "$PATH" | sed 's/.*\:\(.*\)dapp-0.31.1\(.*\)/\1/')dapp-0.31.1/bin/dapp"
+export dapp0_31_1
+
 dappCreate() {
     set -e
     local lib; lib=$1
     local class; class=$2
     ETH_NONCE=$(cat "$NONCE_TMP_FILE")
-    DAPP_OUT="$DAPP_LIB/$lib/out" ETH_NONCE="$ETH_NONCE" dapp create "$class" "${@:3}"
+    DAPP_OUT="$DAPP_LIB/$lib/out" ETH_NONCE="$ETH_NONCE" "$dapp0_31_1" create "$class" "${@:3}"
     echo $((ETH_NONCE + 1)) > "$NONCE_TMP_FILE"
     copy "$lib"
 }

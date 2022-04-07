@@ -58,6 +58,10 @@ let
 in makerScriptPackage {
   name = "dss-deploy-scripts";
 
+  extraBins = [
+    dappPkgsVersions.hevm-0_43_1.dapp
+  ];
+
   # Specify files to add to build environment
   src = lib.sourceByRegex ./. [
     "bin" "bin/.*"
