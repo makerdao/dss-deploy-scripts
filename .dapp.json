@@ -396,6 +396,18 @@
         "url": "https://github.com/makerdao/esm"
       }
     },
+    "flash-killer_7027492": {
+      "deps": {
+        "ds-test": "ds-test_0a5da56"
+      },
+      "name": "flash-killer",
+      "repo": {
+        "name": "flash-killer-7027492",
+        "ref": "HEAD",
+        "rev": "70274926eb9ee4519ba7ebbbcc6ba94c1b3e89e8",
+        "url": "https://github.com/makerdao/flash-killer"
+      }
+    },
     "flipper-mom_3a57ea1": {
       "deps": {
         "ds-test": "ds-test_0a5da56"
@@ -582,6 +594,7 @@
       "dss-gem-joins": "dss-gem-joins_b91680b",
       "dss-proxy-actions": "dss-proxy-actions_6d6b293",
       "dss-vest": "dss-vest_8b10556",
+      "flash-killer": "flash-killer_7027492",
       "flipper-mom": "flipper-mom_3a57ea1",
       "ilk-registry": "ilk-registry_81ba973",
       "mkr-authority": "mkr-authority_fc19f8a",

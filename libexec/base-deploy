@@ -314,8 +314,15 @@ logAddr "MCD_FLASH" "$MCD_FLASH"
 set -e
 calldata="$(seth calldata 'rely(address,address,address,address)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VAT" "$MCD_FLASH")"
 sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
-# Rely PauseProxy in DssFlash and deny deployer
+
+# Deploy FlashKiller
+FLASH_KILLER=$(dappCreate flash-killer FlashKiller "$MCD_VAT" "$MCD_FLASH")
+logAddr "FLASH_KILLER" "$FLASH_KILLER"
+
+# Rely PauseProxy, ESM and FlashKiller in DssFlash and deny deployer
 sethSend "$MCD_FLASH" 'rely(address)' "$MCD_PAUSE_PROXY"
+sethSend "$MCD_FLASH" 'rely(address)' "$MCD_ESM"
+sethSend "$MCD_FLASH" 'rely(address)' "$FLASH_KILLER"
 sethSend "$MCD_FLASH" 'deny(address)' "$ETH_FROM"
 
 # Deploy both DssVest
@@ -379,6 +386,7 @@ cat > "$OUT_DIR"/addresses.json <<EOF
     "CLIPPER_MOM": "$CLIPPER_MOM",
     "MCD_IAM_AUTO_LINE": "$MCD_IAM_AUTO_LINE",
     "MCD_FLASH": "$MCD_FLASH",
+    "FLASH_KILLER": "$FLASH_KILLER",
     "MCD_VEST_DAI": "$MCD_VEST_DAI",
     "MCD_VEST_MKR": "$MCD_VEST_MKR",
     "MCD_VEST_MKR_TREASURY": "$MCD_VEST_MKR_TREASURY",
