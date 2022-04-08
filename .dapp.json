@@ -182,16 +182,16 @@
         "url": "https://github.com/makerdao/ds-weth"
       }
     },
-    "dsr-manager_f495973": {
+    "dsr-manager_0a48c2d": {
       "deps": {
         "ds-test": "ds-test_0a5da56",
-        "dss-deploy": "dss-deploy_4963763"
+        "dss-deploy": "dss-deploy_45985a9"
       },
       "name": "dsr-manager",
       "repo": {
-        "name": "dsr-manager-f495973",
+        "name": "dsr-manager-0a48c2d",
         "ref": "HEAD",
-        "rev": "f4959733be3ae561afda5fd2b7108aa10d514299",
+        "rev": "0a48c2dda418927ab844ec251f24079c0a3ff2bb",
         "url": "https://github.com/makerdao/dsr-manager"
       }
     },
@@ -207,132 +207,132 @@
         "url": "https://github.com/makerdao/dss-auto-line"
       }
     },
-    "dss-cdp-manager_03f46a0": {
+    "dss-cdp-manager_306132d": {
       "deps": {
         "ds-test": "ds-test_0a5da56",
-        "dss-deploy": "dss-deploy_4963763"
+        "dss-deploy": "dss-deploy_45985a9"
       },
       "name": "dss-cdp-manager",
       "repo": {
-        "name": "dss-cdp-manager-03f46a0",
+        "name": "dss-cdp-manager-306132d",
         "ref": "v1.2",
-        "rev": "03f46a0ec2175be6063621d9bd6003d0e6d58952",
+        "rev": "306132d6442b3245081a60bc84468c6a0c252fa8",
         "url": "https://github.com/makerdao/dss-cdp-manager"
       }
     },
-    "dss-chain-log_83e7a01": {
+    "dss-chain-log_90cf9c0": {
       "deps": {
         "ds-test": "ds-test_0a5da56"
       },
       "name": "dss-chain-log",
       "repo": {
-        "name": "dss-chain-log-83e7a01",
+        "name": "dss-chain-log-90cf9c0",
         "ref": "HEAD",
-        "rev": "83e7a01c5941447271ef9d32232dd4471fe3c851",
+        "rev": "90cf9c0589d56724b94a0d4f9b4af486a2231385",
         "url": "https://github.com/makerdao/dss-chain-log"
       }
     },
-    "dss-deploy-pause-proxy-actions_9446eb9": {
+    "dss-deploy-pause-proxy-actions_9344383": {
       "deps": {
         "ds-proxy": "ds-proxy_e17a252",
         "ds-test": "ds-test_0a5da56",
-        "dss-deploy": "dss-deploy_4963763"
+        "dss-deploy": "dss-deploy_45985a9"
       },
       "name": "dss-deploy-pause-proxy-actions",
       "repo": {
-        "name": "dss-deploy-pause-proxy-actions-9446eb9",
+        "name": "dss-deploy-pause-proxy-actions-9344383",
         "ref": "HEAD",
-        "rev": "9446eb988c9704b9e41c990898f53c5b27b3f45d",
+        "rev": "93443831ea4008177bbdc55d9ab8ba8ee069324c",
         "url": "https://github.com/makerdao/dss-deploy-pause-proxy-actions"
       }
     },
-    "dss-deploy_4963763": {
+    "dss-deploy_45985a9": {
       "deps": {
         "ds-auth": "ds-auth_a51e7ca",
         "ds-pause": "ds-pause_5e798dd",
         "ds-test": "ds-test_0a5da56",
-        "dss": "dss_fb73e44",
+        "dss": "dss_38f618c",
         "esm": "esm_8fabd86"
       },
       "name": "dss-deploy",
       "repo": {
-        "name": "dss-deploy-4963763",
+        "name": "dss-deploy-45985a9",
         "ref": "v1.2",
-        "rev": "49637632f9488eed5639cf434a7c8b413b1eb41a",
+        "rev": "45985a91024f3bc82cbe15b17dd70990d7f56020",
         "url": "https://github.com/makerdao/dss-deploy"
       }
     },
-    "dss-deploy_8bdb323": {
+    "dss-deploy_8b9bd85": {
       "deps": {
         "ds-auth": "ds-auth_a51e7ca",
         "ds-pause": "ds-pause_5e798dd",
         "ds-test": "ds-test_0a5da56",
-        "dss": "dss_c666ab1",
+        "dss": "dss_17187f7",
         "esm": "esm_225ddf2"
       },
       "name": "dss-deploy",
       "repo": {
-        "name": "dss-deploy-8bdb323",
+        "name": "dss-deploy-8b9bd85",
         "ref": "HEAD",
-        "rev": "8bdb323a22d0afca8fab9a5094674d04eddb9049",
+        "rev": "8b9bd85ec16f3da99ef92a05de93c04561eed7bc",
         "url": "https://github.com/makerdao/dss-deploy"
       }
     },
-    "dss-flash_ae57da2": {
+    "dss-flash_b8f8fdc": {
       "deps": {
         "ds-test": "ds-test_0a5da56",
-        "dss": "dss_c666ab1"
+        "dss": "dss_17187f7"
       },
       "name": "dss-flash",
       "repo": {
-        "name": "dss-flash-ae57da2",
+        "name": "dss-flash-b8f8fdc",
         "ref": "HEAD",
-        "rev": "ae57da25173d1df635a1a23e5300e13d620ea75a",
+        "rev": "b8f8fdcf22a172bf0c27722d4a9ed8058cc4208c",
         "url": "https://github.com/makerdao/dss-flash"
       }
     },
-    "dss-gem-joins_b91680b": {
+    "dss-gem-joins_123d6b7": {
       "deps": {
         "ds-test": "ds-test_0a5da56",
-        "dss-deploy": "dss-deploy_4963763"
+        "dss-deploy": "dss-deploy_45985a9"
       },
       "name": "dss-gem-joins",
       "repo": {
-        "name": "dss-gem-joins-b91680b",
+        "name": "dss-gem-joins-123d6b7",
         "ref": "v1.2",
-        "rev": "b91680be9aaeea02ecd05f822dd1ca41410024b3",
+        "rev": "123d6b7d7210a4dc47cecc405e1deeaa0f28e0c0",
         "url": "https://github.com/makerdao/dss-gem-joins"
       }
     },
-    "dss-proxy-actions_6d6b293": {
+    "dss-proxy-actions_5cf4634": {
       "deps": {
         "ds-test": "ds-test_0a5da56",
         "ds-weth": "ds-weth_b23b478",
-        "dss-cdp-manager": "dss-cdp-manager_03f46a0",
-        "dss-gem-joins": "dss-gem-joins_b91680b",
+        "dss-cdp-manager": "dss-cdp-manager_306132d",
+        "dss-gem-joins": "dss-gem-joins_123d6b7",
         "proxy-registry": "proxy-registry_981715a"
       },
       "name": "dss-proxy-actions",
       "repo": {
-        "name": "dss-proxy-actions-6d6b293",
+        "name": "dss-proxy-actions-5cf4634",
         "ref": "HEAD",
-        "rev": "6d6b2932a12d5d7885c5dfcd711f991d7642a17f",
+        "rev": "5cf46344070274ca59882d645bebf15589bdc87d",
         "url": "https://github.com/makerdao/dss-proxy-actions"
       }
     },
-    "dss-vest_8b10556": {
+    "dss-vest_50b7140": {
       "deps": {
         "ds-test": "ds-test_0a5da56"
       },
       "name": "dss-vest",
       "repo": {
-        "name": "dss-vest-8b10556",
+        "name": "dss-vest-50b7140",
         "ref": "HEAD",
-        "rev": "8b105562e5c0858dafd80df5a1119c07d048a958",
+        "rev": "50b71406ba686ffb963a722754cc5ea3a4f21364",
         "url": "https://github.com/makerdao/dss-vest"
       }
     },
-    "dss_c666ab1": {
+    "dss_17187f7": {
       "deps": {
         "ds-test": "ds-test_0a5da56",
         "ds-token": "ds-token_a5e709b",
@@ -340,13 +340,13 @@
       },
       "name": "dss",
       "repo": {
-        "name": "dss-c666ab1",
+        "name": "dss-17187f7",
         "ref": "HEAD",
-        "rev": "c666ab1fdac4cb3dd8a8b4223f951a9773a64c55",
+        "rev": "17187f7d47be2f4c71d218785e1155474bbafe8a",
         "url": "https://github.com/makerdao/dss"
       }
     },
-    "dss_fb73e44": {
+    "dss_38f618c": {
       "deps": {
         "ds-test": "ds-test_0a5da56",
         "ds-token": "ds-token_a5e709b",
@@ -354,9 +354,9 @@
       },
       "name": "dss",
       "repo": {
-        "name": "dss-fb73e44",
+        "name": "dss-38f618c",
         "ref": "v1.2",
-        "rev": "fb73e4480c9d98d85f03c3a0b1d8d43b779f8c72",
+        "rev": "38f618c54ff27d278eacc58d543e01bd08a88680",
         "url": "https://github.com/makerdao/dss"
       }
     },
@@ -420,17 +420,17 @@
         "url": "https://github.com/makerdao/flipper-mom"
       }
     },
-    "ilk-registry_81ba973": {
+    "ilk-registry_8ad3682": {
       "deps": {
         "ds-test": "ds-test_0a5da56",
         "ds-value": "ds-value_4049ecd",
-        "dss": "dss_c666ab1"
+        "dss": "dss_17187f7"
       },
       "name": "ilk-registry",
       "repo": {
-        "name": "ilk-registry-81ba973",
+        "name": "ilk-registry-8ad3682",
         "ref": "HEAD",
-        "rev": "81ba973eac363ac0395e968144e886c73c1f4e3b",
+        "rev": "8ad3682b2f3d1c719c3218f4620c0fbb657a800b",
         "url": "https://github.com/makerdao/ilk-registry"
       }
     },
@@ -583,20 +583,20 @@
       "ds-token": "ds-token_a5e709b",
       "ds-value": "ds-value_4049ecd",
       "ds-weth": "ds-weth_b23b478",
-      "dsr-manager": "dsr-manager_f495973",
+      "dsr-manager": "dsr-manager_0a48c2d",
       "dss-auto-line": "dss-auto-line_bff7e6c",
-      "dss-cdp-manager": "dss-cdp-manager_03f46a0",
-      "dss-chain-log": "dss-chain-log_83e7a01",
-      "dss-deploy": "dss-deploy_8bdb323",
-      "dss-deploy-1_2": "dss-deploy_4963763",
-      "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_9446eb9",
-      "dss-flash": "dss-flash_ae57da2",
-      "dss-gem-joins": "dss-gem-joins_b91680b",
-      "dss-proxy-actions": "dss-proxy-actions_6d6b293",
-      "dss-vest": "dss-vest_8b10556",
+      "dss-cdp-manager": "dss-cdp-manager_306132d",
+      "dss-chain-log": "dss-chain-log_90cf9c0",
+      "dss-deploy": "dss-deploy_8b9bd85",
+      "dss-deploy-1_2": "dss-deploy_45985a9",
+      "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_9344383",
+      "dss-flash": "dss-flash_b8f8fdc",
+      "dss-gem-joins": "dss-gem-joins_123d6b7",
+      "dss-proxy-actions": "dss-proxy-actions_5cf4634",
+      "dss-vest": "dss-vest_50b7140",
       "flash-killer": "flash-killer_7027492",
       "flipper-mom": "flipper-mom_3a57ea1",
-      "ilk-registry": "ilk-registry_81ba973",
+      "ilk-registry": "ilk-registry_8ad3682",
       "mkr-authority": "mkr-authority_fc19f8a",
       "multicall": "multicall_1e1b443",
       "osm": "osm_e36c874",

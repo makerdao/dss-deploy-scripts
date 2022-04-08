@@ -425,6 +425,8 @@ EOF
 
 "$LIBEXEC_DIR"/setters/set-tau "flap"
 
+"$LIBEXEC_DIR"/setters/set-flap-lid
+
 "$LIBEXEC_DIR"/setters/set-beg "flop"
 
 "$LIBEXEC_DIR"/setters/set-flop-pad

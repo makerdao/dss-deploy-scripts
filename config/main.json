@@ -16,6 +16,7 @@
   "flap_beg": "2",
   "flap_ttl": "1800",
   "flap_tau": "259200",
+  "flap_lid": "150000",
   "flop_beg": "3",
   "flop_pad": "20",
   "flop_ttl": "21600",
