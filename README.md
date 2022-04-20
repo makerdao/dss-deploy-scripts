@@ -90,8 +90,8 @@ Below is the expected structure of such a config file:
   "flash_max": "<Max DAI can be borrowed from flash loan module in DAI unit (e.g. 1000000)>",
   "flash_toll": "<Fee being charged from amount being borrow via flash loan module in percentage (e.g 0.1%)>",
   import: {
-    "gov": "<GOV token address (if there is an existing one to import)>",
-    "authority": "<Authority address (if there is an existing one to import)>",
+    "gov": "<GOV token address (if there is an existing one to import)> note: make sure to mint enough tokens for launch",
+    "authority": "<Authority address (if there is an existing one to import)> note: make sure to launch MCD_ADMIN",
     "proxyRegistry": "<Proxy Registry address (if there is an existing one to import)>",
     "faucet": "<Faucet address (if there is an existing one to import)>"
   },
@@ -156,6 +156,18 @@ Below is the expected structure of such a config file:
     }
   }
 }
+```
+NOTE: Make sure to mint enough (threshold is 80,000 MKR) tokens for launch if you are providing it in `config.gov`:
+```
+    sethSend "$MCD_GOV" 'mint(address,uint256)' "$ETH_FROM" "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
+```
+NOTE: Make sure to `launch` MCD_ADMIN if you are providing it in `config.authority`.
+```
+    # lock enough MKR (80,000 MKR threshold)
+    sethSend "$MCD_GOV" "approve(address,uint256)" "$MCD_ADM" "$(seth --to-uint256 "$(seth --to-wei 80000 ETH)")"
+    sethSend "$MCD_ADM" "lock(uint256)" "$(seth --to-uint256 "$(seth --to-wei 80000 ETH)")"
+    sethSend "$MCD_ADM" "vote(address[])" "[0x0000000000000000000000000000000000000000]"
+    sethSend "$MCD_ADM" "launch()"
 ```
 
 ## Default config files
