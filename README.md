@@ -156,15 +156,15 @@ Below is the expected structure of such a config file:
   }
 }
 ```
-NOTE: Make sure to mint enough(threshold is 80,000 MKR) tokens for launch if you are provide it in `imports.gov`:
+NOTE: Make sure to mint enough (threshold is 80,000 MKR) tokens for launch if you are providing it in `config.gov`:
 ```
     sethSend "$MCD_GOV" 'mint(address,uint256)' "$ETH_FROM" "$(seth --to-uint256 "$(seth --to-wei 1000000 ETH)")"
 ```
-NOTE: Make sure to `launch` MCD_ADMIN if you are provide it in `imports.authority`.
+NOTE: Make sure to `launch` MCD_ADMIN if you are providing it in `config.authority`.
 ```
-# lock more then threshold (80,000 MKR)
-    sethSend "$MCD_GOV" "approve(address,uint256)" "$MCD_ADM" "$(seth --to-uint256 "$(seth --to-wei 80001 ETH)")"
-    sethSend "$MCD_ADM" "lock(uint256)" "$(seth --to-uint256 "$(seth --to-wei 80001 ETH)")"
+    # lock enough MKR (80,000 MKR threshold)
+    sethSend "$MCD_GOV" "approve(address,uint256)" "$MCD_ADM" "$(seth --to-uint256 "$(seth --to-wei 80000 ETH)")"
+    sethSend "$MCD_ADM" "lock(uint256)" "$(seth --to-uint256 "$(seth --to-wei 80000 ETH)")"
     sethSend "$MCD_ADM" "vote(address[])" "[0x0000000000000000000000000000000000000000]"
     sethSend "$MCD_ADM" "launch()"
 ```
