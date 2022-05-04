@@ -162,7 +162,7 @@ Below is the expected structure of such a config file:
 Currently, there are default config files for 3 networks:
 
 * a local testchain (e.g. `dapp testnet`)
-* Kovan
+* Goerli
 * Mainnet
 
 ### Deploy on local testchain with default config file
@@ -175,9 +175,9 @@ The only case currently available is:
 
 - `crash-bite`
 
-### Deploy on Kovan with default config file
+### Deploy on Goerli with default config file
 
-`dss-deploy kovan`
+`dss-deploy goerli`
 
 ### Deploy on Mainnet with default config file
 
