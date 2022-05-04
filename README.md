@@ -1,4 +1,5 @@
 # DSS deployment scripts
+
 ![Build Status](https://github.com/makerdao/dss-deploy-scripts/actions/workflows/.github/workflows/tests.yaml/badge.svg?branch=master)
 
 A set of scripts that deploy [dss](http://github.com/makerdao/dss) to an
@@ -18,8 +19,8 @@ and `dapp` to modify the deployment, using the values in `out/config.json`.
 
 The only way to install everything necessary to deploy is Nix. Run
 
-```
-$ nix-shell --pure
+```shell
+nix-shell --pure
 ```
 
 to drop into a Bash shell with all dependency installed.
@@ -60,7 +61,7 @@ File passed by parameter overwrites the environment variable.
 
 Below is the expected structure of such a config file:
 
-```
+```json
 {
   "description": "",
   "omniaFromAddr": "<Address being used by Omnia Service (only for testchain)>",
@@ -161,9 +162,9 @@ Below is the expected structure of such a config file:
 
 Currently, there are default config files for 3 networks:
 
-* a local testchain (e.g. `dapp testnet`)
-* Goerli
-* Mainnet
+- a local testchain (e.g. `dapp testnet`)
+- Goerli
+- Mainnet
 
 ### Deploy on local testchain with default config file
 
@@ -209,13 +210,13 @@ To enable full reproducibility of our deployments, we use Nix.
 This command will drop you in a shell with all dependencies and environment
 variables definend:
 
-```
+```shell
 nix-shell --pure
 ```
 
 You can even run deploy scripts without having to clone this repo:
 
-```
+```shell
 nix run -f https://github.com/makerdao/dss-deploy-scripts/tarball/master -c dss-deploy testchain
 ```
 
@@ -227,7 +228,7 @@ repo is in [`default.nix`](default.nix).
 
 To update smart contract dependencies use `dapp2nix`:
 
-```sh
+```shell
 nix-shell --pure
 dapp2nix help
 dapp2nix list
@@ -236,7 +237,7 @@ dapp2nix up vote-proxy <COMMIT_HASH>
 
 To clone smart contract dependencies into working directory run:
 
-```sh
+```shell
 dapp2nix clone-recursive contracts
 ```
 
