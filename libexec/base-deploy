@@ -338,7 +338,7 @@ sethSend "$MCD_VEST_DAI" 'rely(address)' "$MCD_PAUSE_PROXY"
 sethSend "$MCD_VEST_DAI" 'deny(address)' "$ETH_FROM"
 calldata="$(seth calldata 'rely(address,address,address,address)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VAT" "$MCD_VEST_DAI")"
 sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
-MCD_VEST_MKR=$(dappCreate dss-vest-optimized DssVestMintable "$MCD_GOV")
+MCD_VEST_MKR=$(dappCreate dss-vest-1_0_1-optimized DssVestMintable "$MCD_GOV")
 logAddr "MCD_VEST_MKR" "$MCD_VEST_MKR"
 sethSend "$MCD_VEST_MKR" 'rely(address)' "$MCD_PAUSE_PROXY"
 sethSend "$MCD_VEST_MKR" 'deny(address)' "$ETH_FROM"
@@ -346,7 +346,7 @@ if [[ "$newGovToken" == true ]]; then
     calldata="$(seth calldata 'rely(address,address,address,address)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$GOV_GUARD" "$MCD_VEST_MKR")"
     sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi
-MCD_VEST_MKR_TREASURY=$(dappCreate dss-vest-optimized DssVestTransferrable "$MCD_PAUSE_PROXY" "$MCD_GOV")
+MCD_VEST_MKR_TREASURY=$(dappCreate dss-vest-1_0_1-optimized DssVestTransferrable "$MCD_PAUSE_PROXY" "$MCD_GOV")
 sethSend "$MCD_VEST_MKR_TREASURY" 'rely(address)' "$MCD_PAUSE_PROXY"
 sethSend "$MCD_VEST_MKR_TREASURY" 'deny(address)' "$ETH_FROM"
 

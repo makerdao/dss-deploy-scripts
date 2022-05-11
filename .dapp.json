@@ -320,6 +320,18 @@
         "url": "https://github.com/makerdao/dss-proxy-actions"
       }
     },
+    "dss-vest_4e04cec": {
+      "deps": {
+        "ds-test": "ds-test_0a5da56"
+      },
+      "name": "dss-vest",
+      "repo": {
+        "name": "dss-vest-4e04cec",
+        "ref": "HEAD",
+        "rev": "4e04cec2607a6e59960ce8bd729666cfddc2f523",
+        "url": "https://github.com/makerdao/dss-vest"
+      }
+    },
     "dss-vest_50b7140": {
       "deps": {
         "ds-test": "ds-test_0a5da56"
@@ -327,7 +339,7 @@
       "name": "dss-vest",
       "repo": {
         "name": "dss-vest-50b7140",
-        "ref": "HEAD",
+        "ref": "v1.0.1",
         "rev": "50b71406ba686ffb963a722754cc5ea3a4f21364",
         "url": "https://github.com/makerdao/dss-vest"
       }
@@ -593,7 +605,8 @@
       "dss-flash": "dss-flash_b8f8fdc",
       "dss-gem-joins": "dss-gem-joins_123d6b7",
       "dss-proxy-actions": "dss-proxy-actions_5cf4634",
-      "dss-vest": "dss-vest_50b7140",
+      "dss-vest": "dss-vest_4e04cec",
+      "dss-vest-1_0_1": "dss-vest_50b7140",
       "flash-killer": "flash-killer_7027492",
       "flipper-mom": "flipper-mom_3a57ea1",
       "ilk-registry": "ilk-registry_8ad3682",
