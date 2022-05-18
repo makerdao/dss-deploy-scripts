@@ -90,7 +90,7 @@ Below is the expected structure of such a config file:
   "flop_tau": "<Max auction duration in seconds>",
   "flap_lid": "<Max amount of DAI that can be put up for sale at the same time in DAI unit (e.g. 1000000)>",
   "flash_max": "<Max DAI can be borrowed from flash loan module in DAI unit (e.g. 1000000)>",
-  import: {
+  "import": {
     "gov": "<GOV token address (if there is an existing one to import)> note: make sure to mint enough tokens for launch",
     "authority": "<Authority address (if there is an existing one to import)> note: make sure to launch MCD_ADMIN",
     "proxyRegistry": "<Proxy Registry address (if there is an existing one to import)>",
