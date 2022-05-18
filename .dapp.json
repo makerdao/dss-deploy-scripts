@@ -262,32 +262,32 @@
         "url": "https://github.com/makerdao/dss-deploy"
       }
     },
-    "dss-deploy_8b9bd85": {
+    "dss-deploy_b2c1c5a": {
       "deps": {
         "ds-auth": "ds-auth_a51e7ca",
         "ds-pause": "ds-pause_5e798dd",
         "ds-test": "ds-test_0a5da56",
-        "dss": "dss_17187f7",
+        "dss": "dss_fa4f663",
         "esm": "esm_225ddf2"
       },
       "name": "dss-deploy",
       "repo": {
-        "name": "dss-deploy-8b9bd85",
+        "name": "dss-deploy-b2c1c5a",
         "ref": "HEAD",
-        "rev": "8b9bd85ec16f3da99ef92a05de93c04561eed7bc",
+        "rev": "b2c1c5ac107b99fd61a7f6d2f63164331bd1fbf9",
         "url": "https://github.com/makerdao/dss-deploy"
       }
     },
-    "dss-flash_b8f8fdc": {
+    "dss-flash_4d4b984": {
       "deps": {
         "ds-test": "ds-test_0a5da56",
-        "dss": "dss_17187f7"
+        "dss": "dss_fa4f663"
       },
       "name": "dss-flash",
       "repo": {
-        "name": "dss-flash-b8f8fdc",
+        "name": "dss-flash-4d4b984",
         "ref": "HEAD",
-        "rev": "b8f8fdcf22a172bf0c27722d4a9ed8058cc4208c",
+        "rev": "4d4b984eb9bb6d87c27ce542fe453e32e9a352ca",
         "url": "https://github.com/makerdao/dss-flash"
       }
     },
@@ -344,20 +344,6 @@
         "url": "https://github.com/makerdao/dss-vest"
       }
     },
-    "dss_17187f7": {
-      "deps": {
-        "ds-test": "ds-test_0a5da56",
-        "ds-token": "ds-token_a5e709b",
-        "ds-value": "ds-value_4049ecd"
-      },
-      "name": "dss",
-      "repo": {
-        "name": "dss-17187f7",
-        "ref": "HEAD",
-        "rev": "17187f7d47be2f4c71d218785e1155474bbafe8a",
-        "url": "https://github.com/makerdao/dss"
-      }
-    },
     "dss_38f618c": {
       "deps": {
         "ds-test": "ds-test_0a5da56",
@@ -369,6 +355,20 @@
         "name": "dss-38f618c",
         "ref": "v1.2",
         "rev": "38f618c54ff27d278eacc58d543e01bd08a88680",
+        "url": "https://github.com/makerdao/dss"
+      }
+    },
+    "dss_fa4f663": {
+      "deps": {
+        "ds-test": "ds-test_0a5da56",
+        "ds-token": "ds-token_a5e709b",
+        "ds-value": "ds-value_4049ecd"
+      },
+      "name": "dss",
+      "repo": {
+        "name": "dss-fa4f663",
+        "ref": "HEAD",
+        "rev": "fa4f6630afb0624d04a003e920b0d71a00331d98",
         "url": "https://github.com/makerdao/dss"
       }
     },
@@ -408,18 +408,6 @@
         "url": "https://github.com/makerdao/esm"
       }
     },
-    "flash-killer_7027492": {
-      "deps": {
-        "ds-test": "ds-test_0a5da56"
-      },
-      "name": "flash-killer",
-      "repo": {
-        "name": "flash-killer-7027492",
-        "ref": "HEAD",
-        "rev": "70274926eb9ee4519ba7ebbbcc6ba94c1b3e89e8",
-        "url": "https://github.com/makerdao/flash-killer"
-      }
-    },
     "flipper-mom_3a57ea1": {
       "deps": {
         "ds-test": "ds-test_0a5da56"
@@ -432,17 +420,17 @@
         "url": "https://github.com/makerdao/flipper-mom"
       }
     },
-    "ilk-registry_8ad3682": {
+    "ilk-registry_4667403": {
       "deps": {
         "ds-test": "ds-test_0a5da56",
         "ds-value": "ds-value_4049ecd",
-        "dss": "dss_17187f7"
+        "dss": "dss_fa4f663"
       },
       "name": "ilk-registry",
       "repo": {
-        "name": "ilk-registry-8ad3682",
+        "name": "ilk-registry-4667403",
         "ref": "HEAD",
-        "rev": "8ad3682b2f3d1c719c3218f4620c0fbb657a800b",
+        "rev": "4667403b0924b8710fee938e45f59b64c10f8c55",
         "url": "https://github.com/makerdao/ilk-registry"
       }
     },
@@ -599,17 +587,16 @@
       "dss-auto-line": "dss-auto-line_bff7e6c",
       "dss-cdp-manager": "dss-cdp-manager_306132d",
       "dss-chain-log": "dss-chain-log_90cf9c0",
-      "dss-deploy": "dss-deploy_8b9bd85",
+      "dss-deploy": "dss-deploy_b2c1c5a",
       "dss-deploy-1_2": "dss-deploy_45985a9",
       "dss-deploy-pause-proxy-actions": "dss-deploy-pause-proxy-actions_9344383",
-      "dss-flash": "dss-flash_b8f8fdc",
+      "dss-flash": "dss-flash_4d4b984",
       "dss-gem-joins": "dss-gem-joins_123d6b7",
       "dss-proxy-actions": "dss-proxy-actions_5cf4634",
       "dss-vest": "dss-vest_4e04cec",
       "dss-vest-1_0_1": "dss-vest_50b7140",
-      "flash-killer": "flash-killer_7027492",
       "flipper-mom": "flipper-mom_3a57ea1",
-      "ilk-registry": "ilk-registry_8ad3682",
+      "ilk-registry": "ilk-registry_4667403",
       "mkr-authority": "mkr-authority_fc19f8a",
       "multicall": "multicall_1e1b443",
       "osm": "osm_e36c874",

@@ -77,6 +77,7 @@ Below is the expected structure of such a config file:
   "dog_hole": "<Max total DAI needed to cover all debt plus penalty fees on active Clip auctions in DAI unit>",
   "jug_base": "<Base component of stability fee in percentage per year (e.g. 2.5)>",
   "pot_dsr": "<Dai Savings Rate in percentage per year (e.g. 2.5)>",
+  "cure_wait": "<Cure cooldown period in seconds>",
   "end_wait": "<Global Settlement cooldown period in seconds>",
   "esm_pit": "<Pit address to send MKR to be burnt when ESM is fired>",
   "esm_min": "<Minimum amount to trigger ESM in MKR unit>",
@@ -89,7 +90,6 @@ Below is the expected structure of such a config file:
   "flop_tau": "<Max auction duration in seconds>",
   "flap_lid": "<Max amount of DAI that can be put up for sale at the same time in DAI unit (e.g. 1000000)>",
   "flash_max": "<Max DAI can be borrowed from flash loan module in DAI unit (e.g. 1000000)>",
-  "flash_toll": "<Fee being charged from amount being borrow via flash loan module in percentage (e.g 0.1%)>",
   import: {
     "gov": "<GOV token address (if there is an existing one to import)> note: make sure to mint enough tokens for launch",
     "authority": "<Authority address (if there is an existing one to import)> note: make sure to launch MCD_ADMIN",

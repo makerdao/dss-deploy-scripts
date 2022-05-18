@@ -314,21 +314,15 @@ calldata="$(seth calldata 'rely(address,address,address,address)' "$MCD_PAUSE" "
 sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 
 # Deploy DssFlash
-MCD_FLASH=$(dappCreate dss-flash DssFlash "$MCD_JOIN_DAI" "$MCD_VOW")
+MCD_FLASH=$(dappCreate dss-flash DssFlash "$MCD_JOIN_DAI")
 logAddr "MCD_FLASH" "$MCD_FLASH"
 # Rely DssFlash in the Vat
 set -e
 calldata="$(seth calldata 'rely(address,address,address,address)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_VAT" "$MCD_FLASH")"
 sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 
-# Deploy FlashKiller
-FLASH_KILLER=$(dappCreate flash-killer FlashKiller "$MCD_VAT" "$MCD_FLASH")
-logAddr "FLASH_KILLER" "$FLASH_KILLER"
-
 # Rely PauseProxy, ESM and FlashKiller in DssFlash and deny deployer
 sethSend "$MCD_FLASH" 'rely(address)' "$MCD_PAUSE_PROXY"
-sethSend "$MCD_FLASH" 'rely(address)' "$MCD_ESM"
-sethSend "$MCD_FLASH" 'rely(address)' "$FLASH_KILLER"
 sethSend "$MCD_FLASH" 'deny(address)' "$ETH_FROM"
 
 # Deploy both DssVest
@@ -378,6 +372,7 @@ cat > "$OUT_DIR"/addresses.json <<EOF
     "MCD_DAI": "$(seth --to-checksum-address "$MCD_DAI")",
     "MCD_SPOT": "$(seth --to-checksum-address "$MCD_SPOT")",
     "MCD_POT": "$(seth --to-checksum-address "$MCD_POT")",
+    "MCD_CURE": "$(seth --to-checksum-address "$MCD_CURE")",
     "MCD_END": "$(seth --to-checksum-address "$MCD_END")",
     "MCD_ESM": "$(seth --to-checksum-address "$MCD_ESM")",
     "PROXY_ACTIONS": "$PROXY_ACTIONS",
@@ -392,7 +387,6 @@ cat > "$OUT_DIR"/addresses.json <<EOF
     "CLIPPER_MOM": "$CLIPPER_MOM",
     "MCD_IAM_AUTO_LINE": "$MCD_IAM_AUTO_LINE",
     "MCD_FLASH": "$MCD_FLASH",
-    "FLASH_KILLER": "$FLASH_KILLER",
     "MCD_VEST_DAI": "$MCD_VEST_DAI",
     "MCD_VEST_MKR": "$MCD_VEST_MKR",
     "MCD_VEST_MKR_TREASURY": "$MCD_VEST_MKR_TREASURY",
@@ -423,6 +417,8 @@ EOF
 
 "$LIBEXEC_DIR"/setters/set-pot-dsr
 
+"$LIBEXEC_DIR"/setters/set-cure-wait
+
 "$LIBEXEC_DIR"/setters/set-end-wait
 
 "$LIBEXEC_DIR"/setters/set-beg "flap"
@@ -442,8 +438,6 @@ EOF
 "$LIBEXEC_DIR"/setters/set-tau "flop"
 
 "$LIBEXEC_DIR"/setters/set-flash-max
-
-"$LIBEXEC_DIR"/setters/set-flash-toll
 
 "$LIBEXEC_DIR"/setters/set-ilks-price
 

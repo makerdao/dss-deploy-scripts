@@ -23,13 +23,11 @@ CONFIG_FILE="$OUT_DIR/config.json"
 # Get addresses
 loadAddresses
 
-log "SET FLASH TOLL:"
+log "SET CURE WAIT:"
 
-# Set beg
-toll=$(jq -r ".flash_toll | values" "$CONFIG_FILE")
-if [[ "$toll" != "" ]]; then
-    toll=$(echo "$toll*10^16" | bc -l)
-    toll=${toll%.*}
-    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_FLASH" "$(seth --to-bytes32 "$(seth --from-ascii "toll")")" "$toll")"
+# Set general debt ceiling (if defined)
+wait=$(jq -r ".cure_wait | values" "$CONFIG_FILE")
+if [[ "$wait" != "" ]]; then
+    calldata="$(seth calldata 'file(address,address,address,bytes32,uint256)' "$MCD_PAUSE" "$MCD_GOV_ACTIONS" "$MCD_CURE" "$(seth --to-bytes32 "$(seth --from-ascii "wait")")" "$wait")"
     sethSend "$PROXY_DEPLOYER" 'execute(address,bytes memory)' "$PROXY_PAUSE_ACTIONS" "$calldata"
 fi

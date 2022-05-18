@@ -11,6 +11,7 @@
   "dog_hole": "100000000",
   "jug_base": "0",
   "pot_dsr": "0.01",
+  "cure_wait": "0",
   "end_wait": "262800",
   "esm_min": "100000",
   "flap_beg": "4",
@@ -22,7 +23,6 @@
   "flop_ttl": "21600",
   "flop_tau": "259200",
   "flash_max": "500000000",
-  "flash_toll": "0.05",
   "import": {
     "chainlog": "0xdA0Ab1e0017DEbCd72Be8599041a2aa3bA7e740F",
     "faucet": "0xa473CdDD6E4FAc72481dc36f39A409D86980D187"

@@ -54,7 +54,6 @@ let
     dss-vest-1_0_1 = deps'.dss-vest-1_0_1           // { name = "dss-vest-1_0_1-optimized";    solcFlags = "--optimize --optimize-runs 200"; solc = solc-static-versions.solc_0_6_12; };
     dss-vest = deps'.dss-vest                       // { name = "dss-vest-optimized";          solcFlags = "--optimize --optimize-runs 200"; solc = solc-static-versions.solc_0_6_12; };
     dss-chain-log = deps'.dss-chain-log             // { name = "dss-chain-log-optimized";     solcFlags = "--optimize --optimize-runs 200"; solc = solc-static-versions.solc_0_6_12; };
-    flash-killer = deps'.flash-killer               // { name = "flash-killer";                solc = solc-static-versions.solc_0_8_12; };
   });
 
 in makerScriptPackage {

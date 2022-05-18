@@ -30,7 +30,7 @@ MCD_DEPLOY=$(dappCreate dss-deploy-optimized-runs-1 DssDeploy)
 logAddr "MCD_DEPLOY" "$MCD_DEPLOY"
 
 sethSend "$MCD_DEPLOY" "addFabs1(address,address,address,address,address,address,address)" "$VAT_FAB" "$JUG_FAB" "$VOW_FAB" "$CAT_FAB" "$DOG_FAB" "$DAI_FAB" "$MCD_JOIN_DAI_FAB"
-sethSend "$MCD_DEPLOY" "addFabs2(address,address,address,address,address,address,address,address,address,address)" "$FLAP_FAB" "$FLOP_FAB" "$FLIP_FAB" "$CLIP_FAB" "$CALC_FAB" "$SPOT_FAB" "$POT_FAB" "$END_FAB" "$ESM_FAB" "$PAUSE_FAB"
+sethSend "$MCD_DEPLOY" "addFabs2(address,address,address,address,address,address,address,address,address,address,address)" "$FLAP_FAB" "$FLOP_FAB" "$FLIP_FAB" "$CLIP_FAB" "$CALC_FAB" "$SPOT_FAB" "$POT_FAB" "$CURE_FAB" "$END_FAB" "$ESM_FAB" "$PAUSE_FAB"
 
 # If no Authority is defined, create one
 if [ -z "$MCD_ADM" ]
@@ -77,6 +77,7 @@ MCD_FLAP="$(seth call "$MCD_DEPLOY" "flap()(address)")"
 MCD_FLOP="$(seth call "$MCD_DEPLOY" "flop()(address)")"
 MCD_SPOT="$(seth call "$MCD_DEPLOY" "spotter()(address)")"
 MCD_POT="$(seth call "$MCD_DEPLOY" "pot()(address)")"
+MCD_CURE="$(seth call "$MCD_DEPLOY" "cure()(address)")"
 MCD_END="$(seth call "$MCD_DEPLOY" "end()(address)")"
 MCD_ESM="$(seth call "$MCD_DEPLOY" "esm()(address)")"
 MCD_PAUSE="$(seth call "$MCD_DEPLOY" "pause()(address)")"
@@ -93,6 +94,7 @@ logAddr "MCD_FLAP" "$MCD_FLAP"
 logAddr "MCD_FLOP" "$MCD_FLOP"
 logAddr "MCD_SPOT" "$MCD_SPOT"
 logAddr "MCD_POT" "$MCD_POT"
+logAddr "MCD_CURE" "$MCD_CURE"
 logAddr "MCD_END" "$MCD_END"
 logAddr "MCD_ESM" "$MCD_ESM"
 logAddr "MCD_PAUSE" "$MCD_PAUSE"
@@ -114,6 +116,7 @@ export MCD_FLAP=$MCD_FLAP
 export MCD_FLOP=$MCD_FLOP
 export MCD_SPOT=$MCD_SPOT
 export MCD_POT=$MCD_POT
+export MCD_CURE=$MCD_CURE
 export MCD_END=$MCD_END
 export MCD_ESM=$MCD_ESM
 export MCD_PAUSE=$MCD_PAUSE

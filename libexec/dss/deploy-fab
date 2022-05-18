@@ -34,6 +34,7 @@ CLIP_FABtx=$(dappCreate dss-deploy ClipFab)
 CALC_FABtx=$(dappCreate dss-deploy CalcFab)
 SPOT_FABtx=$(dappCreate dss-deploy-1_2 SpotFab)
 POT_FABtx=$(dappCreate dss-deploy-1_2 PotFab)
+CURE_FABtx=$(dappCreate dss-deploy CureFab)
 END_FABtx=$(dappCreate dss-deploy EndFab)
 ESM_FABtx=$(dappCreate dss-deploy ESMFab)
 PAUSE_FABtx=$(dappCreate dss-deploy-1_2 PauseFab)
@@ -54,6 +55,7 @@ test "$(seth receipt "$CLIP_FABtx" status)" -eq 0 && exit 1
 test "$(seth receipt "$CALC_FABtx" status)" -eq 0 && exit 1
 test "$(seth receipt "$SPOT_FABtx" status)" -eq 0 && exit 1
 test "$(seth receipt "$POT_FABtx" status)" -eq 0 && exit 1
+test "$(seth receipt "$CURE_FABtx" status)" -eq 0 && exit 1
 test "$(seth receipt "$END_FABtx" status)" -eq 0 && exit 1
 test "$(seth receipt "$ESM_FABtx" status)" -eq 0 && exit 1
 test "$(seth receipt "$PAUSE_FABtx" status)" -eq 0 && exit 1
@@ -72,6 +74,7 @@ CLIP_FAB=$(seth receipt "$CLIP_FABtx" contractAddress)
 CALC_FAB=$(seth receipt "$CALC_FABtx" contractAddress)
 SPOT_FAB=$(seth receipt "$SPOT_FABtx" contractAddress)
 POT_FAB=$(seth receipt "$POT_FABtx" contractAddress)
+CURE_FAB=$(seth receipt "$CURE_FABtx" contractAddress)
 END_FAB=$(seth receipt "$END_FABtx" contractAddress)
 ESM_FAB=$(seth receipt "$ESM_FABtx" contractAddress)
 PAUSE_FAB=$(seth receipt "$PAUSE_FABtx" contractAddress)
@@ -90,6 +93,7 @@ logAddr "CLIP_FAB" "$CLIP_FAB"
 logAddr "CALC_FAB" "$CALC_FAB"
 logAddr "SPOT_FAB" "$SPOT_FAB"
 logAddr "POT_FAB" "$POT_FAB"
+logAddr "CURE_FAB" "$CURE_FAB"
 logAddr "END_FAB" "$END_FAB"
 logAddr "ESM_FAB" "$ESM_FAB"
 logAddr "PAUSE_FAB" "$PAUSE_FAB"
@@ -110,6 +114,7 @@ export CLIP_FAB=$CLIP_FAB
 export CALC_FAB=$CALC_FAB
 export SPOT_FAB=$SPOT_FAB
 export POT_FAB=$POT_FAB
+export CURE_FAB=$CURE_FAB
 export END_FAB=$END_FAB
 export ESM_FAB=$ESM_FAB
 export PAUSE_FAB=$PAUSE_FAB
